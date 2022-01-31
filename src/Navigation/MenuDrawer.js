@@ -8,14 +8,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { AppBar, IconButton, Toolbar } from '@mui/material';
+import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 
 import productLogo from '../../public/img/head-logo.png'
 
-export default function TemporaryDrawer() {
+export default function MenuDrawer() {
 
     const [open, setOpen] = React.useState(false);
 
@@ -31,7 +31,7 @@ export default function TemporaryDrawer() {
             onKeyDown={handleDrawerToggle}
         >
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                {['Home', 'Sport', 'World', 'National'].map((text, index) => (
                     <ListItem button key={text}>
                         <ListItemIcon>
                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -42,7 +42,7 @@ export default function TemporaryDrawer() {
             </List>
             <Divider />
             <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                {['Globe Finance', 'Globe Sports'].map((text, index) => (
                     <ListItem button key={text}>
                         <ListItemIcon>
                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -85,7 +85,46 @@ export default function TemporaryDrawer() {
                         </Box>
                     </Toolbar>
                 </AppBar>
-                <Toolbar/>
+                <Box sx={{display: { xs: 'none', md:'block' }}}>
+                <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
+                    <Box sx={{ px:2, borderRight: 1 }}>
+                        <Typography variant="h5" component="div">
+                            Coronavirus
+                        </Typography>
+                    </Box>
+                    <Box sx={{ px:2, borderRight: 1 }}>
+                        <Typography variant="h5" component="div">
+                            Ukraine Crisis
+                        </Typography>
+                    </Box>
+                    <Box sx={{ px:2, borderRight: 1 }}>
+                        <Typography variant="h5" component="div">
+                            Winter Olympics
+                        </Typography>
+                    </Box>
+                    <Box sx={{ px:2, borderRight: 1 }}>
+                        <Typography variant="h5" component="div">
+                            Markets
+                        </Typography>
+                    </Box>
+                    <Box sx={{ px:2, borderRight: 1 }}>
+                        <Typography variant="h5" component="div">
+                            Climate Crisis
+                        </Typography>
+                    </Box>
+                    <Box sx={{ px:2 }}>
+                        <Typography variant="h5" component="div">
+                            Champions League
+                        </Typography>
+                    </Box>
+
+                    {/* <Chip label="Markets Corection" />
+                    <Chip label="Winter Olympics" />
+                    <Chip label="Football" />
+                    <Chip label="Climate Crisis" /> */}
+                </Stack>
+                </Box>
+                <Toolbar sx={{ display:{sm:'block',md:'none'}}}/>
                 <Drawer
                     anchor="left"
                     open={open}
