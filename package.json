@@ -16,10 +16,15 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "axios": "^0.25.0",
+    "cloudinary-react": "^1.7.1",
+    "cookies": "^0.8.0",
+    "memory-cache": "^0.2.0",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "eslint": "latest",

@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 
-import productLogo from '../../public/img/head-logo.png'
+import productLogo from '../../../public/img/head-logo.png'
 
 export default function MenuDrawer() {
 
