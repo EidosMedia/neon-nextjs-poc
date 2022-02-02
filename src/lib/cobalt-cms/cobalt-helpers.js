@@ -17,6 +17,30 @@ export function getCobaltDataHelper(data) {
     }
 }
 
+export function getQueryResultObjects(cobaltData){
+    let resultObjects = [];
+    try {
+        resultObjects = cobaltData.object.data.children.map((child) => {
+            const objNodeData = cobaltData.pageContext.nodes[child]
+            const objCobaltData = {
+                object: {
+                    data: objNodeData,
+                    helper: getCobaltDataHelper(objNodeData)
+                },
+                linkContext: {
+                    linkData: null,
+                    linkTemplate: 'list'
+                },
+                pageContext: cobaltData.pageContext,
+                previewData: cobaltData.previewData
+            }
+            return objCobaltData
+        })
+    } catch(e){console.log(e)}
+
+    return resultObjects
+}
+
 export function getDwxLinkedObjects(cobaltData, zoneName){
     let linkedObjects = [];
     try {

@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
 import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
 
 export default function LandingPage({ cobaltData }) {
@@ -15,28 +16,21 @@ export default function LandingPage({ cobaltData }) {
         </Container>
     )
 
-    const mainObjects = getDwxLinkedObjects(cobaltData,"main");
+    const mainObjects = getDwxLinkedObjects(cobaltData, "main");
 
     const render = (
         <Container maxWidth="lg">
-            {mainObjects.map((obj) => <Segment cobaltData={obj}/>)}
-            {/* {cobaltData.object.helper.zones.map((zone, i) =>
-                zone.objects.map((object, j) => {
-                    // Here we need to build the cobaltData for each object
-                    const objNodeData = cobaltData.pageContext.nodes[object.objectId]
-                    const objCobaltData = {
-                        object: {
-                            data: objNodeData,
-                            helper: getCobaltDataHelper(objNodeData)
-                        },
-                        linkContext: {
-                            linkData: object.linkData
-                        },
-                        pageContext: cobaltData.pageContext
-                    }
-                    console.log(JSON.stringify(objCobaltData.linkContext,undefined,2))
-                    return (<Segment cobaltData={objCobaltData}/>)
-                }))} */}
+            {mainObjects.map((obj) => {
+                switch(obj.object.data.sys.baseType){
+                    case "webpagefragment":
+                        return <Segment cobaltData={obj} />;
+                        break;
+                    case "query":                        
+                        return <QuerySegment cobaltData={obj} />
+                        break;
+                }
+                
+            })}
         </Container>
     )
 

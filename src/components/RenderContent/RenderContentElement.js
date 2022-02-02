@@ -255,12 +255,11 @@ function Figure({ jsonElement, excludeElements }) {
     return render;
 }
 
-function CloudinaryVideo({ jsonElement, excludeElements }) {
+export function CloudinaryVideo({ jsonElement, excludeElements }) {
     const videoSrc = jsonElement.elements[0].attributes.src
     const videoSrcArray = videoSrc.split('/')
     const videoFileName = videoSrcArray.slice(-1)[0]
     const videoId = videoFileName.substring(0, videoFileName.lastIndexOf('.'))
-    console.log(videoId)
-    const render = <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="600"></Video>
+    const render = <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
     return render
-}
+} 

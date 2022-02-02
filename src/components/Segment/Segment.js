@@ -23,7 +23,10 @@ export default function Segment({ cobaltData }) {
     let extraObjects = []
     extraObjects = getDwxLinkedObjects(cobaltData, "extra")
 
-    console.log(secondObjects)
+    let sectionHeadline = null;
+    try {
+        sectionHeadline = cobaltData.object.data.attributes.classification.genres[0]
+    } catch (e) { }
 
     switch (templateName) {
         case 'featured_standard':
@@ -50,12 +53,12 @@ export default function Segment({ cobaltData }) {
             render = (
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={9}>
-                    {firstObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
+                        {firstObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
                     </Grid>
                     <Grid item xs={12} md={3}>
-                    {secondObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {secondObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                     </Grid>
-                    {opinionObjects.slice(0,3).map((object) => (
+                    {opinionObjects.slice(0, 3).map((object) => (
                         <Grid item xs={12} md={4}>
                             <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
                         </Grid>
@@ -111,17 +114,17 @@ export default function Segment({ cobaltData }) {
             render = (
                 <React.Fragment>
                     <Box sx={{ my: 1, borderTop: 2, borderColor: 'grey.500' }}>
-                        <Typography sx={{ my: 1 }} variant="h4" component="div">Section</Typography>
+                        <Typography sx={{ my: 1 }} variant="h4" component="div">{sectionHeadline}</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
                             {firstObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(0,3).map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(0, 3).map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(3,6).map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(3, 6).map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                     </Grid>
                 </React.Fragment>
@@ -131,30 +134,25 @@ export default function Segment({ cobaltData }) {
             render = (
                 <React.Fragment>
                     <Box sx={{ my: 1, borderTop: 2, borderColor: 'grey.500' }}>
-                        <Typography sx={{ my: 1 }} variant="h4" component="div">Section</Typography>
+                        <Typography sx={{ my: 1 }} variant="h4" component="div">{sectionHeadline}</Typography>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={9}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 9 }} />
+                            {firstObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
+                            {secondObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 4 }} />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 4 }} />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 4 }} />
-                        </Grid>
+                        {opinionObjects.slice(0, 3).map((object) => (
+                            <Grid item xs={12} md={4}>
+                                <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
+                            </Grid>
+                        ))}
+                        {extraObjects.map((object) => (
+                            <Grid item xs={12} md={2}>
+                                <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
+                            </Grid>
+                        ))}
                     </Grid>
                 </React.Fragment>
             );
@@ -164,21 +162,13 @@ export default function Segment({ cobaltData }) {
                 <React.Fragment>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 6 }} />
+                            {firstObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
+                            {secondObjects.slice(0, 3).map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
-                            <CardFragment cobaltData={null} gridContext={{ xs: 12, md: 3 }} />
+                            {secondObjects.slice(3, 6).map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                     </Grid>
                 </React.Fragment>

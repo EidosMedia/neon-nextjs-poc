@@ -5,8 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import RenderContentElement from '../RenderContent/RenderContentElement';
-import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
+import RenderContentElement, { CloudinaryVideo } from '../RenderContent/RenderContentElement';
+import { checkIsCloudinaryVideo, findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import ResourceResolver from '../../utils/ResourceResolver';
 import Image from 'next/image';
 
@@ -16,16 +16,15 @@ export default function CardFragment({ cobaltData, gridContext }) {
     const dummyImage_square = 'https://dummyimage.com/600x600/a8a8a8/FFF&text=square'
     const dummyImage_rectangle = 'https://dummyimage.com/800x600/a8a8a8/FFF&text=rectangle'
 
-    if (cobaltData) {
-        // console.log("CONTENT")
-        // console.log(JSON.stringify(cobaltData.object.helper.content, null, 2))
-    }
+    // if (cobaltData) {
+    //     console.log("CONTENT")
+    //     console.log(JSON.stringify(cobaltData.object.helper.content, null, 2))
+    // }
 
     let templateName = ""
     if (cobaltData) {
         templateName = cobaltData.linkContext.linkTemplate;
     }
-
     let headline = null;
     try {
         headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} renderMode="teaser" />
@@ -38,19 +37,26 @@ export default function CardFragment({ cobaltData, gridContext }) {
     } catch (e) {
     }
 
+    let mainPictureElement = null;
     let mainPictureLandscapeUrl = null;
     let mainPictureSquareUrl = null;
     let mainPictureRectangleUrl = null;
-
+    let cloudinaryVideo = null;
+    let extraElement = null;
     try {
-        const mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
-        //console.log(JSON.stringify(mainPictureElement,null,2))
+        mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
+        extraElement = findElementsInContentJson(['extra'], cobaltData.object.helper.content);
+        try{
+            if(extraElement[0].elements[0].attributes['emk-type'] == 'cloudinaryVideo'){
+                cloudinaryVideo = extraElement[0].elements[0]
+            }
+        }catch(e){}
 
         mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
         mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
         mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
     } catch (e) {
-        //console.log(e)
+        console.log(e)
     }
 
     let headlineVariant = "h6";
@@ -87,6 +93,12 @@ export default function CardFragment({ cobaltData, gridContext }) {
         imgStyle = { width: '30%' }
     }
 
+    let mediaBlock = null;
+    if(cloudinaryVideo){
+        mediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo}/>
+    } else if(image){
+        mediaBlock = <Image src={image} width={imageWidth} height={imageHeight} />
+    }
 
     return (
         <React.Fragment>
@@ -98,18 +110,15 @@ export default function CardFragment({ cobaltData, gridContext }) {
                         alt="nothumb"
                         sx={imgStyle}
                     /> : null} */}
-                {templateName.includes('pic') ?
-                    <Image
-                        src={image}
-                        width={imageWidth}
-                        height={imageHeight} /> : null}
+                {templateName.includes('pic') || templateName.includes('list') ?
+                   mediaBlock : null}
                 <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
-                    {templateName.includes('head') ?
+                    {templateName.includes('head') || templateName.includes('list') ?
                         <Typography gutterBottom variant={headlineVariant} component="div">
                             {headline}
                         </Typography>
                         : null}
-                    {templateName.includes('sum') ?
+                    {templateName.includes('sum') || templateName.includes('list') ?
                         <Typography variant="body2" color="text.secondary">
                             {summary}
                             {/* Lizards are a widespread group of squamate reptiles, with over 6,000
@@ -127,18 +136,15 @@ export default function CardFragment({ cobaltData, gridContext }) {
                         sx={imgStyle}
                     /> : null}
                      */}
-                {templateName.includes('pic') ?
-                    <Image
-                        src={image}
-                        width={imageWidth}
-                        height={imageHeight} /> : null}
+                {templateName.includes('pic') || templateName.includes('list') ?
+                   mediaBlock : null}
                 <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
-                    {templateName.includes('head') ?
+                    {templateName.includes('head') || templateName.includes('list') ?
                         <Typography gutterBottom variant={headlineVariantSm} component="div">
                             {headline}
                         </Typography>
                         : null}
-                    {templateName.includes('sum') ?
+                    {templateName.includes('sum') || templateName.includes('list') ?
                         <Typography variant="body2" color="text.secondary">
                             {summary}
                             {/* Lizards are a widespread group of squamate reptiles, with over 6,000

@@ -20,3 +20,11 @@ export function getImageUrl(jsonElement, imageClass) {
     }catch(e){}
     return imageUrl;
 }
+
+export function checkIsCloudinaryVideo(jsonElement){
+    let result = false;
+    try {
+        result = (jsonElement.elements[0].attributes.dtxInsert === 'cloudinaryVideo')
+    } catch(e){}
+    return result;
+}
