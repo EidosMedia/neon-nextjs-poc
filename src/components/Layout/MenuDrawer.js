@@ -10,18 +10,37 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 
 import productLogo from '../../../public/img/head-logo.png'
+import Link from 'next/link';
 
-export default function MenuDrawer() {
+export default function MenuDrawer({ siteStructure }) {
 
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
         setOpen(!open);
     };
+
+    let sectionsRender = null;
+    try {
+        sectionsRender = siteStructure.root.items.map((item, i) => {
+            const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
+            return (
+                <Link key={i} href={item.uri} passHref>
+                    <ListItem button component="a">
+                        <ListItemText primary={title} />
+                    </ListItem>
+                </Link>
+            )
+        })
+    } catch (e) {
+        console.log(e)
+    }
 
     const list = (
         <Box
@@ -31,21 +50,19 @@ export default function MenuDrawer() {
             onKeyDown={handleDrawerToggle}
         >
             <List>
-                {['Home', 'Sport', 'World', 'National'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
+                <Link key='homeLink' href='/' passHref>
+                    <ListItem button component="a">
+                        <ListItemText primary="Home" />
                     </ListItem>
-                ))}
+                </Link>
+                {sectionsRender}
             </List>
             <Divider />
             <List>
                 {['Globe Finance', 'Globe Sports'].map((text, index) => (
                     <ListItem button key={text}>
                         <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                            {index % 2 === 0 ? <MonetizationOnIcon /> : <SportsSoccerIcon />}
                         </ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -85,46 +102,46 @@ export default function MenuDrawer() {
                         </Box>
                     </Toolbar>
                 </AppBar>
-                <Box sx={{display: { xs: 'none', md:'block' }}}>
-                <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
-                    <Box sx={{ px:2, borderRight: 1 }}>
-                        <Typography variant="h5" component="div">
-                            Coronavirus
-                        </Typography>
-                    </Box>
-                    <Box sx={{ px:2, borderRight: 1 }}>
-                        <Typography variant="h5" component="div">
-                            Ukraine Crisis
-                        </Typography>
-                    </Box>
-                    <Box sx={{ px:2, borderRight: 1 }}>
-                        <Typography variant="h5" component="div">
-                            Winter Olympics
-                        </Typography>
-                    </Box>
-                    <Box sx={{ px:2, borderRight: 1 }}>
-                        <Typography variant="h5" component="div">
-                            Markets
-                        </Typography>
-                    </Box>
-                    <Box sx={{ px:2, borderRight: 1 }}>
-                        <Typography variant="h5" component="div">
-                            Climate Crisis
-                        </Typography>
-                    </Box>
-                    <Box sx={{ px:2 }}>
-                        <Typography variant="h5" component="div">
-                            Champions League
-                        </Typography>
-                    </Box>
+                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                    <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
+                        <Box sx={{ px: 2, borderRight: 1 }}>
+                            <Typography variant="h5" component="div">
+                                Coronavirus
+                            </Typography>
+                        </Box>
+                        <Box sx={{ px: 2, borderRight: 1 }}>
+                            <Typography variant="h5" component="div">
+                                Ukraine Crisis
+                            </Typography>
+                        </Box>
+                        <Box sx={{ px: 2, borderRight: 1 }}>
+                            <Typography variant="h5" component="div">
+                                Winter Olympics
+                            </Typography>
+                        </Box>
+                        <Box sx={{ px: 2, borderRight: 1 }}>
+                            <Typography variant="h5" component="div">
+                                Markets
+                            </Typography>
+                        </Box>
+                        <Box sx={{ px: 2, borderRight: 1 }}>
+                            <Typography variant="h5" component="div">
+                                Climate Crisis
+                            </Typography>
+                        </Box>
+                        <Box sx={{ px: 2 }}>
+                            <Typography variant="h5" component="div">
+                                Champions League
+                            </Typography>
+                        </Box>
 
-                    {/* <Chip label="Markets Corection" />
+                        {/* <Chip label="Markets Corection" />
                     <Chip label="Winter Olympics" />
                     <Chip label="Football" />
                     <Chip label="Climate Crisis" /> */}
-                </Stack>
+                    </Stack>
                 </Box>
-                <Toolbar sx={{ display:{sm:'block',md:'none'}}}/>
+                <Toolbar sx={{ display: { sm: 'block', md: 'none' } }} />
                 <Drawer
                     anchor="left"
                     open={open}

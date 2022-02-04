@@ -38,11 +38,11 @@ export default function Segment({ cobaltData }) {
                     <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
                         {firstObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
                     </Grid>
-                    <Grid item xs={12} md={3} order={{ xs: 6, md: 3 }}>
+                    <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
                         {opinionObjects.map((object) => <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                     </Grid>
                     {extraObjects.map((object) => (
-                        <Grid item xs={12} md={2} order={{ xs: 3, md: 4 }}>
+                        <Grid item xs={12} md={2} order={{ xs: 4, md: 4 }}>
                             <CardFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
                         </Grid>
                     ))}

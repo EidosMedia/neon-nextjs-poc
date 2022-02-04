@@ -1,9 +1,9 @@
-import { Container } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
 
-export default function LandingPage({ cobaltData }) {
+export default function LandingPage({ cobaltData, pageTitle }) {
     const renderTest = (
         <Container maxWidth="lg">
             <Segment templateName="featured-big" />
@@ -20,16 +20,25 @@ export default function LandingPage({ cobaltData }) {
 
     const render = (
         <Container maxWidth="lg">
-            {mainObjects.map((obj) => {
-                switch(obj.object.data.sys.baseType){
+            {(pageTitle?
+            <Box sx={{mb:2, backgroundColor:'secondary.main'}} 
+                display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <Typography sx={{color: 'primary.main'}} variant="h3" component="h3">
+                    {pageTitle}
+                </Typography>
+            </Box>:null)}
+            {mainObjects.map((obj,i) => {
+                switch (obj.object.data.sys.baseType) {
                     case "webpagefragment":
-                        return <Segment cobaltData={obj} />;
+                        return <Segment key={i} cobaltData={obj} />;
                         break;
-                    case "query":                        
-                        return <QuerySegment cobaltData={obj} />
+                    case "query":
+                        return <QuerySegment key={i} cobaltData={obj} />
                         break;
                 }
-                
+
             })}
         </Container>
     )

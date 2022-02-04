@@ -5,7 +5,7 @@ import LandingPage from '../src/components/Page/LandingPage';
 
 export default function Index({ cobaltData }) {
   return (
-    <Layout>
+    <Layout siteStructure={cobaltData.siteContext.siteStructure}>
       <LandingPage cobaltData={cobaltData}/>
     </Layout>
   );

@@ -12,12 +12,15 @@ export function getCobaltDataHelper(data) {
         case "article":
             return getCobaltArticleHelper(data);
             break;
+        case "liveblog":
+            return getCobaltArticleHelper(data);
+            break;
         default:
             return null;
     }
 }
 
-export function getQueryResultObjects(cobaltData){
+export function getQueryResultObjects(cobaltData) {
     let resultObjects = [];
     try {
         resultObjects = cobaltData.object.data.children.map((child) => {
@@ -36,12 +39,12 @@ export function getQueryResultObjects(cobaltData){
             }
             return objCobaltData
         })
-    } catch(e){console.log(e)}
+    } catch (e) { console.log(e) }
 
     return resultObjects
 }
 
-export function getDwxLinkedObjects(cobaltData, zoneName){
+export function getDwxLinkedObjects(cobaltData, zoneName) {
     let linkedObjects = [];
     try {
         linkedObjects = cobaltData.object.helper.zones
@@ -49,24 +52,24 @@ export function getDwxLinkedObjects(cobaltData, zoneName){
             .objects
             .map((link) => {
                 // Here we need to build the cobaltData for each object
-            
+
                 const objNodeData = cobaltData.pageContext.nodes[link.objectId]
-                
+
                 let linkTemplate = null
-                if(link.linkData && link.linkData.template){
+                if (link.linkData && link.linkData.template) {
                     linkTemplate = link.linkData.template
                 } else {
-                    try{
+                    try {
                         linkTemplate = cobaltData.object.data.files.templates.data[cobaltData.linkContext.linkTemplate].zones[zoneName].sequences[0].styleSheet
-                    } catch(e){
+                    } catch (e) {
                     }
                 }
-                if(!linkTemplate){
+                if (!linkTemplate) {
                     //No default template found -> setting defaults
-                    switch (objNodeData.sys.type){
-                        case 'featured': linkTemplate = 'featured_standard';break;
-                        case 'segment': linkTemplate = 'section_standard';break;
-                        case 'article': linkTemplate = 'head-pic';break;
+                    switch (objNodeData.sys.type) {
+                        case 'featured': linkTemplate = 'featured_standard'; break;
+                        case 'segment': linkTemplate = 'section_standard'; break;
+                        case 'article': linkTemplate = 'head-pic'; break;
                     }
                 }
 
@@ -85,7 +88,7 @@ export function getDwxLinkedObjects(cobaltData, zoneName){
                 return objCobaltData
             })
     }
-    catch (e) { 
+    catch (e) {
     }
     return linkedObjects
 }
@@ -108,7 +111,7 @@ function getCobaltWebPageHelper(data) {
                     })
                 }
             })
-    } catch (e){}
+    } catch (e) { }
 
     return {
         pageTemplate: data.files.content.data.pageTemplate,

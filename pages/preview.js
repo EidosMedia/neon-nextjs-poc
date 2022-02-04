@@ -13,7 +13,7 @@ export default function Preview({ cobaltData }) {
             render = <Segment cobaltData={cobaltData} />
         } else {
             render = (
-                <Layout>
+                <Layout siteStructure={cobaltData.siteContext.siteStructure}>
                     <LandingPage cobaltData={cobaltData} />
                 </Layout>
             )

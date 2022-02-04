@@ -9,6 +9,7 @@ import RenderContentElement, { CloudinaryVideo } from '../RenderContent/RenderCo
 import { checkIsCloudinaryVideo, findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import ResourceResolver from '../../utils/ResourceResolver';
 import Image from 'next/image';
+import WeatherWidget from '../Widgets/WeatherWidget';
 
 export default function CardFragment({ cobaltData, gridContext }) {
 
@@ -24,6 +25,10 @@ export default function CardFragment({ cobaltData, gridContext }) {
     let templateName = ""
     if (cobaltData) {
         templateName = cobaltData.linkContext.linkTemplate;
+        if( cobaltData.object.data.sys.type === 'widget'){
+            const widgetParams = cobaltData.object.data.files.content.data
+            return <WeatherWidget params={widgetParams}/>
+        }
     }
     let headline = null;
     try {
@@ -47,9 +52,13 @@ export default function CardFragment({ cobaltData, gridContext }) {
         mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
         extraElement = findElementsInContentJson(['extra'], cobaltData.object.helper.content);
         try{
-            if(extraElement[0].elements[0].attributes['emk-type'] == 'cloudinaryVideo'){
-                cloudinaryVideo = extraElement[0].elements[0]
-            }
+            cloudinaryVideo = extraElement[0].elements.find((el) => {
+                let found = false;
+                try {
+                    found = (el.attributes['emk-type'] == 'cloudinaryVideo')
+                }catch(e){}
+                return found
+            })
         }catch(e){}
 
         mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
