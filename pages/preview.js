@@ -29,6 +29,8 @@ export async function getServerSideProps(context) {
         console.log("Preview mode - url: " + context.previewData.previewUrl)
         cobaltData = await getCobaltPageByUrl('/', context.previewData.previewUrl)
     }
+    // console.log("PREVIEW DATA")
+    // console.log(JSON.stringify(cobaltData,null,2))
     const cookies = new Cookies(context.req, context.res)
     cookies.set('emauth',cobaltData.previewData.emauth);
     cookies.set('emk.previewToken',cobaltData.previewData.previewToken);

@@ -15,6 +15,7 @@
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
+    "@mui/lab": "^5.0.0-alpha.68",
     "@mui/material": "latest",
     "axios": "^0.25.0",
     "cloudinary-react": "^1.7.1",
@@ -24,6 +25,7 @@
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "swr": "^1.2.1",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {

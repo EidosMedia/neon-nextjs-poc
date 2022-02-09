@@ -11,7 +11,7 @@ import ResourceResolver from '../../utils/ResourceResolver';
 import Image from 'next/image';
 import WeatherWidget from '../Widgets/WeatherWidget';
 
-export default function CardFragment({ cobaltData, gridContext }) {
+export default function StoryFragment({ cobaltData, gridContext }) {
 
     const dummyImage_landscape = 'https://dummyimage.com/1024x576/a8a8a8/FFF&text=landscape'
     const dummyImage_square = 'https://dummyimage.com/600x600/a8a8a8/FFF&text=square'
@@ -25,14 +25,11 @@ export default function CardFragment({ cobaltData, gridContext }) {
     let templateName = ""
     if (cobaltData) {
         templateName = cobaltData.linkContext.linkTemplate;
-        if( cobaltData.object.data.sys.type === 'widget'){
-            const widgetParams = cobaltData.object.data.files.content.data
-            return <WeatherWidget params={widgetParams}/>
-        }
+
     }
     let headline = null;
     try {
-        headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} renderMode="teaser" />
+        headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
     } catch (e) {
     }
 

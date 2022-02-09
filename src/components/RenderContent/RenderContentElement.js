@@ -42,10 +42,17 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 break;
             case "h1":
                 render = (
-                    <h1>
+                    <React.Fragment>
                         {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
-                    </h1>
+                    </React.Fragment>
                 )
+                if(!renderMode || renderMode !== 'raw'){
+                    render = (
+                        <h1>
+                            {render}
+                        </h1>
+                    )
+                }
                 break;
             case "h2":
                 id = (jsonElement.attributes && jsonElement.attributes.id ? jsonElement.attributes.id : null)

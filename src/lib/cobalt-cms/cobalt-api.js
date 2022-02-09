@@ -100,7 +100,7 @@ async function cobaltPreviewRequest(previewUrl){
     return result
 }
 
-async function cobaltRequest(url){
+export async function cobaltRequest(url){
 
     let result = null;
     

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export default async (req, res) => {
     const url = decodeURIComponent(req.query.url);
     const emauth = url.substring(url.indexOf('emauth=')+7,url.indexOf('&'))

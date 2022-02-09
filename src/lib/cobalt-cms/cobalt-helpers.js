@@ -13,7 +13,7 @@ export function getCobaltDataHelper(data) {
             return getCobaltArticleHelper(data);
             break;
         case "liveblog":
-            return getCobaltArticleHelper(data);
+            return getCobaltLiveblogHelper(data);
             break;
         default:
             return null;
@@ -120,6 +120,32 @@ function getCobaltWebPageHelper(data) {
 }
 
 function getCobaltArticleHelper(data) {
+    let content = null;
+    try {
+        content = JSON.parse(xml2json(data.files.content.data))
+    } catch (e) {
+        console.log("error parsing object xml: " + e)
+    }
+
+    return {
+        content
+    };
+}
+
+function getCobaltLiveblogHelper(data) {
+    let content = null;
+    try {
+        content = JSON.parse(xml2json(data.files.content.data))
+    } catch (e) {
+        console.log("error parsing object xml: " + e)
+    }
+
+    return {
+        content
+    };
+}
+
+export function getCobaltLiveblogPostHelper(data) {
     let content = null;
     try {
         content = JSON.parse(xml2json(data.files.content.data))
