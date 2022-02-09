@@ -20,23 +20,61 @@ export function getCobaltDataHelper(data) {
     }
 }
 
+export function buildCobaltDataFromPage(pageData, siteStructure, url, previewData){
+
+    const helper = getCobaltDataHelper(pageData.model.data); 
+
+    let linkContext = null;
+    if (previewData && pageData.model.data.sys.baseType === 'webpagefragment'){
+        linkContext = {
+            linkTemplate : helper.pageTemplate
+        }
+    }
+
+    const cobaltData = {
+        object: {
+          data: pageData.model.data,
+          helper: helper,
+        },
+        linkContext: linkContext,
+        pageContext: {
+          url: url,
+          nodes: pageData.model.nodes,
+          resourcesUrls: pageData.resourcesUrls,
+          nodesUrls: pageData.nodesUrls
+        },
+        siteContext: {
+            siteStructure
+        },
+        previewData
+      }
+      return cobaltData
+}
+
+export function buildCobaltDataForNestedObject(object, parentCobaltData, linkContext){
+    const cobaltData = { 
+        object: {
+            data: object,
+            helper: getCobaltDataHelper(object)
+        },
+        linkContext,
+        siteContext: parentCobaltData.siteContext,
+        pageContext: parentCobaltData.pageContext,
+        previewData: parentCobaltData.previewData
+    }
+    return cobaltData
+}
+
 export function getQueryResultObjects(cobaltData) {
     let resultObjects = [];
     try {
         resultObjects = cobaltData.object.data.children.map((child) => {
             const objNodeData = cobaltData.pageContext.nodes[child]
-            const objCobaltData = {
-                object: {
-                    data: objNodeData,
-                    helper: getCobaltDataHelper(objNodeData)
-                },
-                linkContext: {
-                    linkData: null,
-                    linkTemplate: 'list'
-                },
-                pageContext: cobaltData.pageContext,
-                previewData: cobaltData.previewData
+            const linkContext = {
+                linkData: null,
+                linkTemplate: 'list'
             }
+            const objCobaltData = buildCobaltDataForNestedObject(objNodeData, cobaltData, linkContext)
             return objCobaltData
         })
     } catch (e) { console.log(e) }
@@ -73,18 +111,13 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
                     }
                 }
 
-                const objCobaltData = {
-                    object: {
-                        data: objNodeData,
-                        helper: getCobaltDataHelper(objNodeData)
-                    },
-                    linkContext: {
-                        linkData: link.linkData,
-                        linkTemplate: linkTemplate
-                    },
-                    pageContext: cobaltData.pageContext,
-                    previewData: cobaltData.previewData
+                const linkContext = {
+                    linkData: link.linkData,
+                    linkTemplate: linkTemplate
                 }
+                
+                const objCobaltData = buildCobaltDataForNestedObject(objNodeData,cobaltData,linkContext)
+                
                 return objCobaltData
             })
     }

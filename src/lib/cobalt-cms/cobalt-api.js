@@ -2,53 +2,28 @@ import axios from 'axios'
 import cacheData from "memory-cache";
 import { COBALT_BASE, COBALT_PREVIEW_BASE } from '../../../cobalt.settings';
 import { COMMON_DATA_CACHE_TTL_MINUTES } from '../../../apps.settings';
-import { getCobaltDataHelper } from './cobalt-helpers';
+import { buildCobaltDataFromPage, getCobaltDataHelper } from './cobalt-helpers';
 
 export async function getCobaltPageByUrl(url,previewUrl){
 
     let pageData = null;
-    let emauth = null;
-    let previewToken = null;
+
+    let previewData = null
+
     if(previewUrl){
         //pageData = await cobaltRequest('/',previewUrl)
         let result = await cobaltPreviewRequest(previewUrl)
         pageData = result.data;
-        emauth = result.emauth;
-        previewToken = result.previewToken;
+        previewData = {
+            emauth: result.emauth,
+            previewToken: result.previewToken
+        }
     } else {
         pageData = await cobaltRequest('/api/pages/?url=' + url)
     }
     const siteStructure = await getCobaltSite(false)
 
-    const helper = getCobaltDataHelper(pageData.model.data); 
-
-    let linkContext = null;
-    if (previewUrl && pageData.model.data.sys.baseType === 'webpagefragment'){
-        linkContext = {
-            linkTemplate : helper.pageTemplate
-        }
-    }
-
-    const cobaltData = {
-        object: {
-          data: pageData.model.data,
-          helper: helper,
-        },
-        linkContext: linkContext,
-        pageContext: {
-          url: url,
-          nodes: pageData.model.nodes,
-          resourcesUrls: pageData.resourcesUrls,
-          nodesUrls: pageData.nodesUrls
-        },
-        siteContext: {
-            siteStructure
-        },
-        previewData: {
-            emauth: emauth,
-            previewToken: previewToken
-        }
-      }
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, url, previewData);
 
     return cobaltData;
 }
