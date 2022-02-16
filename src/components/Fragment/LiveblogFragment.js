@@ -19,10 +19,8 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
     let render = null;
     if (cobaltData) {
         let blogId = cobaltData.object.data.id;
-        console.log("liveblog linkContext");
-        console.log(cobaltData.linkContext)
 
-        let  data, error = null;
+        let data, error = null;
 
         ({ data, error } = useSWR('/api/liveblogs/' + blogId, fetcher));
 
@@ -36,38 +34,48 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
         `;
 
         let postCount = 3;
-        if(cobaltData.linkContext && cobaltData.linkContext.linkData && cobaltData.linkContext.linkData.parameters && cobaltData.linkContext.linkData.parameters.count){
-            postCount = cobaltData.linkContext.linkData.parameters.count
-        }
+        try {
+            postCount = cobaltData.linkContext.linkData.parameters.lbCount
+        } catch (e) { }
 
         const pulsatingIcon = (
             <Box component="span"
                 sx={{
-                   
-                        borderRadius: '62.5rem',
-                        display: 'inline-block',
-                        position: 'relative',
-                        backgroundColor: '#7aa09c',
-                        width: '.75em',
-                        height: '.75em',
-                        marginRight: '0.4rem',
-                        verticalAlign: 'initial',
-                        animation: '3s ease-in 1s infinite reverse both running slidein',
-                    
+
+                    borderRadius: '62.5rem',
+                    display: 'inline-block',
+                    position: 'relative',
+                    backgroundColor: '#7aa09c',
+                    width: '.75em',
+                    height: '.75em',
+                    marginRight: '0.4rem',
+                    verticalAlign: 'initial',
+                    animation: '3s ease-in 1s infinite reverse both running slidein',
+
                     color: '#7aa09c'
                 }} />
         )
-        
 
+        let headline = null;
+        try {
+            headline = cobaltData.linkContext.linkData.parameters.customHeadline
+        } catch (e) { }
+
+        if (!headline) {
+            try {
+                headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
+            } catch (e) {
+            }
+        }
 
         render = (
             <Box sx={{ borderTop: 1, borderBottom: 1, borderColor: 'grey.500' }}>
                 <Typography sx={{ my: 0 }} variant="h6" component="div">
                     {pulsatingIcon}
-                    <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
+                    {headline}
                 </Typography>
-                <CustomizedTimeline sx={{ my: 0 }} position="right">
-                    {data.result.slice(0,postCount).map((post, i, { length }) => {
+                <CustomizedTimeline sx={{ my: 0, pr:1 }} position="right">
+                    {data.result.slice(0, postCount).map((post, i, { length }) => {
                         let itemRender = null;
                         const postContent = getCobaltLiveblogPostHelper(post);
                         itemRender = (
@@ -76,7 +84,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
                                     <TimelineDot />
                                     {(length - 1 === i ? null : <TimelineConnector />)}
                                 </TimelineSeparator>
-                                <TimelineContent>
+                                <TimelineContent sx={{pr:0}}>
                                     <RenderContentElement jsonElement={findElementsInContentJson(['h1'], postContent.content)[0]} renderMode="raw" />
                                 </TimelineContent>
                             </TimelineItem>)

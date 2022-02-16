@@ -25,6 +25,7 @@
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "sharp": "^0.30.1",
     "swr": "^1.2.1",
     "xml-js": "^1.6.11"
   },

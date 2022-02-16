@@ -29,14 +29,25 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     }
     let headline = null;
     try {
-        headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
-    } catch (e) {
+        headline = cobaltData.linkContext.linkData.parameters.customHeadline
+    } catch (e) { }
+
+    if (!headline) {
+        try {
+            headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
+        } catch (e) {
+        }
     }
 
     let summary = null;
     try {
-        summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} />
-    } catch (e) {
+        summary = cobaltData.linkContext.linkData.parameters.customSummary
+    } catch (e) { }
+    if (!summary) {
+        try {
+            summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} />
+        } catch (e) {
+        }
     }
 
     let mainPictureElement = null;
@@ -48,15 +59,15 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     try {
         mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
         extraElement = findElementsInContentJson(['extra'], cobaltData.object.helper.content);
-        try{
+        try {
             cloudinaryVideo = extraElement[0].elements.find((el) => {
                 let found = false;
                 try {
                     found = (el.attributes['emk-type'] == 'cloudinaryVideo')
-                }catch(e){}
+                } catch (e) { }
                 return found
             })
-        }catch(e){}
+        } catch (e) { }
 
         mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
         mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
@@ -100,9 +111,9 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     }
 
     let mediaBlock = null;
-    if(cloudinaryVideo){
-        mediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo}/>
-    } else if(image){
+    if (cloudinaryVideo) {
+        mediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />
+    } else if (image) {
         mediaBlock = <Image src={image} width={imageWidth} height={imageHeight} />
     }
 
@@ -117,7 +128,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                         sx={imgStyle}
                     /> : null} */}
                 {templateName.includes('pic') || templateName.includes('list') ?
-                   mediaBlock : null}
+                    mediaBlock : null}
                 <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
                     {templateName.includes('head') || templateName.includes('list') ?
                         <Typography gutterBottom variant={headlineVariant} component="div">
@@ -143,7 +154,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     /> : null}
                      */}
                 {templateName.includes('pic') || templateName.includes('list') ?
-                   mediaBlock : null}
+                    mediaBlock : null}
                 <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
                     {templateName.includes('head') || templateName.includes('list') ?
                         <Typography gutterBottom variant={headlineVariantSm} component="div">

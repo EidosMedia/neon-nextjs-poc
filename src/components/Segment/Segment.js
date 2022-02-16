@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
@@ -33,16 +33,16 @@ export default function Segment({ cobaltData }) {
             render = (
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={3} order={{ xs: 2, md: 1 }}>
-                        {secondObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {secondObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                     </Grid>
                     <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
-                        {firstObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
+                        {firstObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
                     </Grid>
                     <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
-                        {opinionObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {opinionObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                     </Grid>
-                    {extraObjects.map((object) => (
-                        <Grid item xs={12} md={2} order={{ xs: 4, md: 4 }}>
+                    {extraObjects.map((object,i) => (
+                        <Grid item xs={12} md={2} order={{ xs: 4, md: 4 }} key={i}>
                             <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
                         </Grid>
                     ))}
@@ -52,19 +52,19 @@ export default function Segment({ cobaltData }) {
         case 'featured_big':
             render = (
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={9}>
-                        {firstObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
+                    <Grid item xs={12} md={8}>
+                        {firstObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 8 }} />)}
                     </Grid>
-                    <Grid item xs={12} md={3}>
-                        {secondObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                    <Grid item xs={12} md={4}>
+                        {secondObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 4 }} />)}
                     </Grid>
-                    {opinionObjects.slice(0, 3).map((object) => (
-                        <Grid item xs={12} md={4}>
+                    {opinionObjects.slice(0, 3).map((object,i) => (
+                        <Grid key={i} item xs={12} md={4}>
                             <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
                         </Grid>
                     ))}
-                    {extraObjects.map((object) => (
-                        <Grid item xs={12} md={2}>
+                    {extraObjects.map((object,i) => (
+                        <Grid key={i} item xs={12} md={2}>
                             <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
                         </Grid>
                     ))}
@@ -118,13 +118,13 @@ export default function Segment({ cobaltData }) {
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                            {firstObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
+                            {firstObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(0, 3).map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(0, 3).map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(3, 6).map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(3, 6).map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                     </Grid>
                 </React.Fragment>
@@ -138,18 +138,18 @@ export default function Segment({ cobaltData }) {
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={9}>
-                            {firstObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
+                            {firstObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
-                        {opinionObjects.slice(0, 3).map((object) => (
-                            <Grid item xs={12} md={4}>
+                        {opinionObjects.slice(0, 3).map((object,i) => (
+                            <Grid key={i} item xs={12} md={4}>
                                 <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
                             </Grid>
                         ))}
-                        {extraObjects.map((object) => (
-                            <Grid item xs={12} md={2}>
+                        {extraObjects.map((object,i) => (
+                            <Grid key={i} item xs={12} md={2}>
                                 <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
                             </Grid>
                         ))}
@@ -162,17 +162,23 @@ export default function Segment({ cobaltData }) {
                 <React.Fragment>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                            {firstObjects.map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
+                            {firstObjects.map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(0, 3).map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(0, 3).map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(3, 6).map((object) => <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(3, 6).map((object,i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
                         </Grid>
                     </Grid>
                 </React.Fragment>
             )
+    }
+    if(cobaltData.previewData){
+        // In preview mode, wrap the DWC with a maxWidth container identical to homepage
+        render = <Container maxWidth="lg">
+            {render}
+        </Container>
     }
     return render;
 }
