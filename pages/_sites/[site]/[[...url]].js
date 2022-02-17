@@ -1,6 +1,6 @@
 import Layout from "../../../src/components/Layout/Layout";
 import LandingPage from "../../../src/components/Page/LandingPage";
-import { getCobaltPageByUrl, getCobaltSite } from "../../../src/lib/cobalt-cms/cobalt-api";
+import { getCobaltPageByUrl, getCobaltSites } from "../../../src/lib/cobalt-cms/cobalt-api";
 
 export default function Page({ cobaltData }) {
 
@@ -28,14 +28,21 @@ export default function Page({ cobaltData }) {
 
 export async function getStaticPaths({ }) {
 
+    const sites = await getCobaltSites()
     let paths = [];
-    // try {
-    //     paths = response.root.items.map((item) => {
-    //         return item.uri
-    //     })
-    // } catch (e) {
-    //     // nothing
-    // }
+    paths = sites.reduce((acc1,site,i) => {
+        const hostName = site.customAttributes.frontendHostname;
+        const sections = site.sitemap.children.reduce((acc2,section,j) => {
+            return [...acc2,{
+                params: {
+                    site: hostName,
+                    url: [section.path]
+                }
+            }]
+        },[])
+        return [...acc1, ...sections]
+    }, [])
+    
     return {
         paths,
         fallback: 'blocking'

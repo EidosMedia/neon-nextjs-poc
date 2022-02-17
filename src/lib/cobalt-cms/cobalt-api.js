@@ -6,8 +6,8 @@ import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } f
 export async function getCobaltPageByUrl(hostName, url, previewUrl) {
 
     const siteStructure = await getCobaltSites()
+    // console.log(JSON.stringify(siteStructure,null,2))
     const siteName = getSiteNameByHostName(hostName,siteStructure)
-    console.log("Resolved sitename: " + siteName)
     let pageData = null;
 
     let previewData = null
@@ -154,7 +154,6 @@ export async function getCobaltSites() {
         return sites;
     } else {
         let token = await getCobaltAuthToken();
-        console.log("Got token: " + token)
         if (token) {
             try {
                 const options = {

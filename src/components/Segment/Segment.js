@@ -12,8 +12,6 @@ export default function Segment({ cobaltData }) {
         // Might be a preview request directly on the Segment
         templateName = cobaltData.object.helper.pageTemplate;
     }
-    // console.log("HERE1")
-    // console.log(JSON.stringify(cobaltData.object.helper, null, 2))
     let firstObjects = []
     firstObjects = getDwxLinkedObjects(cobaltData, "first")
     let secondObjects = []
