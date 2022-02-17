@@ -18,7 +18,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import productLogo from '../../../public/img/head-logo.png'
 import Link from 'next/link';
 
-export default function MenuDrawer({ siteStructure }) {
+export default function MenuDrawer({ currentSite, siteStructure }) {
 
     const [open, setOpen] = React.useState(false);
 
@@ -28,16 +28,19 @@ export default function MenuDrawer({ siteStructure }) {
 
     let sectionsRender = null;
     try {
-        sectionsRender = siteStructure.root.items.map((item, i) => {
-            const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
-            return (
-                <Link key={i} href={item.uri} passHref>
-                    <ListItem button component="a">
-                        <ListItemText primary={title} />
-                    </ListItem>
-                </Link>
-            )
-        })
+        sectionsRender = siteStructure
+            .find((site) => site.name === currentSite)
+            .sitemap
+            .children.map((item, i) => {
+                const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
+                return (
+                    <Link key={i} href={item.path} passHref>
+                        <ListItem button component="a">
+                            <ListItemText primary={title} />
+                        </ListItem>
+                    </Link>
+                )
+            })
     } catch (e) {
         console.log(e)
     }

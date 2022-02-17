@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
     let cobaltData = null;
     if (context.previewData) {
         console.log("Preview mode - url: " + context.previewData.previewUrl)
-        cobaltData = await getCobaltPageByUrl('/', context.previewData.previewUrl)
+        cobaltData = await getCobaltPageByUrl('site','/', context.previewData.previewUrl)
         console.log("Got cobalt preview data")
     }
     // console.log("PREVIEW DATA")

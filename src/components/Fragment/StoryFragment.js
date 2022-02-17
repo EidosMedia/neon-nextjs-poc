@@ -69,9 +69,9 @@ export default function StoryFragment({ cobaltData, gridContext }) {
             })
         } catch (e) { }
 
-        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
-        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
-        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect"), (cobaltData.previewData ? cobaltData.previewData.emauth : null), (cobaltData.previewData ? cobaltData.previewData.previewToken : null));
+        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null));
+        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData : null));
+        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect"), (cobaltData.previewData ? cobaltData.previewData : null));
     } catch (e) {
         console.log(e)
     }

@@ -1,3 +1,4 @@
+import { SixteenMp } from '@mui/icons-material';
 import { xml2json } from 'xml-js'
 
 export function getCobaltDataHelper(data) {
@@ -20,39 +21,40 @@ export function getCobaltDataHelper(data) {
     }
 }
 
-export function buildCobaltDataFromPage(pageData, siteStructure, url, previewData){
+export function buildCobaltDataFromPage(pageData, siteStructure, site, url, previewData) {
 
-    const helper = getCobaltDataHelper(pageData.model.data); 
+    const helper = getCobaltDataHelper(pageData.model.data);
 
     let linkContext = null;
-    if (previewData && pageData.model.data.sys.baseType === 'webpagefragment'){
+    if (previewData && pageData.model.data.sys.baseType === 'webpagefragment') {
         linkContext = {
-            linkTemplate : helper.pageTemplate
+            linkTemplate: helper.pageTemplate
         }
     }
 
     const cobaltData = {
         object: {
-          data: pageData.model.data,
-          helper: helper,
+            data: pageData.model.data,
+            helper: helper,
         },
         linkContext: linkContext,
         pageContext: {
-          url: url,
-          nodes: pageData.model.nodes,
-          resourcesUrls: pageData.resourcesUrls,
-          nodesUrls: pageData.nodesUrls
+            url: url,
+            nodes: pageData.model.nodes,
+            resourcesUrls: pageData.resourcesUrls,
+            nodesUrls: pageData.nodesUrls
         },
         siteContext: {
-            siteStructure
+            site: site,
+            siteStructure: siteStructure
         },
         previewData
-      }
-      return cobaltData
+    }
+    return cobaltData
 }
 
-export function buildCobaltDataForNestedObject(object, parentCobaltData, linkContext){
-    const cobaltData = { 
+export function buildCobaltDataForNestedObject(object, parentCobaltData, linkContext) {
+    const cobaltData = {
         object: {
             data: object,
             helper: getCobaltDataHelper(object)
@@ -115,9 +117,9 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
                     linkData: link.linkData,
                     linkTemplate: linkTemplate
                 }
-                
-                const objCobaltData = buildCobaltDataForNestedObject(objNodeData,cobaltData,linkContext)
-                
+
+                const objCobaltData = buildCobaltDataForNestedObject(objNodeData, cobaltData, linkContext)
+
                 return objCobaltData
             })
     }
@@ -189,4 +191,17 @@ export function getCobaltLiveblogPostHelper(data) {
     return {
         content
     };
+}
+
+export function getSiteNameByHostName(hostName, sites) {
+    let site = null
+    if (sites.length) {
+        site = sites.find((site) => site.customAttributes.frontendHostname === hostName)
+        if (!site) {
+            site = sites[0]
+        }
+    }
+    if (site){
+        return site.name
+    }
 }

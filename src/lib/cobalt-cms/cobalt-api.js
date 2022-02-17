@@ -1,42 +1,45 @@
 import axios from 'axios'
 import cacheData from "memory-cache";
-import { COBALT_BASE, COBALT_PREVIEW_BASE } from '../../../cobalt.settings';
 import { COMMON_DATA_CACHE_TTL_MINUTES } from '../../../apps.settings';
-import { buildCobaltDataFromPage, getCobaltDataHelper } from './cobalt-helpers';
+import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } from './cobalt-helpers';
 
-export async function getCobaltPageByUrl(url,previewUrl){
+export async function getCobaltPageByUrl(hostName, url, previewUrl) {
 
+    const siteStructure = await getCobaltSites()
+    const siteName = getSiteNameByHostName(hostName,siteStructure)
+    console.log("Resolved sitename: " + siteName)
     let pageData = null;
 
     let previewData = null
 
-    if(previewUrl){
+    if (previewUrl) {
         //pageData = await cobaltRequest('/',previewUrl)
         let result = await cobaltPreviewRequest(previewUrl)
         pageData = result.data;
         previewData = {
             emauth: result.emauth,
-            previewToken: result.previewToken
+            previewToken: result.previewToken,
+            basePreviewUrl: result.basePreviewUrl
         }
     } else {
-        pageData = await cobaltRequest('/api/pages/?url=' + url)
+        pageData = await cobaltRequest('/api/pages/?url=' + url + '&emk.site=' + siteName)
     }
-    const siteStructure = await getCobaltSite(false)
+    
 
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, url, previewData);
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, previewData);
 
     return cobaltData;
 }
 
-async function cobaltPreviewRequest(previewUrl){
+async function cobaltPreviewRequest(previewUrl) {
     let result = null
     try {
         previewUrl = decodeURIComponent(previewUrl)
         const options1 = {
             method: 'GET',
-            url:  previewUrl,
+            url: previewUrl,
             mode: 'no-cors',
-            maxRedirects:0,
+            maxRedirects: 0,
             validateStatus: function (status) {
                 return status >= 200 && status < 303; // default
             }
@@ -45,19 +48,19 @@ async function cobaltPreviewRequest(previewUrl){
         const response1 = await axios.request(options1)
 
         const emauthHeader = response1.headers['set-cookie'].find((header) => header.startsWith('emauth'))
-        const emauthValue = emauthHeader.substring(emauthHeader.indexOf('=')+1,emauthHeader.indexOf(';'))  
+        const emauthValue = emauthHeader.substring(emauthHeader.indexOf('=') + 1, emauthHeader.indexOf(';'))
         console.log("emauth: " + emauthValue)
-        const previewTokenPosition = previewUrl.indexOf('emk.previewToken=')+17;
-        const previewToken = previewUrl.substring(previewTokenPosition,previewUrl.indexOf('&',previewTokenPosition))
+        const previewTokenPosition = previewUrl.indexOf('emk.previewToken=') + 17;
+        const previewToken = previewUrl.substring(previewTokenPosition, previewUrl.indexOf('&', previewTokenPosition))
         console.log("token: " + previewToken)
-        const basePreviewUrl = previewUrl.substring(0,previewUrl.indexOf('/',previewUrl.indexOf('//')+2))
-        
+        const basePreviewUrl = previewUrl.substring(0, previewUrl.indexOf('/', previewUrl.indexOf('//') + 2))
+
         const options2 = {
             method: 'GET',
-            url:  basePreviewUrl + response1.headers.location,
+            url: basePreviewUrl + response1.headers.location,
             mode: 'no-cors',
-            headers:{
-                Cookie:"emk.previewDefaultContent=false; emk.previewToken="+previewToken+"; emauth="+emauthValue
+            headers: {
+                Cookie: "emk.previewDefaultContent=false; emk.previewToken=" + previewToken + "; emauth=" + emauthValue
             }
         };
 
@@ -66,106 +69,118 @@ async function cobaltPreviewRequest(previewUrl){
         result = {
             data: response2.data,
             emauth: emauthValue,
-            previewToken: previewToken 
-        } 
+            previewToken: previewToken,
+            basePreviewUrl: basePreviewUrl
+        }
     }
-    catch (e){
+    catch (e) {
         //console.log(e)
     }
     return result
 }
 
-export async function cobaltRequest(url){
+export async function cobaltRequest(url) {
 
     let result = null;
-    
+
     try {
         const options = {
             method: 'GET',
-            url: COBALT_BASE+ url,
+            url: process.env.COBALT_BASE_HOST + url,
             mode: 'no-cors',
         };
 
         const response = await axios.request(options)
         result = response.data
     }
-    catch (e){
+    catch (e) {
         console.log(e)
     }
     return result
 }
 
-export async function getCobaltPageById(id,preview){
+export async function getCobaltAuthToken() {
+    let token = null;
+    try {
+        const authData = { "name": process.env.COBALT_USERNAME, "password": process.env.COBALT_PASSWORD }
+        const options = {
+            method: 'POST',
+            url: process.env.COBALT_BASE_HOST + '/directory/sessions/login',
+            mode: 'no-cors',
+            data: authData,
+            config: {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }
+        };
 
+        const response = await axios.request(options)
+        token = response.data.session.id
+    }
+    catch (e) {
+        console.log(e)
+    }
+    return token
+
+}
+
+export async function getCobaltSitemap(siteName, token) {
     let result = null;
-
     try {
         const options = {
             method: 'GET',
-            url: (preview?COBALT_PREVIEW_BASE:COBALT_BASE) + '/api/pages/' + id,
+            url: process.env.COBALT_BASE_HOST + '/core/sites/sitemap?emauth=' + token + '&siteName=' + siteName + '&viewStatus=LIVE',
             mode: 'no-cors'
         };
 
         const response = await axios.request(options)
-        result = response.data;
+        result = response.data
     }
-    catch (e){
+    catch (e) {
         console.log(e)
-    } 
-
+    }
     return result;
 
 }
 
-export async function searchCobalt(params,preview){
-    let result = null;
-
-    const qstring = params.reduce((acc,p,i) => {
-        return acc + (i > 0?'&':'') + p.key + "=" + p.value
-    },"?")
-    
-    try {
-        const options = {
-            method: 'GET',
-            url: (preview?COBALT_PREVIEW_BASE:COBALT_BASE) + '/api/search' + qstring,
-            mode: 'no-cors'
-        };
-
-        const response = await axios.request(options);
-        result = response.data;
-    }
-    catch (e){
-        console.log(e)
-    }
-
-    return result;
-
-}
-
-export async function getCobaltSite(preview){
-    let result = null;
-    const url = '/api/site';
-
-    result = cacheData.get(url);
-    if (result){
-        console.log("getting cached site structure")
-        return result;
+export async function getCobaltSites() {
+    const cacheKey = 'sites'
+    let sites = null;
+    sites = cacheData.get(cacheKey);
+    if (sites) {
+        console.log("getting cached sites structure")
+        return sites;
     } else {
-        console.log("fetching site structure")
-        try {
-            const options = {
-                method: 'GET',
-                url: (preview?COBALT_PREVIEW_BASE:COBALT_BASE) + '/api/site',
-                mode: 'no-cors'
-            };
+        let token = await getCobaltAuthToken();
+        console.log("Got token: " + token)
+        if (token) {
+            try {
+                const options = {
+                    method: 'GET',
+                    url: process.env.COBALT_BASE_HOST + '/core/sites?emauth=' + token,
+                    mode: 'no-cors'
+                };
 
-            const response = await axios.request(options)
-            result = response.data
-            cacheData.put(url, result, COMMON_DATA_CACHE_TTL_MINUTES * 1000 * 60 );
+                const response = await axios.request(options)
+                sites = response.data
+            }
+            catch (e) {
+                console.log(e)
+            }
         }
-        catch (e){
-            console.log(e)
+        if (sites) {
+            sites = await Promise.all(sites.result.map(async (site) => {
+                const sitemap = await getCobaltSitemap(site.name, token);
+                return {
+                    ...site,
+                    sitemap
+                }
+            }))
         }
-        return result;
+        cacheData.put(cacheKey, sites, COMMON_DATA_CACHE_TTL_MINUTES * 1000 * 60);
+        return sites;
     }
+
 }

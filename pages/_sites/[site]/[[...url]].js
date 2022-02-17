@@ -18,7 +18,7 @@ export default function Page({ cobaltData }) {
     }
 
     return (
-        <Layout siteStructure={cobaltData.siteContext.siteStructure}>
+        <Layout currentSite={cobaltData.siteContext.site} siteStructure={cobaltData.siteContext.siteStructure}>
             {render}
         </Layout>
     )
@@ -28,7 +28,6 @@ export default function Page({ cobaltData }) {
 
 export async function getStaticPaths({ }) {
 
-    const response = await getCobaltSite();
     let paths = [];
     // try {
     //     paths = response.root.items.map((item) => {
@@ -48,9 +47,13 @@ export async function getStaticProps({ params }) {
     if (params.url) {
         url = params.url.join('/');
     }
-    console.log('RENDERING - site: ' + params.site + ' - path: ' + url);
+    let site = "default"
+    if (params.site){
+        site = params.site
+    }
+    console.log('RENDERING - site: ' + site + ' - path: ' + url);
 
-    const cobaltData = await getCobaltPageByUrl(url);
+    const cobaltData = await getCobaltPageByUrl(site, url);
 
     const props = {
         cobaltData

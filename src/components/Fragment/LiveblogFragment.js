@@ -22,7 +22,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
 
         let data, error = null;
 
-        ({ data, error } = useSWR('/api/liveblogs/' + blogId, fetcher));
+        ({ data, error } = useSWR('/api/' + cobaltData.siteContext.site + '/liveblogs/' + blogId, fetcher));
 
         if (error) return <div>Failed to load</div>
         if (!data) return <div>Loading...</div>
