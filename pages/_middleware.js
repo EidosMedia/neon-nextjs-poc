@@ -1,3 +1,4 @@
+import { urlObjectKeys } from 'next/dist/shared/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 export default function middleware(req) {
@@ -26,7 +27,10 @@ export default function middleware(req) {
     !pathname.startsWith('/preview') // exclude preview landing page (for now?)
   ) {
     // rewrite to the current hostname under the pages/sites folder
-    // the main logic component will happen in pages/sites/[site]/index.tsx
-    return NextResponse.rewrite(`/_sites/${currentHost}${pathname}`)
+    // the main logic component will happen in pages/sites/[site]/index.js
+    // clone is due to https://nextjs.org/docs/messages/middleware-relative-urls 
+    const rewriteUrl = req.nextUrl.clone()
+    rewriteUrl.pathname = `/_sites/${currentHost}${pathname}`
+    return NextResponse.rewrite(rewriteUrl)
   }
 }
