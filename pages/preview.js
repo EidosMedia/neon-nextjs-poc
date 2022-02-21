@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getCobaltPageByUrl } from '../src/lib/cobalt-cms/cobalt-api';
+import { getCobaltPageByUrl, getCobaltPreview } from '../src/lib/cobalt-cms/cobalt-api';
 import Layout from '../src/components/Layout/Layout';
 import LandingPage from '../src/components/Page/LandingPage';
 import Segment from '../src/components/Segment/Segment';
@@ -13,7 +13,7 @@ export default function Preview({ cobaltData }) {
             render = <Segment cobaltData={cobaltData} />
         } else {
             render = (
-                <Layout siteStructure={cobaltData.siteContext.siteStructure}>
+                <Layout currentSite={cobaltData.siteContext.site} siteStructure={cobaltData.siteContext.siteStructure}>
                     <LandingPage cobaltData={cobaltData} />
                 </Layout>
             )
@@ -24,21 +24,22 @@ export default function Preview({ cobaltData }) {
 
 export async function getServerSideProps(context) {
     console.log('RENDERING: /preview');
+   
     let cobaltData = null;
     if (context.previewData) {
-        console.log("Preview mode - url: " + context.previewData.previewUrl)
-        cobaltData = await getCobaltPageByUrl('site','/', context.previewData.previewUrl)
+        console.log("Preview mode - site: " + context.previewData.site + " - url: " + context.previewData.previewUrl)
+        cobaltData = await getCobaltPreview(context.previewData.site, context.previewData.previewUrl)
         console.log("Got cobalt preview data")
     }
     // console.log("PREVIEW DATA")
     // console.log(JSON.stringify(cobaltData,null,2))
     const cookies = new Cookies(context.req, context.res)
-    cookies.set('emauth',cobaltData.previewData.emauth);
-    cookies.set('emk.previewToken',cobaltData.previewData.previewToken);
+    cookies.set('emauth', cobaltData.previewData.emauth);
+    cookies.set('emk.previewToken', cobaltData.previewData.previewToken);
 
     return {
         props: {
             cobaltData
-        }    
+        }
     }
 }

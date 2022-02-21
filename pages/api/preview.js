@@ -3,7 +3,8 @@ export default async (req, res) => {
     console.log(req.query.previewUrl)
     // Enable Preview Mode by setting the cookies
     res.setPreviewData({
-        previewUrl: req.query.previewUrl
+        previewUrl: req.query.previewUrl,
+        site: req.query.site
     })
     
     // Redirect to the path from the fetched post

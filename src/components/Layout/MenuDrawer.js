@@ -26,12 +26,15 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
         setOpen(!open);
     };
 
+    const site = siteStructure.find((site) => site.name === currentSite)
+    let logoOverlay = null;
+    try{
+        logoOverlay = site.customAttributes.logoOverlay
+    }catch(e){}
+
     let sectionsRender = null;
     try {
-        sectionsRender = siteStructure
-            .find((site) => site.name === currentSite)
-            .sitemap
-            .children.map((item, i) => {
+        sectionsRender = site.sitemap.children.map((item, i) => {
                 const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
                 return (
                     <Link key={i} href={item.path} passHref>
@@ -89,7 +92,12 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
                         >
                             <MenuIcon fontSize="large" />
                         </IconButton>
-                        <Box m={2}>
+                        <Box m={2} alignItems="flex-end" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                            {logoOverlay?<Typography variant="h6" sx={{mb:1}} component="div">{logoOverlay}.</Typography>:null}
+                            <Image src={productLogo}></Image>
+                        </Box>
+                        <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
+                            {logoOverlay?<Typography variant="h6" component="div">{logoOverlay}.</Typography>:null}
                             <Image src={productLogo}></Image>
                         </Box>
                         <Box>

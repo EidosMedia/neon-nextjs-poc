@@ -1,5 +1,6 @@
 import { DataObjectTwoTone, SixteenMp } from '@mui/icons-material';
 import { xml2json } from 'xml-js'
+import { searchCobalt } from './cobalt-api';
 
 export function getCobaltDataHelper(data) {
     let helper = null;
@@ -53,6 +54,12 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
     return cobaltData
 }
 
+export async function decorateSectionPageCobaltData(cobaltData){
+    const searchData = await searchCobalt(cobaltData.siteContext.site, {param: 'pubInfo.publicationTime', order:'DESC'}, [{param:'param.attributes.secondary_sections.mainSection',value:cobaltData.object.data.pubInfo.sectionPath}])
+    cobaltData.searchResults = searchData
+    return cobaltData
+}
+
 export function buildCobaltDataForNestedObject(object, parentCobaltData, linkContext) {
     const cobaltData = {
         object: {
@@ -78,6 +85,25 @@ export function getQueryResultObjects(cobaltData) {
             })
             .map((child) => {
                 const objNodeData = cobaltData.pageContext.nodes[child]
+                const linkContext = {
+                    linkData: null,
+                    linkTemplate: 'list'
+                }
+                const objCobaltData = buildCobaltDataForNestedObject(objNodeData, cobaltData, linkContext)
+                return objCobaltData
+            })
+    } catch (e) { console.log(e) }
+
+    return resultObjects
+}
+
+export function getSearchResultObjects(cobaltData) {
+    let resultObjects = [];
+    try {
+        resultObjects = cobaltData
+            .searchResults.result
+            .map((child) => {
+                const objNodeData = child.nodeData
                 const linkContext = {
                     linkData: null,
                     linkTemplate: 'list'
@@ -118,7 +144,7 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
                         case 'article': linkTemplate = 'head-pic'; break;
                     }
                 }
-                
+
                 const linkContext = {
                     linkData: link.linkData,
                     linkTemplate: linkTemplate

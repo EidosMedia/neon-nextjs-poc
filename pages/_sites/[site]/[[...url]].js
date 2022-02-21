@@ -1,6 +1,8 @@
 import Layout from "../../../src/components/Layout/Layout";
 import LandingPage from "../../../src/components/Page/LandingPage";
-import { getCobaltPageByUrl, getCobaltSites } from "../../../src/lib/cobalt-cms/cobalt-api";
+import SectionPage from "../../../src/components/Page/SectionPage";
+import { getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
+import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
 
 export default function Page({ cobaltData }) {
 
@@ -11,7 +13,10 @@ export default function Page({ cobaltData }) {
     }
     switch (cobaltData.object.data.sys.baseType) {
         case 'webpage':
-            render = <LandingPage cobaltData={cobaltData} pageTitle={pageTitle} />
+            render = <LandingPage cobaltData={cobaltData} pageTitle={pageTitle} />;
+            break;
+        case 'section':
+            render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle}/>;
             break;
         default:
             render = null;
@@ -60,7 +65,11 @@ export async function getStaticProps({ params }) {
     }
     console.log('RENDERING - site: ' + site + ' - path: ' + url);
 
-    const cobaltData = await getCobaltPageByUrl(site, url);
+    let cobaltData = await getCobaltPageByUrl(site, url);
+    if (cobaltData.object.data.sys.baseType === 'section'){
+        console.log("Section page: performing a search instead")
+        cobaltData = await decorateSectionPageCobaltData(cobaltData)
+    }
 
     const props = {
         cobaltData

@@ -6,31 +6,50 @@ import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } f
 export async function getCobaltPageByUrl(hostName, url, previewUrl) {
 
     const siteStructure = await getCobaltSites()
-    // console.log(JSON.stringify(siteStructure,null,2))
-    const siteName = getSiteNameByHostName(hostName,siteStructure)
+    const siteName = getSiteNameByHostName(hostName, siteStructure)
     let pageData = null;
 
-    let previewData = null
+    const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + siteName
+    console.log("Getting cobalt data from " + requestUrl)
+    pageData = await cobaltRequest(requestUrl)
 
-    if (previewUrl) {
-        //pageData = await cobaltRequest('/',previewUrl)
-        let result = await cobaltPreviewRequest(previewUrl)
-        pageData = result.data;
-        previewData = {
-            emauth: result.emauth,
-            previewToken: result.previewToken,
-            basePreviewUrl: result.basePreviewUrl
-        }
-    } else {
-        const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + siteName
-        console.log("Getting cobalt data from " + requestUrl)
-        pageData = await cobaltRequest(requestUrl)
-    }
-    
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, previewData);
-    //console.log(JSON.stringify(cobaltData,null,2))
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null);
 
     return cobaltData;
+}
+
+export async function getCobaltPreview(siteName, previewUrl) {
+
+    const siteStructure = await getCobaltSites()
+
+    const result = await cobaltPreviewRequest(previewUrl)
+    const pageData = result.data;
+    const previewData = {
+        emauth: result.emauth,
+        previewToken: result.previewToken,
+        basePreviewUrl: result.basePreviewUrl
+    }
+
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, "/preview", previewData);
+
+    return cobaltData;
+
+}
+
+export async function searchCobalt(siteName, sorting, filters){
+    let requestUrl = '/api/search?emk.site='+siteName
+    if(sorting){
+        requestUrl += '&sorting=' + (sorting.order === 'DESC'?'-':'+') + sorting.param
+    }
+    if (filters){
+        filters.forEach((filter) => {
+            requestUrl += '&' + filter.param + '=' + filter.value
+        })
+    }
+
+    const searchData = await cobaltRequest(requestUrl);
+
+    return searchData;
 }
 
 async function cobaltPreviewRequest(previewUrl) {
