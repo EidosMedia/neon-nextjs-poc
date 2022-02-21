@@ -22,11 +22,13 @@ export async function getCobaltPageByUrl(hostName, url, previewUrl) {
             basePreviewUrl: result.basePreviewUrl
         }
     } else {
-        pageData = await cobaltRequest('/api/pages/?url=' + url + '&emk.site=' + siteName)
+        const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + siteName
+        console.log("Getting cobalt data from " + requestUrl)
+        pageData = await cobaltRequest(requestUrl)
     }
     
-
     const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, previewData);
+    //console.log(JSON.stringify(cobaltData,null,2))
 
     return cobaltData;
 }

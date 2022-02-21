@@ -1,4 +1,4 @@
-import { SixteenMp } from '@mui/icons-material';
+import { DataObjectTwoTone, SixteenMp } from '@mui/icons-material';
 import { xml2json } from 'xml-js'
 
 export function getCobaltDataHelper(data) {
@@ -70,15 +70,21 @@ export function buildCobaltDataForNestedObject(object, parentCobaltData, linkCon
 export function getQueryResultObjects(cobaltData) {
     let resultObjects = [];
     try {
-        resultObjects = cobaltData.object.data.children.map((child) => {
-            const objNodeData = cobaltData.pageContext.nodes[child]
-            const linkContext = {
-                linkData: null,
-                linkTemplate: 'list'
-            }
-            const objCobaltData = buildCobaltDataForNestedObject(objNodeData, cobaltData, linkContext)
-            return objCobaltData
-        })
+        resultObjects = cobaltData
+            .object.data.children
+            .filter((child) => {
+                const objNodeData = cobaltData.pageContext.nodes[child]
+                return isCurrentSiteContent(objNodeData,cobaltData.siteContext)
+            })
+            .map((child) => {
+                const objNodeData = cobaltData.pageContext.nodes[child]
+                const linkContext = {
+                    linkData: null,
+                    linkTemplate: 'list'
+                }
+                const objCobaltData = buildCobaltDataForNestedObject(objNodeData, cobaltData, linkContext)
+                return objCobaltData
+            })
     } catch (e) { console.log(e) }
 
     return resultObjects
@@ -108,11 +114,11 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
                     //No default template found -> setting defaults
                     switch (objNodeData.sys.type) {
                         case 'featured': linkTemplate = 'featured_standard'; break;
-                        case 'segment': linkTemplate = 'section_standard'; break;
+                        case 'segment': linkTemplate = 'section_teaser'; break;
                         case 'article': linkTemplate = 'head-pic'; break;
                     }
                 }
-
+                
                 const linkContext = {
                     linkData: link.linkData,
                     linkTemplate: linkTemplate
@@ -201,7 +207,41 @@ export function getSiteNameByHostName(hostName, sites) {
             site = sites[0]
         }
     }
-    if (site){
+    if (site) {
         return site.name
     }
+}
+
+export function isCurrentSiteContent(obj, siteContext){
+    let result = false;
+
+    const pubAttributes = obj.attributes.secondary_sections
+    if (Array.isArray(pubAttributes)){
+        result = pubAttributes.some((attr) => attr.siteName === siteContext.site)
+    } else {
+        result = pubAttributes.siteName === siteContext.site
+    }
+    return result;
+}
+
+export function getObjectMainSite(obj){
+    const pubAttributes = obj.attributes.secondary_sections
+    let siteName = null
+    if (Array.isArray(pubAttributes)){
+        siteName = pubAttributes[0].siteName
+    } else {
+        siteName = pubAttributes.siteName
+    }
+    return siteName;
+}
+
+export function getObjectMainSection(obj){
+    const pubAttributes = obj.attributes.secondary_sections
+    let section = null
+    if (Array.isArray(pubAttributes)){
+        section = pubAttributes[0].mainSection
+    } else {
+        section = pubAttributes.mainSection
+    }
+    return section;
 }

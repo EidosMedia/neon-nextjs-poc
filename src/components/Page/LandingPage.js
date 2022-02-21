@@ -2,6 +2,7 @@ import { Box, Container, Typography } from "@mui/material";
 import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
+import GenericWidget from "../Widgets/GenericWidget";
 
 export default function LandingPage({ cobaltData, pageTitle }) {
     const renderTest = (
@@ -37,6 +38,8 @@ export default function LandingPage({ cobaltData, pageTitle }) {
                     case "query":
                         return <QuerySegment key={i} cobaltData={obj} />
                         break;
+                    case "widget":
+                        return <GenericWidget key={i} cobaltData={obj}/>;
                 }
 
             })}

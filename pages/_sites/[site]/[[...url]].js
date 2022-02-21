@@ -73,7 +73,7 @@ export async function getStaticProps({ params }) {
             revalidate = 5;
             break;
         default:
-            revalidate = 60;
+            revalidate = 10;
     }
 
     return {
