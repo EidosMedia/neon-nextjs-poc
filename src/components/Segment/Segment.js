@@ -191,7 +191,7 @@ export default function Segment({ cobaltData }) {
             if (isOtherSite) {
                 siteInfo = cobaltData.siteContext.siteStructure.find((site) => getObjectMainSite(cobaltData.object.data))
                 otherHostname = siteInfo.customAttributes.frontendHostname;
-                otherSiteBaseUrl = process.env.HTTP_PROTO + '://' + otherHostname + ':' + process.env.HTTP_PORT
+                otherSiteBaseUrl = process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + otherHostname + ':' + process.env.NEXT_PUBLIC_HTTP_PORT
             }
             sectionUrl = getObjectMainSection(cobaltData.object.data);
             finalUrl = (otherSiteBaseUrl ? otherSiteBaseUrl : "") + sectionUrl

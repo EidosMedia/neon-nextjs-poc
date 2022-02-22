@@ -14,9 +14,11 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
+import LanguageIcon from '@mui/icons-material/Language';
 
 import productLogo from '../../../public/img/head-logo.png'
 import Link from 'next/link';
+import { getCobaltDataHelper } from '../../lib/cobalt-cms/cobalt-helpers';
 
 export default function MenuDrawer({ currentSite, siteStructure }) {
 
@@ -28,18 +30,36 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
 
     const site = siteStructure.find((site) => site.name === currentSite)
     let logoOverlay = null;
-    try{
+    try {
         logoOverlay = site.customAttributes.logoOverlay
-    }catch(e){}
+    } catch (e) { }
 
     let sectionsRender = null;
     try {
         sectionsRender = site.sitemap.children.map((item, i) => {
-                const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
+            const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
+            return (
+                <Link key={i} href={item.path} passHref>
+                    <ListItem button component="a">
+                        <ListItemText primary={title} />
+                    </ListItem>
+                </Link>
+            )
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+    let sitesRender = null;
+    try {
+        sitesRender = siteStructure
+            .filter((site) => site.name !== currentSite)
+            .map((site, i) => {
+                const url = process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + process.env.NEXT_PUBLIC_HTTP_PORT
                 return (
-                    <Link key={i} href={item.path} passHref>
+                    <Link key={i} href={url} passHref>
                         <ListItem button component="a">
-                            <ListItemText primary={title} />
+                            <ListItemText primary={site.title} />
                         </ListItem>
                     </Link>
                 )
@@ -65,14 +85,7 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
             </List>
             <Divider />
             <List>
-                {['Globe Finance', 'Globe Sports'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <MonetizationOnIcon /> : <SportsSoccerIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                {sitesRender}
             </List>
         </Box>
     )
@@ -93,11 +106,11 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
                             <MenuIcon fontSize="large" />
                         </IconButton>
                         <Box m={2} alignItems="flex-end" sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            {logoOverlay?<Typography variant="h6" sx={{mb:1}} component="div">{logoOverlay}.</Typography>:null}
+                            {logoOverlay ? <Typography variant="h6" sx={{ mb: 1 }} component="div">{logoOverlay}.</Typography> : null}
                             <Image src={productLogo}></Image>
                         </Box>
                         <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
-                            {logoOverlay?<Typography variant="h6" component="div">{logoOverlay}.</Typography>:null}
+                            {logoOverlay ? <Typography variant="h6" component="div">{logoOverlay}.</Typography> : null}
                             <Image src={productLogo}></Image>
                         </Box>
                         <Box>
