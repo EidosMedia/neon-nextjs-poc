@@ -54,8 +54,13 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
     return cobaltData
 }
 
-export async function decorateSectionPageCobaltData(cobaltData){
-    const searchData = await searchCobalt(cobaltData.siteContext.site, {param: 'pubInfo.publicationTime', order:'DESC'}, [{param:'param.attributes.secondary_sections.mainSection',value:cobaltData.object.data.pubInfo.sectionPath}])
+export async function decorateSectionPageCobaltData(cobaltData) {
+    const searchData = await searchCobalt(cobaltData.siteContext.site,
+        { param: 'pubInfo.publicationTime', order: 'DESC' },
+        [
+            { param: 'param.attributes.secondary_sections.mainSection', value: cobaltData.object.data.pubInfo.sectionPath },
+            { param: 'type', value: 'article' }
+        ])
     cobaltData.searchResults = searchData
     return cobaltData
 }
@@ -81,7 +86,7 @@ export function getQueryResultObjects(cobaltData) {
             .object.data.children
             .filter((child) => {
                 const objNodeData = cobaltData.pageContext.nodes[child]
-                return isCurrentSiteContent(objNodeData,cobaltData.siteContext)
+                return isCurrentSiteContent(objNodeData, cobaltData.siteContext)
             })
             .map((child) => {
                 const objNodeData = cobaltData.pageContext.nodes[child]
@@ -238,11 +243,11 @@ export function getSiteNameByHostName(hostName, sites) {
     }
 }
 
-export function isCurrentSiteContent(obj, siteContext){
+export function isCurrentSiteContent(obj, siteContext) {
     let result = false;
 
     const pubAttributes = obj.attributes.secondary_sections
-    if (Array.isArray(pubAttributes)){
+    if (Array.isArray(pubAttributes)) {
         result = pubAttributes.some((attr) => attr.siteName === siteContext.site)
     } else {
         result = pubAttributes.siteName === siteContext.site
@@ -250,10 +255,10 @@ export function isCurrentSiteContent(obj, siteContext){
     return result;
 }
 
-export function getObjectMainSite(obj){
+export function getObjectMainSite(obj) {
     const pubAttributes = obj.attributes.secondary_sections
     let siteName = null
-    if (Array.isArray(pubAttributes)){
+    if (Array.isArray(pubAttributes)) {
         siteName = pubAttributes[0].siteName
     } else {
         siteName = pubAttributes.siteName
@@ -261,10 +266,10 @@ export function getObjectMainSite(obj){
     return siteName;
 }
 
-export function getObjectMainSection(obj){
+export function getObjectMainSection(obj) {
     const pubAttributes = obj.attributes.secondary_sections
     let section = null
-    if (Array.isArray(pubAttributes)){
+    if (Array.isArray(pubAttributes)) {
         section = pubAttributes[0].mainSection
     } else {
         section = pubAttributes.mainSection
