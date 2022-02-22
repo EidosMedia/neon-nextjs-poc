@@ -198,7 +198,7 @@ export default function Segment({ cobaltData }) {
 
         } catch (e) { console.log(e) }
 
-        render = <React.Fragment>.
+        render = <React.Fragment>
             <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
                 display="flex"
                 justifyContent="space-between"

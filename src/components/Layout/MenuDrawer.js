@@ -126,6 +126,7 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
                         </Box>
                     </Toolbar>
                 </AppBar>
+                {currentSite === 'express-website'?
                 <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
                         <Box sx={{ px: 2, borderRight: 1 }}>
@@ -165,7 +166,7 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
                     <Chip label="Climate Crisis" /> */}
                     </Stack>
                 </Box>
-                <Toolbar sx={{ display: { sm: 'block', md: 'none' } }} />
+                :<Box sx={{ display: { xs: 'none', md: 'block' } }}>&nbsp;</Box>} 
                 <Drawer
                     anchor="left"
                     open={open}
@@ -174,6 +175,7 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
                     {list}
                 </Drawer>
             </React.Fragment>
+            <Toolbar sx={{ display: { sm: 'block', md: 'none' } }}  />
         </div>
     );
 }
