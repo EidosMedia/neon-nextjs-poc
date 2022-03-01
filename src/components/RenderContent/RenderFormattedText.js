@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function RenderFormattedText({jsonElement}){
@@ -20,6 +21,9 @@ export default function RenderFormattedText({jsonElement}){
                         break;
                     case 'u':
                         render = <u>{subRender}</u>;
+                        break;
+                    case 'a':
+                        render = <Link href={jsonElement.attributes.href} passHref><a>{subRender}</a></Link>;
                         break;
                     case 'p':
                         //avoid <p> in <p>

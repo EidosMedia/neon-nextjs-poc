@@ -85,7 +85,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
                                     {(length - 1 === i ? null : <TimelineConnector />)}
                                 </TimelineSeparator>
                                 <TimelineContent sx={{pr:0}}>
-                                    <RenderContentElement jsonElement={findElementsInContentJson(['h1'], postContent.content)[0]} renderMode="raw" />
+                                    <RenderContentElement jsonElement={findElementsInContentJson(['h1'], postContent.content)[0]} />
                                 </TimelineContent>
                             </TimelineItem>)
                         return itemRender;

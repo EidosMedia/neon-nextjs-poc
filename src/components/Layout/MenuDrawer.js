@@ -20,13 +20,16 @@ import productLogo from '../../../public/img/head-logo.png'
 import Link from 'next/link';
 import { getCobaltDataHelper } from '../../lib/cobalt-cms/cobalt-helpers';
 
-export default function MenuDrawer({ currentSite, siteStructure }) {
+export default function MenuDrawer({ cobaltData }) {
 
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
         setOpen(!open);
     };
+
+    const currentSite = cobaltData.siteContext.site;
+    const siteStructure = cobaltData.siteContext.siteStructure;
 
     const site = siteStructure.find((site) => site.name === currentSite)
     let logoOverlay = null;
@@ -126,7 +129,7 @@ export default function MenuDrawer({ currentSite, siteStructure }) {
                         </Box>
                     </Toolbar>
                 </AppBar>
-                {currentSite === 'express-website'?
+                {currentSite === 'express-website' && cobaltData.pageContext.url === '/'?
                 <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
                         <Box sx={{ px: 2, borderRight: 1 }}>

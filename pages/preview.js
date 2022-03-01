@@ -4,19 +4,38 @@ import Layout from '../src/components/Layout/Layout';
 import LandingPage from '../src/components/Page/LandingPage';
 import Segment from '../src/components/Segment/Segment';
 import Cookies from 'cookies'
+import DetailsPage from '../src/components/Page/DetailsPage';
+import SectionPage from '../src/components/Page/SectionPage';
 
 export default function Preview({ cobaltData }) {
     //console.log(cobaltData)
     let render = null;
     if (cobaltData) {
-        if (cobaltData.object.data.sys.baseType === 'webpagefragment') {
-            render = <Segment cobaltData={cobaltData} />
-        } else {
-            render = (
-                <Layout currentSite={cobaltData.siteContext.site} siteStructure={cobaltData.siteContext.siteStructure}>
-                    <LandingPage cobaltData={cobaltData} />
-                </Layout>
-            )
+        switch (cobaltData.object.data.sys.baseType) {
+            case 'webpagefragment':
+                render = <Segment cobaltData={cobaltData} />;
+                break;
+            case 'webpage':
+                render = (
+                    <Layout cobaltData={cobaltData}>
+                        <LandingPage cobaltData={cobaltData} />
+                    </Layout>
+                );
+                break;
+            case 'section':
+                render = (
+                    <Layout cobaltData={cobaltData}>
+                        <SectionPage cobaltData={cobaltData} />
+                    </Layout>
+                );
+                break;
+            default:
+                render = (
+                    <Layout cobaltData={cobaltData}>
+                        <DetailsPage cobaltData={cobaltData} />
+                    </Layout>
+                );
+                break;
         }
     }
     return render;

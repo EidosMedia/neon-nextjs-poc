@@ -22,7 +22,6 @@ export default function middleware(req) {
   }
 
   if (
-    !pathname.includes('.') && // exclude all files in the public folder
     !pathname.startsWith('/api') && // exclude all API routes
     !pathname.startsWith('/preview') // exclude preview landing page (for now?)
   ) {

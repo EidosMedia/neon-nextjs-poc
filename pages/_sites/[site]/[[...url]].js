@@ -1,4 +1,5 @@
 import Layout from "../../../src/components/Layout/Layout";
+import DetailsPage from "../../../src/components/Page/DetailsPage";
 import LandingPage from "../../../src/components/Page/LandingPage";
 import SectionPage from "../../../src/components/Page/SectionPage";
 import { getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
@@ -16,14 +17,14 @@ export default function Page({ cobaltData }) {
             render = <LandingPage cobaltData={cobaltData} pageTitle={pageTitle} />;
             break;
         case 'section':
-            render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle}/>;
+            render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
             break;
         default:
-            render = null;
+            render = <DetailsPage cobaltData={cobaltData} />;
     }
 
     return (
-        <Layout currentSite={cobaltData.siteContext.site} siteStructure={cobaltData.siteContext.siteStructure}>
+        <Layout cobaltData={cobaltData}>
             {render}
         </Layout>
     )
@@ -33,21 +34,23 @@ export default function Page({ cobaltData }) {
 
 export async function getStaticPaths({ }) {
 
-    const sites = await getCobaltSites()
     let paths = [];
-    paths = sites.reduce((acc1,site,i) => {
-        const hostName = site.customAttributes.frontendHostname;
-        const sections = site.sitemap.children.reduce((acc2,section,j) => {
-            return [...acc2,{
-                params: {
-                    site: hostName,
-                    url: [section.path]
-                }
-            }]
-        },[])
-        return [...acc1, ...sections]
-    }, [])
-    
+    try {
+        const sites = await getCobaltSites()
+
+        paths = sites.reduce((acc1, site, i) => {
+            const hostName = site.customAttributes.frontendHostname;
+            const sections = site.sitemap.children.reduce((acc2, section, j) => {
+                return [...acc2, {
+                    params: {
+                        site: hostName,
+                        url: [section.path]
+                    }
+                }]
+            }, [])
+            return [...acc1, ...sections]
+        }, [])
+    } catch (e) { console.log(e) }
     return {
         paths,
         fallback: 'blocking'
@@ -60,13 +63,13 @@ export async function getStaticProps({ params }) {
         url = params.url.join('/');
     }
     let site = "default"
-    if (params.site){
+    if (params.site) {
         site = params.site
     }
     console.log('RENDERING - site: ' + site + ' - path: ' + url);
 
     let cobaltData = await getCobaltPageByUrl(site, url);
-    if (cobaltData.object.data.sys.baseType === 'section'){
+    if (cobaltData.object.data.sys.baseType === 'section') {
         console.log("Section page: performing a search instead")
         cobaltData = await decorateSectionPageCobaltData(cobaltData)
     }
@@ -75,14 +78,14 @@ export async function getStaticProps({ params }) {
         cobaltData
     };
 
-    let revalidate = 60;
+    let revalidate = 5;
 
     switch (cobaltData.object.data.sys.baseType) {
         case 'webpage':
             revalidate = 5;
             break;
         default:
-            revalidate = 10;
+            revalidate = 5;
     }
 
     return {

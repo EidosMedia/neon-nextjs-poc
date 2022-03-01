@@ -3,41 +3,46 @@ import ResourceResolver from "../../utils/ResourceResolver";
 import RenderFormattedText from "./RenderFormattedText";
 import { Video, Transformation } from 'cloudinary-react';
 import React from "react";
+import { Container, Typography } from "@mui/material";
+import { getImageUrl } from "../../utils/ContentUtil";
+import Image from "next/image";
+import { Box } from "@mui/system";
 
-export default function RenderContentElement({ jsonElement, excludeElements, renderMode }) {
+export default function RenderContentElement({ jsonElement, excludeElements, renderMode, previewData, site }) {
     let render = null;
     let id = null;
     if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
         switch (jsonElement.name) {
             case "document":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />);
+                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />);
                 break;
             case "disclosure":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />);
+                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />);
                 break;
             case "headgroup":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />);
+                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />);
                 break;
             case "headline":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />)}
+                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} />)}
                     </React.Fragment>
                 )
                 break;
             case "summary":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />)}
+                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} />)}
                     </React.Fragment>
 
                 )
                 break;
             case "content":
+                console.log(JSON.stringify(jsonElement, null, 2))
                 render = (
-                    <div className="GLtext">
-                        {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />)}
-                    </div>
+                    <React.Fragment>
+                        {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />)}
+                    </React.Fragment>
                 );
                 break;
             case "h1":
@@ -46,57 +51,105 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
                     </React.Fragment>
                 )
-                if(!renderMode || renderMode !== 'raw'){
+                if (renderMode && renderMode === 'styled') {
                     render = (
-                        <h1>
-                            {render}
-                        </h1>
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <Typography variant="h4" component="h2">
+                                {render}
+                            </Typography>
+                        </Container>
                     )
                 }
                 break;
             case "h2":
-                id = (jsonElement.attributes && jsonElement.attributes.id ? jsonElement.attributes.id : null)
                 render = (
-                    <h2 id={id}>
+                    <React.Fragment>
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
-                    </h2>
+                    </React.Fragment>
                 )
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <Typography variant="h5" component="h3">
+                                {render}
+                            </Typography>
+                        </Container>
+                    )
+                }
                 break;
             case "h3":
-                id = (jsonElement.attributes && jsonElement.attributes.id ? jsonElement.attributes.id : null)
                 render = (
-                    <h3 id={id}>
+                    <React.Fragment>
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
-                    </h3>
+                    </React.Fragment>
                 )
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <Typography variant="h6" component="h4">
+                                {render}
+                            </Typography>
+                        </Container>
+                    )
+                }
                 break;
-
             case "p":
                 render = (
-                    <p>
+                    <React.Fragment>
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
-                    </p>
+                    </React.Fragment>
                 );
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <Typography variant="body1" component="p">
+                                {render}
+                            </Typography>
+                        </Container>
+                    )
+                }
                 break;
             case "ul":
                 render = (
-                    <ul>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />) : null}
-                    </ul>
+                    <React.Fragment>
+                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null}
+                    </React.Fragment>
                 );
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md" component="ul">
+                            {render}
+                        </Container>
+                    )
+                }
+                break;
+            case "ol":
+                render = (
+                    <React.Fragment>
+                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null}
+                    </React.Fragment>
+                );
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md" component="ol">
+                            {render}
+                        </Container>
+                    )
+                }
                 break;
             case "li":
+                // TODO manage nested ul/li/ul/...
                 render = (
-                    <li>
+                    <Typography sx={{ ml: 4 }} variant='body1' component='li'>
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
-                    </li>
+                    </Typography>
                 );
                 break;
             case "figure":
                 if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
                     render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} />
                 } else {
-                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} />
+                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} previewData={previewData} site={site} />
                 }
                 break;
             case 'table':
@@ -106,7 +159,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const tableCellSpacing = (tableAttr ? tableAttr.cellspacing : null);
                 render = (
                     <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
                     </table>
                 );
                 break;
@@ -117,7 +170,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const theadColspan = (theadAttr ? theadAttr.colspan : null);
                 render = (
                     <thead align={theadAlign} valign={theadValign} colSpan={theadColspan}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
                     </thead>
                 );
                 break;
@@ -128,7 +181,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const tbodyColspan = (tbodyAttr ? tbodyAttr.colspan : null);
                 render = (
                     <tbody align={tbodyAlign} valign={tbodyValign} colSpan={tbodyColspan}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
                     </tbody>
                 );
                 break;
@@ -138,7 +191,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const trValign = (trAttr ? trAttr.valign : null);
                 render = (
                     <tr align={trAlign} valign={trValign}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
                     </tr>
                 );
                 break;
@@ -180,7 +233,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
     return render
 }
 
-function Poll({ jsonElement }) {
+function Poll({ jsonElement, previewData, site }) {
     //TODO real react component with state and interaction
     let render = null
     try {
@@ -215,49 +268,30 @@ function Poll({ jsonElement }) {
     return render;
 }
 
-function Figure({ jsonElement, excludeElements }) {
-    const router = useRouter();
+function Figure({ jsonElement, excludeElements, previewData, site }) {
 
-    let figureHeadline = jsonElement.elements.find((subel) => subel.name === 'figure-headline')
-    figureHeadline = (figureHeadline ? figureHeadline.elements : null)
-    figureHeadline = (figureHeadline ? figureHeadline.find((subel) => subel.name === 'p') : null)
-    figureHeadline = (figureHeadline ? figureHeadline.elements : null)
-    let figureHeadlineNumber = (figureHeadline ? figureHeadline.find((subel) => subel.name === 'sysvar') : null)
-    figureHeadlineNumber = (figureHeadlineNumber ? figureHeadlineNumber.elements : null)
-    figureHeadlineNumber = (figureHeadlineNumber ? figureHeadlineNumber[0] : null)
-    figureHeadlineNumber = (figureHeadlineNumber ? figureHeadlineNumber.text : null)
-    let figureHeadlineText = (figureHeadline ? figureHeadline.find((subel) => subel.type === 'text') : null)
-    figureHeadlineText = (figureHeadlineText ? figureHeadlineText.text : null)
-    figureHeadline = (figureHeadlineNumber && figureHeadlineText ? "Figure " + figureHeadlineNumber + ": " + figureHeadlineText : null)
+    let render = null;
+    console.log("inline figure")
+    console.log(JSON.stringify(jsonElement, null, 2))
 
-    let figureAsset = jsonElement.elements.find((subel) => subel.name === 'figure-asset')
-    figureAsset = (figureAsset ? figureAsset.elements : null)
-    figureAsset = (figureAsset ? figureAsset[0] : null)
-    figureAsset = (figureAsset ? figureAsset.attributes : null)
-    figureAsset = (figureAsset ? figureAsset.src : null)
-    figureAsset = (figureAsset ? ResourceResolver(figureAsset) : null)
-    if (figureAsset && figureAsset.endsWith('.pdf')) {
-        const lastSlash = figureAsset.lastIndexOf('/');
-        figureAsset = [figureAsset.slice(0, lastSlash), '/format/lowres', figureAsset.slice(lastSlash)].join('');
+    let imageUrl = null;
 
-    }
+    try {
+        imageUrl = ResourceResolver(getImageUrl(jsonElement, "landscape"), (previewData ? previewData : null), site);
+    } catch (e) { }
 
-    let figureCaption = jsonElement.elements.find((subel) => subel.name === 'figure-caption')
-    figureCaption = (figureCaption ? figureCaption.elements : null)
-    figureCaption = (figureCaption ? figureCaption[0] : null)
-    figureCaption = (figureCaption ? figureCaption.elements : null)
-    figureCaption = (figureCaption ? figureCaption.find((subel) => subel.type === 'text') : null)
-    figureCaption = (figureCaption ? figureCaption.text : null)
-    figureCaption = (figureCaption ? "Source : " + figureCaption : null)
+    const imageWidth = 1024;
+    const imageHeight = 576;
 
-    const render = (
-        <div className="figure-holder media-size-10">
-            <header>{figureHeadline}</header>
-            <section>
-                <img src={figureAsset} className="cq-dd-image" /></section>
-            <footer>{figureCaption}</footer>
-        </div>
-    );
+    render = (
+        <Container sx={{ my: 2 }} maxWidth="lg">
+            <Box display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <Image src={imageUrl} width={imageWidth} height={imageHeight} />
+            </Box>
+        </Container>
+    )
 
     return render;
 }

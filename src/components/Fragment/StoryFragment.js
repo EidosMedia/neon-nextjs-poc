@@ -10,6 +10,8 @@ import { checkIsCloudinaryVideo, findElementsInContentJson, getImageUrl } from '
 import ResourceResolver from '../../utils/ResourceResolver';
 import Image from 'next/image';
 import WeatherWidget from '../Widgets/WeatherWidget';
+import Link from 'next/link';
+import { CardActionArea } from '@mui/material';
 
 export default function StoryFragment({ cobaltData, gridContext }) {
 
@@ -25,8 +27,15 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     let templateName = ""
     if (cobaltData) {
         templateName = cobaltData.linkContext.linkTemplate;
-
     }
+
+    let myUrl = ""
+    try {
+        myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
+    } catch (e) { }
+
+    console.log("url: "+ myUrl)
+
     let headline = null;
     try {
         headline = cobaltData.linkContext.linkData.parameters.customHeadline
@@ -69,9 +78,9 @@ export default function StoryFragment({ cobaltData, gridContext }) {
             })
         } catch (e) { }
 
-        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null),cobaltData.siteContext.site);
-        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData : null),cobaltData.siteContext.site);
-        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect"), (cobaltData.previewData ? cobaltData.previewData : null),cobaltData.siteContext.site);
+        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) {
         console.log(e)
     }
@@ -95,6 +104,9 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         if (gridContext.md < 3) {
             headlineVariant = "body2"
             headlineVariantSm = "h6";
+        } else if (gridContext.md > 5) {
+            headlineVariant = "h5"
+            headlineVariantSm = "h5";
         } else {
             headlineVariant = "h7"
             headlineVariantSm = "h6";
@@ -129,20 +141,24 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     /> : null} */}
                 {templateName.includes('pic') || templateName.includes('list') ?
                     mediaBlock : null}
-                <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
-                    {templateName.includes('head') || templateName.includes('list') ?
-                        <Typography gutterBottom variant={headlineVariant} component="div">
-                            {headline}
-                        </Typography>
-                        : null}
-                    {templateName.includes('sum') || templateName.includes('list') ?
-                        <Typography variant="body2" color="text.secondary">
-                            {summary}
-                            {/* Lizards are a widespread group of squamate reptiles, with over 6,000
+                <Link href={myUrl} passHref>
+                    <CardActionArea>
+                        <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
+                            {templateName.includes('head') || templateName.includes('list') ?
+                                <Typography gutterBottom variant={headlineVariant} component="div">
+                                    {headline}
+                                </Typography>
+                                : null}
+                            {templateName.includes('sum') || templateName.includes('list') ?
+                                <Typography variant="body2" color="text.secondary">
+                                    {summary}
+                                    {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
-                        </Typography>
-                        : null}
-                </CardContent>
+                                </Typography>
+                                : null}
+                        </CardContent>
+                    </CardActionArea>
+                </Link>
             </Card>
             <Card square elevation={0} sx={{ display: { xs: 'block', md: 'none' }, borderBottom: 1, borderColor: 'grey.500' }}>
                 {/* {templateName.includes('pic') ?

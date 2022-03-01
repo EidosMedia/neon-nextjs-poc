@@ -1,11 +1,15 @@
 import axios from 'axios'
 import cacheData from "memory-cache";
-import { COMMON_DATA_CACHE_TTL_MINUTES } from '../../../apps.settings';
+import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
 import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } from './cobalt-helpers';
 
 export async function getCobaltPageByUrl(hostName, url, previewUrl) {
 
-    const siteStructure = await getCobaltSites()
+    let siteStructure = null;
+    try {
+        siteStructure = await getCobaltSites()
+    } catch (e) { }
+
     const siteName = getSiteNameByHostName(hostName, siteStructure)
     let pageData = null;
 
@@ -20,7 +24,10 @@ export async function getCobaltPageByUrl(hostName, url, previewUrl) {
 
 export async function getCobaltPreview(siteName, previewUrl) {
 
-    const siteStructure = await getCobaltSites()
+    let siteStructure = null;
+    try {
+        siteStructure = await getCobaltSites()
+    } catch (e) { }
 
     const result = await cobaltPreviewRequest(previewUrl)
     const pageData = result.data;
@@ -36,12 +43,12 @@ export async function getCobaltPreview(siteName, previewUrl) {
 
 }
 
-export async function searchCobalt(siteName, sorting, filters){
-    let requestUrl = '/api/search?emk.site='+siteName
-    if(sorting){
-        requestUrl += '&sorting=' + (sorting.order === 'DESC'?'-':'+') + sorting.param
+export async function searchCobalt(siteName, sorting, filters) {
+    let requestUrl = '/api/search?emk.site=' + siteName
+    if (sorting) {
+        requestUrl += '&sorting=' + (sorting.order === 'DESC' ? '-' : '+') + sorting.param
     }
-    if (filters){
+    if (filters) {
         filters.forEach((filter) => {
             requestUrl += '&' + filter.param + '=' + filter.value
         })
@@ -174,6 +181,7 @@ export async function getCobaltSites() {
         console.log("getting cached sites structure")
         return sites;
     } else {
+        console.log("fetching sitemap from Cobalt")
         let token = await getCobaltAuthToken();
         if (token) {
             try {
@@ -199,7 +207,7 @@ export async function getCobaltSites() {
                 }
             }))
         }
-        cacheData.put(cacheKey, sites, COMMON_DATA_CACHE_TTL_MINUTES * 1000 * 60);
+        cacheData.put(cacheKey, sites, COMMON_DATA_CACHE_TTL_SECONDS * 1000);
         return sites;
     }
 
