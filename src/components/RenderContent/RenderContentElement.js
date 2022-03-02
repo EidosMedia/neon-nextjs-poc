@@ -3,24 +3,27 @@ import ResourceResolver from "../../utils/ResourceResolver";
 import RenderFormattedText from "./RenderFormattedText";
 import { Video, Transformation } from 'cloudinary-react';
 import React from "react";
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, Paper } from "@mui/material";
 import { getImageUrl } from "../../utils/ContentUtil";
 import Image from "next/image";
 import { Box } from "@mui/system";
+import ImageGallery from 'react-image-gallery';
+import NextLink from 'next/link'
+import { Link as MUILink } from '@mui/material';
 
-export default function RenderContentElement({ jsonElement, excludeElements, renderMode, previewData, site }) {
+export default function RenderContentElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
     let id = null;
     if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
         switch (jsonElement.name) {
             case "document":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />);
+                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
                 break;
             case "disclosure":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />);
+                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
                 break;
             case "headgroup":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />);
+                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
                 break;
             case "headline":
                 render = (
@@ -38,10 +41,10 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 )
                 break;
             case "content":
-                console.log(JSON.stringify(jsonElement, null, 2))
+                //console.log(JSON.stringify(jsonElement, null, 2))
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />)}
+                        {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />)}
                     </React.Fragment>
                 );
                 break;
@@ -53,7 +56,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 )
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
+                        <Container sx={{ my: 1 }} maxWidth="sm">
                             <Typography variant="h4" component="h2">
                                 {render}
                             </Typography>
@@ -69,7 +72,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 )
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
+                        <Container sx={{ my: 1 }} maxWidth="sm">
                             <Typography variant="h5" component="h3">
                                 {render}
                             </Typography>
@@ -101,7 +104,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
+                        <Container sx={{ my: 1 }} maxWidth="sm">
                             <Typography variant="body1" component="p">
                                 {render}
                             </Typography>
@@ -112,12 +115,12 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "ul":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null}
+                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="md" component="ul">
+                        <Container sx={{ my: 1 }} maxWidth="sm" component="ul">
                             {render}
                         </Container>
                     )
@@ -126,30 +129,44 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "ol":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null}
+                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="md" component="ol">
+                        <Container sx={{ my: 1 }} maxWidth="sm" component="ol">
                             {render}
                         </Container>
                     )
                 }
                 break;
             case "li":
-                // TODO manage nested ul/li/ul/...
+                // TODO manage nested ul/li/ul/...,
                 render = (
-                    <Typography sx={{ ml: 4 }} variant='body1' component='li'>
-                        {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
-                    </Typography>
+                    <React.Fragment>
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                    </React.Fragment>
                 );
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Typography sx={{ ml: 4 }} variant='body1' component='li'>
+                            {render}
+                        </Typography>
+                    )
+                }
                 break;
             case "figure":
                 if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
                     render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} />
                 } else {
-                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} previewData={previewData} site={site} />
+                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                }
+                break;
+            case "div":
+                if (jsonElement.attributes['emk-type'] === 'gallery') {
+                    render = <FigureGallery jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                } else if (jsonElement.attributes['emk-type'] === 'extra-links') {
+                    render = <ExtraLinks jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
                 }
                 break;
             case 'table':
@@ -159,7 +176,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const tableCellSpacing = (tableAttr ? tableAttr.cellspacing : null);
                 render = (
                     <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
                     </table>
                 );
                 break;
@@ -170,7 +187,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const theadColspan = (theadAttr ? theadAttr.colspan : null);
                 render = (
                     <thead align={theadAlign} valign={theadValign} colSpan={theadColspan}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
                     </thead>
                 );
                 break;
@@ -181,7 +198,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const tbodyColspan = (tbodyAttr ? tbodyAttr.colspan : null);
                 render = (
                     <tbody align={tbodyAlign} valign={tbodyValign} colSpan={tbodyColspan}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
                     </tbody>
                 );
                 break;
@@ -191,7 +208,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const trValign = (trAttr ? trAttr.valign : null);
                 render = (
                     <tr align={trAlign} valign={trValign}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} previewData={previewData} site={site} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
                     </tr>
                 );
                 break;
@@ -203,11 +220,6 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     <td align={tdAlign} valign={tdValign}>
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
                     </td>
-                );
-                break;
-            case 'figure-gallery':
-                render = (
-                    <div>FIGURE-GALLERY (todo)</div>
                 );
                 break;
             case 'embed':
@@ -233,7 +245,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
     return render
 }
 
-function Poll({ jsonElement, previewData, site }) {
+function Poll({ jsonElement, cobaltData }) {
     //TODO real react component with state and interaction
     let render = null
     try {
@@ -268,23 +280,21 @@ function Poll({ jsonElement, previewData, site }) {
     return render;
 }
 
-function Figure({ jsonElement, excludeElements, previewData, site }) {
+function Figure({ jsonElement, excludeElements, cobaltData }) {
 
     let render = null;
-    console.log("inline figure")
-    console.log(JSON.stringify(jsonElement, null, 2))
 
     let imageUrl = null;
 
     try {
-        imageUrl = ResourceResolver(getImageUrl(jsonElement, "landscape"), (previewData ? previewData : null), site);
+        imageUrl = ResourceResolver(getImageUrl(jsonElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) { }
 
     const imageWidth = 1024;
     const imageHeight = 576;
 
     render = (
-        <Container sx={{ my: 2 }} maxWidth="lg">
+        <Container sx={{ my: 4 }} maxWidth="lg">
             <Box display="flex"
                 justifyContent="center"
                 alignItems="center">
@@ -296,11 +306,111 @@ function Figure({ jsonElement, excludeElements, previewData, site }) {
     return render;
 }
 
+function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
+    let render = null;
+    let images = [];
+    images = jsonElement.elements.map((el) => {
+        const origImageUrl = getImageUrl(el, "rect")
+        const strIndex = origImageUrl.lastIndexOf('/')
+        const thumbImageUrl = origImageUrl.slice(0, strIndex) + '/format/thumb' + origImageUrl.slice(strIndex)
+
+        const origImageFullUrl = ResourceResolver(origImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        const thumbImageFullUrl = ResourceResolver(thumbImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+
+        return {
+            original: origImageFullUrl,
+            thumbnail: thumbImageFullUrl
+        }
+    })
+    render = (
+        <Container sx={{ my: 4 }} maxWidth="lg">
+            <Box display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <ImageGallery items={images} />
+            </Box>
+        </Container>
+    )
+    return render;
+}
+
+function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
+    let render = null;
+    console.log("Extra-links")
+    console.log(JSON.stringify(jsonElement, null, 2))
+
+    let headlineBlock = null;
+    try {
+        headlineBlock = jsonElement.elements.find((el) => el.attributes['emk-type'] === 'extra-links-headline')
+        if (headlineBlock) {
+            headlineBlock = (
+                <React.Fragment>
+                    {(headlineBlock.elements ? headlineBlock.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                </React.Fragment>
+            );
+        }
+    } catch (e) { }
+
+    let linksBlock = null;
+    try {
+        linksBlock = jsonElement.elements.filter((el) => el.attributes['emk-type'] === 'extra-link')
+        if (linksBlock) {
+            linksBlock = linksBlock.map((el, i) => {
+                let blockRender = null;
+                const linkHeadline = (
+                    <React.Fragment>
+                        {(el.elements ? el.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                    </React.Fragment>
+                )
+                blockRender = (
+                    <Box key={i}>
+                        <NextLink href={el.attributes.href} passHref>
+                            <MUILink variant="h6" underline="hover" color="secondary">
+                                {linkHeadline}
+                            </MUILink>
+                        </NextLink>
+                    </Box>
+                )
+                return blockRender;
+            })
+        }
+    } catch (e) { }
+
+    render = (
+        <Container maxWidth="sm" sx={{ my: 4, border: 2, borderColor: 'grey.500' }}>
+            <Box display="flex"
+                flexDirection="column"
+                justifyContent="flexStart"
+                alignItems="flexStart"
+            >
+                {headlineBlock ?
+                    <Box key="extra-links-headline" sx={{ borderBottom: 1, borderColor: 'grey.500' }}>
+
+                        <Typography variant="h5" component="h5" gutterBottom>
+                            {headlineBlock}
+                        </Typography>
+
+                    </Box> : null}
+                {linksBlock}
+            </Box>
+        </Container>
+    )
+    return render;
+}
+
 export function CloudinaryVideo({ jsonElement, excludeElements }) {
     const videoSrc = jsonElement.elements[0].attributes.src
     const videoSrcArray = videoSrc.split('/')
     const videoFileName = videoSrcArray.slice(-1)[0]
     const videoId = videoFileName.substring(0, videoFileName.lastIndexOf('.'))
-    const render = <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
+    const render = (
+        <Container sx={{ my: 4 }} maxWidth="lg">
+            <Box display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
+            </Box>
+        </Container>
+    )
     return render
 } 

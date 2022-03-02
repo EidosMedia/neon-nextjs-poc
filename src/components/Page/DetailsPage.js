@@ -52,28 +52,28 @@ export default function DetailsPage({ cobaltData }) {
 
     let content = null;
     try {
-        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='styled' previewData={cobaltData.previewData} site={cobaltData.siteContext.site}/>
+        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='styled' cobaltData={cobaltData}/>
     } catch (e) {
         console.log(e)
     }
 
     render = (
         <Container maxWidth="lg">
-            <Container sx={{my:2}} maxWidth="md">
+            <Container sx={{my:2}} maxWidth="sm">
                 <Box display="flex"
                     justifyContent="center"
                     alignItems="center">
-                    <Typography variant="h3" component="h1">
+                    <Typography variant="h4" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium'}}>
                         {headline}
                     </Typography>
                 </Box>
             </Container>
             {summary ?
-                <Container sx={{my:2}} maxWidth="md">
+                <Container sx={{my:2}} maxWidth="sm">
                     <Box display="flex"
                         justifyContent="center"
                         alignItems="center">
-                        <Typography variant="h5" component="h2">
+                        <Typography variant="h6" component="h2">
                             {summary}
                         </Typography>
                     </Box>

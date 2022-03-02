@@ -16,7 +16,7 @@ import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 import LanguageIcon from '@mui/icons-material/Language';
 
-import productLogo from '../../../public/img/head-logo.png'
+import productLogo from '../../../public/static/img/head-logo.png'
 import Link from 'next/link';
 import { getCobaltDataHelper } from '../../lib/cobalt-cms/cobalt-helpers';
 

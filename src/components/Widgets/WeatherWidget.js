@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import Image from "next/image";
-import weatherImage from "../../../public/img/weather.png"
+import weatherImage from "../../../public/static/img/weather.png"
 import { widgetsConfig } from "../../../widgets.config";
 
 export default function WeatherWidget({ cobaltData, gridContext }) {

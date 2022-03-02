@@ -22,6 +22,7 @@ export default function middleware(req) {
   }
 
   if (
+    !pathname.startsWith('/static') &&
     !pathname.startsWith('/api') && // exclude all API routes
     !pathname.startsWith('/preview') // exclude preview landing page (for now?)
   ) {

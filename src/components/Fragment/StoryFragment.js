@@ -34,8 +34,6 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
     } catch (e) { }
 
-    console.log("url: "+ myUrl)
-
     let headline = null;
     try {
         headline = cobaltData.linkContext.linkData.parameters.customHeadline
