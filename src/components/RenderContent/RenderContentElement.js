@@ -4,12 +4,13 @@ import RenderFormattedText from "./RenderFormattedText";
 import { Video, Transformation } from 'cloudinary-react';
 import React from "react";
 import { Container, Typography, Paper } from "@mui/material";
-import { getImageUrl } from "../../utils/ContentUtil";
+import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
 import Image from "next/image";
 import { Box } from "@mui/system";
 import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
+import { getCobaltDataHelper } from "../../lib/cobalt-cms/cobalt-helpers";
 
 export default function RenderContentElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
@@ -336,8 +337,6 @@ function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
 
 function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
     let render = null;
-    console.log("Extra-links")
-    console.log(JSON.stringify(jsonElement, null, 2))
 
     let headlineBlock = null;
     try {
@@ -362,13 +361,45 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                         {(el.elements ? el.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
                     </React.Fragment>
                 )
+                const linkedObject = cobaltData.pageContext.nodes[el.attributes['data-id']]
+                const linkedObjectHelper = getCobaltDataHelper(linkedObject);
+
+                let linkedObjectMainPictureElement = null;
+                let linkedObjectMainImageUrl = null;
+                try {
+                    linkedObjectMainPictureElement = findElementsInContentJson(['mediagroup'], linkedObjectHelper.content)[0].elements[0];
+                    linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square")
+                    if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') { //TODO fix this
+                        const strIndex = linkedObjectMainImageUrl.lastIndexOf('/')
+                        linkedObjectMainImageUrl = linkedObjectMainImageUrl.slice(0, strIndex) + '/format/thumb' + linkedObjectMainImageUrl.slice(strIndex)
+                        linkedObjectMainImageUrl = ResourceResolver(linkedObjectMainImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+                    } else {
+                        linkedObjectMainImageUrl = null;
+                    }
+                } catch (e) {
+                    console.log(e)
+                }
+
+                const imageWidth = 100;
+                const imageHeight = 100;
+                let linkImage = null;
+                if (linkedObjectMainImageUrl) {
+                    linkImage = <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
+                }
                 blockRender = (
-                    <Box key={i}>
-                        <NextLink href={el.attributes.href} passHref>
-                            <MUILink variant="h6" underline="hover" color="secondary">
-                                {linkHeadline}
-                            </MUILink>
-                        </NextLink>
+                    <Box key={i} display="flex"
+                        justifyContent="flexStart"
+                        alignItems="center">
+                        <Box>
+                            {linkImage ? linkImage : null}
+                        </Box>
+                        <Box sx={{ mx: 2 }} flexShrink={1}>
+                            <NextLink href={el.attributes.href} passHref>
+                                <MUILink variant="h6" underline="hover" color="secondary">
+                                    {linkHeadline}
+                                </MUILink>
+                            </NextLink>
+                        </Box>
                     </Box>
                 )
                 return blockRender;
@@ -384,7 +415,7 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                 alignItems="flexStart"
             >
                 {headlineBlock ?
-                    <Box key="extra-links-headline" sx={{ borderBottom: 1, borderColor: 'grey.500' }}>
+                    <Box key="extra-links-headline" sx={{ borderBottom: 1, borderColor: 'grey.500', my:1 }}>
 
                         <Typography variant="h5" component="h5" gutterBottom>
                             {headlineBlock}

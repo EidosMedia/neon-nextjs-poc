@@ -21,8 +21,8 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
         let blogId = cobaltData.object.data.id;
 
         let data, error = null;
-
-        ({ data, error } = useSWR('/api/' + cobaltData.siteContext.site + '/liveblogs/' + blogId, fetcher));
+  
+        ({ data, error } = useSWR('/api/' + cobaltData.siteContext.site + '/liveblogs/' + blogId, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
 
         if (error) return <div>Failed to load</div>
         if (!data) return <div>Loading...</div>

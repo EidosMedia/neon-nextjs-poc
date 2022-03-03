@@ -4,7 +4,7 @@ import Layout from '../src/components/Layout/Layout';
 import LandingPage from '../src/components/Page/LandingPage';
 import Segment from '../src/components/Segment/Segment';
 import Cookies from 'cookies'
-import DetailsPage from '../src/components/Page/DetailsPage';
+import ArticlePage from '../src/components/Page/ArticlePage';
 import SectionPage from '../src/components/Page/SectionPage';
 
 export default function Preview({ cobaltData }) {
@@ -32,7 +32,7 @@ export default function Preview({ cobaltData }) {
             default:
                 render = (
                     <Layout cobaltData={cobaltData}>
-                        <DetailsPage cobaltData={cobaltData} />
+                        <ArticlePage cobaltData={cobaltData} />
                     </Layout>
                 );
                 break;

@@ -5,7 +5,7 @@ import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil"
 import ResourceResolver from "../../utils/ResourceResolver";
 import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderContentElement";
 
-export default function DetailsPage({ cobaltData }) {
+export default function ArticlePage({ cobaltData }) {
     let render = null;
 
     let headline = null;

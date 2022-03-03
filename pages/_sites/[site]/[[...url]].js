@@ -1,11 +1,13 @@
+import { SWRConfig } from "swr";
 import Layout from "../../../src/components/Layout/Layout";
-import DetailsPage from "../../../src/components/Page/DetailsPage";
+import ArticlePage from "../../../src/components/Page/ArticlePage";
 import LandingPage from "../../../src/components/Page/LandingPage";
+import LiveblogPage from "../../../src/components/Page/LiveblogPage";
 import SectionPage from "../../../src/components/Page/SectionPage";
-import { getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
+import { cobaltRequest, getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
 import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
 
-export default function Page({ cobaltData }) {
+export default function Page({ cobaltData, fallback }) {
 
     let render = null;
     let pageTitle = null;
@@ -19,8 +21,15 @@ export default function Page({ cobaltData }) {
         case 'section':
             render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
             break;
+        case 'liveblog':
+            render = (
+                <SWRConfig value={{ fallback }}>
+                    <LiveblogPage cobaltData={cobaltData} />
+                </SWRConfig>
+            )
+            break;
         default:
-            render = <DetailsPage cobaltData={cobaltData} />;
+            render = <ArticlePage cobaltData={cobaltData} />;
     }
 
     return (
@@ -79,11 +88,17 @@ export async function getStaticProps({ params }) {
     };
 
     let revalidate = 5;
+    let fallback = {}; // To be used for SWR rehydration of liveblogs
 
     switch (cobaltData.object.data.sys.baseType) {
         case 'webpage':
             revalidate = 5;
             break;
+        case 'liveblog':
+            revalidate = 5;
+            const latestBlogPosts = await cobaltRequest('/api/liveblogs/' + cobaltData.object.data.id + '/posts?emk.site=' + cobaltData.siteContext.site)
+            fallback['/api/' + cobaltData.siteContext.site + '/liveblogs/' + cobaltData.object.data.id] = latestBlogPosts
+            props['fallback'] = fallback
         default:
             revalidate = 5;
     }
