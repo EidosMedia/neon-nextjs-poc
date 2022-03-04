@@ -20,9 +20,6 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "document":
                 render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
                 break;
-            case "disclosure":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
-                break;
             case "headgroup":
                 render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
                 break;
@@ -394,7 +391,7 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                             {linkImage ? linkImage : null}
                         </Box>
                         <Box sx={{ mx: 2 }} flexShrink={1}>
-                            <NextLink href={el.attributes.href} passHref>
+                            <NextLink href={el.attributes.href} passHref prefetch={(cobaltData.previewData?false:true)}>
                                 <MUILink variant="h6" underline="hover" color="secondary">
                                     {linkHeadline}
                                 </MUILink>
@@ -415,7 +412,7 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                 alignItems="flexStart"
             >
                 {headlineBlock ?
-                    <Box key="extra-links-headline" sx={{ borderBottom: 1, borderColor: 'grey.500', my:1 }}>
+                    <Box key="extra-links-headline" sx={{ borderBottom: 1, borderColor: 'grey.500', my: 1 }}>
 
                         <Typography variant="h5" component="h5" gutterBottom>
                             {headlineBlock}

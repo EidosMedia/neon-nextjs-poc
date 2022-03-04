@@ -139,7 +139,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     /> : null} */}
                 {templateName.includes('pic') || templateName.includes('list') ?
                     mediaBlock : null}
-                <Link href={myUrl} passHref>
+                <Link href={myUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
                     <CardActionArea>
                         <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
                             {templateName.includes('head') || templateName.includes('list') ?

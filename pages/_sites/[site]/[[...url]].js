@@ -83,7 +83,7 @@ export async function getStaticProps({ params }) {
         cobaltData = await decorateSectionPageCobaltData(cobaltData)
     }
 
-    const props = {
+    let props = {
         cobaltData
     };
 

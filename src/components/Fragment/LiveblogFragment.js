@@ -6,11 +6,12 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import { styled, Typography } from '@mui/material';
+import { Card, CardActionArea, styled, Typography } from '@mui/material';
 import { getCobaltLiveblogPostHelper } from '../../lib/cobalt-cms/cobalt-helpers';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { findElementsInContentJson } from '../../utils/ContentUtil';
 import { Box } from '@mui/system';
+import Link from 'next/link';
 
 
 const fetcher = url => axios.get(url).then(res => res.data)
@@ -21,7 +22,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
         let blogId = cobaltData.object.data.id;
 
         let data, error = null;
-  
+
         ({ data, error } = useSWR('/api/' + cobaltData.siteContext.site + '/liveblogs/' + blogId, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
 
         if (error) return <div>Failed to load</div>
@@ -56,6 +57,11 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
                 }} />
         )
 
+        let myUrl = ""
+        try {
+            myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
+        } catch (e) { }
+
         let headline = null;
         try {
             headline = cobaltData.linkContext.linkData.parameters.customHeadline
@@ -69,29 +75,33 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
         }
 
         render = (
-            <Box sx={{ borderTop: 1, borderBottom: 1, borderColor: 'grey.500' }}>
-                <Typography sx={{ my: 0 }} variant="h6" component="div">
-                    {pulsatingIcon}
-                    {headline}
-                </Typography>
-                <CustomizedTimeline sx={{ my: 0, pr:1 }} position="right">
-                    {data.result.slice(0, postCount).map((post, i, { length }) => {
-                        let itemRender = null;
-                        const postContent = getCobaltLiveblogPostHelper(post);
-                        itemRender = (
-                            <TimelineItem>
-                                <TimelineSeparator>
-                                    <TimelineDot />
-                                    {(length - 1 === i ? null : <TimelineConnector />)}
-                                </TimelineSeparator>
-                                <TimelineContent sx={{pr:0}}>
-                                    <RenderContentElement jsonElement={findElementsInContentJson(['h1'], postContent.content)[0]} />
-                                </TimelineContent>
-                            </TimelineItem>)
-                        return itemRender;
-                    })}
-                </CustomizedTimeline>
-            </Box>
+            <Card square elevation={0} sx={{ borderTop: 1, borderBottom: 1, borderColor: 'grey.500' }}>
+                <Link href={myUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
+                    <CardActionArea>
+                        <Typography sx={{ my: 0 }} variant="h6" component="div">
+                            {pulsatingIcon}
+                            {headline}
+                        </Typography>
+                        <CustomizedTimeline sx={{ my: 0, pr: 1 }} position="right">
+                            {data.result.slice(0, postCount).map((post, i, { length }) => {
+                                let itemRender = null;
+                                const postContent = getCobaltLiveblogPostHelper(post);
+                                itemRender = (
+                                    <TimelineItem>
+                                        <TimelineSeparator>
+                                            <TimelineDot />
+                                            {(length - 1 === i ? null : <TimelineConnector />)}
+                                        </TimelineSeparator>
+                                        <TimelineContent sx={{ pr: 0 }}>
+                                            <RenderContentElement jsonElement={findElementsInContentJson(['h1'], postContent.content)[0]} />
+                                        </TimelineContent>
+                                    </TimelineItem>)
+                                return itemRender;
+                            })}
+                        </CustomizedTimeline>
+                    </CardActionArea>
+                </Link>
+            </Card>
         )
     }
     return render;

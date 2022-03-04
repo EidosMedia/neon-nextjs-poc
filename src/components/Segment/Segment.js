@@ -204,7 +204,7 @@ export default function Segment({ cobaltData }) {
                 justifyContent="space-between"
             >
                 <Typography sx={{ mx: 2, my: 1, color: 'primary.main' }} variant="h4" component="h4">
-                    <NextLink href={finalUrl} passHref>
+                    <NextLink href={finalUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
                         <MUILink variant="h4" underline="hover">
                             {sectionHeadline}
                         </MUILink>
@@ -213,7 +213,7 @@ export default function Segment({ cobaltData }) {
                 {isOtherSite ?
                     <Typography sx={{ mx: 2, mb: 1, mt: 2, color: 'primary.main' }} variant="h6" component="div">
                         <span>From </span> 
-                        <NextLink href={otherSiteBaseUrl} passHref>
+                        <NextLink href={otherSiteBaseUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
                             <MUILink variant="h6" underline="always">
                                 {otherHostname}
                             </MUILink>

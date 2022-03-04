@@ -42,7 +42,7 @@ export default function MenuDrawer({ cobaltData }) {
         sectionsRender = site.sitemap.children.map((item, i) => {
             const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
             return (
-                <Link key={i} href={item.path} passHref>
+                <Link key={i} href={item.path} passHref prefetch={(cobaltData.previewData?false:true)}>
                     <ListItem button component="a">
                         <ListItemText primary={title} />
                     </ListItem>
@@ -60,7 +60,7 @@ export default function MenuDrawer({ cobaltData }) {
             .map((site, i) => {
                 const url = process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + process.env.NEXT_PUBLIC_HTTP_PORT
                 return (
-                    <Link key={i} href={url} passHref>
+                    <Link key={i} href={url} passHref prefetch={(cobaltData.previewData?false:true)}>
                         <ListItem button component="a">
                             <ListItemText primary={site.title} />
                         </ListItem>
@@ -79,7 +79,7 @@ export default function MenuDrawer({ cobaltData }) {
             onKeyDown={handleDrawerToggle}
         >
             <List>
-                <Link key='homeLink' href='/' passHref>
+                <Link key='homeLink' href='/' passHref prefetch={(cobaltData.previewData?false:true)}>
                     <ListItem button component="a">
                         <ListItemText primary="Home" />
                     </ListItem>
