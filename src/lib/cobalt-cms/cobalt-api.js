@@ -4,21 +4,20 @@ import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
 import { COBALT_BASE_HOST, COBALT_PASSWORD, COBALT_USERNAME } from '../../../cobalt.settings';
 import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } from './cobalt-helpers';
 
-export async function getCobaltPageByUrl(hostName, url, previewUrl) {
+export async function getCobaltPageByUrl(site, url, previewUrl) {
 
     let siteStructure = null;
     try {
-        siteStructure = await getCobaltSites()
+        siteStructure = await getCobaltSite(site)
     } catch (e) { }
 
-    const siteName = getSiteNameByHostName(hostName, siteStructure)
     let pageData = null;
 
-    const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + siteName
+    const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + site
     console.log("Getting cobalt data from " + requestUrl)
     pageData = await cobaltRequest(requestUrl)
 
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null);
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, site, url, null);
 
     return cobaltData;
 }
@@ -172,6 +171,34 @@ export async function getCobaltSitemap(siteName, token) {
     }
     return result;
 
+}
+
+export async function getCobaltSite(siteName){
+    let result = null;
+    const url = '/api/site?emk.site='+siteName;
+
+    result = cacheData.get(url);
+    if (result){
+        console.log("getting cached site structure")
+        return result;
+    } else {
+        console.log("fetching site structure")
+        try {
+            const options = {
+                method: 'GET',
+                url: COBALT_BASE_HOST + url,
+                mode: 'no-cors'
+            };
+
+            const response = await axios.request(options)
+            result = response.data
+            cacheData.put(url, result,  COMMON_DATA_CACHE_TTL_SECONDS * 1000);
+        }
+        catch (e){
+            console.log(e)
+        }
+        return result;
+    }
 }
 
 export async function getCobaltSites() {
