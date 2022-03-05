@@ -7,9 +7,9 @@ import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } f
 export async function getCobaltPageByUrl(site, url, previewUrl) {
 
     let siteStructure = null;
-    try {
-        siteStructure = await getCobaltSite(site)
-    } catch (e) { }
+    // try {
+    //     siteStructure = await getCobaltSite(site)
+    // } catch (e) { }
 
     let pageData = null;
 
