@@ -1,6 +1,7 @@
 import axios from 'axios'
 import cacheData from "memory-cache";
 import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
+import { COBALT_BASE_HOST, COBALT_PASSWORD, COBALT_USERNAME } from '../../../cobalt.settings';
 import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } from './cobalt-helpers';
 
 export async function getCobaltPageByUrl(hostName, url, previewUrl) {
@@ -114,7 +115,7 @@ export async function cobaltRequest(url) {
     try {
         const options = {
             method: 'GET',
-            url: process.env.COBALT_BASE_HOST + url,
+            url: COBALT_BASE_HOST + url,
             mode: 'no-cors',
         };
 
@@ -130,10 +131,10 @@ export async function cobaltRequest(url) {
 export async function getCobaltAuthToken() {
     let token = null;
     try {
-        const authData = { "name": process.env.COBALT_USERNAME, "password": process.env.COBALT_PASSWORD }
+        const authData = { "name": COBALT_USERNAME, "password": COBALT_PASSWORD }
         const options = {
             method: 'POST',
-            url: process.env.COBALT_BASE_HOST + '/directory/sessions/login',
+            url: COBALT_BASE_HOST + '/directory/sessions/login',
             mode: 'no-cors',
             data: authData,
             config: {
@@ -159,7 +160,7 @@ export async function getCobaltSitemap(siteName, token) {
     try {
         const options = {
             method: 'GET',
-            url: process.env.COBALT_BASE_HOST + '/core/sites/sitemap?emauth=' + token + '&siteName=' + siteName + '&viewStatus=LIVE',
+            url: COBALT_BASE_HOST + '/core/sites/sitemap?emauth=' + token + '&siteName=' + siteName + '&viewStatus=LIVE',
             mode: 'no-cors'
         };
 
@@ -187,7 +188,7 @@ export async function getCobaltSites() {
             try {
                 const options = {
                     method: 'GET',
-                    url: process.env.COBALT_BASE_HOST + '/core/sites?emauth=' + token,
+                    url: COBALT_BASE_HOST + '/core/sites?emauth=' + token,
                     mode: 'no-cors'
                 };
 
