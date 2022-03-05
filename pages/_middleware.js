@@ -5,6 +5,7 @@ export default function middleware(req) {
   const { pathname } = req.nextUrl
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
   const hostname = req.headers.get('host')
+  console.log(hostname + "/" + pathname)
 
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
