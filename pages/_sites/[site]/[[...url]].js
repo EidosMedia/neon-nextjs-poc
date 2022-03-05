@@ -49,14 +49,21 @@ export async function getStaticPaths({ }) {
 
         paths = sites.reduce((acc1, site, i) => {
             const hostName = site.customAttributes.frontendHostname;
-            const sections = site.sitemap.children.reduce((acc2, section, j) => {
+            let sections = site.sitemap.children.reduce((acc2, section, j) => {
+                const sectionPath = section.path.replace(/^\/|\/$/g, '')
                 return [...acc2, {
                     params: {
                         site: hostName,
-                        url: [section.path]
+                        url: [sectionPath]
                     }
                 }]
             }, [])
+            sections.push({
+                params: {
+                    site: hostName,
+                    url: ['']
+                }
+            })
             return [...acc1, ...sections]
         }, [])
     } catch (e) { console.log(e) }
