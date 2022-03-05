@@ -87,20 +87,20 @@ export async function getStaticProps({ params }) {
         cobaltData
     };
 
-    let revalidate = 5;
+    let revalidate = 60;
     let fallback = {}; // To be used for SWR rehydration of liveblogs
 
     switch (cobaltData.object.data.sys.baseType) {
         case 'webpage':
-            revalidate = 5;
+            revalidate = 60;
             break;
         case 'liveblog':
-            revalidate = 5;
+            revalidate = 60;
             const latestBlogPosts = await cobaltRequest('/api/liveblogs/' + cobaltData.object.data.id + '/posts?emk.site=' + cobaltData.siteContext.site)
             fallback['/api/' + cobaltData.siteContext.site + '/liveblogs/' + cobaltData.object.data.id] = latestBlogPosts
             props['fallback'] = fallback
         default:
-            revalidate = 5;
+            revalidate = 60;
     }
 
     return {
