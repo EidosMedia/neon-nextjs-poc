@@ -1,11 +1,11 @@
 import { SWRConfig } from "swr";
-import Layout from "../../../src/components/Layout/Layout";
-import ArticlePage from "../../../src/components/Page/ArticlePage";
-import LandingPage from "../../../src/components/Page/LandingPage";
-import LiveblogPage from "../../../src/components/Page/LiveblogPage";
-import SectionPage from "../../../src/components/Page/SectionPage";
-import { cobaltRequest, getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
-import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
+import Layout from "../src/components/Layout/Layout";
+import ArticlePage from "../src/components/Page/ArticlePage";
+import LandingPage from "../src/components/Page/LandingPage";
+import LiveblogPage from "../src/components/Page/LiveblogPage";
+import SectionPage from "../src/components/Page/SectionPage";
+import { cobaltRequest, getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../src/lib/cobalt-cms/cobalt-api";
+import { decorateSectionPageCobaltData } from "../src/lib/cobalt-cms/cobalt-helpers";
 
 export default function Page({ cobaltData, fallback }) {
 
@@ -44,36 +44,37 @@ export default function Page({ cobaltData, fallback }) {
 export async function getStaticPaths({ }) {
 
     let paths = [];
-    try {
-        const sites = await getCobaltSites()
+    // try {
+    //     const sites = await getCobaltSites()
 
-        paths = sites.reduce((acc1, site, i) => {
-            const hostName = site.customAttributes.frontendHostname;
-            let sections = site.sitemap.children.reduce((acc2, section, j) => {
-                const sectionPath = section.path.replace(/^\/|\/$/g, '')
-                return [...acc2, {
-                    params: {
-                        site: hostName,
-                        url: [sectionPath]
-                    }
-                }]
-            }, [])
-            sections.push({
-                params: {
-                    site: hostName,
-                    url: ['']
-                }
-            })
-            return [...acc1, ...sections]
-        }, [])
-    } catch (e) { console.log(e) }
+    //     paths = sites.reduce((acc1, site, i) => {
+    //         const hostName = site.customAttributes.frontendHostname;
+    //         let sections = site.sitemap.children.reduce((acc2, section, j) => {
+    //             const sectionPath = section.path.replace(/^\/|\/$/g, '')
+    //             return [...acc2, {
+    //                 params: {
+    //                     site: hostName,
+    //                     url: [sectionPath]
+    //                 }
+    //             }]
+    //         }, [])
+    //         sections.push({
+    //             params: {
+    //                 site: hostName,
+    //                 url: ['']
+    //             }
+    //         })
+    //         return [...acc1, ...sections]
+    //     }, [])
+    // } catch (e) { console.log(e) }
     return {
         paths,
         fallback: 'blocking'
     }
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params, locale }) {
+    console.log("LOCALE: "+ locale)
     let url = "/"
     if (params.url) {
         url = params.url.join('/');
