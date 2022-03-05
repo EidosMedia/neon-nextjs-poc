@@ -73,15 +73,14 @@ export async function getStaticPaths({ }) {
     }
 }
 
-export async function getStaticProps({ params, locale }) {
-    console.log("LOCALE: "+ locale)
+export async function getStaticProps({ params }) {
     let url = "/"
     if (params.url) {
         url = params.url.join('/');
     }
     let site = "default"
-    if (locale) {
-        site = locale
+    if (process.env.SITE) {
+        site = process.env.SITE
     }
     console.log('RENDERING - site: ' + site + ' - path: ' + url);
 
