@@ -118,7 +118,11 @@ export async function cobaltRequest(url) {
             mode: 'no-cors',
         };
 
+        console.log("GETTING "+ COBALT_BASE_HOST + url)
+
         const response = await axios.request(options)
+        console.log("got it")
+        console.log("response")
         result = response.data
     }
     catch (e) {
