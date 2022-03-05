@@ -33,7 +33,7 @@ export default function middleware(req) {
     // the main logic component will happen in pages/sites/[site]/index.js
     // clone is due to https://nextjs.org/docs/messages/middleware-relative-urls 
     const rewriteUrl = req.nextUrl.clone()
-    rewriteUrl.pathname = `/_sites/${currentHost}${pathname}`
+    rewriteUrl.pathname = `/_sites/${currentHost}/${pathname}/`
     console.log(rewriteUrl.pathname)
     return NextResponse.rewrite(rewriteUrl)
   }
