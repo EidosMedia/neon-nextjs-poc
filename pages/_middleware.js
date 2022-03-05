@@ -9,15 +9,12 @@ export default function middleware(req) {
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
   // (in the case of "test.vercel.app", "vercel.app" is the root URL)
-  // const currentHost =
-  //   process.env.NODE_ENV == 'production'
-  //     ? hostname.split(':')[0]
-  //     : 'localhost'
+  const currentHost =
+    process.env.NODE_ENV == 'production'
+      ? hostname.split(':')[0]
+      : 'localhost'
 
-  const currentHost = hostname
-
-  console.log(currentHost)
-  console.log(pathname)
+  //const currentHost = hostname
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents. This can also be done
@@ -36,6 +33,7 @@ export default function middleware(req) {
     // clone is due to https://nextjs.org/docs/messages/middleware-relative-urls 
     const rewriteUrl = req.nextUrl.clone()
     rewriteUrl.pathname = `/_sites/${currentHost}${pathname}`
+    console.log(rewriteUrl.pathname)
     return NextResponse.rewrite(rewriteUrl)
   }
 }

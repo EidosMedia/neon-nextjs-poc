@@ -235,7 +235,7 @@ export function getSiteNameByHostName(hostName, sites) {
     if (sites.length) {
         site = sites.find((site) => site.customAttributes.frontendHostname === hostName)
         if (!site) {
-            site = sites[0]
+            site = sites[1]
         }
     }
     if (site) {

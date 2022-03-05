@@ -186,6 +186,7 @@ export default function Segment({ cobaltData }) {
         let otherHostname = null;
         let otherSiteBaseUrl = null;
         let finalUrl = null;
+        let errorGettingOtherSite = false
         try {
             let sectionUrl = null;
             let siteInfo = null;
@@ -197,7 +198,10 @@ export default function Segment({ cobaltData }) {
             sectionUrl = getObjectMainSection(cobaltData.object.data);
             finalUrl = (otherSiteBaseUrl ? otherSiteBaseUrl : "") + sectionUrl
 
-        } catch (e) { console.log(e) }
+        } catch (e) { 
+            console.log(e);
+            errorGettingOtherSite = true;
+        }
 
         render = <React.Fragment>
             <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
@@ -211,7 +215,7 @@ export default function Segment({ cobaltData }) {
                         </MUILink>
                     </NextLink>
                 </Typography>
-                {isOtherSite ?
+                {isOtherSite && !errorGettingOtherSite ?
                     <Typography sx={{ mx: 2, mb: 1, mt: 2, color: 'primary.main' }} variant="h6" component="div">
                         <span>From </span> 
                         <NextLink href={otherSiteBaseUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
