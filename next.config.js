@@ -2,12 +2,12 @@ const sites = [
   {
     siteKey: 'globe-main',
     //domain: 'globe-main.vercel.app'
-    domain: 'www.globe.com'
+    domain: 'globe-main.vercel.app'
   },
   {
     siteKey: 'globe-italy',
     //domain: 'globe-italy.vercel.app'
-    domain: 'italy.globe.com'
+    domain: 'globe-italy.vercel.app'
   }
 ]
 
