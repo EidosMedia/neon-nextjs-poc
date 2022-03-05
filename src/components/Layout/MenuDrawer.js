@@ -30,17 +30,14 @@ export default function MenuDrawer({ cobaltData }) {
     };
 
     const currentSite = cobaltData.siteContext.site;
-    const siteStructure = cobaltData.siteContext.siteStructure;
-
-    const site = siteStructure.find((site) => site.name === currentSite)
     let logoOverlay = null;
     try {
-        logoOverlay = site.customAttributes.logoOverlay
+        logoOverlay = cobaltData.siteContext.siteStructure.customAttributes.logoOverlay
     } catch (e) { }
 
     let sectionsRender = null;
     try {
-        sectionsRender = site.sitemap.children.map((item, i) => {
+        sectionsRender = cobaltData.siteContext.siteStructure.root.items.map((item, i) => {
             const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
             return (
                 <Link key={i} href={item.path} passHref prefetch={(cobaltData.previewData?false:true)}>
@@ -54,23 +51,6 @@ export default function MenuDrawer({ cobaltData }) {
         console.log(e)
     }
 
-    let sitesRender = null;
-    try {
-        sitesRender = siteStructure
-            .filter((site) => site.name !== currentSite)
-            .map((site, i) => {
-                const url = NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + NEXT_PUBLIC_HTTP_PORT
-                return (
-                    <Link key={i} href={url} passHref prefetch={(cobaltData.previewData?false:true)}>
-                        <ListItem button component="a">
-                            <ListItemText primary={site.title} />
-                        </ListItem>
-                    </Link>
-                )
-            })
-    } catch (e) {
-        console.log(e)
-    }
 
     const list = (
         <Box
@@ -87,10 +67,7 @@ export default function MenuDrawer({ cobaltData }) {
                 </Link>
                 {sectionsRender}
             </List>
-            <Divider />
-            <List>
-                {sitesRender}
-            </List>
+        
         </Box>
     )
 

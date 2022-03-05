@@ -80,8 +80,8 @@ export async function getStaticProps({ params, locale }) {
         url = params.url.join('/');
     }
     let site = "default"
-    if (params.site) {
-        site = params.site
+    if (locale) {
+        site = locale
     }
     console.log('RENDERING - site: ' + site + ' - path: ' + url);
 

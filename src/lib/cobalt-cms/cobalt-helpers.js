@@ -51,6 +51,7 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
         },
         previewData
     }
+    //console.log(JSON.stringify(cobaltData,null,2))
     return cobaltData
 }
 
