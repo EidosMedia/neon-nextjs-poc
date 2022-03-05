@@ -184,6 +184,7 @@ export async function getCobaltSites() {
     } else {
         console.log("fetching sitemap from Cobalt")
         let token = await getCobaltAuthToken();
+        console.log("token: " + token)
         if (token) {
             try {
                 const options = {
