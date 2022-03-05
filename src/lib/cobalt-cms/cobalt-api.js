@@ -197,6 +197,7 @@ export async function getCobaltSite(siteName){
         catch (e){
             console.log(e)
         }
+        console.log("got site structure")
         return result;
     }
 }
