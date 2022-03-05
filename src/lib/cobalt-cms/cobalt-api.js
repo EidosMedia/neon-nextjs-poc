@@ -182,9 +182,9 @@ export async function getCobaltSites() {
         console.log("getting cached sites structure")
         return sites;
     } else {
-        console.log("fetching sitemap from Cobalt")
+        console.log((new Date()).getSeconds() + " - fetching sitemap from Cobalt")
         let token = await getCobaltAuthToken();
-        console.log("token: " + token)
+        console.log((new Date()).getSeconds() + " - token: " + token)
         if (token) {
             try {
                 const options = {
@@ -200,6 +200,7 @@ export async function getCobaltSites() {
                 console.log(e)
             }
         }
+        console.log((new Date()).getSeconds() + " - Got sites");
         if (sites) {
             sites = await Promise.all(sites.result.map(async (site) => {
                 const sitemap = await getCobaltSitemap(site.name, token);
@@ -209,6 +210,7 @@ export async function getCobaltSites() {
                 }
             }))
         }
+        console.log((new Date()).getSeconds() + " - Got sitemaps")
         cacheData.put(cacheKey, sites, COMMON_DATA_CACHE_TTL_SECONDS * 1000);
         return sites;
     }
