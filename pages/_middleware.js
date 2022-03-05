@@ -16,6 +16,9 @@ export default function middleware(req) {
 
   const currentHost = hostname
 
+  console.log(currentHost)
+  console.log(pathname)
+
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents. This can also be done
   // via rewrites to a custom 404 page
