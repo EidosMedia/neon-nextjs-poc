@@ -139,7 +139,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     /> : null} */}
                 {templateName.includes('pic') || templateName.includes('list') ?
                     mediaBlock : null}
-                <Link href={myUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
+                <Link href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <CardActionArea>
                         <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
                             {templateName.includes('head') || templateName.includes('list') ?
@@ -169,20 +169,24 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                      */}
                 {templateName.includes('pic') || templateName.includes('list') ?
                     mediaBlock : null}
-                <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
-                    {templateName.includes('head') || templateName.includes('list') ?
-                        <Typography gutterBottom variant={headlineVariantSm} component="div">
-                            {headline}
-                        </Typography>
-                        : null}
-                    {templateName.includes('sum') || templateName.includes('list') ?
-                        <Typography variant="body2" color="text.secondary">
-                            {summary}
-                            {/* Lizards are a widespread group of squamate reptiles, with over 6,000
+                <Link href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                    <CardActionArea>
+                        <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
+                            {templateName.includes('head') || templateName.includes('list') ?
+                                <Typography gutterBottom variant={headlineVariantSm} component="div">
+                                    {headline}
+                                </Typography>
+                                : null}
+                            {templateName.includes('sum') || templateName.includes('list') ?
+                                <Typography variant="body2" color="text.secondary">
+                                    {summary}
+                                    {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
-                        </Typography>
-                        : null}
-                </CardContent>
+                                </Typography>
+                                : null}
+                        </CardContent>
+                    </CardActionArea>
+                </Link>
             </Card>
         </React.Fragment>
     );
