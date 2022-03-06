@@ -13,6 +13,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
+  console.log((new Date()).getSeconds() + " - begin app")
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (

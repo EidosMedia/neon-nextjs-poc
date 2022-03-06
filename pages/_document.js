@@ -5,7 +5,9 @@ import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 
 export default class MyDocument extends Document {
+  
   render() {
+    console.log((new Date()).getSeconds() + " - begin document render")
     return (
       <Html lang="en">
         <Head>
@@ -31,6 +33,7 @@ export default class MyDocument extends Document {
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
 MyDocument.getInitialProps = async (ctx) => {
+  console.log((new Date()).getSeconds() + " - begin getIntialProps _document")
   // Resolution order
   //
   // On the server:
