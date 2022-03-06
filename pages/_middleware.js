@@ -2,6 +2,7 @@ import { urlObjectKeys } from 'next/dist/shared/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 export default function middleware(req) {
+  console.log((new Date()).getSeconds() + " - middleware start")
   const { pathname } = req.nextUrl
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
   const hostname = req.headers.get('host')
@@ -35,6 +36,7 @@ export default function middleware(req) {
     const rewriteUrl = req.nextUrl.clone()
     rewriteUrl.pathname = `/_sites/${currentHost}${pathname}`
     console.log("rewritten url = " + rewriteUrl.pathname)
+    console.log((new Date()).getSeconds() + " - middleware end")
     return NextResponse.rewrite(rewriteUrl)
   }
 }
