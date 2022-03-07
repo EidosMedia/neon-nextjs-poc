@@ -4,6 +4,7 @@ import ArticlePage from "../../../src/components/Page/ArticlePage";
 import LandingPage from "../../../src/components/Page/LandingPage";
 import LiveblogPage from "../../../src/components/Page/LiveblogPage";
 import SectionPage from "../../../src/components/Page/SectionPage";
+import Segment from "../../../src/components/Segment/Segment";
 import { cobaltRequest, getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
 import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
 
@@ -17,6 +18,10 @@ export default function Page({ cobaltData, fallback }) {
     switch (cobaltData.object.data.sys.baseType) {
         case 'webpage':
             render = <LandingPage cobaltData={cobaltData} pageTitle={pageTitle} />;
+            break;
+        case 'webpagefragment':
+            // For live preview
+            render = <Segment cobaltData={cobaltData} />;
             break;
         case 'section':
             render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
