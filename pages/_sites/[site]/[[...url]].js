@@ -21,6 +21,9 @@ export default function Page({ cobaltData, fallback }) {
         case 'section':
             render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
             break;
+        case 'site':
+            render = null;
+            break;
         case 'liveblog':
             render = (
                 <SWRConfig value={{ fallback }}>
