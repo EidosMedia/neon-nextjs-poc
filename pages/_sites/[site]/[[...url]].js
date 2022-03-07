@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { SWRConfig } from "swr";
 import Layout from "../../../src/components/Layout/Layout";
 import ArticlePage from "../../../src/components/Page/ArticlePage";
@@ -21,7 +22,7 @@ export default function Page({ cobaltData, fallback }) {
             break;
         case 'webpagefragment':
             // For live preview
-            render = <Segment cobaltData={cobaltData} />;
+            render = <Container maxWidth="lg"><Segment cobaltData={cobaltData} /></Container>;
             break;
         case 'section':
             render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
