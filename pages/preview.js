@@ -8,6 +8,7 @@ import Segment from '../src/components/Segment/Segment';
 import Cookies from 'cookies'
 import ArticlePage from '../src/components/Page/ArticlePage';
 import SectionPage from '../src/components/Page/SectionPage';
+import { COBALT_BASE_HOST } from '../cobalt.settings';
 
 export default function Preview({ cobaltData, fallback }) {
     //console.log(cobaltData)
@@ -58,7 +59,9 @@ export async function getServerSideProps(context) {
     let cobaltData = null;
     if (context.previewData) {
         console.log("Preview mode - site: " + context.previewData.site + " - url: " + context.previewData.previewUrl)
-        cobaltData = await getCobaltPreview(context.previewData.site, context.previewData.previewUrl)
+        const reworkedPreviewUrl = COBALT_BASE_HOST + '/' +  context.previewData.previewUrl.replace(/^(?:\/\/|[^/]+)*\//, '') + '&emk.site='+context.previewData.site + '&emk.disableCache=true'
+        console.log("reworked previewUrl: "+ reworkedPreviewUrl)
+        cobaltData = await getCobaltPreview(context.previewData.site, reworkedPreviewUrl)
         console.log("Got cobalt preview data")
     }
     // console.log("PREVIEW DATA")

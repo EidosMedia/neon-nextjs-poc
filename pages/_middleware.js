@@ -2,11 +2,9 @@ import { urlObjectKeys } from 'next/dist/shared/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 export default function middleware(req) {
-  console.log((new Date()).getSeconds() + " - middleware start")
   const { pathname } = req.nextUrl
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
   const hostname = req.headers.get('host')
-  console.log("hostname + pathname = " + hostname + "/" + pathname)
 
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
@@ -35,8 +33,6 @@ export default function middleware(req) {
     // clone is due to https://nextjs.org/docs/messages/middleware-relative-urls 
     const rewriteUrl = req.nextUrl.clone()
     rewriteUrl.pathname = `/_sites/${currentHost}${pathname}`
-    console.log("rewritten url = " + rewriteUrl.pathname)
-    console.log((new Date()).getSeconds() + " - middleware end")
     return NextResponse.rewrite(rewriteUrl)
   }
 }
