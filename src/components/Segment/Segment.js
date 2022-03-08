@@ -191,7 +191,7 @@ export default function Segment({ cobaltData }) {
             let sectionUrl = null;
             let siteInfo = null;
             if (isOtherSite) {
-                console.log("objectMainSite: "+ getObjectMainSite(cobaltData.object.data))
+                console.log("objectMainSite: " + getObjectMainSite(cobaltData.object.data))
                 console.log(cobaltData.siteContext.siteStructure)
                 siteInfo = cobaltData.siteContext.siteStructure.find((site) => site.name === getObjectMainSite(cobaltData.object.data))
                 otherHostname = siteInfo.customAttributes.frontendHostname;
@@ -200,39 +200,40 @@ export default function Segment({ cobaltData }) {
             sectionUrl = getObjectMainSection(cobaltData.object.data);
             finalUrl = (otherSiteBaseUrl ? otherSiteBaseUrl : "") + sectionUrl
 
-        } catch (e) { 
+        } catch (e) {
             console.log(e);
             errorGettingOtherSite = true;
         }
-
-        render = <React.Fragment>
-            <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
-                display="flex"
-                justifyContent="space-between"
-            >
-                <Typography sx={{ mx: 2, my: 1, color: 'primary.main' }} variant="h4" component="h4">
-                    <NextLink href={finalUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
-                        <MUILink variant="h4" underline="hover">
-                            {sectionHeadline}
-                        </MUILink>
-                    </NextLink>
-                </Typography>
-                {isOtherSite && !errorGettingOtherSite ?
-                    <Typography sx={{ mx: 2, mb: 1, mt: 2, color: 'primary.main' }} variant="h6" component="div">
-                        <span>From </span> 
-                        <NextLink href={otherSiteBaseUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
-                            <MUILink variant="h6" underline="always">
-                                {otherHostname}
+        if (!errorGettingOtherSite) {
+            render = <React.Fragment>
+                <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
+                    display="flex"
+                    justifyContent="space-between"
+                >
+                    <Typography sx={{ mx: 2, my: 1, color: 'primary.main' }} variant="h4" component="h4">
+                        <NextLink href={finalUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                            <MUILink variant="h4" underline="hover">
+                                {sectionHeadline}
                             </MUILink>
                         </NextLink>
                     </Typography>
-                    : null}
-            </Box>
-            {/* <Box sx={{ my: 1, borderTop: 2, borderColor: 'grey.500' }}>
+                    {isOtherSite ?
+                        <Typography sx={{ mx: 2, mb: 1, mt: 2, color: 'primary.main' }} variant="h6" component="div">
+                            <span>From </span>
+                            <NextLink href={otherSiteBaseUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                                <MUILink variant="h6" underline="always">
+                                    {otherHostname}
+                                </MUILink>
+                            </NextLink>
+                        </Typography>
+                        : null}
+                </Box>
+                {/* <Box sx={{ my: 1, borderTop: 2, borderColor: 'grey.500' }}>
                 <Typography sx={{ my: 1 }} variant="h4" component="div">{sectionHeadline}</Typography>
             </Box> */}
-            {render}
-        </React.Fragment>
+                {render}
+            </React.Fragment>
+        }
     }
     return render;
 }
