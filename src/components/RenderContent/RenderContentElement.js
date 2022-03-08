@@ -231,7 +231,11 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 if (renderMode && renderMode === 'styled') {
                     render = (
                         <Container sx={{ my: 2 }} maxWidth="sm" component="div">
-                            {render}
+                            <Box display="flex"
+                                justifyContent="center"
+                                alignItems="center">
+                                {render}
+                            </Box>
                         </Container>
                     )
                 }
@@ -398,7 +402,7 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                             {linkImage ? linkImage : null}
                         </Box>
                         <Box sx={{ mx: 2, maxWidth: '70%' }} flexShrink={1}>
-                            <NextLink href={el.attributes.href} passHref prefetch={(cobaltData.previewData?false:true)}>
+                            <NextLink href={el.attributes.href} passHref prefetch={(cobaltData.previewData ? false : true)}>
                                 <MUILink variant="h6" underline="hover" color="secondary">
                                     {linkHeadline}
                                 </MUILink>
