@@ -10,7 +10,8 @@ import { checkIsCloudinaryVideo, findElementsInContentJson, getImageUrl } from '
 import ResourceResolver from '../../utils/ResourceResolver';
 import Image from 'next/image';
 import WeatherWidget from '../Widgets/WeatherWidget';
-import Link from 'next/link';
+import NextLink from 'next/link'
+import { Link as MUILink } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 
 export default function StoryFragment({ cobaltData, gridContext }) {
@@ -55,6 +56,43 @@ export default function StoryFragment({ cobaltData, gridContext }) {
             summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} />
         } catch (e) {
         }
+    }
+
+    let additionalLinks = null;
+    try {
+        additionalLinks = JSON.parse(cobaltData.linkContext.linkData.parameters.customLinks)
+    } catch (e) { }
+
+    console.log("add links")
+    console.log(additionalLinks)
+
+    let additionalLinksInlineRender = null;
+    let additionalLinksBelowRender = null;
+    if (additionalLinks) {
+        additionalLinksInlineRender = additionalLinks
+            .filter((l) => l.show === "inline")
+            .map((l) => {
+                const linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                console.log(linkedObjectUrl)
+                return (
+                    <React.Fragment>
+                        / 
+                        <NextLink href={linkedObjectUrl} passHref>
+                            <MUILink underline="hover" component="span" color="secondary">
+                                {l.headline}
+                            </MUILink>
+                        </NextLink>
+                    </React.Fragment>
+                )
+            })
+
+
+        additionalLinksBelowRender = additionalLinks
+            .filter((l) => l.show === "below")
+            .map((l) => {
+                const linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                console.log(linkedObjectUrl)
+            })
     }
 
     let mainPictureElement = null;
@@ -139,12 +177,12 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     /> : null} */}
                 {templateName.includes('pic') || templateName.includes('list') ?
                     mediaBlock : null}
-                <Link href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                <NextLink href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <CardActionArea>
                         <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
                             {templateName.includes('head') || templateName.includes('list') ?
                                 <Typography gutterBottom variant={headlineVariant} component="div">
-                                    {headline}
+                                    {headline}{additionalLinksInlineRender}
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
@@ -156,7 +194,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 : null}
                         </CardContent>
                     </CardActionArea>
-                </Link>
+                </NextLink>
             </Card>
             <Card square elevation={0} sx={{ display: { xs: 'block', md: 'none' }, borderBottom: 1, borderColor: 'grey.500' }}>
                 {/* {templateName.includes('pic') ?
@@ -169,7 +207,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                      */}
                 {templateName.includes('pic') || templateName.includes('list') ?
                     mediaBlock : null}
-                <Link href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                <NextLink href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <CardActionArea>
                         <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
                             {templateName.includes('head') || templateName.includes('list') ?
@@ -186,7 +224,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 : null}
                         </CardContent>
                     </CardActionArea>
-                </Link>
+                </NextLink>
             </Card>
         </React.Fragment>
     );
