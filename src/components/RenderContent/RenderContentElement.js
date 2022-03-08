@@ -390,7 +390,7 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                         <Box>
                             {linkImage ? linkImage : null}
                         </Box>
-                        <Box sx={{ mx: 2 }} flexShrink={1}>
+                        <Box sx={{ mx: 2, maxWidth: '70%' }} flexShrink={1}>
                             <NextLink href={el.attributes.href} passHref prefetch={(cobaltData.previewData?false:true)}>
                                 <MUILink variant="h6" underline="hover" color="secondary">
                                     {linkHeadline}
