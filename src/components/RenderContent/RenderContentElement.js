@@ -224,10 +224,17 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 //TODO
                 const cdata = jsonElement.elements.filter((el) => el.type = 'CDATA').map((el) => el.cdata)
                 render = (
-                    <div className="GListMap" dangerouslySetInnerHTML={{ __html: cdata }}>
+                    <div dangerouslySetInnerHTML={{ __html: cdata }}>
 
                     </div>
                 );
+                if (renderMode && renderMode === 'styled') {
+                    render = (
+                        <Container sx={{ my: 2 }} maxWidth="sm" component="div">
+                            {render}
+                        </Container>
+                    )
+                }
                 break;
             case 'poll':
                 render = <Poll jsonElement={jsonElement} />;
