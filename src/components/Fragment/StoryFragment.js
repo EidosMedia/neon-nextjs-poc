@@ -72,7 +72,12 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         additionalLinksInlineRender = additionalLinks
             .filter((l) => l.show === "inline")
             .map((l) => {
-                const linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                let linkedObjectUrl = '/'
+                if(cobaltData.previewData){ //TODO manage the link in preview
+                    linkedObjectUrl = '/preview'
+                } else {
+                    linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                }
                 console.log(linkedObjectUrl)
                 return (
                     <React.Fragment>
@@ -90,7 +95,12 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         additionalLinksBelowRender = additionalLinks
             .filter((l) => l.show === "below")
             .map((l) => {
-                const linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                let linkedObjectUrl = '/'
+                if(cobaltData.previewData){ //TODO manage the link in preview
+                    linkedObjectUrl = '/preview'
+                } else {
+                    linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                }
                 console.log(linkedObjectUrl)
             })
     }
