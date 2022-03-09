@@ -26,7 +26,7 @@ export default function LandingPage({ cobaltData, pageTitle }) {
                 display="flex"
                 justifyContent="center"
                 alignItems="center">
-                <Typography sx={{color: 'primary.main'}} variant="h3" component="h3">
+                <Typography sx={{color: 'primary.main'}} variant="h4" component="h4">
                     {pageTitle}
                 </Typography>
             </Box>:null)}

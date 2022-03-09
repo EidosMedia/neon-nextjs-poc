@@ -59,21 +59,21 @@ export default function ArticlePage({ cobaltData }) {
 
     render = (
         <Container maxWidth="lg">
-            <Container sx={{my:2}} maxWidth="sm">
+            <Container sx={{my:2}} maxWidth="md">
                 <Box display="flex"
                     justifyContent="center"
                     alignItems="center">
-                    <Typography variant="h4" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium'}}>
+                    <Typography variant="h3" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium'}}>
                         {headline}
                     </Typography>
                 </Box>
             </Container>
             {summary ?
-                <Container sx={{my:2}} maxWidth="sm">
+                <Container sx={{my:2}} maxWidth="md">
                     <Box display="flex"
                         justifyContent="center"
                         alignItems="center">
-                        <Typography variant="h6" component="h2">
+                        <Typography variant="h5" component="h2">
                             {summary}
                         </Typography>
                     </Box>

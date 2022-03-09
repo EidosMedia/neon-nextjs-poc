@@ -43,9 +43,9 @@ export default function MenuDrawer({ cobaltData }) {
         sectionsRender = site.sitemap.children.map((item, i) => {
             const title = item.title.charAt(0).toUpperCase() + item.title.slice(1)
             return (
-                <Link key={i} href={item.path} passHref prefetch={(cobaltData.previewData?false:true)}>
+                <Link key={i} href={item.path} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <ListItem button component="a">
-                        <ListItemText primary={title} />
+                        <ListItemText disableTypography primary={<Typography variant="h6">{title}</Typography>} />
                     </ListItem>
                 </Link>
             )
@@ -61,9 +61,11 @@ export default function MenuDrawer({ cobaltData }) {
             .map((site, i) => {
                 const url = NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + NEXT_PUBLIC_HTTP_PORT
                 return (
-                    <Link key={i} href={url} passHref prefetch={(cobaltData.previewData?false:true)}>
+                    <Link key={i} href={url} passHref prefetch={(cobaltData.previewData ? false : true)}>
                         <ListItem button component="a">
-                            <ListItemText primary={site.title} />
+
+                            <ListItemText disableTypography primary={<Typography variant="h6">{site.title}</Typography>} />
+
                         </ListItem>
                     </Link>
                 )
@@ -80,9 +82,9 @@ export default function MenuDrawer({ cobaltData }) {
             onKeyDown={handleDrawerToggle}
         >
             <List>
-                <Link key='homeLink' href='/' passHref prefetch={(cobaltData.previewData?false:true)}>
+                <Link key='homeLink' href='/' passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <ListItem button component="a">
-                        <ListItemText primary="Home" />
+                    <ListItemText disableTypography primary={<Typography variant="h6">Home</Typography>} />
                     </ListItem>
                 </Link>
                 {sectionsRender}
@@ -130,47 +132,47 @@ export default function MenuDrawer({ cobaltData }) {
                         </Box>
                     </Toolbar>
                 </AppBar>
-                {currentSite === 'express-website' && cobaltData.pageContext.url === '/'?
-                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                    <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
-                        <Box sx={{ px: 2, borderRight: 1 }}>
-                            <Typography variant="h5" component="div">
-                                Coronavirus
-                            </Typography>
-                        </Box>
-                        <Box sx={{ px: 2, borderRight: 1 }}>
-                            <Typography variant="h5" component="div">
-                                Ukraine Crisis
-                            </Typography>
-                        </Box>
-                        <Box sx={{ px: 2, borderRight: 1 }}>
-                            <Typography variant="h5" component="div">
-                                Winter Olympics
-                            </Typography>
-                        </Box>
-                        <Box sx={{ px: 2, borderRight: 1 }}>
-                            <Typography variant="h5" component="div">
-                                Markets
-                            </Typography>
-                        </Box>
-                        <Box sx={{ px: 2, borderRight: 1 }}>
-                            <Typography variant="h5" component="div">
-                                Climate Crisis
-                            </Typography>
-                        </Box>
-                        <Box sx={{ px: 2 }}>
-                            <Typography variant="h5" component="div">
-                                Champions League
-                            </Typography>
-                        </Box>
+                {currentSite === 'express-website' && cobaltData.pageContext.url === '/' ?
+                    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                        <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
+                            <Box sx={{ px: 2, borderRight: 1 }}>
+                                <Typography variant="h4" component="div">
+                                    Coronavirus
+                                </Typography>
+                            </Box>
+                            <Box sx={{ px: 2, borderRight: 1 }}>
+                                <Typography variant="h4" component="div">
+                                    Ukraine Crisis
+                                </Typography>
+                            </Box>
+                            <Box sx={{ px: 2, borderRight: 1 }}>
+                                <Typography variant="h4" component="div">
+                                    Winter Olympics
+                                </Typography>
+                            </Box>
+                            <Box sx={{ px: 2, borderRight: 1 }}>
+                                <Typography variant="h4" component="div">
+                                    Markets
+                                </Typography>
+                            </Box>
+                            <Box sx={{ px: 2, borderRight: 1 }}>
+                                <Typography variant="h4" component="div">
+                                    Climate Crisis
+                                </Typography>
+                            </Box>
+                            <Box sx={{ px: 2 }}>
+                                <Typography variant="h4" component="div">
+                                    Champions League
+                                </Typography>
+                            </Box>
 
-                        {/* <Chip label="Markets Corection" />
+                            {/* <Chip label="Markets Corection" />
                     <Chip label="Winter Olympics" />
                     <Chip label="Football" />
                     <Chip label="Climate Crisis" /> */}
-                    </Stack>
-                </Box>
-                :<Box sx={{ display: { xs: 'none', md: 'block' } }}>&nbsp;</Box>} 
+                        </Stack>
+                    </Box>
+                    : <Box sx={{ display: { xs: 'none', md: 'block' } }}>&nbsp;</Box>}
                 <Drawer
                     anchor="left"
                     open={open}
@@ -179,7 +181,7 @@ export default function MenuDrawer({ cobaltData }) {
                     {list}
                 </Drawer>
             </React.Fragment>
-            <Toolbar sx={{ display: { sm: 'block', md: 'none' } }}  />
+            <Toolbar sx={{ display: { sm: 'block', md: 'none' } }} />
         </div>
     );
 }

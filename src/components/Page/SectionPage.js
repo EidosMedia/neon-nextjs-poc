@@ -15,7 +15,7 @@ export default function SectionPage({ cobaltData, pageTitle }) {
                     display="flex"
                     justifyContent="center"
                     alignItems="center">
-                    <Typography sx={{ color: 'primary.main' }} variant="h3" component="h3">
+                    <Typography sx={{ color: 'primary.main' }} variant="h2" component="h2">
                         {pageTitle}
                     </Typography>
                 </Box> : null)}

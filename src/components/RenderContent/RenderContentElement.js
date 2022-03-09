@@ -54,8 +54,8 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 )
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="sm">
-                            <Typography variant="h4" component="h2">
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <Typography variant="h3" component="h2">
                                 {render}
                             </Typography>
                         </Container>
@@ -70,7 +70,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 )
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="sm">
+                        <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="h5" component="h3">
                                 {render}
                             </Typography>
@@ -87,7 +87,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 if (renderMode && renderMode === 'styled') {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="h6" component="h4">
+                            <Typography variant="body1" component="h4">
                                 {render}
                             </Typography>
                         </Container>
@@ -102,7 +102,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="sm">
+                        <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="body1" component="p">
                                 {render}
                             </Typography>
@@ -118,7 +118,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="sm" component="ul">
+                        <Container sx={{ my: 1 }} maxWidth="md" component="ul">
                             {render}
                         </Container>
                     )
@@ -132,7 +132,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="sm" component="ol">
+                        <Container sx={{ my: 1 }} maxWidth="md" component="ol">
                             {render}
                         </Container>
                     )
@@ -230,7 +230,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 2 }} maxWidth="sm" component="div">
+                        <Container sx={{ my: 2 }} maxWidth="md" component="div">
                             <Box display="flex"
                                 justifyContent="center"
                                 alignItems="center">
@@ -370,50 +370,52 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                     </React.Fragment>
                 )
                 const linkedObject = cobaltData.pageContext.nodes[el.attributes['data-id']]
-                const linkedObjectHelper = getCobaltDataHelper(linkedObject);
+                if (linkedObject) {
+                    const linkedObjectHelper = getCobaltDataHelper(linkedObject);
 
-                let linkedObjectMainPictureElement = null;
-                let linkedObjectMainImageUrl = null;
-                try {
-                    linkedObjectMainPictureElement = findElementsInContentJson(['mediagroup'], linkedObjectHelper.content)[0].elements[0];
-                    linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square")
-                    if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') { //TODO fix this
-                        const strIndex = linkedObjectMainImageUrl.lastIndexOf('/')
-                        linkedObjectMainImageUrl = linkedObjectMainImageUrl.slice(0, strIndex) + '/format/thumb' + linkedObjectMainImageUrl.slice(strIndex)
-                        linkedObjectMainImageUrl = ResourceResolver(linkedObjectMainImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-                    } else {
-                        linkedObjectMainImageUrl = null;
+                    let linkedObjectMainPictureElement = null;
+                    let linkedObjectMainImageUrl = null;
+                    try {
+                        linkedObjectMainPictureElement = findElementsInContentJson(['mediagroup'], linkedObjectHelper.content)[0].elements[0];
+                        linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square")
+                        if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') { //TODO fix this
+                            const strIndex = linkedObjectMainImageUrl.lastIndexOf('/')
+                            linkedObjectMainImageUrl = linkedObjectMainImageUrl.slice(0, strIndex) + '/format/thumb' + linkedObjectMainImageUrl.slice(strIndex)
+                            linkedObjectMainImageUrl = ResourceResolver(linkedObjectMainImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+                        } else {
+                            linkedObjectMainImageUrl = null;
+                        }
+                    } catch (e) {
+                        console.log(e)
                     }
-                } catch (e) {
-                    console.log(e)
-                }
 
-                const imageWidth = 100;
-                const imageHeight = 100;
-                let linkImage = null;
-                if (linkedObjectMainImageUrl) {
-                    linkImage = <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
+                    const imageWidth = 100;
+                    const imageHeight = 100;
+                    let linkImage = null;
+                    if (linkedObjectMainImageUrl) {
+                        linkImage = <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
+                    }
+                    blockRender = (
+                        <Box key={i} display="flex"
+                            justifyContent="flexStart"
+                            alignItems="center">
+                            <Box>
+                                {linkImage ? linkImage : null}
+                            </Box>
+                            <Box sx={{ mx: 2, maxWidth: '70%' }} flexShrink={1}>
+                                <NextLink href={el.attributes.href} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                                    <MUILink variant="h6" underline="hover" color="secondary">
+                                        {linkHeadline}
+                                    </MUILink>
+                                </NextLink>
+                            </Box>
+                        </Box>
+                    )
                 }
-                blockRender = (
-                    <Box key={i} display="flex"
-                        justifyContent="flexStart"
-                        alignItems="center">
-                        <Box>
-                            {linkImage ? linkImage : null}
-                        </Box>
-                        <Box sx={{ mx: 2, maxWidth: '70%' }} flexShrink={1}>
-                            <NextLink href={el.attributes.href} passHref prefetch={(cobaltData.previewData ? false : true)}>
-                                <MUILink variant="h6" underline="hover" color="secondary">
-                                    {linkHeadline}
-                                </MUILink>
-                            </NextLink>
-                        </Box>
-                    </Box>
-                )
                 return blockRender;
             })
         }
-    } catch (e) { }
+    } catch (e) { console.log(e) }
 
     render = (
         <Container maxWidth="sm" sx={{ my: 4, border: 2, borderColor: 'grey.500' }}>
@@ -425,7 +427,7 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                 {headlineBlock ?
                     <Box key="extra-links-headline" sx={{ borderBottom: 1, borderColor: 'grey.500', my: 1 }}>
 
-                        <Typography variant="h5" component="h5" gutterBottom>
+                        <Typography variant="h6" component="h5" gutterBottom>
                             {headlineBlock}
                         </Typography>
 

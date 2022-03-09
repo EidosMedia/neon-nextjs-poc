@@ -29,7 +29,7 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                 if (renderMode && renderMode === 'styled') {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="h4" component="h2">
+                            <Typography variant="h5" component="h2">
                                 {render}
                             </Typography>
                         </Container>
@@ -188,13 +188,13 @@ function ContentLink({ jsonElement, excludeElements, cobaltData }) {
     } catch (e) { }
 
     render = (
-        <Container sx={{ my: 1 }} maxWidth="md" sx={{ my: 4, border: 2, borderColor: 'grey.500' }}>
+        <Container maxWidth="md" sx={{ my: 4, border: 2, borderColor: 'grey.500' }}>
             <Box display="flex"
                 justifyContent="flexStart"
                 alignItems="flexStart"
             >
                 <Box key="extra-links-headline">
-                    <Typography variant="h5" component="h5" gutterBottom>READ</Typography>
+                    <Typography variant="h6" component="h5" gutterBottom>READ</Typography>
                 </Box>
                 <Box sx={{ mx: 2 }} flexShrink={1}>
                     <NextLink href={linkUrl} passHref prefetch={(cobaltData.previewData?false:true)}>

@@ -82,7 +82,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 console.log(linkedObjectUrl)
                 return (
                     <React.Fragment>
-                        / 
+                        <span> / </span> 
                         <NextLink href={linkedObjectUrl} passHref>
                             <MUILink underline="hover" component="span" color="secondary">
                                 {l.headline}
@@ -104,7 +104,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 }
                 console.log(linkedObjectUrl)
                 return (
-                    <Typography variant="body2" component="li">
+                    <Typography variant="body1" component="li">
                         <NextLink href={linkedObjectUrl} passHref>
                             <MUILink underline="hover" color="grey.500">
                                 {l.headline}
@@ -148,8 +148,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         console.log(e)
     }
 
-    let headlineVariant = "h6";
-    let headlineVariantSm = "h4";
+    
 
     // let image = dummyImage_rectangle;
     let image = mainPictureRectangleUrl;
@@ -163,18 +162,22 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         image = mainPictureLandscapeUrl;
         imageWidth = 1024;
         imageHeight = 576;
-
-        if (gridContext.md < 3) {
-            headlineVariant = "body2"
-            headlineVariantSm = "h6";
-        } else if (gridContext.md > 5) {
-            headlineVariant = "h5"
-            headlineVariantSm = "h5";
-        } else {
-            headlineVariant = "h7"
-            headlineVariantSm = "h6";
-        }
     }
+
+    let headlineVariant = "h4";
+    let headlineVariantSm = "h4";
+
+    if (gridContext.md >= 6){
+        headlineVariant = "h4"
+        headlineVariantSm = "h2";
+    } else if (gridContext.md >= 3){
+        headlineVariant = "h6"
+        headlineVariantSm = "h4";
+    } else {
+        headlineVariant = "body1"
+        headlineVariantSm = "h6";
+    }
+
 
     if (templateName.includes('picsmall')) {
         image = mainPictureSquareUrl
@@ -213,7 +216,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
-                                <Typography sx={{ mb:2 }} variant="body2" color="text.secondary">
+                                <Typography sx={{ mb:2 }} variant="body1" color="text.secondary">
                                     {summary}
                                     {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
@@ -244,7 +247,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
-                                <Typography sx={{ mb:2 }} variant="body2" color="text.secondary">
+                                <Typography sx={{ mb:2 }} variant="h6" color="text.secondary">
                                     {summary}
                                     {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}

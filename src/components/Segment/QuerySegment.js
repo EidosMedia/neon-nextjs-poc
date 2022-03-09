@@ -24,7 +24,7 @@ export default function QuerySegment({ cobaltData }) {
     if (kicker) {
         render = <React.Fragment>.
             <Box display="flex" justifyContent="space-between">
-                <Typography sx={{ mx: 0, my: 1, color: 'secondary.main' }} variant="h5" component="h5">
+                <Typography sx={{ mx: 0, my: 1, color: 'secondary.main' }} variant="h6" component="h5">
                     {kicker}
                 </Typography>
             </Box>
