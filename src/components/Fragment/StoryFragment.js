@@ -213,7 +213,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography sx={{ mb:2 }} variant="body2" color="text.secondary">
                                     {summary}
                                     {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
@@ -244,7 +244,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography sx={{ mb:2 }} variant="body2" color="text.secondary">
                                     {summary}
                                     {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
