@@ -32,7 +32,7 @@ const theme = createTheme({
     },
     h4: {
       fontFamily: '"Libre Franklin", sans-serif',
-      fontWeight: 400,
+      fontWeight: 500,
       fontStyle: 'normal'
     },
     h5: {
@@ -42,7 +42,7 @@ const theme = createTheme({
     },
     h6: {
       fontFamily: '"Libre Franklin", sans-serif',
-      fontWeight: 400,
+      fontWeight: 500,
       fontStyle: 'normal',
       lineHeight: 'normal'
     },
