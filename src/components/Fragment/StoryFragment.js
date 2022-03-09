@@ -13,6 +13,7 @@ import WeatherWidget from '../Widgets/WeatherWidget';
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import { CardActionArea } from '@mui/material';
+import { Box } from '@mui/system';
 
 export default function StoryFragment({ cobaltData, gridContext }) {
 
@@ -102,7 +103,23 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
                 }
                 console.log(linkedObjectUrl)
+                return (
+                    <Typography variant="body2" component="li">
+                        <NextLink href={linkedObjectUrl} passHref>
+                            <MUILink underline="hover" color="grey.500">
+                                {l.headline}
+                            </MUILink>
+                        </NextLink>
+                    </Typography>
+                )
             })
+        if(additionalLinksBelowRender){
+            additionalLinksBelowRender = (
+                <Box sx={{pb:1}}>
+                    {additionalLinksBelowRender}
+                </Box>
+            )
+        }
     }
 
     let mainPictureElement = null;
@@ -189,7 +206,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     mediaBlock : null}
                 <NextLink href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <CardActionArea>
-                        <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
+                        <CardContent sx={{ py: 0, px: 0 }}>
                             {templateName.includes('head') || templateName.includes('list') ?
                                 <Typography gutterBottom variant={headlineVariant} component="div">
                                     {headline}{additionalLinksInlineRender}
@@ -205,6 +222,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                         </CardContent>
                     </CardActionArea>
                 </NextLink>
+                {additionalLinksBelowRender}
             </Card>
             <Card square elevation={0} sx={{ display: { xs: 'block', md: 'none' }, borderBottom: 1, borderColor: 'grey.500' }}>
                 {/* {templateName.includes('pic') ?
@@ -219,10 +237,10 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     mediaBlock : null}
                 <NextLink href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <CardActionArea>
-                        <CardContent sx={{ py: 1, px: 0, '&:last-child': { pb: 1 } }}>
+                        <CardContent sx={{ py: 0, px: 0 }}>
                             {templateName.includes('head') || templateName.includes('list') ?
                                 <Typography gutterBottom variant={headlineVariantSm} component="div">
-                                    {headline}
+                                    {headline}{additionalLinksInlineRender}
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
@@ -235,6 +253,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                         </CardContent>
                     </CardActionArea>
                 </NextLink>
+                {additionalLinksBelowRender}
             </Card>
         </React.Fragment>
     );
