@@ -104,7 +104,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 }
                 console.log(linkedObjectUrl)
                 return (
-                    <Typography variant="body1" component="li">
+                    <Typography variant="body2" component="li">
                         <NextLink href={linkedObjectUrl} passHref>
                             <MUILink underline="hover" color="grey.500">
                                 {l.headline}
