@@ -94,10 +94,6 @@ export async function getStaticProps({ params }) {
     console.log('RENDERING - site: ' + site + ' - path: ' + url);
 
     let cobaltData = await getCobaltPageByUrl(site, url);
-    // if (cobaltData.object.data.sys.baseType === 'section') {
-    //     console.log("Section page: performing a search instead")
-    //     cobaltData = await decorateSectionPageCobaltData(cobaltData)
-    // }
 
     let props = {
         cobaltData
