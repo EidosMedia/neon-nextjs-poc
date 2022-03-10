@@ -1,12 +1,12 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { getSearchResultObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getSectionChildrenObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 
 export default function SectionPage({ cobaltData, pageTitle }) {
     let render = null;
     
-    const searchResults = getSearchResultObjects(cobaltData);
+    const searchResults = getSectionChildrenObjects(cobaltData);
 
     render = (
         <Container maxWidth="lg">

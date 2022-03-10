@@ -43,7 +43,8 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
             url: url,
             nodes: pageData.model.nodes,
             resourcesUrls: pageData.resourcesUrls,
-            nodesUrls: pageData.nodesUrls
+            nodesUrls: pageData.nodesUrls,
+            children: pageData.model.children
         },
         siteContext: {
             site: site,
@@ -109,6 +110,24 @@ export function getSearchResultObjects(cobaltData) {
             .searchResults.result
             .map((child) => {
                 const objNodeData = child.nodeData
+                const linkContext = {
+                    linkData: null,
+                    linkTemplate: 'list'
+                }
+                const objCobaltData = buildCobaltDataForNestedObject(objNodeData, cobaltData, linkContext)
+                return objCobaltData
+            })
+    } catch (e) { console.log(e) }
+
+    return resultObjects
+}
+
+export function getSectionChildrenObjects(cobaltData) {
+    let resultObjects = [];
+    try {
+        resultObjects = cobaltData.pageContext.children
+            .map((child) => {
+                const objNodeData = cobaltData.pageContext.nodes[child]
                 const linkContext = {
                     linkData: null,
                     linkTemplate: 'list'

@@ -64,9 +64,6 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         additionalLinks = JSON.parse(cobaltData.linkContext.linkData.parameters.customLinks)
     } catch (e) { }
 
-    console.log("add links")
-    console.log(additionalLinks)
-
     let additionalLinksInlineRender = null;
     let additionalLinksBelowRender = null;
     if (additionalLinks) {
@@ -79,7 +76,6 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 } else {
                     linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
                 }
-                console.log(linkedObjectUrl)
                 return (
                     <React.Fragment>
                         <span> / </span> 
@@ -102,7 +98,6 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 } else {
                     linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
                 }
-                console.log(linkedObjectUrl)
                 return (
                     <Typography variant="body2" component="li">
                         <NextLink href={linkedObjectUrl} passHref>
