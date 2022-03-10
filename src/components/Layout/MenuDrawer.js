@@ -38,6 +38,12 @@ export default function MenuDrawer({ cobaltData }) {
         logoOverlay = site.customAttributes.logoOverlay
     } catch (e) { }
 
+    try {
+        if (!logoOverlay && site.customAttributes.siteCategory !== 'main'){
+            logoOverlay = site.name.split('-')[1]
+        }
+    } catch (e) { }
+
     let sectionsRender = null;
     try {
         sectionsRender = site.sitemap.children.map((item, i) => {
@@ -84,7 +90,7 @@ export default function MenuDrawer({ cobaltData }) {
             <List>
                 <Link key='homeLink' href='/' passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <ListItem button component="a">
-                    <ListItemText disableTypography primary={<Typography variant="h6">Home</Typography>} />
+                        <ListItemText disableTypography primary={<Typography variant="h6">Home</Typography>} />
                     </ListItem>
                 </Link>
                 {sectionsRender}

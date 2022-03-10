@@ -80,7 +80,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     <React.Fragment>
                         <span> / </span> 
                         <NextLink href={linkedObjectUrl} passHref>
-                            <MUILink underline="hover" component="span" color="secondary">
+                            <MUILink underline="hover" component="span" color="secondary" sx={{fontWeight:500}}>
                                 {l.headline}
                             </MUILink>
                         </NextLink>
