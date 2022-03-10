@@ -12,3 +12,5 @@ export const COBALT_PASSWORD="05rh4OCw6hUx"
 export const COBALT_BASE_HOST="https://cobalt-poc.demomedia.eidosmedia.io"
 export const NEXT_PUBLIC_HTTP_PROTO="https"
 export const NEXT_PUBLIC_HTTP_PORT="443"
+
+export const DEV_MODE=false

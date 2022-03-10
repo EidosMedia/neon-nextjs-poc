@@ -12,14 +12,21 @@ export async function getCobaltPageByUrl(hostName, url, previewUrl) {
     } catch (e) { }
 
     const siteName = getSiteNameByHostName(hostName, siteStructure)
-    let pageData = null;
+    let cobaltData = null
 
-    const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + siteName
-    console.log("Getting cobalt data from " + requestUrl)
-    pageData = await cobaltRequest(requestUrl)
+    if (siteName) {
+        let pageData = null;
 
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null);
+        const requestUrl = '/api/pages/?url=' + url + '&emk.site=' + siteName
+        console.log("Getting cobalt data from " + requestUrl)
+        pageData = await cobaltRequest(requestUrl)
 
+        cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null);
+    } else {
+        cobaltData = {
+            error: 'not-found'
+        }
+    }
     return cobaltData;
 }
 
