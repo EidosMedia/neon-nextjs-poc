@@ -164,7 +164,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
 
     if (gridContext.md >= 6){
         headlineVariant = "h4"
-        headlineVariantSm = "h2";
+        headlineVariantSm = "h4";
     } else if (gridContext.md >= 3){
         headlineVariant = "h6"
         headlineVariantSm = "h4";
