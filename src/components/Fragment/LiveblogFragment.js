@@ -75,10 +75,10 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
         }
 
         render = (
-            <Card square elevation={0} sx={{ borderTop: 1, borderBottom: 1, borderColor: 'grey.500' }}>
+            <Card square elevation={0} sx={{ border: 2, p:1, mb:1, borderColor: 'secondary.main' }}>
                 <Link href={myUrl} passHref prefetch={(cobaltData.previewData ? false : true)}>
                     <CardActionArea>
-                        <Typography sx={{ my: 0 }} variant="h6" component="div">
+                        <Typography sx={{ my: 0 }} variant="h5" component="div">
                             {pulsatingIcon}
                             {headline}
                         </Typography>
@@ -93,7 +93,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
                                             {(length - 1 === i ? null : <TimelineConnector />)}
                                         </TimelineSeparator>
                                         <TimelineContent sx={{ pr: 0 }}>
-                                            <Typography variant="h6">
+                                            <Typography variant="body1">
                                                 <RenderContentElement jsonElement={findElementsInContentJson(['h1'], postContent.content)[0]} />
                                             </Typography>
                                         </TimelineContent>
