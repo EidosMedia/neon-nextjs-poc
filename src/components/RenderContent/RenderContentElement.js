@@ -155,7 +155,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 break;
             case "figure":
                 if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
-                    render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} />
+                    render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
                 } else {
                     render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
                 }
@@ -439,19 +439,27 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
     return render;
 }
 
-export function CloudinaryVideo({ jsonElement, excludeElements }) {
+export function CloudinaryVideo({ jsonElement, excludeElements, renderMode, cobaltData }) {
     const videoSrc = jsonElement.elements[0].attributes.src
     const videoSrcArray = videoSrc.split('/')
     const videoFileName = videoSrcArray.slice(-1)[0]
     const videoId = videoFileName.substring(0, videoFileName.lastIndexOf('.'))
-    const render = (
-        <Container sx={{ my: 4 }} maxWidth="lg">
-            <Box display="flex"
-                justifyContent="center"
-                alignItems="center">
-                <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
-            </Box>
-        </Container>
+    let render = (
+        <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
     )
+    
+    if (renderMode && renderMode === 'styled') {
+        render = (
+            <Container sx={{ my: 4 }} maxWidth="lg">
+                <Box display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    {render}
+                </Box>
+            </Container>
+        )
+    }
+
+    
     return render
 } 
