@@ -12,5 +12,19 @@ export const widgetsConfig = {
                 defaultValue: 'Today'
             }
         ]
+    },
+    ucl:{
+        params: [
+            {
+                name: 'match',
+                acceptedValues: ['Liverpool-Inter','Bayern-Salzburg','Madrid-Paris','ManCity-SportingCP'],
+                defaultValue: 'Liverpool-Inter'
+            },
+            {
+                name: 'type',
+                acceptedValues: ['Simple','Detailed'],
+                defaultValue: 'Simple'
+            }
+        ]
     }
 }

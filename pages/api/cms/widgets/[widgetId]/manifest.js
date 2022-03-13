@@ -20,15 +20,19 @@ function runMiddleware(req, res, fn) {
 }
 
 export default async (req, res) => {
-    await runMiddleware(req, res, cors)
-    console.log(req.query);
-    const widgetId = req.query.widgetId;
-    let response = {};
-    switch(widgetId){
-        case 'weather-widget':
-            response = widgetsConfig.weather
-            
-    }
-    res.json(response)
+  await runMiddleware(req, res, cors)
+  console.log(req.query);
+  const widgetId = req.query.widgetId;
+  let response = {};
+  switch (widgetId) {
+    case 'weather-widget':
+      response = widgetsConfig.weather
+      break;
+    case 'champions-league':
+      response = widgetsConfig.ucl
+      break;
+
+  }
+  res.json(response)
 
 }
