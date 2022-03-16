@@ -67,9 +67,9 @@ export default function Segment({ cobaltData }) {
                     <Grid item xs={12} md={4}>
                         {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 4 }} />)}
                     </Grid>
-                    {opinionObjects.slice(0, 3).map((object, i) => (
-                        <Grid key={i} item xs={12} md={4}>
-                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
+                    {opinionObjects.map((object, i) => (
+                        <Grid key={i} item xs={12} md={3}>
+                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />
                         </Grid>
                     ))}
                     {extraObjects.map((object, i) => (
