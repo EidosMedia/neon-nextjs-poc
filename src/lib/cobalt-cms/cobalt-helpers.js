@@ -1,6 +1,5 @@
 import { DataObjectTwoTone, SixteenMp } from '@mui/icons-material';
 import { xml2json } from 'xml-js'
-import { DEV_MODE } from '../../../cobalt.settings';
 import { searchCobalt } from './cobalt-api';
 
 export function getCobaltDataHelper(data) {
@@ -254,7 +253,7 @@ export function getSiteNameByHostName(hostName, sites) {
     let site = null
     if (sites.length) {
         site = sites.find((site) => site.customAttributes.frontendHostname === hostName)
-        if (!site && DEV_MODE) {
+        if (!site && process.env.DEV_MODE) {
             site = sites.find((site) => site.customAttributes.siteCategory === 'main')
         }
     }

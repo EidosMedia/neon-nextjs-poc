@@ -4,7 +4,6 @@ import { Link as MUILink } from '@mui/material';
 import React from "react";
 import { getCobaltDataHelper, getDwxLinkedObjects, getObjectMainSection, getObjectMainSite, isCurrentSiteContent } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
-import { NEXT_PUBLIC_HTTP_PORT, NEXT_PUBLIC_HTTP_PROTO } from "../../../cobalt.settings";
 
 export default function Segment({ cobaltData }) {
     let render = null;
@@ -193,7 +192,7 @@ export default function Segment({ cobaltData }) {
             if (isOtherSite) {
                 siteInfo = cobaltData.siteContext.siteStructure.find((site) => site.name === getObjectMainSite(cobaltData.object.data))
                 otherHostname = siteInfo.customAttributes.frontendHostname;
-                otherSiteBaseUrl = NEXT_PUBLIC_HTTP_PROTO + '://' + otherHostname + ':' + NEXT_PUBLIC_HTTP_PORT
+                otherSiteBaseUrl = process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + otherHostname + ':' + process.env.NEXT_PUBLIC_HTTP_PORT
             }
             sectionUrl = getObjectMainSection(cobaltData.object.data);
             finalUrl = (otherSiteBaseUrl ? otherSiteBaseUrl : "") + sectionUrl

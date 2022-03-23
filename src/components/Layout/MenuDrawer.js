@@ -19,7 +19,6 @@ import LanguageIcon from '@mui/icons-material/Language';
 import productLogo from '../../../public/static/img/head-logo.png'
 import Link from 'next/link';
 import { getCobaltDataHelper } from '../../lib/cobalt-cms/cobalt-helpers';
-import { NEXT_PUBLIC_HTTP_PORT, NEXT_PUBLIC_HTTP_PROTO } from '../../../cobalt.settings';
 
 export default function MenuDrawer({ cobaltData }) {
 
@@ -65,7 +64,7 @@ export default function MenuDrawer({ cobaltData }) {
         sitesRender = siteStructure
             .filter((site) => site.name !== currentSite)
             .map((site, i) => {
-                const url = NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + NEXT_PUBLIC_HTTP_PORT
+                const url = process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + process.env.NEXT_PUBLIC_HTTP_PORT
                 return (
                     <Link key={i} href={url} passHref prefetch={(cobaltData.previewData ? false : true)}>
                         <ListItem button component="a">
