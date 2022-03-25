@@ -95,7 +95,7 @@ export async function getStaticProps({ params }) {
     if (params.site) {
         site = params.site
     }
-    console.log('RENDERING - site: ' + site + ' - path: ' + url);
+    console.log('RENDERING - site: ' + site + ' - path: ' + url + ' - DEV MODE: ' + process.env.DEV_MODE);
 
     let cobaltData = await getCobaltPageByUrl(site, url);
 

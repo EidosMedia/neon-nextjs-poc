@@ -253,7 +253,7 @@ export function getSiteNameByHostName(hostName, sites) {
     let site = null
     if (sites.length) {
         site = sites.find((site) => site.customAttributes.frontendHostname === hostName)
-        if (!site && process.env.DEV_MODE) {
+        if (!site && process.env.DEV_MODE === 'true') {
             site = sites.find((site) => site.customAttributes.siteCategory === 'main')
         }
     }
