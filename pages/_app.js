@@ -21,7 +21,11 @@ export default function MyApp(props) {
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      ga.pageview(url)
+      if(window && window.location){
+        ga.pageview(window.location)
+      } else {
+        console.log("cannot log to GA")
+      }
     }
     //When the component is mounted, subscribe to router changes
     //and log those page views
