@@ -1,4 +1,5 @@
 import { Container } from "@mui/material";
+import React from "react";
 import { SWRConfig } from "swr";
 import Layout from "../../../src/components/Layout/Layout";
 import ArticlePage from "../../../src/components/Page/ArticlePage";
@@ -9,6 +10,7 @@ import SectionPage from "../../../src/components/Page/SectionPage";
 import Segment from "../../../src/components/Segment/Segment";
 import { cobaltRequest, getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
 import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
+import { getMetaHeader } from "../../../src/lib/helpers";
 
 export default function Page({ cobaltData, fallback }) {
 
@@ -46,9 +48,12 @@ export default function Page({ cobaltData, fallback }) {
         }
     }
     return (
-        <Layout cobaltData={cobaltData}>
-            {render}
-        </Layout>
+        <React.Fragment>
+            {getMetaHeader(cobaltData)}
+            <Layout cobaltData={cobaltData}>
+                {render}
+            </Layout>
+        </React.Fragment>
     )
 }
 
@@ -105,7 +110,7 @@ export async function getStaticProps({ params }) {
 
     let revalidate = 60;
     let fallback = {}; // To be used for SWR rehydration of liveblogs
-    
+
     if (!cobaltData.error) {
         switch (cobaltData.object.data.sys.baseType) {
             case 'webpage':
