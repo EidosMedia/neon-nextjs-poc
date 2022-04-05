@@ -10,6 +10,7 @@ try {
     console.log("Error parsing GA key")
     console.log(e)
 }
+console.log("gaKey: " + gaKey)
 const analyticsDataClient = new BetaAnalyticsDataClient({
     credentials: {
         client_email: process.env.GA_ID,
