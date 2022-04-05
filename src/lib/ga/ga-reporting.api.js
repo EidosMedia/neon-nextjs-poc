@@ -13,7 +13,7 @@ try {
 console.log("gaKey: " + gaKey)
 const analyticsDataClient = new BetaAnalyticsDataClient({
     credentials: {
-        client_email: process.env.GA_ID,
+        client_email: process.env.GA_ID, // WARNING: on Heroku config vars, the GA_ID must NOT be surrounded by quotes!
         private_key:  gaKey
     }
 });
