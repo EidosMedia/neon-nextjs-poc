@@ -3,10 +3,17 @@ import { getDwxLinkedObjects } from '../cobalt-cms/cobalt-helpers';
 const propertyId = '308647898';
 const credentialsJsonPath = './tmp/HeadlessPoC-191facb738e2.json';
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+let gaKey = ''
+try {
+    gaKey = JSON.parse(process.env.GA_KEY)
+}catch(e){
+    console.log("Error parsing GA key")
+    console.log(e)
+}
 const analyticsDataClient = new BetaAnalyticsDataClient({
     credentials: {
         client_email: process.env.GA_ID,
-        private_key: JSON.parse(process.env.GA_KEY) // parse() needed for Heroku vars
+        private_key:  gaKey
     }
 });
 
