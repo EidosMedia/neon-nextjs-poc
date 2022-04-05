@@ -5,7 +5,7 @@ const credentialsJsonPath = './tmp/HeadlessPoC-191facb738e2.json';
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 let gaKey = ''
 try {
-    gaKey = JSON.parse(process.env.GA_KEY).replace(/\\n/g, '\n')
+    gaKey = JSON.parse(process.env.GA_KEY) // WARNING: on Heroku config vars, the GA_KEY MUST be surrounded by quotes!
 }catch(e){
     console.log("Error parsing GA key")
     console.log(e)
