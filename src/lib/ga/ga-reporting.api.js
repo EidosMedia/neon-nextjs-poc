@@ -4,7 +4,10 @@ const propertyId = '308647898';
 const credentialsJsonPath = './tmp/HeadlessPoC-191facb738e2.json';
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const analyticsDataClient = new BetaAnalyticsDataClient({
-    keyFilename: credentialsJsonPath,
+    credentials: {
+        client_email: process.env.GA_ID,
+        private_key: process.env.GA_KEY
+    }
 });
 
 function buildGaRequestSingleContent(contentId) {
