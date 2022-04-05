@@ -29,6 +29,38 @@ export async function getCobaltPageByUrl(hostName, url, previewUrl) {
     return cobaltData;
 }
 
+export async function getcobaltPageById(id, siteName, foreignId=false) {
+    let siteStructure = null;
+    try {
+        siteStructure = await getCobaltSites()
+    } catch (e) { }
+
+    let pageData = null;
+
+    let requestUrl = '/api/pages/' + (foreignId?'foreignid/':'') + id + '?emk.site=' + siteName
+    console.log("Getting cobalt data from " + requestUrl)
+    pageData = await cobaltRequest(requestUrl)
+
+    // Getting URL - TODO improvement 
+
+    requestUrl = '/api/urls/' + (foreignId?'foreignid/':'') + id + '?emk.site=' + siteName +'&resolutionType=CONTENT&urlIntent=HOST_RELATIVE'
+    const urlData = await cobaltRequest(requestUrl)
+    let url = (urlData? urlData.url: null)
+    // let urlBase = null;
+    // try {
+    //     urlBase = siteStructure.find((site) => site.name === siteName).customAttributes.frontendHostname
+    // } catch(e){}
+    
+    // if(urlBase){
+    //     url =  process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + urlBase + (['443','80'].includes(process.env.NEXT_PUBLIC_HTTP_PORT)?'':':' + process.env.NEXT_PUBLIC_HTTP_PORT) + url
+    // }
+    console.log('url : ' + url)
+
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null);
+
+    return cobaltData;
+}
+
 export async function getCobaltPreview(siteName, previewUrl) {
 
     let siteStructure = null;

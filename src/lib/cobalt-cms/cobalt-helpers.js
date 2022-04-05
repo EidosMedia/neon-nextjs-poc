@@ -140,7 +140,20 @@ export function getSectionChildrenObjects(cobaltData) {
     return resultObjects
 }
 
+export function getDwxLinkedObject(cobaltData){
+    
+
+    
+}
+
 export function getDwxLinkedObjects(cobaltData, zoneName) {
+    if (!zoneName){
+        // When not specifying a zone, return all objects from all zones
+        const zones = Object.keys(cobaltData.object.data.files.content.data.zones)
+        console.log("zones: " + zones)
+        return zones.reduce((acc,zone) =>[...acc,...getDwxLinkedObjects(cobaltData,zone)],[])
+    }
+
     let linkedObjects = [];
     try {
         linkedObjects = cobaltData.object.helper.zones

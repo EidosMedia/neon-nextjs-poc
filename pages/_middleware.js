@@ -26,7 +26,8 @@ export default function middleware(req) {
   if (
     !pathname.startsWith('/static') &&
     !pathname.startsWith('/api') && // exclude all API routes
-    !pathname.startsWith('/preview') // exclude preview landing page (for now?)
+    !pathname.startsWith('/preview') &&// exclude preview landing page (for now?)
+    !pathname.startsWith('/analytics')
   ) {
     // rewrite to the current hostname under the pages/sites folder
     // the main logic component will happen in pages/sites/[site]/index.js

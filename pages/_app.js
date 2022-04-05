@@ -6,8 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-import { useRouter } from 'next/router';
-import * as ga from '../src/lib/ga'
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import Script from 'next/script';
