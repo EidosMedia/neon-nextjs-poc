@@ -6,7 +6,7 @@ const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const analyticsDataClient = new BetaAnalyticsDataClient({
     credentials: {
         client_email: process.env.GA_ID,
-        private_key: process.env.GA_KEY
+        private_key: JSON.parse(process.env.GA_KEY) // parse() needed for Heroku vars
     }
 });
 
