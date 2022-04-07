@@ -5,7 +5,7 @@ const credentialsJsonPath = './tmp/HeadlessPoC-191facb738e2.json';
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 let gaKey = ''
 try {
-    gaKey = JSON.parse(process.env.GA_KEY) // WARNING: on Heroku config vars, the GA_KEY MUST be surrounded by double quotes!
+    gaKey = JSON.parse(process.env.GA_KEY) // WARNING: on Heroku config vars, the GA_KEY MUST be surrounded by double quotes!  Local var must also have single quotes, ie. '"key"'
 }catch(e){
     console.log("Error parsing GA key")
     console.log(e)
@@ -160,6 +160,32 @@ async function getGaTopContentPagesReport(hostname) {
     return response;
 }
 
+async function getGaRealtimeReport() {
+
+    const [response] = await analyticsDataClient.runRealtimeReport({
+        property: `properties/${propertyId}`,
+        dimensions: [
+            {
+                name: 'unifiedScreenName'
+            },
+        ],
+        metrics: [
+            {
+                name: 'screenPageViews',
+            },
+        ],
+        orderBys: [
+            {
+                desc: true,
+                metric: {
+                    metricName: 'screenPageViews',
+                },
+            }
+        ]
+    });
+    return response;
+}
+
 export async function getAnalyticsReport(cobaltData) {
     let report = null;
     switch (cobaltData.object.data.sys.baseType) {
@@ -180,11 +206,13 @@ export async function getAnalyticsReport(cobaltData) {
 
 async function getContentAnalyticsReport(cobaltData) {
     const report = await getGaSingleContentReport(cobaltData.object.data.id);
+    const realtimeReport = await getGaRealtimeReport();
     return {
         contentReport: {
             gaData: report,
             cobaltData: cobaltData
-        }
+        },
+        realtimeReport
     }
 }
 async function getSegmentAnalyticsReport(cobaltData) {
@@ -204,13 +232,13 @@ async function getSegmentAnalyticsReport(cobaltData) {
     const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === cobaltData.siteContext.site).customAttributes.frontendHostname
 
     const topPages = await getGaTopContentPagesReport(hostName);
-    console.log("top pages");
-    console.log(JSON.stringify(topPages, null, 2))
+    
+    const realtimeReport = await getGaRealtimeReport();
 
     return {
         contentReport: linkedObjectsReports,
-        topContentPagesReport: topPages
-
+        topContentPagesReport: topPages,
+        realtimeReport
     };
 }
 

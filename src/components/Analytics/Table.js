@@ -7,7 +7,6 @@ export default function Table({ cobaltData, analyticsReport, topContentPagesRepo
     const data = getTableDataFromContentReport(cobaltData, analyticsReport, topContentPagesReport, dimension1, metric);
     render = <Chart
         chartType="Table"
-        width="100%"
         data={data}
     />
 
