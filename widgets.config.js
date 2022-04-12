@@ -26,5 +26,19 @@ export const widgetsConfig = {
                 defaultValue: 'Simple'
             }
         ]
+    },
+    markets:{
+        params: [
+            {
+                name: 'type',
+                acceptedValues:['indexes','top-gainers', 'top-losers', 'bonds', 'currencies'],
+                defaultValue:''
+            },
+            {
+                name:'display',
+                acceptedValues:['simple', 'detailed'],
+                defaultValue: 'simple'                
+            }
+        ]
     }
 }
