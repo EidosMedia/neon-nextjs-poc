@@ -21,16 +21,16 @@ export default function LandingPage({ cobaltData, pageTitle }) {
 
     const render = (
         <Container maxWidth="lg">
-            {(pageTitle?
-            <Box sx={{mb:2, backgroundColor:'secondary.main'}} 
-                display="flex"
-                justifyContent="center"
-                alignItems="center">
-                <Typography sx={{color: 'primary.main'}} variant="h4" component="h4">
-                    {pageTitle}
-                </Typography>
-            </Box>:null)}
-            {mainObjects.map((obj,i) => {
+            {(pageTitle ?
+                <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    <Typography sx={{ color: 'primary.main' }} variant="h4" component="h4">
+                        {pageTitle}
+                    </Typography>
+                </Box> : null)}
+            {mainObjects.map((obj, i) => {
                 switch (obj.object.data.sys.baseType) {
                     case "webpagefragment":
                         return <Segment key={i} cobaltData={obj} />;
@@ -39,11 +39,13 @@ export default function LandingPage({ cobaltData, pageTitle }) {
                         return <QuerySegment key={i} cobaltData={obj} />
                         break;
                     case "widget":
-                        return <GenericWidget key={i} cobaltData={obj}/>;
+                        return <GenericWidget key={i} cobaltData={obj} />;
                 }
 
             })}
+            
         </Container>
+
     )
 
     return render;
