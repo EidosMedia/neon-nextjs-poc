@@ -1,6 +1,7 @@
 import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Image from "next/image";
+import HTMLComment from "react-html-comment";
 import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
 import ResourceResolver from "../../utils/ResourceResolver";
 import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderContentElement";
@@ -57,8 +58,13 @@ export default function ArticlePage({ cobaltData }) {
         console.log(e)
     }
 
+    //Swing quick open
+    let uuid = null;
+    try {uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId +'"'}catch(e){}
+
     render = (
         <Container maxWidth="lg">
+            {uuid?<HTMLComment text={uuid}/>:null}
             <Container sx={{my:2}} maxWidth="md">
                 <Box display="flex"
                     justifyContent="center"

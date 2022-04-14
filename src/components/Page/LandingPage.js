@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
+import HTMLComment from "react-html-comment";
 import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
@@ -19,8 +20,13 @@ export default function LandingPage({ cobaltData, pageTitle }) {
 
     const mainObjects = getDwxLinkedObjects(cobaltData, "main");
 
+    //Swing quick open
+    let uuid = null;
+    try {uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId +'"'}catch(e){}
+
     const render = (
         <Container maxWidth="lg">
+             {uuid?<HTMLComment text={uuid}/>:null}
             {(pageTitle ?
                 <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
                     display="flex"
