@@ -3,8 +3,11 @@ import cacheData from "memory-cache";
 import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
 import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } from './cobalt-helpers';
 
-export async function getCobaltPageByUrl(hostName, url, previewUrl) {
+var http = require('http');
+var agent = new http.Agent({ family: 4 });
 
+export async function getCobaltPageByUrl(hostName, url, previewUrl) {
+      
     let siteStructure = null;
     try {
         siteStructure = await getCobaltSites()
@@ -107,6 +110,7 @@ async function cobaltPreviewRequest(previewUrl) {
             url: previewUrl,
             mode: 'no-cors',
             maxRedirects: 0,
+            httpAgent: agent,
             validateStatus: function (status) {
                 return status >= 200 && status < 303; // default
             }
@@ -126,6 +130,7 @@ async function cobaltPreviewRequest(previewUrl) {
             method: 'GET',
             url: basePreviewUrl + response1.headers.location,
             mode: 'no-cors',
+            httpAgent: agent,
             headers: {
                 Cookie: "emk.previewDefaultContent=false; emk.previewToken=" + previewToken + "; emauth=" + emauthValue
             }
@@ -153,6 +158,7 @@ export async function cobaltRequest(url) {
     try {
         const options = {
             method: 'GET',
+            httpAgent: agent,
             url: process.env.COBALT_BASE_HOST + url,
             mode: 'no-cors',
         };
@@ -168,6 +174,7 @@ export async function cobaltRequest(url) {
 
 export async function getCobaltAuthToken() {
     let token = null;
+
     try {
         const authData = { "name": process.env.COBALT_USERNAME, "password": process.env.COBALT_PASSWORD }
         const options = {
@@ -175,6 +182,7 @@ export async function getCobaltAuthToken() {
             url: process.env.COBALT_BASE_HOST + '/directory/sessions/login',
             mode: 'no-cors',
             data: authData,
+            httpAgent: agent,
             config: {
                 headers: {
                     'Accept': 'application/json',
@@ -199,7 +207,8 @@ export async function getCobaltSitemap(siteName, token) {
         const options = {
             method: 'GET',
             url: process.env.COBALT_BASE_HOST + '/core/sites/sitemap?emauth=' + token + '&siteName=' + siteName + '&viewStatus=LIVE',
-            mode: 'no-cors'
+            mode: 'no-cors',
+            httpAgent: agent
         };
 
         const response = await axios.request(options)
@@ -226,6 +235,7 @@ export async function getCobaltSites() {
             try {
                 const options = {
                     method: 'GET',
+                    httpAgent: agent,
                     url: process.env.COBALT_BASE_HOST + '/core/sites?emauth=' + token,
                     mode: 'no-cors'
                 };

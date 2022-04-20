@@ -264,7 +264,7 @@ export function getCobaltLiveblogPostHelper(data) {
 
 export function getSiteNameByHostName(hostName, sites) {
     let site = null
-    if (sites.length) {
+    if (sites != null && sites.length) {
         site = sites.find((site) => site.customAttributes.frontendHostname === hostName)
         if (!site && process.env.DEV_MODE === 'true') {
             site = sites.find((site) => site.customAttributes.siteCategory === 'main')
