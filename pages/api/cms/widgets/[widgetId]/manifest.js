@@ -31,6 +31,9 @@ export default async (req, res) => {
     case 'champions-league':
       response = widgetsConfig.ucl
       break;
+    case 'markets':
+      response = widgetsConfig.markets
+      break;
 
   }
   res.json(response)

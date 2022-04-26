@@ -3,27 +3,41 @@ export const widgetsConfig = {
         params: [
             {
                 name: 'location',
-                acceptedValues: ['Milan','Paris','London','Madrid'],
+                acceptedValues: ['Milan', 'Paris', 'London', 'Madrid'],
                 defaultValue: 'Milan'
             },
             {
                 name: 'type',
-                acceptedValues: ['Today','Weekly'],
+                acceptedValues: ['Today', 'Weekly'],
                 defaultValue: 'Today'
             }
         ]
     },
-    ucl:{
+    ucl: {
         params: [
             {
                 name: 'match',
-                acceptedValues: ['Liverpool-Inter','Bayern-Salzburg','Madrid-Paris','ManCity-SportingCP'],
+                acceptedValues: ['Liverpool-Inter', 'Bayern-Salzburg', 'Madrid-Paris', 'ManCity-SportingCP'],
                 defaultValue: 'Liverpool-Inter'
             },
             {
                 name: 'type',
-                acceptedValues: ['Simple','Detailed'],
+                acceptedValues: ['Simple', 'Detailed'],
                 defaultValue: 'Simple'
+            }
+        ]
+    },
+    markets: {
+        params: [
+            {
+                name: 'type',
+                acceptedValues: ['indexes', 'top-gainers', 'top-losers', 'bonds', 'currencies'],
+                defaultValue: 'indexes'
+            },
+            {
+                name: 'display',
+                acceptedValues: ['simple', 'detailed'],
+                defaultValue: 'simple'
             }
         ]
     }
