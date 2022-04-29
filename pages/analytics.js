@@ -8,6 +8,7 @@ import BarChart from '../src/components/Analytics/BarChart';
 import { Box, Container, Typography } from '@mui/material';
 import Table from '../src/components/Analytics/Table';
 import RealtimeSummary from '../src/components/Analytics/RealtimeSummary';
+import Segment from '../src/components/Segment/Segment';
 
 
 export default function Analytics({ cobaltData, analyticsReport }) {
@@ -36,25 +37,7 @@ export default function Analytics({ cobaltData, analyticsReport }) {
         case 'webpage':
             break;
         case 'webpagefragment':
-            render = (
-                <Container maxWidth="lg">
-                    {analyticsReport.contentReport.map((report) => (
-                        <Box sx={{borderBottom:1, my:2}}>
-                            <Typography variant="h5">{report.cobaltData.object.data.title}</Typography>
-                            <Box sx={{my: 2, display:'flex', justifyContent: 'flex-start'}}>
-                                <Box>
-                                    <Typography sx={{mb:1, fontWeight:'bold'}} variant="h6">Last 30 minutes</Typography>
-                                    <RealtimeSummary cobaltData={report.cobaltData} realtimeReport={analyticsReport.realtimeReport} />
-                                </Box>
-                                <Box sx={{ml:2, pl:2, borderLeft:1}}>
-                                    <Typography sx={{mb:1, fontWeight:'bold'}} variant="h6">Last 7 days</Typography>
-                                    <Table cobaltData={report.cobaltData} analyticsReport={report.gaData} topContentPagesReport={analyticsReport.topContentPagesReport} dimension1='date' metric='screenPageViews' />
-                                </Box>
-                            </Box>
-                        </Box>
-                    ))}
-                </Container>
-            )
+            render = <Container maxWidth="lg"><Segment cobaltData={cobaltData} analyticsReport={analyticsReport} /></Container>;
             break;
     }
 

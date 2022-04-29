@@ -5,7 +5,7 @@ import React from "react";
 import { getCobaltDataHelper, getDwxLinkedObjects, getObjectMainSection, getObjectMainSite, isCurrentSiteContent } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 
-export default function Segment({ cobaltData }) {
+export default function Segment({ cobaltData, analyticsReport }) {
     let render = null;
     let templateName = null;
     if (cobaltData.linkContext) {
@@ -41,17 +41,17 @@ export default function Segment({ cobaltData }) {
             render = (
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={3} order={{ xs: 2, md: 1 }}>
-                        {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
-                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
+                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
-                        {opinionObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {opinionObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     {extraObjects.map((object, i) => (
                         <Grid item xs={12} md={2} order={{ xs: 4, md: 4 }} key={i}>
-                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
+                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} analyticsReport={analyticsReport}/>
                         </Grid>
                     ))}
                 </Grid>
@@ -61,19 +61,19 @@ export default function Segment({ cobaltData }) {
             render = (
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={8}>
-                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 8 }} />)}
+                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 8 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 4 }} />)}
+                        {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 4 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     {opinionObjects.map((object, i) => (
                         <Grid key={i} item xs={12} md={3}>
-                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} />
+                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>
                         </Grid>
                     ))}
                     {extraObjects.map((object, i) => (
                         <Grid key={i} item xs={12} md={2}>
-                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
+                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} analyticsReport={analyticsReport}/>
                         </Grid>
                     ))}
                 </Grid>
@@ -123,13 +123,13 @@ export default function Segment({ cobaltData }) {
             render = (
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
-                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
+                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        {secondObjects.slice(0, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {secondObjects.slice(0, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        {secondObjects.slice(3, 6).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {secondObjects.slice(3, 6).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                 </Grid>
             );
@@ -139,19 +139,19 @@ export default function Segment({ cobaltData }) {
             render = (
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={9}>
-                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 9 }} />)}
+                        {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 9 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                        {secondObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                     </Grid>
                     {opinionObjects.slice(0, 3).map((object, i) => (
                         <Grid key={i} item xs={12} md={4}>
-                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
+                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} analyticsReport={analyticsReport}/>
                         </Grid>
                     ))}
                     {extraObjects.map((object, i) => (
                         <Grid key={i} item xs={12} md={2}>
-                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} />
+                            <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 2 }} analyticsReport={analyticsReport}/>
                         </Grid>
                     ))}
                 </Grid>
@@ -162,13 +162,13 @@ export default function Segment({ cobaltData }) {
                 <React.Fragment>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                            {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} />)}
+                            {firstObjects.map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} analyticsReport={analyticsReport}/>)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(0, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(0, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            {secondObjects.slice(3, 6).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} />)}
+                            {secondObjects.slice(3, 6).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport}/>)}
                         </Grid>
                     </Grid>
                 </React.Fragment>
