@@ -67,22 +67,27 @@ export async function getStaticPaths({ }) {
 
         paths = sites.reduce((acc1, site, i) => {
             const hostName = site.customAttributes.frontendHostname;
-            let sections = site.sitemap.children.reduce((acc2, section, j) => {
-                const sectionPath = section.path.replace(/^\/|\/$/g, '')
-                return [...acc2, {
+            if (hostName){
+                let sections = site.sitemap.children.reduce((acc2, section, j) => {
+                    const sectionPath = section.path.replace(/^\/|\/$/g, '')
+                    return [...acc2, {
+                        params: {
+                            site: hostName,
+                            url: [sectionPath]
+                        }
+                    }]
+                }, [])
+                sections.push({
                     params: {
                         site: hostName,
-                        url: [sectionPath]
+                        url: ['']
                     }
-                }]
-            }, [])
-            sections.push({
-                params: {
-                    site: hostName,
-                    url: ['']
-                }
-            })
-            return [...acc1, ...sections]
+                })
+                return [...acc1, ...sections]
+            } else {
+                // ignore sites that don't have the custom attribute
+                return [...acc1]
+            }
         }, [])
     } catch (e) { console.log(e) }
     return {
