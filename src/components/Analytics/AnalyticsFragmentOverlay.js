@@ -26,7 +26,6 @@ export default function AnalyticsFragmentOverlay({cobaltData, analyticsReport, c
     } catch (e) { }
 
     const rank = analyticsReport.realtimeReport.rows.findIndex(findFn) + 1
-    console.log("rank: " + rank)
 
     let color = 'rgba(255, 0, 0, 0.5)' //red
     if (rank > 0) {
