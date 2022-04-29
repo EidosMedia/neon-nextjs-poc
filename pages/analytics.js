@@ -9,6 +9,8 @@ import { Box, Container, Typography } from '@mui/material';
 import Table from '../src/components/Analytics/Table';
 import RealtimeSummary from '../src/components/Analytics/RealtimeSummary';
 import Segment from '../src/components/Segment/Segment';
+import Layout from '../src/components/Layout/Layout';
+import LandingPage from '../src/components/Page/LandingPage';
 
 
 export default function Analytics({ cobaltData, analyticsReport }) {
@@ -35,6 +37,11 @@ export default function Analytics({ cobaltData, analyticsReport }) {
             break;
         case 'section':
         case 'webpage':
+            render = (
+                <Layout cobaltData={cobaltData}>
+                    <LandingPage cobaltData={cobaltData} analyticsReport={analyticsReport}/>
+                </Layout>
+            );
             break;
         case 'webpagefragment':
             render = <Container maxWidth="lg"><Segment cobaltData={cobaltData} analyticsReport={analyticsReport} /></Container>;

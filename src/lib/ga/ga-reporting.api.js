@@ -95,9 +95,7 @@ async function getGaMultiContentReport(contentIds) {
         return array.slice((page_number - 1) * page_size, page_number * page_size);
     }
 
-    let reports = []
-
-    console.log(contentIds)
+    let reports = {}
 
     // Checking if some reports are in cache
 
@@ -107,12 +105,10 @@ async function getGaMultiContentReport(contentIds) {
         const data = cacheData.get(cacheKey);
         if (data) {
             console.log("returning cached GA report for " + contentIds[i]);
-            reports.push(data)
+            reports[contentIds[i]] = data
             contentIds.splice(i, 1)
         }
     }
-
-    console.log(contentIds)
 
     let pageIndex = 1
     let page = paginate(contentIds, 5, pageIndex)
@@ -126,9 +122,9 @@ async function getGaMultiContentReport(contentIds) {
             cacheKey = "ga-content-" + page[i]
             console.log("putting GA report in cache: " + cacheKey)
             cacheData.put(cacheKey, report, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000)
+            reports[page[i]] = report
         })
 
-        reports = reports.concat(response.reports)
         pageIndex++
         page = paginate(contentIds, 5, pageIndex)
     }
@@ -252,7 +248,7 @@ export async function getAnalyticsReport(cobaltData) {
             break;
         case 'section':
         case 'webpage':
-            report = await getPageAnalyticsReport(cobaltData);
+            report = await getLandingPageAnalyticsReport(cobaltData);
             break;
         case 'webpagefragment':
             report = await getSegmentAnalyticsReport(cobaltData);
@@ -277,16 +273,52 @@ async function getSegmentAnalyticsReport(cobaltData) {
 
     const objects = getDwxLinkedObjects(cobaltData);
 
-    //const reports = await Promise.all(objects.map(async (object) => await getGaSingleContentReport(object.object.data.id)))
-
     const reports = await getGaMultiContentReport(objects.map((object) => object.object.data.id))
 
-    const linkedObjectsReports = reports.map((report, i) => {
-        return {
-            gaData: report,
-            cobaltData: objects[i]
+    let linkedObjectsReports = []
+
+    for(const key in reports){
+        linkedObjectsReports.push(
+            {
+                gaData: reports[key],
+                cobaltData: objects.find((object) => object.object.data.id === key)
+            }
+        )
+    }
+
+
+
+    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === cobaltData.siteContext.site).customAttributes.frontendHostname
+
+    const topPages = await getGaTopContentPagesReport(hostName);
+
+    const realtimeReport = await getGaRealtimeReport();
+
+    return {
+        contentReport: linkedObjectsReports,
+        topContentPagesReport: topPages,
+        realtimeReport
+    };
+}
+
+async function getLandingPageAnalyticsReport(cobaltData) {
+    const segments = getDwxLinkedObjects(cobaltData);
+    let linkedObjectsReports = []
+
+    for (let i = 0; i < segments.length; i++){
+        const objects = getDwxLinkedObjects(segments[i]);
+
+        const reports = await getGaMultiContentReport(objects.map((object) => object.object.data.id))
+        
+        for(const key in reports){
+            linkedObjectsReports.push(
+                {
+                    gaData: reports[key],
+                    cobaltData: objects.find((object) => object.object.data.id === key)
+                }
+            )
         }
-    })
+    }
 
     const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === cobaltData.siteContext.site).customAttributes.frontendHostname
 
