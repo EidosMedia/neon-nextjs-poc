@@ -1,6 +1,6 @@
 import { getDwxLinkedObjects } from '../cobalt-cms/cobalt-helpers';
 import cacheData from "memory-cache";
-import { COMMON_GA_CONTENT_CACHE_TTL_SECONDS, COMMON_GA_REALTIME_CACHE_TTL_SECONDS } from '../../../apps.settings';
+import { COMMON_GA_CACHE_ENABLED, COMMON_GA_CONTENT_CACHE_TTL_SECONDS, COMMON_GA_REALTIME_CACHE_TTL_SECONDS } from '../../../apps.settings';
 
 const propertyId = '308647898';
 const credentialsJsonPath = './tmp/HeadlessPoC-191facb738e2.json';
@@ -84,7 +84,7 @@ async function getGaSingleContentReport(contentId) {
             ...buildGaRequestSingleContent(contentId)
         });
 
-        cacheData.put(cacheKey, response, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000);
+        if(COMMON_GA_CACHE_ENABLED){cacheData.put(cacheKey, response, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000)}
         return response;
     }
 }
@@ -120,8 +120,7 @@ async function getGaMultiContentReport(contentIds) {
 
         response.reports.forEach((report, i) => {
             cacheKey = "ga-content-" + page[i]
-            console.log("putting GA report in cache: " + cacheKey)
-            cacheData.put(cacheKey, report, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000)
+            if(COMMON_GA_CACHE_ENABLED){cacheData.put(cacheKey, report, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000)}
             reports[page[i]] = report
         })
 
@@ -198,7 +197,7 @@ async function getGaTopContentPagesReport(hostname) {
                 }
             ]
         });
-        cacheData.put(cacheKey, response, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000);
+        if(COMMON_GA_CACHE_ENABLED){cacheData.put(cacheKey, response, COMMON_GA_CONTENT_CACHE_TTL_SECONDS * 1000)}
         return response;
     }
 }
@@ -234,7 +233,7 @@ async function getGaRealtimeReport() {
                 }
             ]
         });
-        cacheData.put(cacheKey, response, COMMON_GA_REALTIME_CACHE_TTL_SECONDS * 1000);
+        if(COMMON_GA_CACHE_ENABLED){cacheData.put(cacheKey, response, COMMON_GA_REALTIME_CACHE_TTL_SECONDS * 1000)}
         return response;
     }
 }
