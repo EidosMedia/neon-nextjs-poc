@@ -6,8 +6,8 @@ import RealtimeSummary from "./RealtimeSummary";
 import BarChart from "./BarChart";
 import React from "react";
 
-export default function AnalyticsFragmentOverlay({cobaltData, analyticsReport, children}) {
-    
+export default function AnalyticsFragmentOverlay({ cobaltData, analyticsReport, children }) {
+
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -36,6 +36,8 @@ export default function AnalyticsFragmentOverlay({cobaltData, analyticsReport, c
         }
     }
 
+    const hasGaReport = analyticsReport.contentReport.some((r) => r.cobaltData.object.data.id === cobaltData.object.data.id)
+
     const render = (
         <Box sx={{ position: 'relative' }}>
             {children}
@@ -51,18 +53,21 @@ export default function AnalyticsFragmentOverlay({cobaltData, analyticsReport, c
                 justifyContent: 'flex-end',
                 alignItems: 'flex-start'
             }}>
-                <IconButton aria-label="data" size="large" onClick={handleClickOpen}>
-                    <BarChartIcon fontSize="inherit" />
-                </IconButton>
+                {hasGaReport ?
+                    <IconButton aria-label="data" size="large" onClick={handleClickOpen}>
+                        <BarChartIcon fontSize="inherit" />
+                    </IconButton> : null}
             </Box>
-            <GraphDialog
-                open={open}
-                onClose={handleClose}
-                cobaltData={cobaltData}
-                analyticsReport={analyticsReport}
-            />
+            {hasGaReport ?
+                <GraphDialog
+                    open={open}
+                    onClose={handleClose}
+                    cobaltData={cobaltData}
+                    analyticsReport={analyticsReport}
+                /> : null}
         </Box>
     )
+
     return render;
 }
 
@@ -73,21 +78,31 @@ function GraphDialog(props) {
         onClose(selectedValue);
     };
 
-    const myGaData = props.analyticsReport.contentReport.find((r) => r.cobaltData.object.data.id === props.cobaltData.object.data.id).gaData
+    let myGaData = null;
 
-    return (
-        <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth="md">
-            <DialogTitle>{getSeoTitle(props.cobaltData)}</DialogTitle>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="h4">Last 30 minutes</Typography>
-                <RealtimeSummary cobaltData={props.cobaltData} realtimeReport={props.analyticsReport.realtimeReport} />
-            </Box>
-            <Box sx={{ mt: 2, pt: 1, borderTop: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="h4">Last 7 days</Typography>
-                <BarChart analyticsReport={myGaData} dimension1='date' dimension2='hostName' metric='screenPageViews' chartTitle='Views per site' />
-                <BarChart analyticsReport={myGaData} dimension1='date' dimension2='deviceCategory' metric='screenPageViews' chartTitle='Views per device' />
-                <BarChart analyticsReport={myGaData} dimension1='date' dimension2='city' metric='screenPageViews' chartTitle='Views per city' />
-            </Box>
-        </Dialog>
-    );
+    try {
+        myGaData = props.analyticsReport.contentReport.find((r) => r.cobaltData.object.data.id === props.cobaltData.object.data.id).gaData
+    } catch (e) { }
+
+    let render = null;
+
+    if (myGaData) {
+        render = (
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth="md">
+                <DialogTitle>{getSeoTitle(props.cobaltData)}</DialogTitle>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography variant="h4">Last 30 minutes</Typography>
+                    <RealtimeSummary cobaltData={props.cobaltData} realtimeReport={props.analyticsReport.realtimeReport} />
+                </Box>
+                <Box sx={{ mt: 2, pt: 1, borderTop: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography variant="h4">Last 7 days</Typography>
+                    <BarChart analyticsReport={myGaData} dimension1='date' dimension2='hostName' metric='screenPageViews' chartTitle='Views per site' />
+                    <BarChart analyticsReport={myGaData} dimension1='date' dimension2='deviceCategory' metric='screenPageViews' chartTitle='Views per device' />
+                    <BarChart analyticsReport={myGaData} dimension1='date' dimension2='city' metric='screenPageViews' chartTitle='Views per city' />
+                </Box>
+            </Dialog>
+        );
+    }
+
+    return render;
 }

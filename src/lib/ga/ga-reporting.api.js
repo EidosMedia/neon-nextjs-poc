@@ -301,23 +301,27 @@ async function getSegmentAnalyticsReport(cobaltData) {
 }
 
 async function getLandingPageAnalyticsReport(cobaltData) {
-    const segments = getDwxLinkedObjects(cobaltData);
+    
     let linkedObjectsReports = []
 
-    for (let i = 0; i < segments.length; i++){
-        const objects = getDwxLinkedObjects(segments[i]);
+    const segments = getDwxLinkedObjects(cobaltData);
 
-        const reports = await getGaMultiContentReport(objects.map((object) => object.object.data.id))
+    // For performance reasons, we're not including the content reports
+
+    // for (let i = 0; i < segments.length; i++){
+    //     const objects = getDwxLinkedObjects(segments[i]);
+
+    //     const reports = await getGaMultiContentReport(objects.map((object) => object.object.data.id))
         
-        for(const key in reports){
-            linkedObjectsReports.push(
-                {
-                    gaData: reports[key],
-                    cobaltData: objects.find((object) => object.object.data.id === key)
-                }
-            )
-        }
-    }
+    //     for(const key in reports){
+    //         linkedObjectsReports.push(
+    //             {
+    //                 gaData: reports[key],
+    //                 cobaltData: objects.find((object) => object.object.data.id === key)
+    //             }
+    //         )
+    //     }
+    // }
 
     const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === cobaltData.siteContext.site).customAttributes.frontendHostname
 
