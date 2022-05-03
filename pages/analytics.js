@@ -5,15 +5,27 @@ import { Leaderboard } from '@mui/icons-material';
 import { getChartDataFromContentReport } from '../src/lib/ga/ga-reporting-helpers';
 import React from 'react';
 import BarChart from '../src/components/Analytics/BarChart';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Fab, Typography } from '@mui/material';
 import Table from '../src/components/Analytics/Table';
 import RealtimeSummary from '../src/components/Analytics/RealtimeSummary';
 import Segment from '../src/components/Segment/Segment';
 import Layout from '../src/components/Layout/Layout';
 import LandingPage from '../src/components/Page/LandingPage';
+import HelpIcon from '@mui/icons-material/Help';
+import HelpDialog from '../src/components/Analytics/HelpDialog';
 
 
 export default function Analytics({ cobaltData, analyticsReport }) {
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (value) => {
+        setOpen(false);
+    };
 
     let render = null;
 
@@ -39,12 +51,25 @@ export default function Analytics({ cobaltData, analyticsReport }) {
         case 'webpage':
             render = (
                 <Layout cobaltData={cobaltData}>
-                    <LandingPage cobaltData={cobaltData} analyticsReport={analyticsReport}/>
+                    <LandingPage cobaltData={cobaltData} analyticsReport={analyticsReport} />
                 </Layout>
             );
             break;
         case 'webpagefragment':
-            render = <Container maxWidth="lg"><Segment cobaltData={cobaltData} analyticsReport={analyticsReport} /></Container>;
+            render = (
+                <Container maxWidth="lg">
+                    <Segment cobaltData={cobaltData} analyticsReport={analyticsReport} />
+                    <Fab sx={{ position: 'absolute', bottom: 16, right: 16 }} color="secondary" aria-label="edit" onClick={handleClickOpen}>
+                        <HelpIcon />
+                    </Fab>
+                    <HelpDialog
+                        open={open}
+                        onClose={handleClose}
+                        cobaltData={cobaltData}
+                        analyticsReport={analyticsReport}
+                    />
+                </Container>
+            );
             break;
     }
 
