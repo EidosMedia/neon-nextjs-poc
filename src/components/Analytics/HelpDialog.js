@@ -11,9 +11,9 @@ export default function HelpDialog(props) {
 
 
     const render = (
-        <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth="md">
+        <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth="sm">
             <DialogTitle>Help</DialogTitle>
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" sx={{p:3}}>
                 <Typography variant="body1" component="p">The colors indicate the content's perfomance:</Typography>
                 <ul>
                 <Typography variant="body1" component="li">on the <b>globe-main</b> website, <b>all</b> sections</Typography>
