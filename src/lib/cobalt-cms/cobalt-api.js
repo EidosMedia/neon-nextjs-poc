@@ -7,7 +7,7 @@ var http = require('http');
 var agent = new http.Agent({ family: 4 });
 
 export async function getCobaltPageByUrl(hostName, url, previewUrl) {
-      
+
     let siteStructure = null;
     try {
         siteStructure = await getCobaltSites()
@@ -32,7 +32,7 @@ export async function getCobaltPageByUrl(hostName, url, previewUrl) {
     return cobaltData;
 }
 
-export async function getcobaltPageById(id, siteName, foreignId=false) {
+export async function getcobaltPageById(id, siteName, foreignId = false) {
     let siteStructure = null;
     try {
         siteStructure = await getCobaltSites()
@@ -40,20 +40,20 @@ export async function getcobaltPageById(id, siteName, foreignId=false) {
 
     let pageData = null;
 
-    let requestUrl = '/api/pages/' + (foreignId?'foreignid/':'') + id + '?emk.site=' + siteName
+    let requestUrl = '/api/pages/' + (foreignId ? 'foreignid/' : '') + id + '?emk.site=' + siteName
     console.log("Getting cobalt data from " + requestUrl)
     pageData = await cobaltRequest(requestUrl)
 
     // Getting URL - TODO improvement 
 
-    requestUrl = '/api/urls/' + (foreignId?'foreignid/':'') + id + '?emk.site=' + siteName +'&resolutionType=CONTENT&urlIntent=HOST_RELATIVE'
+    requestUrl = '/api/urls/' + (foreignId ? 'foreignid/' : '') + id + '?emk.site=' + siteName + '&resolutionType=CONTENT&urlIntent=HOST_RELATIVE'
     const urlData = await cobaltRequest(requestUrl)
-    let url = (urlData? urlData.url: null)
+    let url = (urlData ? urlData.url : null)
     // let urlBase = null;
     // try {
     //     urlBase = siteStructure.find((site) => site.name === siteName).customAttributes.frontendHostname
     // } catch(e){}
-    
+
     // if(urlBase){
     //     url =  process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + urlBase + (['443','80'].includes(process.env.NEXT_PUBLIC_HTTP_PORT)?'':':' + process.env.NEXT_PUBLIC_HTTP_PORT) + url
     // }
@@ -64,22 +64,38 @@ export async function getcobaltPageById(id, siteName, foreignId=false) {
     return cobaltData;
 }
 
-export async function getCobaltPreview(siteName, previewUrl) {
+export async function getCobaltPreview(previewData) {
 
     let siteStructure = null;
     try {
         siteStructure = await getCobaltSites()
     } catch (e) { }
 
-    const result = await cobaltPreviewRequest(previewUrl)
-    const pageData = result.data;
-    const previewData = {
-        emauth: result.emauth,
-        previewToken: result.previewToken,
-        basePreviewUrl: result.basePreviewUrl
+    const jwe = previewData['emk.jwe']
+    const previewToken = previewData['emk.previewToken']
+    const siteName = previewData['emk.site'].split('[')[0]
+
+    const url = '/api/pages/' + previewData['emk.foreignId']
+        + '@eom?emk.site=' + siteName
+        + '&emk.previewSection=' + previewData['emk.previewSection']
+        //+ '&emk.previewToken=' + previewToken
+        + '&emk.disableCache=true'
+
+    console.log("PREVIEW URL")
+    console.log(url)
+    console.log(jwe)
+    console.log(previewToken)
+
+    const pageData = await cobaltPreviewRequest(url, jwe, previewToken)
+    console.log(pageData)
+
+    const previewInfo = {
+        previewToken: previewToken,
+        jwe: jwe,
+        basePreviewUrl: process.env.COBALT_BASE_HOST //TODO not needed?
     }
 
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, "/preview", previewData);
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, "/preview", previewInfo);
 
     return cobaltData;
 
@@ -101,49 +117,22 @@ export async function searchCobalt(siteName, sorting, filters) {
     return searchData;
 }
 
-async function cobaltPreviewRequest(previewUrl) {
+async function cobaltPreviewRequest(previewUrl, jwe, previewToken) {
     let result = null
     try {
-        previewUrl = decodeURIComponent(previewUrl)
-        const options1 = {
+        const options = {
             method: 'GET',
-            url: previewUrl,
-            mode: 'no-cors',
-            maxRedirects: 0,
             httpAgent: agent,
-            validateStatus: function (status) {
-                return status >= 200 && status < 303; // default
-            }
-        };
-
-        const response1 = await axios.request(options1)
-
-        const emauthHeader = response1.headers['set-cookie'].find((header) => header.startsWith('emauth'))
-        const emauthValue = emauthHeader.substring(emauthHeader.indexOf('=') + 1, emauthHeader.indexOf(';'))
-        console.log("emauth: " + emauthValue)
-        const previewTokenPosition = previewUrl.indexOf('emk.previewToken=') + 17;
-        const previewToken = previewUrl.substring(previewTokenPosition, previewUrl.indexOf('&', previewTokenPosition))
-        console.log("token: " + previewToken)
-        const basePreviewUrl = previewUrl.substring(0, previewUrl.indexOf('/', previewUrl.indexOf('//') + 2))
-
-        const options2 = {
-            method: 'GET',
-            url: basePreviewUrl + response1.headers.location,
+            url: process.env.COBALT_BASE_HOST + previewUrl,
             mode: 'no-cors',
-            httpAgent: agent,
             headers: {
-                Cookie: "emk.previewDefaultContent=false; emk.previewToken=" + previewToken + "; emauth=" + emauthValue
+                //Authorization: `Bearer ${jwe}`,
+                Cookie: "emk.previewToken=" + previewToken + ";"
             }
         };
 
-        const response2 = await axios.request(options2)
-
-        result = {
-            data: response2.data,
-            emauth: emauthValue,
-            previewToken: previewToken,
-            basePreviewUrl: basePreviewUrl
-        }
+        const response = await axios.request(options)
+        result = response.data
     }
     catch (e) {
         console.log(e)

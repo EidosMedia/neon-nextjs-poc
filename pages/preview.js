@@ -57,10 +57,10 @@ export async function getServerSideProps(context) {
 
     let cobaltData = null;
     if (context.previewData) {
-        console.log("Preview mode - site: " + context.previewData.site + " - url: " + context.previewData.previewUrl)
-        const reworkedPreviewUrl = process.env.COBALT_BASE_HOST + '/' +  context.previewData.previewUrl.replace(/^(?:\/\/|[^/]+)*\//, '') + '&emk.site='+context.previewData.site + '&emk.disableCache=true'
-        console.log("reworked previewUrl: "+ reworkedPreviewUrl)
-        cobaltData = await getCobaltPreview(context.previewData.site, reworkedPreviewUrl)
+        console.log("Preview mode: " + context.previewData)
+        // const reworkedPreviewUrl = process.env.COBALT_BASE_HOST + '/' +  context.previewData.previewUrl.replace(/^(?:\/\/|[^/]+)*\//, '') + '&emk.site='+context.previewData.site + '&emk.disableCache=true'
+        // console.log("reworked previewUrl: "+ reworkedPreviewUrl)
+        cobaltData = await getCobaltPreview(context.previewData)
         console.log("Got cobalt preview data")
     }
     // console.log("PREVIEW DATA")

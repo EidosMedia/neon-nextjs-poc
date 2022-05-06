@@ -5,7 +5,7 @@ export default async (req, res) => {
 
     const result = await fetch(url, {
         headers: {
-            'Cookie':"emk.previewDefaultContent=false; emk.previewToken="+previewToken+"; emauth="+emauth
+            'Cookie':"emk.previewDefaultContent=false; emk.previewToken="+previewToken+";"
         }
     });
     const body = await result.body;
