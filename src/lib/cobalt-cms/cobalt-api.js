@@ -129,29 +129,6 @@ export async function searchCobalt(siteName, sorting, filters) {
     return searchData;
 }
 
-async function cobaltPreviewRequest(previewUrl, jwe, previewToken) {
-    let result = null
-    try {
-        const options = {
-            method: 'GET',
-            httpAgent: agent,
-            url: process.env.COBALT_BASE_HOST + previewUrl,
-            mode: 'no-cors',
-            headers: {
-                Authorization: `Bearer ${jwe}`,
-                Cookie: "emk.previewToken=" + previewToken + ";"
-            }
-        };
-
-        const response = await axios.request(options)
-        result = response.data
-    }
-    catch (e) {
-        console.log(e)
-    }
-    return result
-}
-
 export async function cobaltRequest(url) {
 
     let result = null;
