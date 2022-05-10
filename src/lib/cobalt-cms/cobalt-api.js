@@ -51,7 +51,7 @@ export async function getcobaltPageById(id, siteName, foreignId = false) {
     let url = (urlData ? urlData.url : null)
     // let urlBase = null;
     // try {
-    //     urlBase = siteStructure.find((site) => site.name === siteName).customAttributes.frontendHostname
+    //     urlBase = siteStructure.find((site) => site.name === siteName).liveHostname
     // } catch(e){}
 
     // if(urlBase){

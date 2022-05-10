@@ -9,7 +9,7 @@ import LiveblogPage from "../../../src/components/Page/LiveblogPage";
 import SectionPage from "../../../src/components/Page/SectionPage";
 import Segment from "../../../src/components/Segment/Segment";
 import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
-import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
+import { decorateSectionPageCobaltData, getLiveHostname } from "../../../src/lib/cobalt-cms/cobalt-helpers";
 import { getMetaHeader } from "../../../src/lib/helpers";
 
 export default function Page({ cobaltData, fallback }) {
@@ -77,7 +77,7 @@ export async function getStaticPaths({ }) {
         const sites = await getCobaltSites()
 
         paths = sites.reduce((acc1, site, i) => {
-            const hostName = site.customAttributes.frontendHostname;
+            const hostName = getLiveHostname(site);
             if (hostName) {
                 let sections = site.sitemap.children.reduce((acc2, section, j) => {
                     const sectionPath = section.path.replace(/^\/|\/$/g, '')

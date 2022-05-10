@@ -264,7 +264,7 @@ export function getCobaltLiveblogPostHelper(data) {
 export function getSiteNameByHostName(hostName, sites) {
     let site = null
     if (sites != null && sites.length) {
-        site = sites.find((site) => site.customAttributes.frontendHostname === hostName)
+        site = sites.find((site) => hostName === getLiveHostname(site))
         if (!site && process.env.DEV_MODE === 'true') {
             site = sites.find((site) => site.customAttributes.siteCategory === 'main')
         }
@@ -274,6 +274,15 @@ export function getSiteNameByHostName(hostName, sites) {
     } else {
         return null // will show a not found
     }
+}
+
+export function getLiveHostname(site){
+    let liveHostname = null
+    try {
+        liveHostname = site.liveHostname.replace(/^https?\:\/\//i, "").split(':')[0]
+    } catch(e){}
+    return liveHostname
+
 }
 
 export function isContentOnSite(obj, site) {

@@ -62,15 +62,12 @@ export default function MenuDrawer({ cobaltData }) {
     let sitesRender = null;
     try {
         sitesRender = siteStructure
-            .filter((site) => site.name !== currentSite)
+            .filter((site) => site.name !== currentSite && site.headless)
             .map((site, i) => {
-                const url = process.env.NEXT_PUBLIC_HTTP_PROTO + '://' + site.customAttributes.frontendHostname + ':' + process.env.NEXT_PUBLIC_HTTP_PORT
-                return (
-                    <Link key={i} href={url} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                return (    
+                    <Link key={i} href={site.liveHostname} passHref prefetch={(cobaltData.previewData ? false : true)}>
                         <ListItem button component="a">
-
                             <ListItemText disableTypography primary={<Typography variant="h6">{site.title}</Typography>} />
-
                         </ListItem>
                     </Link>
                 )

@@ -287,7 +287,7 @@ async function getSegmentAnalyticsReport(cobaltData) {
 
 
 
-    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).customAttributes.frontendHostname
+    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).liveHostname
 
     const topPages = await getGaTopContentPagesReport(hostName);
 
@@ -323,7 +323,7 @@ async function getLandingPageAnalyticsReport(cobaltData) {
     //     }
     // }
 
-    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).customAttributes.frontendHostname
+    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).liveHostname
 
     const topPages = await getGaTopContentPagesReport(hostName);
 
@@ -341,7 +341,7 @@ async function getPageAnalyticsReport(cobaltData) {
     // For pages, we want to query on the full url (including site name)
     let url = null;
     try {
-        url = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).customAttributes.frontendHostname
+        url = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).liveHostname
     } catch (e) { }
 
     if (url) {
