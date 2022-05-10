@@ -8,7 +8,7 @@ import LandingPage from "../../../src/components/Page/LandingPage";
 import LiveblogPage from "../../../src/components/Page/LiveblogPage";
 import SectionPage from "../../../src/components/Page/SectionPage";
 import Segment from "../../../src/components/Segment/Segment";
-import { cobaltRequest, getCobaltPageByUrl, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
+import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
 import { decorateSectionPageCobaltData } from "../../../src/lib/cobalt-cms/cobalt-helpers";
 import { getMetaHeader } from "../../../src/lib/helpers";
 
@@ -47,14 +47,25 @@ export default function Page({ cobaltData, fallback }) {
                 render = <ArticlePage cobaltData={cobaltData} />;
         }
     }
-    return (
-        <React.Fragment>
-            {getMetaHeader(cobaltData)}
-            <Layout cobaltData={cobaltData}>
-                {render}
-            </Layout>
-        </React.Fragment>
-    )
+    if (cobaltData.previewData) {
+        if (cobaltData.object.data.sys.baseType !== 'webpagefragment') {
+            render = (
+                <Layout cobaltData={cobaltData}>
+                    {render}
+                </Layout>
+            )
+        }
+    } else {
+        render =  (
+            <React.Fragment>
+                {getMetaHeader(cobaltData)}
+                <Layout cobaltData={cobaltData}>
+                    {render}
+                </Layout>
+            </React.Fragment>
+        )
+    }
+    return render;
 }
 
 
@@ -67,7 +78,7 @@ export async function getStaticPaths({ }) {
 
         paths = sites.reduce((acc1, site, i) => {
             const hostName = site.customAttributes.frontendHostname;
-            if (hostName){
+            if (hostName) {
                 let sections = site.sitemap.children.reduce((acc2, section, j) => {
                     const sectionPath = section.path.replace(/^\/|\/$/g, '')
                     return [...acc2, {
@@ -96,18 +107,28 @@ export async function getStaticPaths({ }) {
     }
 }
 
-export async function getStaticProps({ params }) {
-    let url = "/"
-    if (params.url) {
-        url = params.url.join('/');
-    }
-    let site = "default"
-    if (params.site) {
-        site = params.site
-    }
-    console.log('RENDERING - site: ' + site + ' - path: ' + url + ' - DEV MODE: ' + process.env.DEV_MODE);
+export async function getStaticProps(context) {
 
-    let cobaltData = await getCobaltPageByUrl(site, url);
+    let cobaltData = null;
+
+    if (context.previewData) {
+        console.log("Preview mode: " + context.previewData)
+        cobaltData = await getCobaltPreview(context.previewData)
+    } else {
+        let url = "/"
+        let site = "default"
+        if (context.params) {
+            if (context.params.url) {
+                url = context.params.url.join('/');
+            }
+
+            if (context.params.site) {
+                site = context.params.site
+            }
+        }
+        console.log('RENDERING - site: ' + site + ' - path: ' + url + ' - DEV MODE: ' + process.env.DEV_MODE);
+        cobaltData = await getCobaltPageByUrl(site, url);
+    }
 
     let props = {
         cobaltData

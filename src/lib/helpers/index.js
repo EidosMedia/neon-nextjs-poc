@@ -20,7 +20,7 @@ export function getSeoTitle(cobaltData){
     let seoTitle = ''
     let websiteName = "The Globe"
     try{
-        websiteName = cobaltData.siteContext.siteStructure.find((site) => site.name === cobaltData.siteContext.site).title
+        websiteName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).title
     }catch(e){}
      
     switch (cobaltData.object.data.sys.baseType) {

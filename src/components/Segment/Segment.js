@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import React from "react";
-import { getCobaltDataHelper, getDwxLinkedObjects, getObjectMainSection, getObjectMainSite, isCurrentSiteContent } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentLiveSite, getDwxLinkedObjects, getObjectMainSection, getObjectMainSite, isContentOnSite  } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 
 export default function Segment({ cobaltData, analyticsReport }) {
@@ -31,7 +31,7 @@ export default function Segment({ cobaltData, analyticsReport }) {
     let needsHeader = false;
     let isOtherSite = false;
 
-    if (!isCurrentSiteContent(cobaltData.object.data, cobaltData.siteContext)) {
+    if (!isContentOnSite(cobaltData.object.data, getCurrentLiveSite(cobaltData))) {
         needsHeader = true;
         isOtherSite = true;
     }

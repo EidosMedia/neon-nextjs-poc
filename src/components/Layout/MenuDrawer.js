@@ -18,7 +18,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 import productLogo from '../../../public/static/img/head-logo.png'
 import Link from 'next/link';
-import { getCobaltDataHelper } from '../../lib/cobalt-cms/cobalt-helpers';
+import { getCobaltDataHelper, getCurrentLiveSite } from '../../lib/cobalt-cms/cobalt-helpers';
 
 export default function MenuDrawer({ cobaltData }) {
 
@@ -28,7 +28,7 @@ export default function MenuDrawer({ cobaltData }) {
         setOpen(!open);
     };
 
-    const currentSite = cobaltData.siteContext.site;
+    const currentSite = getCurrentLiveSite(cobaltData);
     const siteStructure = cobaltData.siteContext.siteStructure;
 
     const site = siteStructure.find((site) => site.name === currentSite)

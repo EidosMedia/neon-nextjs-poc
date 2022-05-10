@@ -56,7 +56,7 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
 }
 
 export async function decorateSectionPageCobaltData(cobaltData) {
-    const searchData = await searchCobalt(cobaltData.siteContext.site,
+    const searchData = await searchCobalt(getCurrentLiveSite(cobaltData),
         { param: 'pubInfo.publicationTime', order: 'DESC' },
         [
             { param: 'param.attributes.secondary_sections.mainSection', value: cobaltData.object.data.pubInfo.sectionPath },
@@ -87,7 +87,7 @@ export function getQueryResultObjects(cobaltData) {
             .object.data.children
             .filter((child) => {
                 const objNodeData = cobaltData.pageContext.nodes[child]
-                return isCurrentSiteContent(objNodeData, cobaltData.siteContext)
+                return isContentOnSite(objNodeData, getCurrentLiveSite(cobaltData))
             })
             .map((child) => {
                 const objNodeData = cobaltData.pageContext.nodes[child]
@@ -150,7 +150,6 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
     if (!zoneName){
         // When not specifying a zone, return all objects from all zones
         const zones = Object.keys(cobaltData.object.data.files.content.data.zones)
-        console.log("zones: " + zones)
         return zones.reduce((acc,zone) =>[...acc,...getDwxLinkedObjects(cobaltData,zone)],[])
     }
 
@@ -277,14 +276,14 @@ export function getSiteNameByHostName(hostName, sites) {
     }
 }
 
-export function isCurrentSiteContent(obj, siteContext) {
+export function isContentOnSite(obj, site) {
     let result = false;
 
     const pubAttributes = obj.attributes.secondary_sections
     if (Array.isArray(pubAttributes)) {
-        result = pubAttributes.some((attr) => attr.siteName === siteContext.site)
+        result = pubAttributes.some((attr) => attr.siteName === site)
     } else {
-        result = pubAttributes.siteName === siteContext.site
+        result = pubAttributes.siteName === site
     }
     return result;
 }
@@ -309,4 +308,13 @@ export function getObjectMainSection(obj) {
         section = pubAttributes.mainSection
     }
     return section;
+}
+
+// Return the live site (without [PREVIEW] if there is)
+export function getCurrentLiveSite(cobaltData){
+    let currentSite = cobaltData.siteContext.site
+    if (currentSite.includes('[PREVIEW]')){
+        currentSite = currentSite.split('[')[0]
+    }
+    return currentSite   
 }

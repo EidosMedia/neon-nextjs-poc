@@ -1,6 +1,5 @@
 export default async (req, res) => {
-    const url = decodeURIComponent(req.query.url);
-    const emauth = url.substring(url.indexOf('emauth=')+7,url.indexOf('&'))
+    const url = encodeURI(decodeURIComponent(req.query.url));
     const previewToken = url.substring(url.indexOf('token=')+6)
 
     const result = await fetch(url, {

@@ -73,21 +73,33 @@ export async function getCobaltPreview(previewData) {
 
     const jwe = previewData['emk.jwe']
     const previewToken = previewData['emk.previewToken']
-    const siteName = previewData['emk.site'].split('[')[0]
+    const siteName = previewData['emk.site']
 
-    const url = '/api/pages/' + previewData['emk.foreignId']
-        + '@eom?emk.site=' + siteName
+    let url = '/api/pages/' + previewData['emk.foreignId']
+        + '@eom?emk.site=' +  encodeURIComponent(siteName)
         + '&emk.previewSection=' + previewData['emk.previewSection']
-        //+ '&emk.previewToken=' + previewToken
         + '&emk.disableCache=true'
 
-    console.log("PREVIEW URL")
-    console.log(url)
-    console.log(jwe)
-    console.log(previewToken)
+    let pageData = null;
 
-    const pageData = await cobaltPreviewRequest(url, jwe, previewToken)
-    console.log(pageData)
+    try {
+        const options = {
+            method: 'GET',
+            httpAgent: agent,
+            url: process.env.COBALT_BASE_HOST + url,
+            mode: 'no-cors',
+            headers: {
+                Authorization: `Bearer ${jwe}`,
+                Cookie: "emk.previewToken=" + previewToken + ";"
+            }
+        };
+
+        const response = await axios.request(options)
+        pageData = response.data
+    }
+    catch (e) {
+        console.log(e)
+    }
 
     const previewInfo = {
         previewToken: previewToken,
@@ -126,7 +138,7 @@ async function cobaltPreviewRequest(previewUrl, jwe, previewToken) {
             url: process.env.COBALT_BASE_HOST + previewUrl,
             mode: 'no-cors',
             headers: {
-                //Authorization: `Bearer ${jwe}`,
+                Authorization: `Bearer ${jwe}`,
                 Cookie: "emk.previewToken=" + previewToken + ";"
             }
         };

@@ -2,7 +2,7 @@ import { Container, Typography, styled } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import useSWR from "swr";
-import { getCobaltLiveblogPostHelper } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCobaltLiveblogPostHelper, getCurrentLiveSite } from "../../lib/cobalt-cms/cobalt-helpers";
 import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
 import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderContentElement";
 import RenderLiveblogPostElement from "../RenderContent/RenderLiveblogPostElement";
@@ -15,7 +15,7 @@ export default function LiveblogPage({ cobaltData }) {
 
     if (cobaltData) {
         let data, error = null;
-        ({ data, error } = useSWR('/api/' + cobaltData.siteContext.site + '/liveblogs/' + cobaltData.object.data.id, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
+        ({ data, error } = useSWR('/api/' + getCurrentLiveSite(cobaltData) + '/liveblogs/' + cobaltData.object.data.id, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
 
         let headline = null;
         try {
