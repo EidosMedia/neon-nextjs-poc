@@ -40,7 +40,7 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
         },
         linkContext: linkContext,
         pageContext: {
-            url: url,
+            url: (url?url:pageData.model.data.url),
             nodes: pageData.model.nodes,
             resourcesUrls: pageData.resourcesUrls,
             nodesUrls: pageData.nodesUrls,
