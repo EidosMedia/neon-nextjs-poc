@@ -9,7 +9,7 @@ import LiveblogPage from "../../../src/components/Page/LiveblogPage";
 import SectionPage from "../../../src/components/Page/SectionPage";
 import Segment from "../../../src/components/Segment/Segment";
 import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
-import { decorateSectionPageCobaltData, getLiveHostname } from "../../../src/lib/cobalt-cms/cobalt-helpers";
+import { getLiveHostname } from "../../../src/lib/cobalt-cms/cobalt-helpers";
 import { getMetaHeader } from "../../../src/lib/helpers";
 
 export default function Page({ cobaltData, fallback }) {

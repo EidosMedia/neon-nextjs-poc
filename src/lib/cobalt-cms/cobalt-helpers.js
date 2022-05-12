@@ -55,17 +55,6 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
     return cobaltData
 }
 
-export async function decorateSectionPageCobaltData(cobaltData) {
-    const searchData = await searchCobalt(getCurrentLiveSite(cobaltData),
-        { param: 'pubInfo.publicationTime', order: 'DESC' },
-        [
-            { param: 'param.attributes.secondary_sections.mainSection', value: cobaltData.object.data.pubInfo.sectionPath },
-            { param: 'type', value: 'article' }
-        ])
-    cobaltData.searchResults = searchData
-    return cobaltData
-}
-
 export function buildCobaltDataForNestedObject(object, parentCobaltData, linkContext) {
     const cobaltData = {
         object: {
@@ -138,12 +127,6 @@ export function getSectionChildrenObjects(cobaltData) {
     } catch (e) { console.log(e) }
 
     return resultObjects
-}
-
-export function getDwxLinkedObject(cobaltData){
-    
-
-    
 }
 
 export function getDwxLinkedObjects(cobaltData, zoneName) {
