@@ -183,7 +183,7 @@ function getCobaltWebPageHelper(data) {
 
     const zones = Object.keys(data.files.content.data.zones)
 
-    let zonesWithObjects;
+    let zonesWithObjects = null;
     try {
         zonesWithObjects = zones.filter((zone) => data.links.pagelink[zone])
             .map((zone) => {
