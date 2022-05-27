@@ -104,7 +104,7 @@ export async function searchCobalt(siteName, sorting, filters) {
 async function cobaltPreviewRequest(previewUrl) {
     let result = null
     try {
-        previewUrl = decodeURIComponent(previewUrl)
+        //previewUrl = decodeURIComponent(previewUrl)
         const options1 = {
             method: 'GET',
             url: previewUrl,
