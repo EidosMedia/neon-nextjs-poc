@@ -1,7 +1,7 @@
 export default function ResourceResolver(resourceUrl, previewData, site){
     let url = null;
     if (previewData){
-        url = previewData.basePreviewUrl + resourceUrl + "?emk.site=" + site + "&emauth="+previewData.emauth+"&token="+previewData.previewToken
+        url = previewData.basePreviewUrl + resourceUrl + "?emk.site=" + site + encodeURIComponent('[PREVIEW]') + "&emauth="+previewData.emauth+"&token="+previewData.previewToken
         url = encodeURIComponent(url)
         url = '/api/imageProxy?url='+ url
     } else {
