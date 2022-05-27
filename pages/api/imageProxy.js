@@ -3,7 +3,7 @@ export default async (req, res) => {
     const emauth = url.substring(url.indexOf('emauth=')+7,url.indexOf('&'))
     const previewToken = url.substring(url.indexOf('token=')+6)
 
-    const result = await fetch(url, {
+    const result = await fetch(req.query.url, {
         headers: {
             'Cookie':"emk.previewDefaultContent=false; emk.previewToken="+previewToken+"; emauth="+emauth
         }
