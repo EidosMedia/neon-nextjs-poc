@@ -7,7 +7,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import { Card, CardActionArea, styled, Typography } from '@mui/material';
-import { getCobaltLiveblogPostHelper } from '../../lib/cobalt-cms/cobalt-helpers';
+import { getCobaltLiveblogPostHelper, getCurrentLiveSite } from '../../lib/cobalt-cms/cobalt-helpers';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { findElementsInContentJson } from '../../utils/ContentUtil';
 import { Box } from '@mui/system';
@@ -23,7 +23,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
 
         let data, error = null;
 
-        ({ data, error } = useSWR('/api/' + cobaltData.siteContext.site + '/liveblogs/' + blogId, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
+        ({ data, error } = useSWR('/api/' + getCurrentLiveSite(cobaltData) + '/liveblogs/' + blogId, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
 
         if (error) return <div>Failed to load</div>
         if (!data) return <div>Loading...</div>
