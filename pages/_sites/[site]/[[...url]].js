@@ -19,7 +19,7 @@ export default function Page({ cobaltData, fallback }) {
         return <ErrorPage errorType={cobaltData.error} />
     } else {
         let pageTitle = null;
-        if (cobaltData.pageContext.url !== '/') {
+        if (cobaltData.pageContext.url !== '/' && !cobaltData.previewData) {
             pageTitle = cobaltData.pageContext.url.charAt(0).toUpperCase() + cobaltData.pageContext.url.slice(1)
         }
         switch (cobaltData.object.data.sys.baseType) {
