@@ -15,7 +15,7 @@ export default function BasicNewsletter({ cobaltData }) {
 
     let content = null;
     try {
-        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='styled' cobaltData={cobaltData} />
+        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='newsletter' cobaltData={cobaltData} />
     } catch (e) {
         console.log(e)
     }

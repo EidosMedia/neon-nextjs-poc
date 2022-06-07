@@ -52,7 +52,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
                     </React.Fragment>
                 )
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="h3" component="h2">
@@ -68,7 +68,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
                     </React.Fragment>
                 )
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="h5" component="h3">
@@ -84,7 +84,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
                     </React.Fragment>
                 )
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="body1" component="h4">
@@ -100,7 +100,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
                     </React.Fragment>
                 );
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="body1" component="p">
@@ -116,7 +116,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md" component="ul">
                             {render}
@@ -130,7 +130,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md" component="ol">
                             {render}
@@ -145,7 +145,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
                     </React.Fragment>
                 );
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Typography sx={{ ml: 4 }} variant='body1' component='li'>
                             {render}
@@ -157,14 +157,14 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
                     render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
                 } else {
-                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
                 }
                 break;
             case "div":
                 if (jsonElement.attributes['emk-type'] === 'gallery') {
                     render = <FigureGallery jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
                 } else if (jsonElement.attributes['emk-type'] === 'extra-links') {
-                    render = <ExtraLinks jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                    render = <ExtraLinks jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
                 }
                 break;
             case 'table':
@@ -228,7 +228,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
 
                     </div>
                 );
-                if (renderMode && renderMode === 'styled') {
+                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 2 }} maxWidth="md" component="div">
                             <Box display="flex"
@@ -289,7 +289,7 @@ function Poll({ jsonElement, cobaltData }) {
     return render;
 }
 
-function Figure({ jsonElement, excludeElements, cobaltData }) {
+function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
 
     let render = null;
 
@@ -307,7 +307,9 @@ function Figure({ jsonElement, excludeElements, cobaltData }) {
             <Box display="flex"
                 justifyContent="center"
                 alignItems="center">
-                <Image src={imageUrl} width={imageWidth} height={imageHeight} />
+                {renderMode === 'newsletter' ?
+                    <img src={imageUrl} width={imageWidth} height={imageHeight}/>
+                    : <Image src={imageUrl} width={imageWidth} height={imageHeight} />}
             </Box>
         </Container>
     )
@@ -343,7 +345,7 @@ function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
     return render;
 }
 
-function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
+function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
 
     let headlineBlock = null;
@@ -393,13 +395,17 @@ function ExtraLinks({ jsonElement, excludeElements, cobaltData }) {
                     const imageHeight = 100;
                     let linkImage = null;
                     if (linkedObjectMainImageUrl) {
-                        linkImage = <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
+                        if (renderMode && renderMode === 'newsletter') {
+                            linkImage = <img src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
+                        } else {
+                            linkImage = <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
+                        }
                     }
                     blockRender = (
                         <Box key={i} display="flex"
                             justifyContent="flexStart"
                             alignItems="center">
-                            <Box>
+                            <Box sx={{py:1}}>
                                 {linkImage ? linkImage : null}
                             </Box>
                             <Box sx={{ mx: 2, maxWidth: '70%' }} flexShrink={1}>
@@ -447,8 +453,8 @@ export function CloudinaryVideo({ jsonElement, excludeElements, renderMode, coba
     let render = (
         <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
     )
-    
-    if (renderMode && renderMode === 'styled') {
+
+    if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
         render = (
             <Container sx={{ my: 4 }} maxWidth="lg">
                 <Box display="flex"
@@ -460,6 +466,6 @@ export function CloudinaryVideo({ jsonElement, excludeElements, renderMode, coba
         )
     }
 
-    
+
     return render
 } 

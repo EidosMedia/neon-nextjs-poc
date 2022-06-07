@@ -1,5 +1,6 @@
-import { sendgridGetSingleSend } from "../../../src/lib/sendgrid/sendgrid-client"
+import { sendgridSendSingleSend } from "../../../src/lib/sendgrid/sendgrid-client"
 import Cors from 'cors'
+import { getcobaltPageById } from "../../../src/lib/cobalt-cms/cobalt-api"
 
 const cors = Cors({
     methods: ['GET', 'HEAD', 'POST'],
@@ -21,9 +22,9 @@ const cors = Cors({
 
 export default async (req, res) => {
     await runMiddleware(req, res, cors)
-    console.log("--- SENDGRID GET NEWSLETTER ---")
-    console.log(req.query)
-    const result = await sendgridGetSingleSend(req.query.id)
+    console.log("--- SENDGRID SEND ---")
+    console.log(req.body)
+    const result = await sendgridSendSingleSend(req.body.newsletterId)
     console.log(result)
     res.status(200).json(result)
   }
