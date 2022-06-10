@@ -8,7 +8,8 @@ export async function sendgridCreateSingleSend(listId, cobaltData) {
     let result = null;
 
     let template = (<BasicNewsletter cobaltData={cobaltData}/>)
-    template = ReactDOMServer.renderToString(template)
+    template = ReactDOMServer.renderToString(template).replaceAll('&quot;','"')
+
 
     let subject = null;
     try {
