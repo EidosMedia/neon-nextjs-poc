@@ -1,17 +1,17 @@
 import { Container } from "@mui/material";
 import React from "react";
 import { SWRConfig } from "swr";
-import Layout from "../../../src/components/Layout/Layout";
-import BasicNewsletter from "../../../src/components/Newsletter/BasicNewsletter";
-import ArticlePage from "../../../src/components/Page/ArticlePage";
-import ErrorPage from "../../../src/components/Page/ErrorPage";
-import LandingPage from "../../../src/components/Page/LandingPage";
-import LiveblogPage from "../../../src/components/Page/LiveblogPage";
-import SectionPage from "../../../src/components/Page/SectionPage";
-import Segment from "../../../src/components/Segment/Segment";
-import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../src/lib/cobalt-cms/cobalt-api";
-import { getLiveHostname, isNewsletterSite } from "../../../src/lib/cobalt-cms/cobalt-helpers";
-import { getMetaHeader } from "../../../src/lib/helpers";
+import Layout from "../../../../src/components/Layout/Layout";
+import BasicNewsletter from "../../../../src/components/Newsletter/BasicNewsletter";
+import ArticlePage from "../../../../src/components/Page/ArticlePage";
+import ErrorPage from "../../../../src/components/Page/ErrorPage";
+import LandingPage from "../../../../src/components/Page/LandingPage";
+import LiveblogPage from "../../../../src/components/Page/LiveblogPage";
+import SectionPage from "../../../../src/components/Page/SectionPage";
+import Segment from "../../../../src/components/Segment/Segment";
+import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../../src/lib/cobalt-cms/cobalt-api";
+import { getLiveHostname, isNewsletterSite } from "../../../../src/lib/cobalt-cms/cobalt-helpers";
+import { getMetaHeader } from "../../../../src/lib/helpers";
 
 export default function Page({ cobaltData, fallback }) {
 
@@ -116,6 +116,8 @@ export async function getStaticPaths({ }) {
 
 export async function getStaticProps(context) {
 
+    console.log(context.params.variant)
+
     let cobaltData = null;
 
     if (context.previewData) {
@@ -133,8 +135,10 @@ export async function getStaticProps(context) {
                 site = context.params.site
             }
         }
-        console.log('RENDERING - site: ' + site + ' - path: ' + url + ' - DEV MODE: ' + process.env.DEV_MODE);
-        cobaltData = await getCobaltPageByUrl(site, url);
+        const variant = (context.params.variant?context.params.variant:null);
+
+        console.log('RENDERING - site: ' + site + ' - variant: ' + variant + ' - path: ' + url + ' - DEV MODE: ' + process.env.DEV_MODE);
+        cobaltData = await getCobaltPageByUrl(site, url, variant);
     }
 
     let props = {
