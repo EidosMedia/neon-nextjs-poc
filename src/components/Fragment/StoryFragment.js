@@ -88,7 +88,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     let additionalLinksBelowRender = null;
     if (additionalLinks) {
         additionalLinksInlineRender = additionalLinks
-            .filter((l) => (l['show_v' + variantId] && l['show_v' + variantId] === 'inline') || !l['show_v' + variantId] && l.show === "inline")
+            .filter((l) => (l['show_v' + variantId] && l['show_v' + variantId] === 'inline') || (!l['show_v' + variantId] && l.show === "inline"))
             .map((l) => {
                 let linkedObjectUrl = '/'
                 if (cobaltData.previewData) { //TODO manage the link in preview
@@ -110,7 +110,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
 
 
         additionalLinksBelowRender = additionalLinks
-            .filter((l) => (l['show_v' + variantId] && l['show_v' + variantId] === 'below') || !l['show_v' + variantId] && l.show === "below")
+            .filter((l) => (l['show_v' + variantId] && l['show_v' + variantId] === 'below') || (!l['show_v' + variantId] && l.show === "below"))
             .map((l) => {
                 let linkedObjectUrl = '/'
                 if (cobaltData.previewData) { //TODO manage the link in preview
