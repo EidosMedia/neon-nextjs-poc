@@ -59,7 +59,7 @@ export default function Analytics({ cobaltData, analyticsReport }) {
             render = (
                 <Container maxWidth="lg">
                     <Segment cobaltData={cobaltData} analyticsReport={analyticsReport} />
-                    <Fab sx={{ position: 'absolute', bottom: 16, right: 16 }} color="secondary" aria-label="edit" onClick={handleClickOpen}>
+                    <Fab sx={{ position: 'absolute', top: 16, right: 16 }} color="secondary" aria-label="edit" onClick={handleClickOpen}>
                         <HelpIcon />
                     </Fab>
                     <HelpDialog

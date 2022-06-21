@@ -4,7 +4,7 @@ export const experiments = [
       "id": "MFY6FYIySra93KqA3vs9UQ",
       "variants": [
         {
-          "name": "original",
+          "name": "Original",
           "id": 0,
           "weight": 33.3333
         },
