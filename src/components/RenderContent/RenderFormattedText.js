@@ -40,6 +40,10 @@ export default function RenderFormattedText({ jsonElement }) {
                     case 'question':
                         render = <React.Fragment>{subRender}</React.Fragment>;
                         break;
+                    case 'keyword':
+                        const keywordText = jsonElement.elements.map((subel, i) => subel.text).toString()
+                        const defaultText = "'default="+keywordText+"'"
+                        render = <span>{`{{ insert first_name "default=${keywordText}" }}`}</span>
                 }
             }
             break;

@@ -22,7 +22,7 @@ export function getCobaltDataHelper(data) {
     }
 }
 
-export function buildCobaltDataFromPage(pageData, siteStructure, site, url, previewData) {
+export function buildCobaltDataFromPage(pageData, siteStructure, site, url, previewData, variant) {
 
     const helper = getCobaltDataHelper(pageData.model.data);
 
@@ -50,6 +50,9 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
             site: site,
             siteStructure: siteStructure
         },
+        abTesting: {
+            variant: variant
+        },
         previewData
     }
     return cobaltData
@@ -64,6 +67,7 @@ export function buildCobaltDataForNestedObject(object, parentCobaltData, linkCon
         linkContext,
         siteContext: parentCobaltData.siteContext,
         pageContext: parentCobaltData.pageContext,
+        abTesting: parentCobaltData.abTesting,
         previewData: parentCobaltData.previewData
     }
     return cobaltData

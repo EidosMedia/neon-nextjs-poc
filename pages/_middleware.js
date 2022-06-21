@@ -1,10 +1,29 @@
 import { urlObjectKeys } from 'next/dist/shared/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
+import { experiments } from '../abtesting.config'
+import { AB_COOKIE_NAME } from '../apps.settings'
 
 export default function middleware(req) {
+  let res = NextResponse.next()
+  let ab_cookie = req.cookies[AB_COOKIE_NAME]
+
   const { pathname } = req.nextUrl
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
   const hostname = req.headers.get('host')
+
+  // AB TESTING
+
+  if (!ab_cookie) {
+    let n = Math.random() * 100
+
+    const currentExperiment = experiments[0]
+    const variant = currentExperiment.variants.find((v, i) => {
+      if (v.weight >= n) return true
+      n -= v.weight
+    })
+
+    ab_cookie = `${currentExperiment.id}.${variant.id}`
+  }
 
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
@@ -33,7 +52,16 @@ export default function middleware(req) {
     // the main logic component will happen in pages/sites/[site]/index.js
     // clone is due to https://nextjs.org/docs/messages/middleware-relative-urls 
     const rewriteUrl = req.nextUrl.clone()
-    rewriteUrl.pathname = `/_sites/${currentHost}${pathname}`
-    return NextResponse.rewrite(rewriteUrl)
+    rewriteUrl.pathname = `/_sites/${currentHost}/${ab_cookie}${pathname}`
+
+    res = NextResponse.rewrite(rewriteUrl)
+
+    // Add the AB-test cookie if it's not there
+    if (!req.cookies[AB_COOKIE_NAME]) {
+      res.cookie(AB_COOKIE_NAME, ab_cookie)
+    }
+
+
+    return res
   }
 }

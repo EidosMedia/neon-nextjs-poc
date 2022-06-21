@@ -6,7 +6,7 @@ import { buildCobaltDataFromPage, getCobaltDataHelper, getSiteNameByHostName } f
 var http = require('http');
 var agent = new http.Agent({ family: 4 });
 
-export async function getCobaltPageByUrl(hostName, url, previewUrl) {
+export async function getCobaltPageByUrl(hostName, url, variant) {
 
     let siteStructure = null;
     try {
@@ -23,7 +23,7 @@ export async function getCobaltPageByUrl(hostName, url, previewUrl) {
         console.log("Getting cobalt data from " + requestUrl)
         pageData = await cobaltRequest(requestUrl)
 
-        cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null);
+        cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, url, null, variant);
     } else {
         cobaltData = {
             error: 'not-found'
@@ -92,7 +92,7 @@ export async function getCobaltPreview(previewData) {
         basePreviewUrl: process.env.COBALT_BASE_HOST //TODO not needed?
     }
 
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, "/preview", previewInfo);
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, "/preview", previewInfo, null);
 
     return cobaltData;
 

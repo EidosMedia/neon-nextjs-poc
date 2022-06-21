@@ -36,11 +36,24 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
     } catch (e) { }
 
-    let headline = null;
-    try {
-        headline = cobaltData.linkContext.linkData.parameters.customHeadline
-    } catch (e) { }
+    let variantId = 0
 
+    if (cobaltData.abTesting && cobaltData.abTesting.variant) {
+        [, variantId] = cobaltData.abTesting.variant.split('.');
+    }
+
+    let headline = null;
+
+    if (variantId > 0) {
+        try {
+            headline = cobaltData.linkContext.linkData.parameters['customHeadline_v' + variantId]
+        } catch (e) { }
+    }
+    if (!headline) {
+        try {
+            headline = cobaltData.linkContext.linkData.parameters.customHeadline
+        } catch (e) { }
+    }
     if (!headline) {
         try {
             headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
@@ -49,9 +62,16 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     }
 
     let summary = null;
-    try {
-        summary = cobaltData.linkContext.linkData.parameters.customSummary
-    } catch (e) { }
+    if (variantId > 0) {
+        try {
+            summary = cobaltData.linkContext.linkData.parameters['customSummary_v' + variantId]
+        } catch (e) { }
+    }
+    if (!summary) {
+        try {
+            summary = cobaltData.linkContext.linkData.parameters.customSummary
+        } catch (e) { }
+    }
     if (!summary) {
         try {
             summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} />
@@ -68,20 +88,20 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     let additionalLinksBelowRender = null;
     if (additionalLinks) {
         additionalLinksInlineRender = additionalLinks
-            .filter((l) => l.show === "inline")
+            .filter((l) => (l['show_v' + variantId] && l['show_v' + variantId] === 'inline') || l.show === "inline")
             .map((l) => {
                 let linkedObjectUrl = '/'
-                if(cobaltData.previewData){ //TODO manage the link in preview
+                if (cobaltData.previewData) { //TODO manage the link in preview
                     linkedObjectUrl = '/preview'
                 } else {
                     linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
                 }
                 return (
                     <React.Fragment>
-                        <span> / </span> 
+                        <span> / </span>
                         <NextLink href={linkedObjectUrl} passHref>
-                            <MUILink underline="hover" component="span" color="secondary" sx={{fontWeight:500}}>
-                                {l.headline}
+                            <MUILink underline="hover" component="span" color="secondary" sx={{ fontWeight: 500 }}>
+                                {(l['headline_v' + variantId] ? l['headline_v' + variantId] : l.headline)}
                             </MUILink>
                         </NextLink>
                     </React.Fragment>
@@ -90,10 +110,10 @@ export default function StoryFragment({ cobaltData, gridContext }) {
 
 
         additionalLinksBelowRender = additionalLinks
-            .filter((l) => l.show === "below")
+            .filter((l) => (l['show_v' + variantId] && l['show_v' + variantId] === 'below') || l.show === "below")
             .map((l) => {
                 let linkedObjectUrl = '/'
-                if(cobaltData.previewData){ //TODO manage the link in preview
+                if (cobaltData.previewData) { //TODO manage the link in preview
                     linkedObjectUrl = '/preview'
                 } else {
                     linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
@@ -102,15 +122,15 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     <Typography variant="body2" component="li">
                         <NextLink href={linkedObjectUrl} passHref>
                             <MUILink underline="hover" color="grey.500">
-                                {l.headline}
+                                {(l['headline_v' + variantId] ? l['headline_v' + variantId] : l.headline)}
                             </MUILink>
                         </NextLink>
                     </Typography>
                 )
             })
-        if(additionalLinksBelowRender){
+        if (additionalLinksBelowRender) {
             additionalLinksBelowRender = (
-                <Box sx={{pb:1}}>
+                <Box sx={{ pb: 1 }}>
                     {additionalLinksBelowRender}
                 </Box>
             )
@@ -143,7 +163,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         console.log(e)
     }
 
-    
+
 
     // let image = dummyImage_rectangle;
     let image = mainPictureRectangleUrl;
@@ -162,10 +182,10 @@ export default function StoryFragment({ cobaltData, gridContext }) {
     let headlineVariant = "h4";
     let headlineVariantSm = "h4";
 
-    if (gridContext.md >= 6){
+    if (gridContext.md >= 6) {
         headlineVariant = "h4"
         headlineVariantSm = "h4";
-    } else if (gridContext.md >= 3){
+    } else if (gridContext.md >= 3) {
         headlineVariant = "h6"
         headlineVariantSm = "h4";
     } else {
@@ -211,7 +231,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
-                                <Typography sx={{ mb:2 }} variant="body1" color="text.secondary">
+                                <Typography sx={{ mb: 2 }} variant="body1" color="text.secondary">
                                     {summary}
                                     {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
@@ -242,7 +262,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                                 </Typography>
                                 : null}
                             {templateName.includes('sum') || templateName.includes('list') ?
-                                <Typography sx={{ mb:2 }} variant="h6" color="text.secondary">
+                                <Typography sx={{ mb: 2 }} variant="h6" color="text.secondary">
                                     {summary}
                                     {/* Lizards are a widespread group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
