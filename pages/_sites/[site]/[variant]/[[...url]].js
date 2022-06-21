@@ -29,7 +29,7 @@ export default function Page({ cobaltData, fallback }) {
                 break;
             case 'webpagefragment':
                 // For live preview
-                render = <Container maxWidth="lg"><Segment cobaltData={cobaltData} /></Container>;
+                render = <Segment cobaltData={cobaltData} />;
                 break;
             case 'section':
                 render = <SectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
