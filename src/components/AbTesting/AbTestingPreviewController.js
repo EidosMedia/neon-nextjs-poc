@@ -29,7 +29,7 @@ export default function AbTestingPreviewController({ handleSetPreviewVariant }) 
     };
 
     return (
-        <AppBar position="fixed" color="transparent" sx={{ top: 'auto', bottom: 0, boxShadow: 'none' }}>
+        <AppBar position="fixed" color="transparent" sx={{ top: 'auto', bottom: 0 }}>
             <Toolbar sx={{display:'flex', justifyContent:'flex-end'}}>
                 <div>
                     <List
