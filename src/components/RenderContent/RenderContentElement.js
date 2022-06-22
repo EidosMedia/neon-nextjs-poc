@@ -52,7 +52,8 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
                     </React.Fragment>
                 )
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                console.log(renderMode)
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="h3" component="h2">
@@ -68,7 +69,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
                     </React.Fragment>
                 )
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="h5" component="h3">
@@ -84,7 +85,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
                     </React.Fragment>
                 )
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="body1" component="h4">
@@ -100,7 +101,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
                     </React.Fragment>
                 );
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
                             <Typography variant="body1" component="p">
@@ -116,7 +117,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md" component="ul">
                             {render}
@@ -130,7 +131,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md" component="ol">
                             {render}
@@ -145,7 +146,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
                     </React.Fragment>
                 );
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Typography sx={{ ml: 4 }} variant='body1' component='li'>
                             {render}
@@ -228,7 +229,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
 
                     </div>
                 );
-                if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 2 }} maxWidth="md" component="div">
                             <Box display="flex"
@@ -454,7 +455,7 @@ export function CloudinaryVideo({ jsonElement, excludeElements, renderMode, coba
         <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>
     )
 
-    if (renderMode && (('styled', 'newsletter').includes(renderMode))) {
+    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
         render = (
             <Container sx={{ my: 4 }} maxWidth="lg">
                 <Box display="flex"
