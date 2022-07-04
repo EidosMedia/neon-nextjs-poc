@@ -11,6 +11,7 @@ import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import { getCobaltDataHelper } from "../../lib/cobalt-cms/cobalt-helpers";
+import InlinePoll from "./InlinePoll";
 
 export default function RenderContentElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
@@ -52,7 +53,6 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
                     </React.Fragment>
                 )
-                console.log(renderMode)
                 if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
@@ -247,7 +247,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 }
                 break;
             case 'poll':
-                render = <Poll jsonElement={jsonElement} />;
+                render = <InlinePoll jsonElement={jsonElement} cobaltData={cobaltData} />;
                 break;
             case 'blockquote':
                 render = (
@@ -276,40 +276,40 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
     return render
 }
 
-function Poll({ jsonElement, cobaltData }) {
-    //TODO real react component with state and interaction
-    let render = null
-    try {
-        const question = <RenderFormattedText jsonElement={jsonElement.elements.filter((el) => el.name === 'question')[0]} />
-        render = (
-            <div className="GLpoll left">
+// function Poll({ jsonElement, cobaltData }) {
+//     //TODO real react component with state and interaction
+//     let render = null
+//     try {
+//         const question = <RenderFormattedText jsonElement={jsonElement.elements.filter((el) => el.name === 'question')[0]} />
+//         render = (
+//             <div className="GLpoll left">
 
-                <div className="GLpollLabel">{question}</div>
-                <div id="alreadyVoted"></div>
-                <div className="GLpollOption">
-                    <form action="#" className="em-poll" method="post" id={jsonElement.attributes['data-poll-id']}>
-                        {jsonElement.elements.filter((el) => el.name === 'answers')[0].elements.map((el, i) => {
-                            return (
-                                <div key={i} className="radio">
-                                    <input type="radio"
-                                        name={"answerId-" + jsonElement.attributes['data-poll-id']}
-                                        id={el.attributes['data-answer-id']}
-                                        value={el.attributes['data-answer-id']} />
-                                    <label htmlFor={el.attributes['data-answer-id']}>{el.elements.map((el2, j) => <RenderFormattedText key={j} jsonElement={el2} />)}</label>
-                                </div>
-                            )
-                        })}
-                        <div className="GLpollSubmit">
-                            <button className="btn btn-default" type="submit">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        )
-    } catch (e) { console.log(e) }
+//                 <div className="GLpollLabel">{question}</div>
+//                 <div id="alreadyVoted"></div>
+//                 <div className="GLpollOption">
+//                     <form action="#" className="em-poll" method="post" id={jsonElement.attributes['data-poll-id']}>
+//                         {jsonElement.elements.filter((el) => el.name === 'answers')[0].elements.map((el, i) => {
+//                             return (
+//                                 <div key={i} className="radio">
+//                                     <input type="radio"
+//                                         name={"answerId-" + jsonElement.attributes['data-poll-id']}
+//                                         id={el.attributes['data-answer-id']}
+//                                         value={el.attributes['data-answer-id']} />
+//                                     <label htmlFor={el.attributes['data-answer-id']}>{el.elements.map((el2, j) => <RenderFormattedText key={j} jsonElement={el2} />)}</label>
+//                                 </div>
+//                             )
+//                         })}
+//                         <div className="GLpollSubmit">
+//                             <button className="btn btn-default" type="submit">Submit</button>
+//                         </div>
+//                     </form>
+//                 </div>
+//             </div>
+//         )
+//     } catch (e) { console.log(e) }
 
-    return render;
-}
+//     return render;
+// }
 
 function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
 

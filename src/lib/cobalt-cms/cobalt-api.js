@@ -164,6 +164,37 @@ export async function getCobaltAuthToken() {
 
 }
 
+export async function cobaltPollVote(site, nodeId, pollId, answerId){
+    let response = null
+    try {
+        const pollData = { 
+            "siteName": site,
+            "nodeId": nodeId,
+            "pollId": pollId,
+            "answerId":answerId
+        }
+        const options = {
+            method: 'POST',
+            url: process.env.COBALT_BASE_HOST + '/directory/polls/vote',
+            mode: 'no-cors',
+            data: pollData,
+            httpAgent: agent,
+            config: {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }
+        };
+
+        response = await axios.request(options)
+    }
+    catch (e) {
+        console.log(e)
+    }
+    return response
+}
+
 export async function getCobaltSitemap(siteName, token) {
     let result = null;
     try {
