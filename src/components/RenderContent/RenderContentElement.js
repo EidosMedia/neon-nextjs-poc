@@ -140,8 +140,6 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 }
                 break;
             case "li":
-                // TODO manage nested ul/li/ul/...,
-                console.log(JSON.stringify(jsonElement, null,2))
                 render = (
                     <React.Fragment>
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => {
@@ -250,6 +248,22 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 break;
             case 'poll':
                 render = <Poll jsonElement={jsonElement} />;
+                break;
+            case 'blockquote':
+                render = (
+                    <React.Fragment>
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                    </React.Fragment>
+                );
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                    render = (
+                        <Container sx={{ my: 3 }} maxWidth="sm" component="blockquote">
+                            <Typography variant="h5" component="p">
+                                {render}
+                            </Typography>
+                        </Container>
+                    )
+                }
                 break;
             case 'style':
                 break;
