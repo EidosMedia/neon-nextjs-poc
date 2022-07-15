@@ -1,7 +1,6 @@
 import { getCobaltSeoSitemap } from "../../../../src/lib/cobalt-cms/cobalt-api";
 
 export default async (req, res) => {
-    console.log(req.query)
     let url = "/sitemapindex.xml"
     let site = "default"
     if (req.query.url) {
@@ -14,8 +13,6 @@ export default async (req, res) => {
     const sitemapData = await getCobaltSeoSitemap(site, url)
     if (sitemapData) {
         let sitemap = ''
-
-        console.log(sitemapData.model.data.sitemapinfos)
 
         if (sitemapData.model.data.baseType === 'sitemapindex') {
             const sitemapBody = sitemapData.model.data.sitemapinfos.map((info) => {
@@ -43,7 +40,6 @@ export default async (req, res) => {
 
         } else if (sitemapData.model.data.baseType === 'sitemap') {
             const sitemapBody = sitemapData.model.children.map((child) => {
-                console.log(child)
                 const url = sitemapData.nodesUrls[child]
                 const lastMod = sitemapData.model.data.lastmod[child]
                 const pubName = sitemapData.siteData.title

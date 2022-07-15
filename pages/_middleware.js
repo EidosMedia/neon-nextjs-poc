@@ -41,15 +41,13 @@ export default function middleware(req) {
   if (pathname.startsWith(`/_`)) {
     return new Response(null, { status: 404 })
   }
-  
-  
-  console.log(pathname)
-  const regex = new RegExp('^(.*)sitemap-(\\d)+\\.xml$', 'gm')
-  if(regex.exec(pathname) || pathname.endsWith('/sitemapindex.xml')){
+
+  const regexSitemap = new RegExp('^(.*)sitemap-(\\d)+\\.xml$', 'gm')
+  if (regexSitemap.exec(pathname) || pathname.endsWith('/sitemapindex.xml')) {
     const rewriteUrl = req.nextUrl.clone()
     rewriteUrl.pathname = `/api/${currentHost}/sitemap${pathname}`
     res = NextResponse.rewrite(rewriteUrl)
-    return res 
+    return res
   }
 
   if (
