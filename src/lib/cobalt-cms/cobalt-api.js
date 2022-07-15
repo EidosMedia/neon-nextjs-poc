@@ -255,3 +255,22 @@ export async function getCobaltSites() {
     }
 
 }
+
+export async function getCobaltSeoSitemap(hostName, url) {
+
+    let siteStructure = null;
+    try {
+        siteStructure = await getCobaltSites()
+    } catch (e) { }
+
+    const siteName = getSiteNameByHostName(hostName, siteStructure)
+    let sitemapData = null
+
+    if (siteName) {
+        const requestUrl = "/" + url + '?emk.site=' + siteName
+        console.log("Getting cobalt data from " + requestUrl)
+        sitemapData = await cobaltRequest(requestUrl)
+    } 
+
+    return sitemapData;
+}

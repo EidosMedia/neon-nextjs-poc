@@ -38,8 +38,18 @@ export default function middleware(req) {
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents. This can also be done
   // via rewrites to a custom 404 page
-  if (pathname.startsWith(`/_sites`)) {
+  if (pathname.startsWith(`/_`)) {
     return new Response(null, { status: 404 })
+  }
+  
+  
+  console.log(pathname)
+  const regex = new RegExp('^(.*)sitemap-(\\d)+\\.xml$', 'gm')
+  if(regex.exec(pathname) || pathname.endsWith('/sitemapindex.xml')){
+    const rewriteUrl = req.nextUrl.clone()
+    rewriteUrl.pathname = `/api/${currentHost}/sitemap${pathname}`
+    res = NextResponse.rewrite(rewriteUrl)
+    return res 
   }
 
   if (
