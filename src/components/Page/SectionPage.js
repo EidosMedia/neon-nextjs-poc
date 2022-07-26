@@ -21,7 +21,7 @@ export default function SectionPage({ cobaltData, pageTitle }) {
                 </Box> : null)}
             <Grid container spacing={2}>
                 {searchResults
-                    .filter((object) => object.data.sys.baseType === 'article')
+                    .filter((object) => object.object.data.sys.baseType === 'article')
                     .map((object, i) => (
                     <Grid key={i} item xs={12} md={4}>
                         <GenericFragment cobaltData={object} gridContext={{ xs: 12, md: 4 }} />
