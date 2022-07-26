@@ -30,7 +30,7 @@ export default async (req, res) => {
                     </sitemap>`
                 }
                 return buffer;
-            })
+            }).join(' ')
 
             sitemap =
                 `<?xml version="1.0" encoding="UTF-8"?>
@@ -66,7 +66,7 @@ export default async (req, res) => {
                         </news:news>
                         ${(mainImageUrl?"<image:image><image:loc>"+mainImageUrl+"</image:loc></image:image>":"")}
                     </url>`
-            })
+            }).join(' ')
 
             sitemap =
                 `<?xml version="1.0" encoding="UTF-8"?>
