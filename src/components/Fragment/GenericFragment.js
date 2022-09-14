@@ -23,12 +23,7 @@ export default function GenericFragment({ cobaltData, analyticsReport, gridConte
                 render = <GenericWidget cobaltData={cobaltData} gridContext={gridContext} />;
                 break;
             case 'liveblog':
-                if(gridContext.md > 3){
-                    // We render as an article teaser
-                    render = <StoryFragment cobaltData={cobaltData} gridContext={gridContext} />;
-                } else {
-                    render = <LiveblogFragment cobaltData={cobaltData} gridContext={gridContext} />;
-                }
+                render = <LiveblogFragment cobaltData={cobaltData} gridContext={gridContext} />;
                 break;
         }
     }
