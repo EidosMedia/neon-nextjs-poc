@@ -44,7 +44,7 @@ export async function getcobaltPageById(id, siteName, foreignId = false) {
     console.log("Getting cobalt data from " + requestUrl)
     pageData = await cobaltRequest(requestUrl)
 
-    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, null, null);
+    const cobaltData = buildCobaltDataFromPage(pageData, siteStructure, siteName, null, null, null);
 
     return cobaltData;
 }

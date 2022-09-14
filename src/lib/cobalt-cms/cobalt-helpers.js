@@ -165,6 +165,7 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
                         case 'featured': linkTemplate = 'featured_standard'; break;
                         case 'segment': linkTemplate = 'section_teaser'; break;
                         case 'article': linkTemplate = 'head-pic'; break;
+                        case 'liveblog': linkTemplate = 'head-pic';break;
                     }
                 }
 
