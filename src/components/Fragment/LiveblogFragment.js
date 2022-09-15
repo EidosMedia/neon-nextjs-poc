@@ -132,9 +132,10 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
                                             {headline}
                                         </Typography>
                                         : null}
+                                    <Typography display="inline" color="red" sx={{fontWeight:'bold'}}>LIVE </Typography>
                                     {templateName.includes('sum') || templateName.includes('list') ?
-                                        <Typography sx={{ mb: 2 }} variant="body1" color="text.secondary">
-                                            {summary}
+                                        <Typography display="inline" sx={{ mb: 2 }} variant="body1" color="text.secondary">
+                                             / {summary}
                                         </Typography>
                                         : null}
                                 </CardContent>
