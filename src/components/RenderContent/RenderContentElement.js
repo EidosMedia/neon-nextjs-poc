@@ -12,6 +12,7 @@ import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import { getCobaltDataHelper } from "../../lib/cobalt-cms/cobalt-helpers";
 import InlinePoll from "./InlinePoll";
+import SimpleMap from "./SimpleMap";
 
 export default function RenderContentElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
@@ -98,18 +99,28 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "p":
                 render = (
                     <React.Fragment>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => {
+                            if (subel.type === 'text') {
+                                let renderEl = <RenderFormattedText key={i} jsonElement={subel} />
+                                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                                    renderEl = (
+                                        <Container sx={{ my: 1 }} maxWidth="md">
+                                            <Typography variant="body1" component="p">
+                                                {renderEl}
+                                            </Typography>
+                                        </Container>
+                                    )
+                                }
+                                return renderEl
+                            } else {
+                                if (subel.name === 'table') { //Only manage explicetely whitelisted elements inside <p>
+                                    return <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
+                                }
+                            }
+                        })
+                            : null)}
                     </React.Fragment>
                 );
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="body1" component="p">
-                                {render}
-                            </Typography>
-                        </Container>
-                    )
-                }
                 break;
             case "ul":
                 render = (
@@ -143,7 +154,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 render = (
                     <React.Fragment>
                         {(jsonElement.elements ? jsonElement.elements.map((subel, i) => {
-                            if(subel.type === "element" && (subel.name === "ul" || subel.name === "ol")){
+                            if (subel.type === "element" && (subel.name === "ul" || subel.name === "ol")) {
                                 return <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
                             } else {
                                 return <RenderFormattedText key={i} jsonElement={subel} />
@@ -174,15 +185,24 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 }
                 break;
             case 'table':
-                const tableAttr = jsonElement.attributes;
-                const className = (tableAttr ? tableAttr.class : null);
-                const tableCellPadding = (tableAttr ? tableAttr.cellpadding : null);
-                const tableCellSpacing = (tableAttr ? tableAttr.cellspacing : null);
-                render = (
-                    <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
-                    </table>
-                );
+                if (jsonElement.attributes && jsonElement.attributes.class === 'DataMap') {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <SimpleMap jsonElement={jsonElement} cobaltData={cobaltData}/>
+                        </Container>
+                    )
+
+                } else {
+                    const tableAttr = jsonElement.attributes;
+                    const className = (tableAttr ? tableAttr.class : null);
+                    const tableCellPadding = (tableAttr ? tableAttr.cellpadding : null);
+                    const tableCellSpacing = (tableAttr ? tableAttr.cellspacing : null);
+                    render = (
+                        <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
+                        </table>
+                    );
+                }
                 break;
             case 'thead':
                 const theadAttr = jsonElement.attributes;
@@ -330,7 +350,7 @@ function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
                 justifyContent="center"
                 alignItems="center">
                 {renderMode === 'newsletter' ?
-                    <img src={imageUrl} width={imageWidth} height={imageHeight}/>
+                    <img src={imageUrl} width={imageWidth} height={imageHeight} />
                     : <Image src={imageUrl} width={imageWidth} height={imageHeight} />}
             </Box>
         </Container>
@@ -427,7 +447,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
                         <Box key={i} display="flex"
                             justifyContent="flexStart"
                             alignItems="center">
-                            <Box sx={{py:1}}>
+                            <Box sx={{ py: 1 }}>
                                 {linkImage ? linkImage : null}
                             </Box>
                             <Box sx={{ mx: 2, maxWidth: '70%' }} flexShrink={1}>
