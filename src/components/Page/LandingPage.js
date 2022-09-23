@@ -1,6 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
 import HTMLComment from "react-html-comment";
 import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import GenericFragment from "../Fragment/GenericFragment";
 import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
 import GenericWidget from "../Widgets/GenericWidget";
@@ -46,6 +47,10 @@ export default function LandingPage({ cobaltData, pageTitle, analyticsReport }) 
                         break;
                     case "widget":
                         return <GenericWidget key={i} cobaltData={obj} />;
+                        break;
+                    case "article":
+                        return <GenericFragment key={i} cobaltData={obj} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />;
+                        break;
                 }
 
             })}

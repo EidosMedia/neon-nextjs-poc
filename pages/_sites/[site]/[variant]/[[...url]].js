@@ -8,6 +8,7 @@ import ErrorPage from "../../../../src/components/Page/ErrorPage";
 import LandingPage from "../../../../src/components/Page/LandingPage";
 import LiveblogPage from "../../../../src/components/Page/LiveblogPage";
 import SectionPage from "../../../../src/components/Page/SectionPage";
+import SemiAutomaticSectionPage from "../../../../src/components/Page/SemiAutomaticSectionPage";
 import Segment from "../../../../src/components/Segment/Segment";
 import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../../src/lib/cobalt-cms/cobalt-api";
 import { getLiveHostname, isNewsletterSite } from "../../../../src/lib/cobalt-cms/cobalt-helpers";
@@ -25,7 +26,11 @@ export default function Page({ cobaltData, fallback }) {
         }
         switch (cobaltData.object.data.sys.baseType) {
             case 'webpage':
-                render = <LandingPage cobaltData={cobaltData} pageTitle={pageTitle} />;
+                if(pageTitle){ //This is a section page with a DWP ("semi-automatic" page)
+                    render = <SemiAutomaticSectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
+                } else {
+                    render = <LandingPage cobaltData={cobaltData}/>;
+                }
                 break;
             case 'webpagefragment':
                 // For live preview
