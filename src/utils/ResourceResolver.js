@@ -1,6 +1,6 @@
 export default function ResourceResolver(resourceUrl, previewData, site){
     let url = null;
-    if (previewData){
+    if (previewData && resourceUrl.includes("@eom")){
         url = previewData.basePreviewUrl + resourceUrl + "?emk.site=" + site + "&emauth="+previewData.emauth+"&token="+previewData.previewToken
         url = encodeURIComponent(url)
         url = '/api/imageProxy?url='+ url
