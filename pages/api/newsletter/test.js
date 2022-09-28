@@ -22,8 +22,6 @@ const cors = Cors({
 export default async (req, res) => {
     await runMiddleware(req, res, cors)
     console.log("--- SENDGRID TEST ---")
-    console.log(req.body)
     const result = await sendgridTestSingleSend(req.body.newsletterId)
-    console.log(result)
     res.status(200).json(result)
   }

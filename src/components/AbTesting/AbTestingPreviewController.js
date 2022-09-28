@@ -18,7 +18,6 @@ export default function AbTestingPreviewController({ handleSetPreviewVariant }) 
     };
 
     const handleMenuItemClick = (event, index, variantId) => {
-        console.log("variantId passed: " + variantId)
         setSelectedIndex(index);
         setAnchorEl(null);
         handleSetPreviewVariant(variantId)

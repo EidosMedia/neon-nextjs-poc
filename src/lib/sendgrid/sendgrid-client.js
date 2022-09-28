@@ -56,8 +56,6 @@ export async function sendgridUpdateSingleSend(newsletterId, listId, cobaltData)
 
     let template = (<BasicNewsletter cobaltData={cobaltData}/>)
     template = ReactDOMServer.renderToString(template).replaceAll('&quot;','"')
-    console.log("TEMPLATE")
-    console.log(template)
 
     let subject = null;
     try {

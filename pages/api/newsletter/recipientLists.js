@@ -22,8 +22,6 @@ const cors = Cors({
 export default async (req, res) => {
     await runMiddleware(req, res, cors)
     console.log("--- SENDGRID RECIPIENT LISTS ---")
-    console.log(req.query)
     const result = await sendGridGetRecipientLists()
-    console.log(result)
     res.status(200).json(result)
   }

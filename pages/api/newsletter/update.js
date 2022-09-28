@@ -23,9 +23,7 @@ const cors = Cors({
 export default async (req, res) => {
     await runMiddleware(req, res, cors)
     console.log("--- SENDGRID UPDATE ---")
-    console.log(req.body)
     const cobaltData = await getcobaltPageById(req.body.contentId,req.body.site,true)
     const result = await sendgridUpdateSingleSend(req.body.newsletterId,req.body.listId, cobaltData)
-    console.log(result)
     res.status(200).json(result)
   }

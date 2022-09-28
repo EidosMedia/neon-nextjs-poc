@@ -16,7 +16,6 @@ export default function Segment({ cobaltData, analyticsReport }) {
     const handleSetPreviewVariant = (pv) => {
         setPreviewVariant(pv)
         cobaltData.abTesting['variant'] = pv
-        console.log(cobaltData)
     }
 
     let render = null;

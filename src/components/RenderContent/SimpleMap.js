@@ -7,7 +7,6 @@ import {
 } from "react-simple-maps";
 
 export default function SimpleMap({ jsonElement, cobaltData }) {
-    console.log(JSON.stringify(jsonElement, null, 2))
 
     let countries = null;
 
@@ -21,8 +20,6 @@ export default function SimpleMap({ jsonElement, cobaltData }) {
                 }
             })
     } catch (e) { }
-
-    console.log(countries)
 
     countries = countries.map((c) => {
         switch (c.code) {
