@@ -21,13 +21,12 @@ export default function Page({ cobaltData, fallback }) {
         return <ErrorPage errorType={cobaltData.error} />
     } else {
         let pageTitle = null;
-        //if (cobaltData.pageContext.url !== '/' && !cobaltData.previewData) {
-        if (cobaltData.pageContext.url !== '/') {
+        if (cobaltData.pageContext.url !== '/' && !cobaltData.previewData) {
             pageTitle = cobaltData.pageContext.url.charAt(0).toUpperCase() + cobaltData.pageContext.url.slice(1)
         }
         switch (cobaltData.object.data.sys.baseType) {
             case 'webpage':
-                if(pageTitle){ //This is a section page with a DWP ("semi-automatic" page)
+                if(cobaltData.pageContext.url !== '/'){ //This is a section page with a DWP ("semi-automatic" page)
                     render = <SemiAutomaticSectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
                 } else {
                     render = <LandingPage cobaltData={cobaltData}/>;
