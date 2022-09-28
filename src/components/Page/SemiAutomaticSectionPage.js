@@ -9,7 +9,6 @@ export default function SemiAutomaticSectionPage({ cobaltData, pageTitle, analyt
     try { uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId + '"' } catch (e) { }
 
     const mainObjects = getDwxLinkedObjects(cobaltData, "main");
-    // mainObjects.forEach((o) => console.log(o.object.data))
     
     const flattenedObjects = mainObjects.reduce((acc,o) => {
         switch(o.object.data.sys.baseType){
