@@ -26,7 +26,7 @@ export default function Page({ cobaltData, fallback }) {
         }
         switch (cobaltData.object.data.sys.baseType) {
             case 'webpage':
-                if(cobaltData.pageContext.url !== '/' && cobaltData.pageContext.url !== '/preview'){ //This is a section page with a DWP ("semi-automatic" page)
+                if(cobaltData.object.data.pubInfo.sectionPath !== '/'){ //This is a section page with a DWP ("semi-automatic" page)
                     render = <SemiAutomaticSectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
                 } else {
                     render = <LandingPage cobaltData={cobaltData}/>;
