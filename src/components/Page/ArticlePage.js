@@ -74,6 +74,7 @@ export default function ArticlePage({ cobaltData }) {
 function BreadcrumbBlock({ cobaltData, styleVariant }) {
     let justify = "center";
     let maxWidth = "md";
+    console.log("breadcrumb : " + styleVariant)
     if(styleVariant && styleVariant === "leftAligned"){
         justify = "left";
         maxWidth = "lg";
