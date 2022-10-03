@@ -2,7 +2,7 @@ import { Breadcrumbs } from "@mui/material";
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import { getObjectMainSection } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentLiveSite, getObjectMainSection } from "../../lib/cobalt-cms/cobalt-helpers";
 
 export default function BreadCrumb({ cobaltData }) {
     console.log(cobaltData)
@@ -14,7 +14,7 @@ export default function BreadCrumb({ cobaltData }) {
             href="/"
         >
             <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            {cobaltData.siteContext.siteStructure.find((site) => site.name === cobaltData.siteContext.site).title}
+            {cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).title}
         </MUILink>
     ]
 
