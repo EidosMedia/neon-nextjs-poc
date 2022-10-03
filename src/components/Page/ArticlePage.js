@@ -4,6 +4,7 @@ import Image from "next/image";
 import HTMLComment from "react-html-comment";
 import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
 import ResourceResolver from "../../utils/ResourceResolver";
+import BreadCrumb from "../Furnitures/BreadCrumb";
 import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderContentElement";
 
 export default function ArticlePage({ cobaltData }) {
@@ -11,7 +12,7 @@ export default function ArticlePage({ cobaltData }) {
 
     let headline = null;
     try {
-        headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]}/>
+        headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
     } catch (e) { }
 
     let summary = null;
@@ -53,39 +54,46 @@ export default function ArticlePage({ cobaltData }) {
 
     let content = null;
     try {
-        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='styled' cobaltData={cobaltData}/>
+        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='styled' cobaltData={cobaltData} />
     } catch (e) {
         console.log(e)
     }
 
     //Swing quick open
     let uuid = null;
-    try {uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId +'"'}catch(e){}
+    try { uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId + '"' } catch (e) { }
 
     render = (
         <Container maxWidth="lg">
-            {uuid?<HTMLComment text={uuid}/>:null}
-            <Container sx={{my:2}} maxWidth="md">
+            {uuid ? <HTMLComment text={uuid} /> : null}
+            <Container sx={{ my: 0 }} maxWidth="md">
                 <Box display="flex"
                     justifyContent="center"
                     alignItems="center">
-                    <Typography align="center" variant="h3" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium'}}>
+                    <BreadCrumb cobaltData={cobaltData} />
+                </Box>
+            </Container>
+            <Container sx={{ my: 1 }} maxWidth="md">
+                <Box display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    <Typography align="center" variant="h3" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium' }}>
                         {headline}
                     </Typography>
                 </Box>
             </Container>
             {summary ?
-                <Container sx={{my:2}} maxWidth="md">
+                <Container sx={{ my: 2 }} maxWidth="md">
                     <Box display="flex"
                         justifyContent="center"
                         alignItems="center">
-                        <Typography align="center"  variant="h5" component="h2">
+                        <Typography align="center" variant="h5" component="h2">
                             {summary}
                         </Typography>
                     </Box>
                 </Container>
                 : null}
-            <Container sx={{my:2}} maxWidth="lg">
+            <Container sx={{ my: 2 }} maxWidth="lg">
                 <Box display="flex"
                     justifyContent="center"
                     alignItems="center">
