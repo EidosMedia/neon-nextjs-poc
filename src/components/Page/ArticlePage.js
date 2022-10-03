@@ -26,11 +26,8 @@ export default function ArticlePage({ cobaltData }) {
         styleVariant = site.customAttributes.style
     } catch (e) { }
 
-    console.log("style variant : " + styleVariant)
-
     switch (styleVariant) {
         case "1":
-            console.log("in style 1")
             render = (
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
@@ -43,20 +40,18 @@ export default function ArticlePage({ cobaltData }) {
             )
             break;
         case "2":
-            console.log("in style 2")
             render = (
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
                     <BreadcrumbBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                    <HeadlineBlock cobaltData={cobaltData} styleVariant="leftAligned"/>
-                    <SummaryBlock cobaltData={cobaltData} styleVariant="leftAligned"/>
-                    <MainImageBlock cobaltData={cobaltData} styleVariant="leftAligned"/>
-                    <ContentBlock cobaltData={cobaltData} styleVariant="leftAligned"/>
+                    <HeadlineBlock cobaltData={cobaltData} styleVariant="leftAligned" />
+                    <SummaryBlock cobaltData={cobaltData} styleVariant="leftAligned" />
+                    <MainImageBlock cobaltData={cobaltData} styleVariant="leftAligned" />
+                    <ContentBlock cobaltData={cobaltData} styleVariant="leftAligned" />
                 </Container>
             )
             break;
         default:
-            console.log("in default style")
             render = (
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
@@ -74,8 +69,7 @@ export default function ArticlePage({ cobaltData }) {
 function BreadcrumbBlock({ cobaltData, styleVariant }) {
     let justify = "center";
     let maxWidth = "md";
-    console.log("breadcrumb : " + styleVariant)
-    if(styleVariant && styleVariant === "leftAligned"){
+    if (styleVariant && styleVariant === "leftAligned") {
         justify = "left";
         maxWidth = "lg";
     }
@@ -100,7 +94,7 @@ function HeadlineBlock({ cobaltData, styleVariant }) {
 
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant === "leftAligned"){
+    if (styleVariant && styleVariant === "leftAligned") {
         justify = "left";
         maxWidth = "lg";
     }
@@ -110,7 +104,7 @@ function HeadlineBlock({ cobaltData, styleVariant }) {
             <Box display="flex"
                 justifyContent={justify}
                 alignItems={justify}>
-                <Typography align="center" variant="h3" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium' }}>
+                <Typography align={justify} variant="h3" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium' }}>
                     {headline}
                 </Typography>
             </Box>
@@ -128,7 +122,7 @@ function SummaryBlock({ cobaltData, styleVariant }) {
 
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant === "leftAligned"){
+    if (styleVariant && styleVariant === "leftAligned") {
         justify = "left";
         maxWidth = "lg";
     }
@@ -140,7 +134,7 @@ function SummaryBlock({ cobaltData, styleVariant }) {
                 <Box display="flex"
                     justifyContent={justify}
                     alignItems={justify}>
-                    <Typography align="center" variant="h5" component="h2">
+                    <Typography align={justify} variant="h5" component="h2">
                         {summary}
                     </Typography>
                 </Box>
@@ -185,7 +179,7 @@ function MainImageBlock({ cobaltData, styleVariant }) {
 
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant === "leftAligned"){
+    if (styleVariant && styleVariant === "leftAligned") {
         justify = "left";
         maxWidth = "lg";
     }
