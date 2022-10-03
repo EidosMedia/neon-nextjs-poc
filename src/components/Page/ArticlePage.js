@@ -74,7 +74,7 @@ export default function ArticlePage({ cobaltData }) {
 function BreadcrumbBlock({ cobaltData, styleVariant }) {
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant == "leftAligned"){
+    if(styleVariant && styleVariant === "leftAligned"){
         justify = "left";
         maxWidth = "lg";
     }
@@ -99,7 +99,7 @@ function HeadlineBlock({ cobaltData, styleVariant }) {
 
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant == "leftAligned"){
+    if(styleVariant && styleVariant === "leftAligned"){
         justify = "left";
         maxWidth = "lg";
     }
@@ -127,7 +127,7 @@ function SummaryBlock({ cobaltData, styleVariant }) {
 
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant == "leftAligned"){
+    if(styleVariant && styleVariant === "leftAligned"){
         justify = "left";
         maxWidth = "lg";
     }
@@ -184,7 +184,7 @@ function MainImageBlock({ cobaltData, styleVariant }) {
 
     let justify = "center";
     let maxWidth = "md";
-    if(styleVariant && styleVariant == "leftAligned"){
+    if(styleVariant && styleVariant === "leftAligned"){
         justify = "left";
         maxWidth = "lg";
     }
