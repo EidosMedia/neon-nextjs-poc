@@ -26,8 +26,11 @@ export default function ArticlePage({ cobaltData }) {
         styleVariant = site.customAttributes.style
     } catch (e) { }
 
+    console.log("style variant : " + styleVariant)
+
     switch (styleVariant) {
         case "1":
+            console.log("in style 1")
             render = (
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
@@ -40,6 +43,7 @@ export default function ArticlePage({ cobaltData }) {
             )
             break;
         case "2":
+            console.log("in style 2")
             render = (
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
@@ -52,6 +56,7 @@ export default function ArticlePage({ cobaltData }) {
             )
             break;
         default:
+            console.log("in default style")
             render = (
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
