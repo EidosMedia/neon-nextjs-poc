@@ -148,7 +148,7 @@ export async function getStaticProps(context) {
         cobaltData
     };
 
-    let revalidate = 60;
+    let revalidate = 5;
     let fallback = {}; // To be used for SWR rehydration of liveblogs
 
     if (!cobaltData.error) {
