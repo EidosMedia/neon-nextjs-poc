@@ -1,6 +1,7 @@
 import { Container, Typography, styled } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
+import HTMLComment from "react-html-comment";
 import useSWR from "swr";
 import { getCobaltLiveblogPostHelper, getCurrentLiveSite } from "../../lib/cobalt-cms/cobalt-helpers";
 import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
@@ -12,6 +13,10 @@ const fetcher = url => axios.get(url).then(res => res.data)
 export default function LiveblogPage({ cobaltData }) {
 
     let render = null;
+
+    //Swing quick open
+    let uuid = null;
+    try { uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId + '"' } catch (e) { }
 
     if (cobaltData) {
         let data, error = null;
@@ -65,6 +70,7 @@ export default function LiveblogPage({ cobaltData }) {
         }
         render = (
             <Container maxWidth="lg">
+                {uuid ? <HTMLComment text={uuid} /> : null}
                 <Container sx={{ my: 2 }} maxWidth="md">
                     <Box display="flex"
                         justifyContent="center"
