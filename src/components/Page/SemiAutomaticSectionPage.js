@@ -21,8 +21,6 @@ export default function SemiAutomaticSectionPage({ cobaltData, pageTitle, analyt
         }
     },[])
 
-    console.log(flattenedObjects)
-
     const nonDupObjects = flattenedObjects.reduce((acc,o) => {
         if(acc.find((a) => ((a.object.data.id === o.object.data.id)
                     || a.object.data.foreignId.includes(o.object.data.foreignId))  // to manage preview of queries

@@ -5,7 +5,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import { getCurrentLiveSite, getObjectMainSection } from "../../lib/cobalt-cms/cobalt-helpers";
 
 export default function BreadCrumb({ cobaltData }) {
-    console.log(cobaltData)
     const content = [
         <MUILink
             underline="hover"
@@ -19,11 +18,9 @@ export default function BreadCrumb({ cobaltData }) {
     ]
 
     const section = getObjectMainSection(cobaltData.object.data)
-    console.log(section)
 
     let sectionUrl = ''
     section.split('/').forEach((token) => {
-        console.log(token)
         if (token) {
             sectionUrl += '/' + token
             content.push(
