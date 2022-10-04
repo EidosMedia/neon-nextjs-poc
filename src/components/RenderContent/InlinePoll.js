@@ -13,12 +13,13 @@ export default function InlinePoll({ jsonElement, cobaltData }) {
     const pollId = jsonElement.attributes["data-poll-id"]
 
     let data, error, mutate = null;
+    if (!cobaltData.previewData) {
+        ({ data, mutate, error } = useSWR('/api/' + getCurrentLiveSite(cobaltData) + '/polls/details/' + objId, fetcher, null));
 
-    ({ data, mutate, error } = useSWR('/api/' + getCurrentLiveSite(cobaltData) + '/polls/details/' + objId, fetcher, null));
-
-    if (error) return <div>Failed to load</div>
-    if (!data) return <div>Loading...</div>
-
+        if (error) return <div>Failed to load</div>
+        if (!data) return <div>Loading...</div>
+    }
+    
     let pollQuestion = null;
     let pollAnswers = null;
 
