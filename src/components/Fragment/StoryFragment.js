@@ -31,7 +31,7 @@ export default function StoryFragment({ cobaltData, gridContext }) {
         templateName = cobaltData.linkContext.linkTemplate;
     }
 
-    let myUrl = ""
+    let myUrl = "/"
     try {
         myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
     } catch (e) { }
@@ -94,8 +94,11 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 if (cobaltData.previewData) { //TODO manage the link in preview
                     linkedObjectUrl = '/preview'
                 } else {
-                    linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                    try {
+                        linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                    } catch (e) { }
                 }
+                if(!linkedObjectUrl){linkedObjectUrl = "/"}
                 return (
                     <React.Fragment>
                         <span> / </span>
@@ -116,8 +119,11 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                 if (cobaltData.previewData) { //TODO manage the link in preview
                     linkedObjectUrl = '/preview'
                 } else {
-                    linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                    try {
+                        linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                    } catch (e) { }
                 }
+                if(!linkedObjectUrl){linkedObjectUrl = "/"}
                 return (
                     <Typography variant="body2" component="li">
                         <NextLink href={linkedObjectUrl} passHref>
