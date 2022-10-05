@@ -140,7 +140,8 @@ function Figure({ jsonElement, excludeElements, cobaltData }) {
                 justifyContent="center"
                 alignItems="center"
             >
-                <img width="100%" src={imageUrl} />
+                <Image src={imageUrl} width={imageWidth} height={imageHeight} />
+                {/* <img width="100%" src={imageUrl} /> */}
             </Box>
         </Container>
     )
