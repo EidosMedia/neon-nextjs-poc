@@ -18,7 +18,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 import productLogo from '../../../public/static/img/head-logo.png'
 import Link from 'next/link';
-import { getCobaltDataHelper, getCurrentLiveSite } from '../../lib/cobalt-cms/cobalt-helpers';
+import { getCobaltDataHelper, getCurrentLiveSite, getLiveHostname } from '../../lib/cobalt-cms/cobalt-helpers';
 
 export default function MenuDrawer({ cobaltData }) {
 
@@ -65,7 +65,7 @@ export default function MenuDrawer({ cobaltData }) {
             .filter((site) => site.name !== currentSite && site.headless)
             .map((site, i) => {
                 return (    
-                    <Link key={i} href={site.liveHostname} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                    <Link key={i} href={getLiveHostname(site,true)} passHref prefetch={(cobaltData.previewData ? false : true)}>
                         <ListItem button component="a">
                             <ListItemText disableTypography primary={<Typography variant="h6">{site.title}</Typography>} />
                         </ListItem>

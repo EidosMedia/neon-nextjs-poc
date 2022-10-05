@@ -1,4 +1,4 @@
-import { getCurrentLiveSite, getDwxLinkedObjects } from '../cobalt-cms/cobalt-helpers';
+import { getCurrentLiveSite, getDwxLinkedObjects, getLiveHostname } from '../cobalt-cms/cobalt-helpers';
 import cacheData from "memory-cache";
 import { COMMON_GA_CACHE_ENABLED, COMMON_GA_CONTENT_CACHE_TTL_SECONDS, COMMON_GA_REALTIME_CACHE_TTL_SECONDS } from '../../../apps.settings';
 
@@ -287,7 +287,7 @@ async function getSegmentAnalyticsReport(cobaltData) {
 
 
 
-    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).liveHostname
+    const hostName = getLiveHostname(cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)), true)
 
     const topPages = await getGaTopContentPagesReport(hostName);
 
@@ -323,7 +323,7 @@ async function getLandingPageAnalyticsReport(cobaltData) {
     //     }
     // }
 
-    const hostName = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).liveHostname
+    const hostName = getLiveHostname(cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)), true)
 
     const topPages = await getGaTopContentPagesReport(hostName);
 
@@ -341,7 +341,7 @@ async function getPageAnalyticsReport(cobaltData) {
     // For pages, we want to query on the full url (including site name)
     let url = null;
     try {
-        url = cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)).liveHostname
+        url = getLiveHostname(cobaltData.siteContext.siteStructure.find((site) => site.name === getCurrentLiveSite(cobaltData)), true)
     } catch (e) { }
 
     if (url) {

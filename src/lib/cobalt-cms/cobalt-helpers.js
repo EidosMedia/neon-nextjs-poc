@@ -40,7 +40,7 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
         },
         linkContext: linkContext,
         pageContext: {
-            url: (url?url:pageData.model.data.url),
+            url: (url ? url : pageData.model.data.url),
             nodes: pageData.model.nodes,
             resourcesUrls: pageData.resourcesUrls,
             nodesUrls: pageData.nodesUrls,
@@ -134,10 +134,10 @@ export function getSectionChildrenObjects(cobaltData) {
 }
 
 export function getDwxLinkedObjects(cobaltData, zoneName) {
-    if (!zoneName){
+    if (!zoneName) {
         // When not specifying a zone, return all objects from all zones
         const zones = Object.keys(cobaltData.object.data.files.content.data.zones)
-        return zones.reduce((acc,zone) =>[...acc,...getDwxLinkedObjects(cobaltData,zone)],[])
+        return zones.reduce((acc, zone) => [...acc, ...getDwxLinkedObjects(cobaltData, zone)], [])
     }
 
     let linkedObjects = [];
@@ -165,7 +165,7 @@ export function getDwxLinkedObjects(cobaltData, zoneName) {
                         case 'featured': linkTemplate = 'featured_standard'; break;
                         case 'segment': linkTemplate = 'section_teaser'; break;
                         case 'article': linkTemplate = 'head-pic'; break;
-                        case 'liveblog': linkTemplate = 'head-pic';break;
+                        case 'liveblog': linkTemplate = 'head-pic'; break;
                     }
                 }
 
@@ -264,13 +264,17 @@ export function getSiteNameByHostName(hostName, sites) {
     }
 }
 
-export function getLiveHostname(site){
+export function getLiveHostname(site, withScheme) {
     let liveHostname = null
     try {
-        liveHostname = site.liveHostname.replace(/^https?\:\/\//i, "").split(':')[0]
-    } catch(e){}
+        if (site.customAttributes.liveHostname) { //TODO - workaround for badly converted headless site (cannot modify liveHostname - now fixed: https://jira.eidosmedia.com/browse/COBALT-2810)
+            liveHostname = site.customAttributes.liveHostname
+        } else {
+            liveHostname = site.liveHostname
+        }
+        if(!withScheme) liveHostname = liveHostname.replace(/^https?\:\/\//i, "").split(':')[0]
+    } catch (e) { }
     return liveHostname
-
 }
 
 export function isContentOnSite(obj, site) {
@@ -308,10 +312,10 @@ export function getObjectMainSection(obj) {
 }
 
 // Return the live site (without [PREVIEW] if there is)
-export function getCurrentLiveSite(cobaltData){
+export function getCurrentLiveSite(cobaltData) {
     let currentSite = cobaltData.siteContext.site
-    if (currentSite.includes('[PREVIEW]')){
+    if (currentSite.includes('[PREVIEW]')) {
         currentSite = currentSite.split('[')[0]
     }
-    return currentSite   
+    return currentSite
 }

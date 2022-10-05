@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import React from "react";
-import { getCurrentLiveSite, getDwxLinkedObjects, getObjectMainSection, getObjectMainSite, isContentOnSite } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentLiveSite, getDwxLinkedObjects, getLiveHostname, getObjectMainSection, getObjectMainSite, isContentOnSite } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import AbTestingPreviewController from "../AbTesting/AbTestingPreviewController";
 import { experiments } from "../../../abtesting.config";
@@ -197,7 +197,7 @@ export default function Segment({ cobaltData, analyticsReport }) {
             let siteInfo = null;
             if (isOtherSite) {
                 siteInfo = cobaltData.siteContext.siteStructure.find((site) => site.name === getObjectMainSite(cobaltData.object.data))
-                otherSiteBaseUrl = siteInfo.liveHostname;
+                otherSiteBaseUrl = getLiveHostname(siteInfo,true);
             }
             sectionUrl = getObjectMainSection(cobaltData.object.data);
             finalUrl = (otherSiteBaseUrl ? otherSiteBaseUrl : "") + sectionUrl
