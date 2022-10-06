@@ -99,28 +99,31 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "p":
                 render = (
                     <React.Fragment>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => {
-                            if (subel.type === 'text') {
-                                let renderEl = <RenderFormattedText key={i} jsonElement={subel} />
-                                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                                    renderEl = (
-                                        <Container sx={{ my: 1 }} maxWidth="md">
-                                            <Typography variant="body1" component="p">
-                                                {renderEl}
-                                            </Typography>
-                                        </Container>
-                                    )
-                                }
-                                return renderEl
-                            } else {
-                                if (subel.name === 'table') { //Only manage explicetely whitelisted elements inside <p>
-                                    return <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
-                                }
-                            }
-                        })
+                        {(jsonElement.elements ? 
+                            jsonElement.elements
+                            .filter((subel) => subel.type === 'text' || (subel.type === 'element' && subel.name === 'keyword'))
+                            .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />)
                             : null)}
                     </React.Fragment>
-                );
+                )
+                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                    render = (
+                        <Container sx={{ my: 1 }} maxWidth="md">
+                            <Typography variant="body1" component="p">
+                                {render}
+                            </Typography>
+                        </Container>
+                    )
+                }
+                const table = (jsonElement.elements? jsonElement.elements.find(subel => subel.name === 'table'):null)
+                if(table){
+                    render = (
+                        <React.Fragment>
+                            {render}
+                            <RenderContentElement key={i} jsonElement={table} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
+                        </React.Fragment>
+                    )
+                }
                 break;
             case "ul":
                 render = (
