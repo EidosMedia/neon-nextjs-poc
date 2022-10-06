@@ -33,6 +33,36 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
         }
     }, [])
 
+    let opening = null;
+    console.log(nonDupObjects.filter(o => o.object.data.sys.baseType === 'article'))
+    const articleCount = nonDupObjects.filter(o => o.object.data.sys.baseType === 'article').length
+    if (articleCount <= 3) {
+        opening = (
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={8}>
+                    {nonDupObjects.slice(0, 1).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} analyticsReport={analyticsReport} />)}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    {nonDupObjects.slice(1, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />)}
+                </Grid>
+            </Grid>
+        )
+    } else {
+        opening = (
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={3} order={{ xs: 2, md: 1 }}>
+                    {nonDupObjects.slice(1, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />)}
+                </Grid>
+                <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
+                    {nonDupObjects.slice(0, 1).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} analyticsReport={analyticsReport} />)}
+                </Grid>
+                <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
+                    {nonDupObjects.slice(3, 5).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />)}
+                </Grid>
+            </Grid>
+        )
+    }
+
     const render = (
         <Container maxWidth="lg">
             {uuid ? <HTMLComment text={uuid} /> : null}
@@ -45,27 +75,16 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
                         {pageTitle}
                     </Typography>
                 </Box> : null)}
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={3} order={{ xs: 2, md: 1 }}>
-                    {nonDupObjects.slice(1, 3).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />)}
-                </Grid>
-                <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
-                    {nonDupObjects.slice(0, 1).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 6 }} analyticsReport={analyticsReport} />)}
-                </Grid>
-                <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
-                    {nonDupObjects.slice(3, 5).map((object, i) => <GenericFragment key={i} cobaltData={object} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />)}
-                </Grid>
-            </Grid>
-            {nonDupObjects.slice(5).map((object, i) => {
-                    console.log(object)
-                    switch (object.object.data.sys.baseType) {
-                        case 'webpagefragment':
-                            return <Segment key={i} cobaltData={object} analyticsReport={analyticsReport} />;
-                            break;
-                        default:
-                            return null;
-                    }
-                })}
+            {opening}
+            {nonDupObjects.slice(articleCount).map((object, i) => {
+                switch (object.object.data.sys.baseType) {
+                    case 'webpagefragment':
+                        return <Segment key={i} cobaltData={object} analyticsReport={analyticsReport} />;
+                        break;
+                    default:
+                        return null;
+                }
+            })}
         </Container>
     )
 
