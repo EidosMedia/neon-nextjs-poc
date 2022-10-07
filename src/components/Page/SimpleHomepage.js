@@ -3,6 +3,7 @@ import HTMLComment from "react-html-comment";
 import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import Segment from "../Segment/Segment";
+import GenericWidget from "../Widgets/GenericWidget";
 
 export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport }) {
     //Swing quick open
@@ -33,8 +34,12 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
         }
     }, [])
 
+    let widget = null;
+    if(nonDupObjects && nonDupObjects[0].object.data.sys.baseType === 'widget'){
+        widget = nonDupObjects.splice(0,1)[0]
+    }
+
     let opening = null;
-    console.log(nonDupObjects.filter(o => o.object.data.sys.baseType === 'article'))
     const articleCount = nonDupObjects.filter(o => o.object.data.sys.baseType === 'article').length
     if (articleCount <= 3) {
         opening = (
@@ -77,6 +82,7 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
                         {pageTitle}
                     </Typography>
                 </Box> : null)}
+            {widget?<GenericWidget cobaltData={widget}/>:null}
             {opening}
             {nonDupObjects.slice(articleCount).map((object, i) => {
                 switch (object.object.data.sys.baseType) {
