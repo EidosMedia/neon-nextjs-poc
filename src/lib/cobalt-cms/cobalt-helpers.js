@@ -322,5 +322,5 @@ export function getCurrentLiveSite(cobaltData) {
 }
 
 export function getCurrentSite(cobaltData){
-    return cobaltData.siteContext.siteStructure.find(site => site.name === cobaltData.siteContext.site)
+    return cobaltData.siteContext.siteStructure.find(site => site.name === getCurrentLiveSite(cobaltData))
 }
