@@ -18,7 +18,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 import productLogo from '../../../public/static/img/head-logo.png'
 import Link from 'next/link';
-import { getCobaltDataHelper, getCurrentLiveSite, getLiveHostname } from '../../lib/cobalt-cms/cobalt-helpers';
+import { getCobaltDataHelper, getCurrentLiveSite, getCurrentSite, getLiveHostname } from '../../lib/cobalt-cms/cobalt-helpers';
 
 export default function MenuDrawer({ cobaltData }) {
 
@@ -38,7 +38,7 @@ export default function MenuDrawer({ cobaltData }) {
     } catch (e) { }
 
     try {
-        if (!logoOverlay && site.customAttributes.siteCategory !== 'main'){
+        if (!logoOverlay && site.customAttributes.siteCategory !== 'main') {
             logoOverlay = site.name.split('-')[1]
         }
     } catch (e) { }
@@ -64,8 +64,8 @@ export default function MenuDrawer({ cobaltData }) {
         sitesRender = siteStructure
             .filter((site) => site.name !== currentSite && site.headless)
             .map((site, i) => {
-                return (    
-                    <Link key={i} href={getLiveHostname(site,true)} passHref prefetch={(cobaltData.previewData ? false : true)}>
+                return (
+                    <Link key={i} href={getLiveHostname(site, true)} passHref prefetch={(cobaltData.previewData ? false : true)}>
                         <ListItem button component="a">
                             <ListItemText disableTypography primary={<Typography variant="h6">{site.title}</Typography>} />
                         </ListItem>
@@ -97,11 +97,11 @@ export default function MenuDrawer({ cobaltData }) {
             </List>
         </Box>
     )
-
+    const customColor = getCurrentSite(cobaltData).customAttributes.customColor;
     return (
         <div>
             <React.Fragment>
-                <AppBar position="sticky">
+                <AppBar position="sticky" sx={{ backgroundColor: (customColor ? customColor : 'primary') }}>
                     <Toolbar sx={{ justifyContent: "space-between" }}>
                         <IconButton
                             size="large"
@@ -184,6 +184,6 @@ export default function MenuDrawer({ cobaltData }) {
                 </Drawer>
             </React.Fragment>
             <Toolbar sx={{ display: { sm: 'block', md: 'none' } }} />
-        </div>
+        </div >
     );
 }

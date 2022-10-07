@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { getSectionChildrenObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentSite, getSectionChildrenObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 
 export default function SectionPage({ cobaltData, pageTitle }) {
@@ -8,10 +8,13 @@ export default function SectionPage({ cobaltData, pageTitle }) {
     
     const searchResults = getSectionChildrenObjects(cobaltData);
 
+    const customColor = getCurrentSite(cobaltData).customAttributes.customColor;
+
+
     render = (
         <Container maxWidth="lg">
             {(pageTitle ?
-                <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
+                <Box sx={{ mb: 2, backgroundColor: (customColor?customColor:'secondary.main') }}
                     display="flex"
                     justifyContent="center"
                     alignItems="center">

@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 import HTMLComment from "react-html-comment";
-import { getCobaltDataHelper, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCobaltDataHelper, getCurrentSite, getDwxLinkedObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
@@ -25,11 +25,13 @@ export default function LandingPage({ cobaltData, pageTitle, analyticsReport }) 
     let uuid = null;
     try {uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId +'"'}catch(e){}
 
+    const customColor = getCurrentSite(cobaltData).customAttributes.customColor;
+
     const render = (
         <Container maxWidth="lg">
              {uuid?<HTMLComment text={uuid}/>:null}
             {(pageTitle ?
-                <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
+                <Box sx={{ mb: 2, backgroundColor: (customColor?customColor:'secondary.main') }}
                     display="flex"
                     justifyContent="center"
                     alignItems="center">

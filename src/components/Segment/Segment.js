@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import React from "react";
-import { getCurrentLiveSite, getDwxLinkedObjects, getLiveHostname, getObjectMainSection, getObjectMainSite, isContentOnSite } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentLiveSite, getCurrentSite, getDwxLinkedObjects, getLiveHostname, getObjectMainSection, getObjectMainSite, isContentOnSite } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import AbTestingPreviewController from "../AbTesting/AbTestingPreviewController";
 import { experiments } from "../../../abtesting.config";
@@ -207,8 +207,9 @@ export default function Segment({ cobaltData, analyticsReport }) {
             errorGettingOtherSite = true;
         }
         if (!errorGettingOtherSite) {
+            const customColor = getCurrentSite(cobaltData).customAttributes.customColor;
             render = <React.Fragment>
-                <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
+                <Box sx={{ mb: 2, backgroundColor: (customColor?customColor:'secondary.main') }}
                     display="flex"
                     justifyContent="space-between"
                 >

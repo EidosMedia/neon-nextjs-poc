@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import HTMLComment from "react-html-comment";
-import { getDwxLinkedObjects, getQueryResultObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from "../../lib/cobalt-cms/cobalt-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import Segment from "../Segment/Segment";
 
@@ -63,11 +63,13 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
         )
     }
 
+    const customColor = getCurrentSite(cobaltData).customAttributes.customColor;
+
     const render = (
         <Container maxWidth="lg">
             {uuid ? <HTMLComment text={uuid} /> : null}
             {(pageTitle ?
-                <Box sx={{ mb: 2, backgroundColor: 'secondary.main' }}
+                <Box sx={{ mb: 2, backgroundColor: (customColor?customColor:(customColor?customColor:'secondary.main')) }}
                     display="flex"
                     justifyContent="center"
                     alignItems="center">
