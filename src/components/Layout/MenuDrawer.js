@@ -15,8 +15,9 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 import LanguageIcon from '@mui/icons-material/Language';
-
 import productLogo from '../../../public/static/img/head-logo.png'
+import adviserLogo from '../../../public/static/img/globe-adviser.png'
+import investorLogo from '../../../public/static/img/globe-investor.png'
 import Link from 'next/link';
 import { getCobaltDataHelper, getCurrentLiveSite, getCurrentSite, getLiveHostname } from '../../lib/cobalt-cms/cobalt-helpers';
 
@@ -33,16 +34,20 @@ export default function MenuDrawer({ cobaltData }) {
 
     const site = siteStructure.find((site) => site.name === currentSite)
     let logoOverlay = null;
-    try {
-        logoOverlay = site.customAttributes.logoOverlay
-    } catch (e) { }
+    let logo = productLogo;
+    if (site.name.includes('investor') || site.name.includes('adviser')) {
+        logo = (site.name.includes('investor') ? investorLogo : adviserLogo)
+    } else {
+        try {
+            logoOverlay = site.customAttributes.logoOverlay
+        } catch (e) { }
 
-    try {
-        if (!logoOverlay && site.customAttributes.siteCategory !== 'main') {
-            logoOverlay = site.name.split('-')[1]
-        }
-    } catch (e) { }
-
+        try {
+            if (!logoOverlay && site.customAttributes.siteCategory !== 'main') {
+                logoOverlay = site.name.split('-')[1]
+            }
+        } catch (e) { }
+    }
     let sectionsRender = null;
     try {
         sectionsRender = site.sitemap.children.map((item, i) => {
@@ -115,11 +120,11 @@ export default function MenuDrawer({ cobaltData }) {
                         </IconButton>
                         <Box m={2} alignItems="flex-end" sx={{ display: { xs: 'none', md: 'flex' } }}>
                             {logoOverlay ? <Typography variant="h6" sx={{ mb: 1 }} component="div">{logoOverlay}.</Typography> : null}
-                            <Image src={productLogo}></Image>
+                            <Image src={logo}></Image>
                         </Box>
                         <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
                             {logoOverlay ? <Typography variant="h6" component="div">{logoOverlay}.</Typography> : null}
-                            <Image src={productLogo}></Image>
+                            <Image src={logo}></Image>
                         </Box>
                         <Box>
                             <IconButton
