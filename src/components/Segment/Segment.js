@@ -253,7 +253,7 @@ export default function Segment({ cobaltData, analyticsReport }) {
     if (cobaltData.previewData) {
         // In preview mode, wrap the DWC with a maxWidth container identical to homepage, and add the AB Testing controller
         render = (
-            <Container maxWidth="lg">
+            <Container maxWidth="lg" sx={{pb:'64px'}}>
                 {render}
             </Container>
         )
