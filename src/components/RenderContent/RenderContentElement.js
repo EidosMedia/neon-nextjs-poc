@@ -28,14 +28,14 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "headline":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} />)}
+                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
                     </React.Fragment>
                 )
                 break;
             case "summary":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} />)}
+                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
                     </React.Fragment>
 
                 )
@@ -102,7 +102,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         {(jsonElement.elements ? 
                             jsonElement.elements
                             .filter((subel) => subel.type === 'text' || (subel.type === 'element' && subel.name === 'keyword'))
-                            .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />)
+                            .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
                             : null)}
                     </React.Fragment>
                 )
@@ -245,7 +245,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 const tdValign = (tdAttr ? tdAttr.valign : null);
                 render = (
                     <td align={tdAlign} valign={tdValign}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
                     </td>
                 );
                 break;
@@ -275,7 +275,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case 'blockquote':
                 render = (
                     <React.Fragment>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
                     </React.Fragment>
                 );
                 if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
@@ -399,7 +399,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
         if (headlineBlock) {
             headlineBlock = (
                 <React.Fragment>
-                    {(headlineBlock.elements ? headlineBlock.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                    {(headlineBlock.elements ? headlineBlock.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData}/>) : null)}
                 </React.Fragment>
             );
         }
@@ -413,7 +413,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
                 let blockRender = null;
                 const linkHeadline = (
                     <React.Fragment>
-                        {(el.elements ? el.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                        {(el.elements ? el.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
                     </React.Fragment>
                 )
                 const linkedObject = cobaltData.pageContext.nodes[el.attributes['data-id']]

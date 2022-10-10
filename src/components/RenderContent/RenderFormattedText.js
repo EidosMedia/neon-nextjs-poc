@@ -3,7 +3,7 @@ import { Link as MUILink } from '@mui/material';
 
 import React from "react";
 
-export default function RenderFormattedText({ jsonElement }) {
+export default function RenderFormattedText({ jsonElement, cobaltData }) {
     let render = null;
 
     switch (jsonElement.type) {
@@ -31,7 +31,7 @@ export default function RenderFormattedText({ jsonElement }) {
                                     {subRender}
                                 </MUILink>
                             </NextLink>
-                            )
+                        )
                         break;
                     case 'p':
                         //avoid <p> in <p>
@@ -42,8 +42,12 @@ export default function RenderFormattedText({ jsonElement }) {
                         break;
                     case 'keyword':
                         const keywordText = jsonElement.elements.map((subel, i) => subel.text).toString()
-                        const defaultText = "'default="+keywordText+"'"
-                        render = <span>{`{{ insert first_name "default=${keywordText}" }}`}</span>
+                        if (cobaltData && cobaltData.previewData) {
+                            render = keywordText
+                        } else {
+                            const defaultText = "'default=" + keywordText + "'"
+                            render = <span>{`{{ insert first_name "default=${keywordText}" }}`}</span>
+                        }
                 }
             }
             break;
