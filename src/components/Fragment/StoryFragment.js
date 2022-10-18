@@ -162,9 +162,9 @@ export default function StoryFragment({ cobaltData, gridContext }) {
             })
         } catch (e) { }
 
-        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) {
         console.log(e)
     }

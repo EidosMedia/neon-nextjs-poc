@@ -11,20 +11,26 @@ export function findElementsInContentJson(elementNames, json) {
 }
 
 //jsonElement expected to be a "figure"
-export function getImageUrl(jsonElement, imageClass) {
+export function getImageUrl(jsonElement, imageClass, cobaltData) {
     let imageUrl = null;
     try {
         imageUrl = jsonElement.elements
             .find((el) => el.attributes.class === imageClass)
             .attributes.src
-    }catch(e){}
+    } catch (e) { }
+    if (imageUrl.startsWith('cobalt:') && cobaltData) { // Manage the case in which the URL is not resolved in the XML -> we take it from the model
+        try {
+            const imageId = imageUrl.split(':')[1]
+            imageUrl = cobaltData.pageContext.nodes[imageId].resourceUrl
+        } catch (e) { console.log(e)}
+    }
     return imageUrl;
 }
 
-export function checkIsCloudinaryVideo(jsonElement){
+export function checkIsCloudinaryVideo(jsonElement) {
     let result = false;
     try {
         result = (jsonElement.elements[0].attributes.dtxInsert === 'cloudinaryVideo')
-    } catch(e){}
+    } catch (e) { }
     return result;
 }

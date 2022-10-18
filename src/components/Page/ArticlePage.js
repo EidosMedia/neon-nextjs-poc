@@ -162,7 +162,7 @@ function MainImageBlock({ cobaltData, styleVariant }) {
             })
         } catch (e) { }
 
-        mainImageUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainImageUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape", cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) {
         console.log(e)
     }

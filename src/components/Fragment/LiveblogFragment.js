@@ -113,7 +113,7 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
             let mainPictureLandscapeUrl = null;
             try {
                 mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
-                mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape"), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+                mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
             } catch (e) {
                 console.log(e)
             }

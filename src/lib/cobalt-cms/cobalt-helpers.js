@@ -255,7 +255,7 @@ export function getSiteNameByHostName(hostName, sites) {
         site = sites.find((site) => hostName === getLiveHostname(site))
         if (!site && process.env.DEV_MODE === 'true') {
             site = sites.find((site) => site.customAttributes.siteCategory === 'main')
-            //site = sites.find((site) => site.name === 'globe-adviser')
+            // site = sites.find((site) => site.name === 'globe-investor')
         }
     }
     if (site) {
