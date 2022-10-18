@@ -366,7 +366,7 @@ function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
     let render = null;
     let images = [];
     images = jsonElement.elements.map((el) => {
-        const origImageUrl = getImageUrl(el, "rect")
+        const origImageUrl = getImageUrl(el, "rect", cobaltData)
         const strIndex = origImageUrl.lastIndexOf('/')
         const thumbImageUrl = origImageUrl.slice(0, strIndex) + '/format/thumb' + origImageUrl.slice(strIndex)
 
@@ -424,7 +424,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
                     let linkedObjectMainImageUrl = null;
                     try {
                         linkedObjectMainPictureElement = findElementsInContentJson(['mediagroup'], linkedObjectHelper.content)[0].elements[0];
-                        linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square")
+                        linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square", cobaltData)
                         if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') { //TODO fix this
                             const strIndex = linkedObjectMainImageUrl.lastIndexOf('/')
                             linkedObjectMainImageUrl = linkedObjectMainImageUrl.slice(0, strIndex) + '/format/thumb' + linkedObjectMainImageUrl.slice(strIndex)
