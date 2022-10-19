@@ -251,11 +251,13 @@ export function getCobaltLiveblogPostHelper(data) {
 
 export function getSiteNameByHostName(hostName, sites) {
     let site = null
+    if(process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE){
+        return process.env.DEV_FORCE_SITE
+    }
     if (sites != null && sites.length) {
         site = sites.find((site) => hostName === getLiveHostname(site))
         if (!site && process.env.DEV_MODE === 'true') {
             site = sites.find((site) => site.customAttributes.siteCategory === 'main')
-            // site = sites.find((site) => site.name === 'globe-investor')
         }
     }
     if (site) {
