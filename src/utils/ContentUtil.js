@@ -19,10 +19,18 @@ export function getImageUrl(jsonElement, imageClass, cobaltData) {
             .attributes.src
     } catch (e) { }
     if (imageUrl.startsWith('cobalt:') && cobaltData) { // Manage the case in which the URL is not resolved in the XML -> we take it from the model
+        let imageId = null
         try {
-            const imageId = imageUrl.split(':')[1]
+            imageId = imageUrl.split(':')[1]
             imageUrl = cobaltData.pageContext.nodes[imageId].resourceUrl
-        } catch (e) { console.log(e)}
+        } catch (e) { 
+            console.log("problem fetching imageUrl of: "+imageId)
+            imageUrl = null;
+        }
+    }
+    if(!imageUrl){
+        // fallback
+        imageUrl = '/static/img/nothumb.jpeg'
     }
     return imageUrl;
 }
