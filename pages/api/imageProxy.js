@@ -1,5 +1,4 @@
 export default async (req, res) => {
-    console.log("HERE1")
     const url = encodeURI(decodeURIComponent(req.query.url));
     const previewToken = url.substring(url.indexOf('token=')+6)
 
@@ -8,8 +7,7 @@ export default async (req, res) => {
             'Cookie':"emk.previewDefaultContent=false; emk.previewToken="+previewToken+";"
         }
     });
-    const body = await result.body;
-    console.log("HERE")
+    const body = result.body;
     console.log(body)
     body.pipe(res);
   };
