@@ -275,7 +275,7 @@ export function getLiveHostname(site, withScheme) {
         } else {
             liveHostname = site.liveHostname
         }
-        if(!withScheme) liveHostname = liveHostname.replace(/^https?\:\/\//i, "").split(':')[0]
+        if(!withScheme) liveHostname = liveHostname.replace(/^https?\:\/\//i, "").split(':')[0].replace(/\/$/, "")
     } catch (e) { }
     return liveHostname
 }
