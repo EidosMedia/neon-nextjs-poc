@@ -120,7 +120,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     render = (
                         <React.Fragment>
                             {render}
-                            <RenderContentElement key={i} jsonElement={table} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
+                            <RenderContentElement jsonElement={table} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
                         </React.Fragment>
                     )
                 }

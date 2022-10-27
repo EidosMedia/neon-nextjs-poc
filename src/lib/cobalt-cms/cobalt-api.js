@@ -118,6 +118,10 @@ export async function cobaltRequest(url) {
 
     let result = null;
 
+    if(process.env.COBALT_DISABLE_CACHE === 'true'){
+        url += '&emk.disableCache=true'
+    }
+
     try {
         const options = {
             method: 'GET',
