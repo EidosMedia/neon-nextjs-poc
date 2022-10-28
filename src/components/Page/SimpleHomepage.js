@@ -1,6 +1,7 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import HTMLComment from "react-html-comment";
 import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import BreakingNewsFragment from "../Fragment/BreakingNewsFragment";
 import GenericFragment from "../Fragment/GenericFragment";
 import Segment from "../Segment/Segment";
 import GenericWidget from "../Widgets/GenericWidget";
@@ -37,6 +38,14 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
     let widget = null;
     if(nonDupObjects && nonDupObjects[0].object.data.sys.baseType === 'widget'){
         widget = nonDupObjects.splice(0,1)[0]
+    }
+
+    let breaking = null;
+    if(nonDupObjects){
+        const breakingIndex = nonDupObjects.findIndex(o => o.object.data.sys.type === 'breakingnews')
+        if(breakingIndex >= 0){
+            breaking = nonDupObjects.splice(breakingIndex,1)[0]
+        }
     }
 
     let opening = null;
@@ -82,6 +91,7 @@ export default function SimpleHomepage({ cobaltData, pageTitle, analyticsReport 
                         {pageTitle}
                     </Typography>
                 </Box> : null)}
+            {breaking?<BreakingNewsFragment cobaltData={breaking}/>:null}
             {widget?<GenericWidget cobaltData={widget}/>:null}
             {opening}
             {nonDupObjects.slice(articleCount).map((object, i) => {

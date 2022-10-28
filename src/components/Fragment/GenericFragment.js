@@ -9,6 +9,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import RealtimeSummary from "../Analytics/RealtimeSummary";
 import BarChart from "../Analytics/BarChart";
 import AnalyticsFragmentOverlay from "../Analytics/AnalyticsFragmentOverlay";
+import BreakingNewsFragment from "./BreakingNewsFragment";
 
 export default function GenericFragment({ cobaltData, analyticsReport, gridContext }) {
 
@@ -17,7 +18,13 @@ export default function GenericFragment({ cobaltData, analyticsReport, gridConte
     if (cobaltData) {
         switch (cobaltData.object.data.sys.baseType) {
             case 'article':
-                render = <StoryFragment cobaltData={cobaltData} gridContext={gridContext} />;
+                switch(cobaltData.object.data.sys.type){
+                    case 'breakingnews':
+                        render = <BreakingNewsFragment cobaltData={cobaltData} gridContext={gridContext} />;
+                        break;
+                    default:
+                        render = <StoryFragment cobaltData={cobaltData} gridContext={gridContext} />;
+                }
                 break;
             case 'widget':
                 render = <GenericWidget cobaltData={cobaltData} gridContext={gridContext} />;
