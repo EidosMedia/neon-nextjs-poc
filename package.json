@@ -41,5 +41,8 @@
   "devDependencies": {
     "eslint": "latest",
     "eslint-config-next": "latest"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
