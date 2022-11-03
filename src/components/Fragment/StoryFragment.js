@@ -14,6 +14,7 @@ import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import { Box } from '@mui/system';
+import { getImageFormatUrl } from '../../lib/cobalt-cms/cobalt-helpers';
 
 export default function StoryFragment({ cobaltData, gridContext }) {
 
@@ -162,9 +163,9 @@ export default function StoryFragment({ cobaltData, gridContext }) {
             })
         } catch (e) { }
 
-        mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-        mainPictureSquareUrl = ResourceResolver(getImageUrl(mainPictureElement, "square",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-        mainPictureRectangleUrl = ResourceResolver(getImageUrl(mainPictureElement, "rect",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureLandscapeUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape",cobaltData),'medium'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureSquareUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "square",cobaltData),'medium'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainPictureRectangleUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "rect",cobaltData),'medium'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) {
         console.log(e)
     }

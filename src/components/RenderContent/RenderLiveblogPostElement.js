@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
-import { getCobaltDataHelper } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCobaltDataHelper, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
 
 export default function RenderLiveblogPostElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
@@ -128,7 +128,7 @@ function Figure({ jsonElement, excludeElements, cobaltData }) {
     let imageUrl = null;
 
     try {
-        imageUrl = ResourceResolver(jsonElement.elements[0].attributes.src, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        imageUrl = ResourceResolver(getImageFormatUrl(jsonElement.elements[0].attributes.src,'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) { }
 
     const imageWidth = 1024;

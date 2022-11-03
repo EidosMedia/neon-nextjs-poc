@@ -326,3 +326,9 @@ export function getCurrentLiveSite(cobaltData) {
 export function getCurrentSite(cobaltData){
     return cobaltData.siteContext.siteStructure.find(site => site.name === getCurrentLiveSite(cobaltData))
 }
+
+export function getImageFormatUrl(url,format){
+    const strIndex = url.lastIndexOf('/')
+    const formatImageUrl = url.slice(0, strIndex) + '/format/' + format + url.slice(strIndex);
+    return formatImageUrl
+}

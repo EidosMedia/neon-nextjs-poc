@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
-import { getCobaltDataHelper } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCobaltDataHelper, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
 import InlinePoll from "./InlinePoll";
 import SimpleMap from "./SimpleMap";
 
@@ -341,7 +341,7 @@ function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
     let imageUrl = null;
     console.log(cobaltData)
     try {
-        imageUrl = ResourceResolver(getImageUrl(jsonElement, "landscape", cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, "landscape", cobaltData),'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) { }
 
     const imageWidth = 1024;
@@ -366,9 +366,10 @@ function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
     let render = null;
     let images = [];
     images = jsonElement.elements.map((el) => {
-        const origImageUrl = getImageUrl(el, "rect", cobaltData)
-        const strIndex = origImageUrl.lastIndexOf('/')
-        const thumbImageUrl = origImageUrl.slice(0, strIndex) + '/format/thumb' + origImageUrl.slice(strIndex)
+        let origImageUrl = getImageUrl(el, "rect", cobaltData)
+        const thumbImageUrl = getImageFormatUrl(origImageUrl,'thumb')
+        origImageUrl = getImageFormatUrl(origImageUrl,'large')
+
 
         const origImageFullUrl = ResourceResolver(origImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
         const thumbImageFullUrl = ResourceResolver(thumbImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
@@ -426,8 +427,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
                         linkedObjectMainPictureElement = findElementsInContentJson(['mediagroup'], linkedObjectHelper.content)[0].elements[0];
                         linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square", cobaltData)
                         if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') { //TODO fix this
-                            const strIndex = linkedObjectMainImageUrl.lastIndexOf('/')
-                            linkedObjectMainImageUrl = linkedObjectMainImageUrl.slice(0, strIndex) + '/format/thumb' + linkedObjectMainImageUrl.slice(strIndex)
+                            linkedObjectMainImageUrl = getImageFormatUrl(linkedObjectMainImageUrl,'thumb')
                             linkedObjectMainImageUrl = ResourceResolver(linkedObjectMainImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
                         } else {
                             linkedObjectMainImageUrl = null;

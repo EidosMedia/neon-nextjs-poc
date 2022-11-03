@@ -7,7 +7,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import { Card, CardActionArea, CardContent, styled, Typography } from '@mui/material';
-import { getCobaltLiveblogPostHelper, getCurrentLiveSite } from '../../lib/cobalt-cms/cobalt-helpers';
+import { getCobaltLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from '../../lib/cobalt-cms/cobalt-helpers';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import { Box } from '@mui/system';
@@ -113,10 +113,11 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
             let mainPictureLandscapeUrl = null;
             try {
                 mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
-                mainPictureLandscapeUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape",cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+                mainPictureLandscapeUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape",cobaltData),'medium'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
             } catch (e) {
                 console.log(e)
             }
+        
             const mediaBlock = <Image src={mainPictureLandscapeUrl} width={1024} height={576} />
 
             render = (

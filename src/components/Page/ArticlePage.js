@@ -2,7 +2,7 @@ import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Image from "next/image";
 import HTMLComment from "react-html-comment";
-import { getCurrentLiveSite } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCurrentLiveSite, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
 import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
 import ResourceResolver from "../../utils/ResourceResolver";
 import BreadCrumb from "../Furnitures/BreadCrumb";
@@ -162,7 +162,7 @@ function MainImageBlock({ cobaltData, styleVariant }) {
             })
         } catch (e) { }
 
-        mainImageUrl = ResourceResolver(getImageUrl(mainPictureElement, "landscape", cobaltData), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape", cobaltData),'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) {
         console.log(e)
     }
