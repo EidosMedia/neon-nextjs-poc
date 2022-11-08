@@ -44,7 +44,7 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
             nodes: pageData.model.nodes,
             resourcesUrls: pageData.resourcesUrls,
             nodesUrls: pageData.nodesUrls,
-            children: pageData.model.children
+            children: (pageData.model.data.children?pageData.model.data.children:pageData.model.children) // Fallback children location in case of model building or not
         },
         siteContext: {
             site: site,
@@ -57,6 +57,15 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
     }
     return cobaltData
 }
+
+ // Fallback children location in case of model building or not
+ let childrens = null
+ try {
+     childrens = cobaltData.object.data.children // this is where it is WITH model building
+     if (!childrens){
+         childrens = cobaltData.pageContext.children // this is where it is WITHOUT model building
+     }
+ } catch(e){}
 
 export function buildCobaltDataForNestedObject(object, parentCobaltData, linkContext) {
     const cobaltData = {
