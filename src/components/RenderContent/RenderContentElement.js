@@ -339,7 +339,6 @@ function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
     let render = null;
 
     let imageUrl = null;
-    console.log(cobaltData)
     try {
         imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, "landscape", cobaltData),'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) { }

@@ -86,6 +86,8 @@ export async function getCobaltPreview(previewData) {
         console.log(e)
     }
 
+    console.log(pageData)
+
     const previewInfo = {
         previewToken: previewToken,
         jwe: jwe,

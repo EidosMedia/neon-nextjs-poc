@@ -32,6 +32,7 @@ export default function ArticlePage({ cobaltData }) {
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
                     <BreadcrumbBlock cobaltData={cobaltData} />
+                    <BeyondWordsBlock cobaltData={cobaltData} />
                     <MainImageBlock cobaltData={cobaltData} />
                     <HeadlineBlock cobaltData={cobaltData} />
                     <SummaryBlock cobaltData={cobaltData} />
@@ -44,6 +45,7 @@ export default function ArticlePage({ cobaltData }) {
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
                     <BreadcrumbBlock cobaltData={cobaltData} styleVariant="leftAligned" />
+                    <BeyondWordsBlock cobaltData={cobaltData} styleVariant="leftAligned" />
                     <HeadlineBlock cobaltData={cobaltData} styleVariant="leftAligned" />
                     <SummaryBlock cobaltData={cobaltData} styleVariant="leftAligned" />
                     <MainImageBlock cobaltData={cobaltData} styleVariant="leftAligned" />
@@ -56,6 +58,7 @@ export default function ArticlePage({ cobaltData }) {
                 <Container maxWidth="lg">
                     {uuid ? <HTMLComment text={uuid} /> : null}
                     <BreadcrumbBlock cobaltData={cobaltData} />
+                    <BeyondWordsBlock cobaltData={cobaltData} />
                     <HeadlineBlock cobaltData={cobaltData} />
                     <SummaryBlock cobaltData={cobaltData} />
                     <MainImageBlock cobaltData={cobaltData} />
@@ -63,6 +66,24 @@ export default function ArticlePage({ cobaltData }) {
                 </Container>
             )
     }
+
+
+
+    return render;
+}
+
+function BeyondWordsBlock({ cobaltData, styleVariant }) {
+    let render = null;
+    try {
+        if (cobaltData.object.data.attributes.AudioId) {
+            render = (
+                <Container sx={{ my: 1 }} maxWidth="md">
+                    <div dangerouslySetInnerHTML={{ __html: "<iframe allowfullscreen='false' data-src='https://audio.beyondwords.io/e/" + cobaltData.object.data.attributes.AudioId + "' frameborder='0' id='speechkit-io-iframe' scrolling='no' ></iframe><script src='https://proxy.beyondwords.io/npm/@beyondwords/audio-player@latest/dist/module/iframe-helper.js' type='text/javascript'></script>" }} />
+                </Container>
+            )
+        }
+    }
+    catch (e) { }
     return render;
 }
 
@@ -162,7 +183,7 @@ function MainImageBlock({ cobaltData, styleVariant }) {
             })
         } catch (e) { }
 
-        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape", cobaltData),'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape", cobaltData), 'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) {
         console.log(e)
     }
