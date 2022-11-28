@@ -13,6 +13,7 @@ import { Link as MUILink } from '@mui/material';
 import { getCobaltDataHelper, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
 import InlinePoll from "./InlinePoll";
 import SimpleMap from "./SimpleMap";
+import Card from "./Card";
 
 export default function RenderContentElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
@@ -288,6 +289,16 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     )
                 }
                 break;
+            case 'extra':
+                if(jsonElement.attributes['emk-class'] === 'card'){
+                    render = (
+                        <Container sx={{ my: 3 }} maxWidth="md">
+                            <Card jsonElement={jsonElement} cobaltData={cobaltData} />
+                        </Container>
+                    )
+                }
+                render     
+            break;
             case 'style':
                 break;
             default:
