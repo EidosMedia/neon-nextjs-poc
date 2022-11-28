@@ -292,7 +292,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case 'extra':
                 if(jsonElement.attributes['emk-class'] === 'card'){
                     render = (
-                        <Container sx={{ my: 3 }} maxWidth="md">
+                        <Container sx={{ my: 3 }} maxWidth="sm">
                             <Card jsonElement={jsonElement} cobaltData={cobaltData} />
                         </Container>
                     )
