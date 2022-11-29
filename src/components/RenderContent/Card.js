@@ -18,7 +18,7 @@ export default function Card({ jsonElement, cobaltData }) {
             <Box display="flex"
                 justifyContent="center"
                 alignItems="center">
-                <img src={img} />
+                <img src={img} style={{maxWidth:'100%', height:'auto'}}/>
             </Box>
         )
     }
