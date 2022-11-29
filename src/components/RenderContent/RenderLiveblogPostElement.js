@@ -11,6 +11,7 @@ import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link'
 import { Link as MUILink } from '@mui/material';
 import { getCobaltDataHelper, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
+import Card from "./Card";
 
 export default function RenderLiveblogPostElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
@@ -103,7 +104,10 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                 }
                 break;
             case "blockquote":
-                if (jsonElement.attributes["data-id"]) {
+                console.log(jsonElement)
+                if (jsonElement.attributes['emk-class'] === 'card'){
+                    render = <Card jsonElement={jsonElement} cobaltData={cobaltData}/>
+                } else if (jsonElement.attributes["data-id"]) {
                     //This is a content link
                     render = <ContentLink jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
 
