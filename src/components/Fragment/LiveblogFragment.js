@@ -32,8 +32,6 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
         if (error) return <div>Failed to load</div>
         if (!data) return <div>Loading...</div>
 
-        console.log(JSON.stringify(data, null, 2))
-
         const CustomizedTimeline = styled(Timeline)`
         .MuiTimelineItem-root:before {
             content: none
