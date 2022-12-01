@@ -16,7 +16,7 @@ export default function HelpDialog(props) {
             <Container maxWidth="sm" sx={{p:3}}>
                 <Typography variant="body1" component="p">The colors indicate the content's perfomance:</Typography>
                 <ul>
-                <Typography variant="body1" component="li">on the <b>globe-main</b> website, <b>all</b> sections</Typography>
+                <Typography variant="body1" component="li">on the current website, and the content's own section</Typography>
                 <Typography variant="body1" component="li">during the <b>last 30 minutes</b></Typography>
                 </ul>
                 <Grid container sx={{my:2}} spacing={1}>
