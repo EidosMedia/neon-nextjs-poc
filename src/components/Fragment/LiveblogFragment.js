@@ -74,7 +74,8 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
 
         let myUrl = ""
         try {
-            myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
+            myUrl = cobaltData.object.data.url
+            if (!myUrl) { myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id] }
         } catch (e) { }
 
         let headline = null;
@@ -116,8 +117,8 @@ export default function LiveblogFragment({ cobaltData, gridContext }) {
             let post = null;
             try {
                 post = data.result[postIndex]
-            }catch(e){}
-            if(post){
+            } catch (e) { }
+            if (post) {
                 const postContent = getCobaltLiveblogPostHelper(post);
                 if (findElementsInContentJson(['h1'], postContent.content)[0].elements) { // has headline
                     const itemRender = (

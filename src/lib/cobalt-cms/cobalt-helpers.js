@@ -42,8 +42,8 @@ export function buildCobaltDataFromPage(pageData, siteStructure, site, url, prev
         pageContext: {
             url: (url ? url : pageData.model.data.url),
             nodes: pageData.model.nodes,
-            resourcesUrls: pageData.resourcesUrls,
-            nodesUrls: pageData.nodesUrls,
+            resourcesUrls: (pageData.resourcesUrls?pageData.resourcesUrls:null),
+            nodesUrls: (pageData.nodesUrls?pageData.nodesUrls:null),
             children: (pageData.model.data.children?pageData.model.data.children:pageData.model.children) // Fallback children location in case of model building or not
         },
         siteContext: {

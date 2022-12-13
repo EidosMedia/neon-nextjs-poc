@@ -34,7 +34,8 @@ export default function StoryFragment({ cobaltData, gridContext }) {
 
     let myUrl = "/"
     try {
-        myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]
+        myUrl = cobaltData.object.data.url
+        if(!myUrl){myUrl = cobaltData.pageContext.nodesUrls[cobaltData.object.data.id]}
     } catch (e) { }
 
     let variantId = 0
@@ -96,7 +97,8 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     linkedObjectUrl = '/preview'
                 } else {
                     try {
-                        linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                        linkedObjectUrl = cobaltData.pageContext.nodes[l.id].url
+                        if(!linkedObjectUrl){linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]}
                     } catch (e) { }
                 }
                 if(!linkedObjectUrl){linkedObjectUrl = "/"}
@@ -121,7 +123,8 @@ export default function StoryFragment({ cobaltData, gridContext }) {
                     linkedObjectUrl = '/preview'
                 } else {
                     try {
-                        linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]
+                        linkedObjectUrl = cobaltData.pageContext.nodes[l.id].url
+                        if(!linkedObjectUrl){linkedObjectUrl = cobaltData.pageContext.nodesUrls[l.id]}
                     } catch (e) { }
                 }
                 if(!linkedObjectUrl){linkedObjectUrl = "/"}
