@@ -74,6 +74,7 @@ export async function getCobaltPreview(previewData) {
             url: process.env.COBALT_BASE_HOST + url,
             mode: 'no-cors',
             headers: {
+                'X-APIKey': process.env.COBALT_API_KEY,
                 Authorization: `Bearer ${jwe}`,
                 Cookie: "emk.previewToken=" + previewToken + ";"
             }
@@ -130,6 +131,9 @@ export async function cobaltRequest(url) {
             httpAgent: agent,
             url: process.env.COBALT_BASE_HOST + url,
             mode: 'no-cors',
+            headers: {
+                'X-APIKey': process.env.COBALT_API_KEY
+            }
         };
 
         const response = await axios.request(options)
@@ -152,11 +156,10 @@ export async function getCobaltAuthToken() {
             mode: 'no-cors',
             data: authData,
             httpAgent: agent,
-            config: {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+            headers: {
+                'X-APIKey': process.env.COBALT_API_KEY,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         };
 
@@ -184,12 +187,11 @@ export async function cobaltPollVote(site, nodeId, pollId, answerId){
             url: process.env.COBALT_BASE_HOST + '/directory/polls/vote',
             mode: 'no-cors',
             data: pollData,
-            httpAgent: agent,
-            config: {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+            httpAgent: agent,   
+            headers: {
+                'X-APIKey': process.env.COBALT_API_KEY,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         };
 
@@ -208,7 +210,10 @@ export async function getCobaltSitemap(siteName, token) {
             method: 'GET',
             url: process.env.COBALT_BASE_HOST + '/core/sites/sitemap?emauth=' + token + '&siteName=' + siteName + '&viewStatus=LIVE',
             mode: 'no-cors',
-            httpAgent: agent
+            httpAgent: agent,
+            headers: {
+                'X-APIKey': process.env.COBALT_API_KEY,
+            }
         };
 
         const response = await axios.request(options)
@@ -237,7 +242,10 @@ export async function getCobaltSites() {
                     method: 'GET',
                     httpAgent: agent,
                     url: process.env.COBALT_BASE_HOST + '/core/sites?emauth=' + token,
-                    mode: 'no-cors'
+                    mode: 'no-cors',
+                    headers:{
+                        'X-APIKey': process.env.COBALT_API_KEY,
+                    }
                 };
 
                 const response = await axios.request(options)

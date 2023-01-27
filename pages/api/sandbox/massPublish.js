@@ -41,11 +41,10 @@ export default async (req, res) => {
       url: process.env.COBALT_BASE_HOST + '/directory/sessions/login',
       mode: 'no-cors',
       data: body,
-      config: {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-APIKey': process.env.COBALT_API_KEY,
       }
     };
 
@@ -84,11 +83,10 @@ export default async (req, res) => {
         url: process.env.COBALT_BASE_HOST + '/core/publication/prepare?emauth=' + authToken,
         mode: 'no-cors',
         data: body,
-        config: {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-APIKey': process.env.COBALT_API_KEY,
         }
       };
 
@@ -157,11 +155,10 @@ export default async (req, res) => {
         url: process.env.COBALT_BASE_HOST + '/core/publication/publish?emauth=' + authToken + '&pubId='+pubId,
         mode: 'no-cors',
         data: body,
-        config: {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-APIKey': process.env.COBALT_API_KEY,
         }
       };
 
