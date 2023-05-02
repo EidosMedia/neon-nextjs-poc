@@ -100,10 +100,10 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
             case "p":
                 render = (
                     <React.Fragment>
-                        {(jsonElement.elements ? 
+                        {(jsonElement.elements ?
                             jsonElement.elements
-                            .filter((subel) => subel.type === 'text' || (subel.type === 'element' && subel.name === 'keyword'))
-                            .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
+                                .filter((subel) => subel.type === 'text' || (subel.type === 'element' && subel.name === 'keyword'))
+                                .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
                             : null)}
                     </React.Fragment>
                 )
@@ -116,8 +116,8 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         </Container>
                     )
                 }
-                const table = (jsonElement.elements? jsonElement.elements.find(subel => subel.name === 'table'):null)
-                if(table){
+                const table = (jsonElement.elements ? jsonElement.elements.find(subel => subel.name === 'table') : null)
+                if (table) {
                     render = (
                         <React.Fragment>
                             {render}
@@ -192,7 +192,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 if (jsonElement.attributes && jsonElement.attributes.class === 'DataMap') {
                     render = (
                         <Container sx={{ my: 1 }} maxWidth="md">
-                            <SimpleMap jsonElement={jsonElement} cobaltData={cobaltData}/>
+                            <SimpleMap jsonElement={jsonElement} cobaltData={cobaltData} />
                         </Container>
                     )
 
@@ -290,15 +290,42 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                 }
                 break;
             case 'extra':
-                if(jsonElement.attributes['emk-class'] === 'card'){
+                if (jsonElement.attributes['emk-class'] === 'card') {
                     render = (
                         <Container sx={{ my: 3 }} maxWidth="sm">
                             <Card jsonElement={jsonElement} cobaltData={cobaltData} />
                         </Container>
                     )
+                } else {
+                    let extraHeadline = null;
+                    try {
+                        extraHeadline = jsonElement.elements.find((subel) => subel.attributes['emk-type'] === 'extra-content-headline')
+                        extraHeadline = extraHeadline.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
+                        console.log(extraHeadline)    
+                    }catch(e){}
+
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.filter((subel) => subel.attributes['emk-type'] !== 'extra-content-headline').map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
+                        </React.Fragment>
+                    );
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container maxWidth="sm" sx={{ my: 4, py: 2, border: 2, borderColor: 'grey.500' }}>
+                                
+                                    {extraHeadline?
+                                    <Typography variant="h5" sx={{mb:2}}>
+                                        {extraHeadline}
+                                    </Typography>
+                                    :null}
+                                    {render}
+                                
+                            </Container>
+                        )
+                    }
                 }
-                render     
-            break;
+                render
+                break;
             case 'style':
                 break;
             default:
@@ -351,7 +378,7 @@ function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
 
     let imageUrl = null;
     try {
-        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, "landscape", cobaltData),'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, "landscape", cobaltData), 'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
     } catch (e) { }
 
     const imageWidth = 1024;
@@ -377,8 +404,8 @@ function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
     let images = [];
     images = jsonElement.elements.map((el) => {
         let origImageUrl = getImageUrl(el, "rect", cobaltData)
-        const thumbImageUrl = getImageFormatUrl(origImageUrl,'thumb')
-        origImageUrl = getImageFormatUrl(origImageUrl,'large')
+        const thumbImageUrl = getImageFormatUrl(origImageUrl, 'thumb')
+        origImageUrl = getImageFormatUrl(origImageUrl, 'large')
 
 
         const origImageFullUrl = ResourceResolver(origImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
@@ -410,7 +437,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
         if (headlineBlock) {
             headlineBlock = (
                 <React.Fragment>
-                    {(headlineBlock.elements ? headlineBlock.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData}/>) : null)}
+                    {(headlineBlock.elements ? headlineBlock.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
                 </React.Fragment>
             );
         }
@@ -437,7 +464,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, cobaltData }) {
                         linkedObjectMainPictureElement = findElementsInContentJson(['mediagroup'], linkedObjectHelper.content)[0].elements[0];
                         linkedObjectMainImageUrl = getImageUrl(linkedObjectMainPictureElement, "square", cobaltData)
                         if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') { //TODO fix this
-                            linkedObjectMainImageUrl = getImageFormatUrl(linkedObjectMainImageUrl,'thumb')
+                            linkedObjectMainImageUrl = getImageFormatUrl(linkedObjectMainImageUrl, 'thumb')
                             linkedObjectMainImageUrl = ResourceResolver(linkedObjectMainImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
                         } else {
                             linkedObjectMainImageUrl = null;
