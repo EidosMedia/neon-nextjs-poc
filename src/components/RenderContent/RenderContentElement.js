@@ -300,8 +300,11 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     let extraHeadline = null;
                     try {
                         extraHeadline = jsonElement.elements.find((subel) => subel.attributes['emk-type'] === 'extra-content-headline')
-                        extraHeadline = extraHeadline.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
-                        console.log(extraHeadline)    
+                        if(extraHeadline.elements) {
+                            extraHeadline = extraHeadline.elements.map((subel, i) => (subel.text?subel.text:"")).join()
+                        } else {
+                            extraHeadline = null
+                        }
                     }catch(e){}
 
                     render = (
@@ -324,7 +327,6 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         )
                     }
                 }
-                render
                 break;
             case 'style':
                 break;
