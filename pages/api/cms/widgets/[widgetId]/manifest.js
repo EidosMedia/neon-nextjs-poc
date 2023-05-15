@@ -34,6 +34,9 @@ export default async (req, res) => {
     case 'markets':
       response = widgetsConfig.markets
       break;
+    case 'smart-query':
+      response = widgetsConfig["smart-query"]
+      break;
 
   }
   res.json(response)

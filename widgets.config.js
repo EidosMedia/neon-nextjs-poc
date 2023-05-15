@@ -40,5 +40,12 @@ export const widgetsConfig = {
                 defaultValue: 'simple'
             }
         ]
+    },
+    "smart-query":{
+        params: [
+            {
+                name: 'query'
+            }
+        ]
     }
 }

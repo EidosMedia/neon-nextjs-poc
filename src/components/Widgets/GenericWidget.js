@@ -1,5 +1,7 @@
+import { BreakfastDiningSharp } from "@mui/icons-material";
 import FootballUclWidget from "./FootballUclWidget";
 import MarketsWidget from "./MarketsWidget";
+import SmartQueryWidget from "./SmartQueryWidget";
 import WeatherWidget from "./WeatherWidget";
 
 export default function GenericWidget({ cobaltData, gridContext }){
@@ -13,6 +15,9 @@ export default function GenericWidget({ cobaltData, gridContext }){
             break;
         case 'weather-widget':
             render = <WeatherWidget cobaltData={cobaltData} gridContext={gridContext}/>;
+            break;
+        case 'smart-query':
+            render = <SmartQueryWidget cobaltData={cobaltData} gridContext={gridContext}/>;
             break;
     }
     return render
