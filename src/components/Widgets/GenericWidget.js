@@ -4,7 +4,7 @@ import MarketsWidget from "./MarketsWidget";
 import SmartQueryWidget from "./SmartQueryWidget";
 import WeatherWidget from "./WeatherWidget";
 
-export default function GenericWidget({ cobaltData, gridContext }){
+export default function GenericWidget({ cobaltData, semanticSearchData, gridContext }){
     let render = null;
     switch(cobaltData.object.data.title){
         case 'markets':
@@ -17,7 +17,7 @@ export default function GenericWidget({ cobaltData, gridContext }){
             render = <WeatherWidget cobaltData={cobaltData} gridContext={gridContext}/>;
             break;
         case 'smart-query':
-            render = <SmartQueryWidget cobaltData={cobaltData} gridContext={gridContext}/>;
+            render = <SmartQueryWidget cobaltData={cobaltData} semanticSearchData={semanticSearchData} gridContext={gridContext}/>;
             break;
     }
     return render

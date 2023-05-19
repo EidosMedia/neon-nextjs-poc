@@ -14,8 +14,9 @@ import Segment from "../../../../src/components/Segment/Segment";
 import { cobaltRequest, getCobaltPageByUrl, getCobaltPreview, getCobaltSectionPage, getCobaltSites, searchCobalt } from "../../../../src/lib/cobalt-cms/cobalt-api";
 import { getLiveHostname, isNewsletterSite } from "../../../../src/lib/cobalt-cms/cobalt-helpers";
 import { getMetaHeader } from "../../../../src/lib/helpers";
+import { pineconeRequest } from "../../../../src/lib/pinecone/pinecone-client";
 
-export default function Page({ cobaltData, fallback }) {
+export default function Page({ cobaltData, semanticSearchData, fallback }) {
 
     let render = null;
     if (cobaltData.error) {
@@ -28,15 +29,15 @@ export default function Page({ cobaltData, fallback }) {
         switch (cobaltData.object.data.sys.baseType) {
             case 'webpage':
                 let isSimpleHp = false;
-                try{
+                try {
                     isSimpleHp = cobaltData.object.data.attributes.classification.genres.includes('simplehp')
-                } catch (e) {}
-                if(isSimpleHp){ //For demo purpose
+                } catch (e) { }
+                if (isSimpleHp) { //For demo purpose
                     render = <SimpleHomepage cobaltData={cobaltData} pageTitle={pageTitle} />;
-                } else if(cobaltData.object.data.pubInfo.sectionPath !== '/'){ //This is a section page with a DWP ("semi-automatic" page)
+                } else if (cobaltData.object.data.pubInfo.sectionPath !== '/') { //This is a section page with a DWP ("semi-automatic" page)
                     render = <SemiAutomaticSectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
                 } else {
-                    render = <LandingPage cobaltData={cobaltData}/>;
+                    render = <LandingPage cobaltData={cobaltData} semanticSearchData={semanticSearchData} />;
                 }
                 break;
             case 'webpagefragment':
@@ -145,7 +146,7 @@ export async function getStaticProps(context) {
                 site = context.params.site
             }
         }
-        const variant = (context.params.variant?context.params.variant:null);
+        const variant = (context.params.variant ? context.params.variant : null);
 
         console.log('RENDERING - site: ' + site + ' - variant: ' + variant + ' - path: ' + url + ' - DEV MODE: ' + process.env.DEV_MODE);
         cobaltData = await getCobaltPageByUrl(site, url, variant);
@@ -162,6 +163,11 @@ export async function getStaticProps(context) {
         switch (cobaltData.object.data.sys.baseType) {
             case 'webpage':
                 revalidate = 5;
+                // Quick and ugly way to manage semantic search demo
+                const semanticSearchData = await getSemanticSearchData(cobaltData)
+                if (semanticSearchData) {
+                    props['semanticSearchData'] = semanticSearchData
+                }
                 break;
             case 'liveblog':
                 revalidate = 5;
@@ -172,9 +178,29 @@ export async function getStaticProps(context) {
                 revalidate = 5;
         }
     }
+
     return {
         props: props,
         revalidate: revalidate
     }
 
+}
+
+async function getSemanticSearchData(cobaltData) {
+    let semanticSearchData = null
+    try {
+        const semanticWidget = cobaltData.object.data.links.pagelink.main.find((link) => {
+            if (link.metadata.type === "widget") {
+                if (cobaltData.pageContext.nodes[link.targetId].title === 'smart-query') {
+                    return true
+                }
+            }
+            return false
+        })
+        const semanticWidgetParams = semanticWidget.metadata.parameters
+        if (semanticWidgetParams) {
+            semanticSearchData = await pineconeRequest(semanticWidgetParams.query)
+        }
+    } catch (e) {}
+    return semanticSearchData
 }

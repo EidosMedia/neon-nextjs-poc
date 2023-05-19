@@ -6,7 +6,7 @@ import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";
 import GenericWidget from "../Widgets/GenericWidget";
 
-export default function LandingPage({ cobaltData, pageTitle, analyticsReport }) {
+export default function LandingPage({ cobaltData, pageTitle, analyticsReport, semanticSearchData }) {
     const renderTest = (
         <Container maxWidth="lg">
             <Segment templateName="featured-big" />
@@ -48,7 +48,7 @@ export default function LandingPage({ cobaltData, pageTitle, analyticsReport }) 
                         return <QuerySegment key={i} cobaltData={obj} />
                         break;
                     case "widget":
-                        return <GenericWidget key={i} cobaltData={obj} />;
+                        return <GenericWidget key={i} cobaltData={obj} semanticSearchData={semanticSearchData} />;
                         break;
                     case "article":
                         return <GenericFragment key={i} cobaltData={obj} gridContext={{ xs: 12, md: 3 }} analyticsReport={analyticsReport} />;
