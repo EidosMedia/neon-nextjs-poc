@@ -49,7 +49,7 @@ export const widgetsConfig = {
             {
                 name: "remove similars",
                 acceptedValues: ['yes','no'],
-                defaultValue: ['no']
+                defaultValue: 'no'
             }
         ]
     }
