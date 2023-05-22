@@ -1,7 +1,7 @@
 export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridContext }) {
     let render = null;
     const removeSimilars = (cobaltData.linkContext.linkData.parameters.removeSimilars === 'yes')
-    const similarityThreshold = 0.95
+    const similarityThreshold = 0.9
 
     let list = semanticSearchData.matches
     if (removeSimilars) {
