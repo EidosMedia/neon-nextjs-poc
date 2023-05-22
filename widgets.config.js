@@ -47,7 +47,8 @@ export const widgetsConfig = {
                 name: 'query'
             },
             {
-                name: "remove similars",
+                name: "removeSimilars",
+                displayName: "remove similars",
                 acceptedValues: ['yes','no'],
                 defaultValue: 'no'
             }
