@@ -3,7 +3,8 @@ import axios from 'axios'
 export async function pineconeRequest(query) {
     const payload = {
         "input": query,
-        "label": "world"
+        "label": "world",
+        "includeSimilarities": true
       }
     let response = null;
     try {
