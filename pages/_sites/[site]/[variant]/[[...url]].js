@@ -35,7 +35,7 @@ export default function Page({ cobaltData, semanticSearchData, fallback }) {
                 if (isSimpleHp) { //For demo purpose
                     render = <SimpleHomepage cobaltData={cobaltData} pageTitle={pageTitle} />;
                 } else if (cobaltData.object.data.pubInfo.sectionPath !== '/') { //This is a section page with a DWP ("semi-automatic" page)
-                    render = <SemiAutomaticSectionPage cobaltData={cobaltData} pageTitle={pageTitle} />;
+                    render = <SemiAutomaticSectionPage cobaltData={cobaltData} pageTitle={pageTitle} semanticSearchData={semanticSearchData} />;
                 } else {
                     render = <LandingPage cobaltData={cobaltData} semanticSearchData={semanticSearchData} />;
                 }
