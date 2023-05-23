@@ -199,7 +199,7 @@ async function getSemanticSearchData(cobaltData) {
         })
         const semanticWidgetParams = semanticWidget.metadata.parameters
         if (semanticWidgetParams) {
-            semanticSearchData = await pineconeRequest(semanticWidgetParams.query)
+            semanticSearchData = await pineconeRequest(semanticWidgetParams.topic)
         }
     } catch (e) {}
     return semanticSearchData

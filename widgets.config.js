@@ -44,12 +44,13 @@ export const widgetsConfig = {
     "smart-query":{
         params: [
             {
-                name: 'query'
+                name: 'topic',
+                displayName: "Topic"
             },
             {
-                name: "removeSimilars",
-                displayName: "remove similars",
-                acceptedValues: ['yes','no'],
+                name: "semanticDeduplication",
+                displayName: "Semantic deduplication",
+                acceptedValues: ['high','medium','low','no'],
                 defaultValue: 'no'
             }
         ]
