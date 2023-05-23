@@ -5,13 +5,25 @@ import React from "react";
 
 export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridContext }) {
     let render = null;
-    const removeSimilars = (cobaltData.linkContext.linkData.parameters.semanticDeduplication === 'yes')
-    const similarityThreshold = 0.9
+    let similarityThreshold = 0
+    switch(cobaltData.linkContext.linkData.parameters.semanticDeduplication){
+        case 'high':
+            similarityThreshold = 0.85
+            break;
+        case 'medium':
+            similarityThreshold = 0.9
+            break;
+        case 'low':
+            similarityThreshold = 0.95
+            break;
+        default:
+            similarityThreshold = 0
+    }
     
     const boxTitle = cobaltData.linkContext.linkData.parameters.topic
 
     let list = semanticSearchData.matches
-    if (removeSimilars) {
+    if (similarityThreshold > 0) {
         list = list.filter((el, i) => {
             let include = true;
             for (let j = 0; j < i; j++) {
