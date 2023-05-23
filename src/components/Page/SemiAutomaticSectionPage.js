@@ -68,9 +68,9 @@ export default function SemiAutomaticSectionPage({ cobaltData, pageTitle, analyt
                     : null)}
             </Grid>
             
-            <Box sx={{ mb: 2, backgroundColor: (customColor ? customColor : 'secondary.main') }}
+            <Box sx={{ p:1, mb: 2, backgroundColor: (customColor ? customColor : 'secondary.main') }}
                     display="flex"
-                    justifyContent="center"
+                    justifyContent="start"
                     alignItems="center">
                     <Typography sx={{ color: 'primary.main' }} variant="h4" component="h4">
                         More news

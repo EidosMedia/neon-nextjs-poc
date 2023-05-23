@@ -40,9 +40,9 @@ export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridC
         render = (
             <Container maxWidth="lg">
                 {(boxTitle ?
-                    <Box sx={{ mb: 2, backgroundColor:'secondary.main'}}
+                    <Box sx={{ p:1, mb: 2, backgroundColor:'secondary.main'}}
                         display="flex"
-                        justifyContent="center"
+                        justifyContent="start"
                         alignItems="center">
                         <Typography sx={{ color: 'primary.main' }} variant="h4" component="h4">
                             {boxTitle}
