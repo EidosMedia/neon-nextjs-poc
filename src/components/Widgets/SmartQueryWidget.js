@@ -24,24 +24,7 @@ export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridC
     }
 
     if (list) {
-        // render = (
-        //     <div>This is a smart query:
-        //         <ul>
-        //             {list.map((el, i) => (
-        //                 <li>{el.score} - {el.metadata.headline}</li>
-        //             ))}
-        //         </ul>
-        //     </div>);
-        // render = (
-        //     <Grid container spacing={2}>
-        //         {list.map((object, i) => (
-        //             <Grid key={i} item xs={12} md={4}>
-        //                 <SmartQueryFragment data={object} includeSummary={true}/>
-        //             </Grid>
-        //         ))}
-        //     </Grid>
-        // )
-
+        list = list.slice(0,7)
         render = (
             <Container maxWidth="lg">
                 {(boxTitle ?
