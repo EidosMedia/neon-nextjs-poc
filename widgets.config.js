@@ -48,7 +48,13 @@ export const widgetsConfig = {
                 displayName: "Topic"
             },
             {
-                name: "semanticDeduplication",
+                name: "relevancy",
+                displayName: "Relevancy",
+                acceptedValues: ['high','medium','low'],
+                defaultValue: 'medium'
+            },
+            {
+                name: "variety",
                 displayName: "Variety",
                 acceptedValues: ['high','medium','low'],
                 defaultValue: 'low'
