@@ -5,21 +5,20 @@ import React from "react";
 
 export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridContext }) {
     let render = null;
-    console.log(semanticSearchData)
-    let relevancyThreshold = 0.80
-    switch(cobaltData.linkContext.linkData.parameters.relevancy){
-        case 'high':
-            relevancyThreshold = 0.90
-            break;
-        case 'medium':
-            relevancyThreshold = 0.80
-            break;
-        case 'low':
-            relevancyThreshold = 0.70
-            break;
-        default:
-            relevancyThreshold = 0
-    }
+    // let relevancyThreshold = 0.80
+    // switch(cobaltData.linkContext.linkData.parameters.relevancy){
+    //     case 'high':
+    //         relevancyThreshold = 0.90
+    //         break;
+    //     case 'medium':
+    //         relevancyThreshold = 0.80
+    //         break;
+    //     case 'low':
+    //         relevancyThreshold = 0.70
+    //         break;
+    //     default:
+    //         relevancyThreshold = 0
+    // }
     let varietyThreshold = 0
     switch(cobaltData.linkContext.linkData.parameters.variety){
         case 'high':

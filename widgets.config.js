@@ -47,12 +47,12 @@ export const widgetsConfig = {
                 name: 'topic',
                 displayName: "Topic"
             },
-            {
-                name: "relevancy",
-                displayName: "Relevancy",
-                acceptedValues: ['high','medium','low'],
-                defaultValue: 'medium'
-            },
+            // {
+            //     name: "relevancy",
+            //     displayName: "Relevancy",
+            //     acceptedValues: ['high','medium','low'],
+            //     defaultValue: 'medium'
+            // },
             {
                 name: "variety",
                 displayName: "Variety",
