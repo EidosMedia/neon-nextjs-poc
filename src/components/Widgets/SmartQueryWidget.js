@@ -14,7 +14,7 @@ export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridC
             similarityThreshold = 0.9
             break;
         case 'low':
-            similarityThreshold = 0.95
+            similarityThreshold = 0.99
             break;
         default:
             similarityThreshold = 0
