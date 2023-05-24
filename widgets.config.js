@@ -49,7 +49,7 @@ export const widgetsConfig = {
             },
             {
                 name: "semanticDeduplication",
-                displayName: "Semantic diversity",
+                displayName: "Variety",
                 acceptedValues: ['high','medium','low'],
                 defaultValue: 'low'
             }

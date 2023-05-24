@@ -8,10 +8,10 @@ export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridC
     let similarityThreshold = 0
     switch(cobaltData.linkContext.linkData.parameters.semanticDeduplication){
         case 'high':
-            similarityThreshold = 0.85
+            similarityThreshold = 0.90
             break;
         case 'medium':
-            similarityThreshold = 0.9
+            similarityThreshold = 0.95
             break;
         case 'low':
             similarityThreshold = 0.99
