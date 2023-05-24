@@ -5,35 +5,50 @@ import React from "react";
 
 export default function SmartQueryWidget({ cobaltData, semanticSearchData, gridContext }) {
     let render = null;
-    let similarityThreshold = 0
-    switch(cobaltData.linkContext.linkData.parameters.semanticDeduplication){
+    console.log(semanticSearchData)
+    let relevancyThreshold = 0.80
+    switch(cobaltData.linkContext.linkData.parameters.relevancy){
         case 'high':
-            similarityThreshold = 0.90
+            relevancyThreshold = 0.90
             break;
         case 'medium':
-            similarityThreshold = 0.95
+            relevancyThreshold = 0.80
             break;
         case 'low':
-            similarityThreshold = 0.99
+            relevancyThreshold = 0.70
             break;
         default:
-            similarityThreshold = 0
+            relevancyThreshold = 0
+    }
+    let varietyThreshold = 0
+    switch(cobaltData.linkContext.linkData.parameters.variety){
+        case 'high':
+            varietyThreshold = 0.90
+            break;
+        case 'medium':
+            varietyThreshold = 0.95
+            break;
+        case 'low':
+            varietyThreshold = 0.99
+            break;
+        default:
+            varietyThreshold = 0
     }
     
     const boxTitle = cobaltData.linkContext.linkData.parameters.topic
 
     let list = semanticSearchData.matches
-    if (similarityThreshold > 0) {
-        list = list.filter((el, i) => {
-            let include = true;
-            for (let j = 0; j < i; j++) {
-                if (semanticSearchData.similarities[i][j] > similarityThreshold) {
-                    include = false
-                }
+    
+    list = list.filter((el, i) => {
+        let include = true;
+        for (let j = 0; j < i; j++) {
+            if (semanticSearchData.similarities[i][j] > varietyThreshold) {
+                include = false
             }
-            return include
-        })
-    }
+        }
+        return include
+    })
+    
 
     if (list) {
         list = list.slice(0,7)
