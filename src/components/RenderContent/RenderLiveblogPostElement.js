@@ -105,11 +105,32 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                 break;
             case "blockquote":
                 console.log(jsonElement)
-                if (jsonElement.attributes['emk-class'] === 'card'){
-                    render = <Card jsonElement={jsonElement} cobaltData={cobaltData}/>
-                } else if (jsonElement.attributes["data-id"]) {
-                    //This is a content link
-                    render = <ContentLink jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                try {
+                    if (jsonElement.attributes['emk-class'] === 'card'){
+                        render = <Card jsonElement={jsonElement} cobaltData={cobaltData}/>
+                    } else if (jsonElement.attributes["data-id"]) {
+                        //This is a content link
+                        render = <ContentLink jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                    }
+                } catch (error) {
+                    
+                }
+                if (!render){
+                    //This is a standard quote
+                    render = (
+                        <React.Fragment>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} />) : null)}
+                        </React.Fragment>
+                    );
+                    if (renderMode && renderMode === 'styled') {
+                        render = (
+                            <Container sx={{ my: 1, mx:3 }} maxWidth="md">
+                                <Typography variant="h6" component="p" sx={{mr:6,p:1, fontStyle:'italic', backgroundColor:'#F0F8FF'}}>
+                                    "{render}"
+                                </Typography>
+                            </Container>
+                        )
+                    }
 
                 }
             case 'style':
