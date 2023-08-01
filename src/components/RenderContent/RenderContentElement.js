@@ -18,323 +18,327 @@ import Card from "./Card";
 export default function RenderContentElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
     let render = null;
     let id = null;
-    if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
-        switch (jsonElement.name) {
-            case "document":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
-                break;
-            case "headgroup":
-                render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
-                break;
-            case "headline":
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
-                    </React.Fragment>
-                )
-                break;
-            case "summary":
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
-                    </React.Fragment>
-
-                )
-                break;
-            case "content":
-                //console.log(JSON.stringify(jsonElement, null, 2))
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />)}
-                    </React.Fragment>
-                );
-                break;
-            case "h1":
-                render = (
-                    <React.Fragment>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
-                    </React.Fragment>
-                )
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="h3" component="h2">
-                                {render}
-                            </Typography>
-                        </Container>
-                    )
-                }
-                break;
-            case "h2":
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
-                    </React.Fragment>
-                )
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="h5" component="h3">
-                                {render}
-                            </Typography>
-                        </Container>
-                    )
-                }
-                break;
-            case "h3":
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
-                    </React.Fragment>
-                )
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="body1" component="h4">
-                                {render}
-                            </Typography>
-                        </Container>
-                    )
-                }
-                break;
-            case "p":
-                render = (
-                    <React.Fragment>
-                        {(jsonElement.elements ?
-                            jsonElement.elements
-                                .filter((subel) => subel.type === 'text' || (subel.type === 'element' && subel.name === 'keyword'))
-                                .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
-                            : null)}
-                    </React.Fragment>
-                )
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="body1" component="p">
-                                {render}
-                            </Typography>
-                        </Container>
-                    )
-                }
-                const table = (jsonElement.elements ? jsonElement.elements.find(subel => subel.name === 'table') : null)
-                if (table) {
+    try {
+        if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
+            switch (jsonElement.name) {
+                case "document":
+                    render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
+                    break;
+                case "headgroup":
+                    render = jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
+                    break;
+                case "headline":
                     render = (
                         <React.Fragment>
-                            {render}
-                            <RenderContentElement jsonElement={table} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
+                            {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
                         </React.Fragment>
                     )
-                }
-                break;
-            case "ul":
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
-                    </React.Fragment>
-                );
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md" component="ul">
-                            {render}
-                        </Container>
-                    )
-                }
-                break;
-            case "ol":
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
-                    </React.Fragment>
-                );
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md" component="ol">
-                            {render}
-                        </Container>
-                    )
-                }
-                break;
-            case "li":
-                render = (
-                    <React.Fragment>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => {
-                            if (subel.type === "element" && (subel.name === "ul" || subel.name === "ol")) {
-                                return <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
-                            } else {
-                                return <RenderFormattedText key={i} jsonElement={subel} />
-                            }
-                        }) : null)}
-                    </React.Fragment>
-                );
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Typography sx={{ ml: 4 }} variant='body1' component='li'>
-                            {render}
-                        </Typography>
-                    )
-                }
-                break;
-            case "figure":
-                if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
-                    render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
-                } else {
-                    render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
-                }
-                break;
-            case "div":
-                if (jsonElement.attributes['emk-type'] === 'gallery') {
-                    render = <FigureGallery jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
-                } else if (jsonElement.attributes['emk-type'] === 'extra-links') {
-                    render = <ExtraLinks jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
-                }
-                break;
-            case 'table':
-                if (jsonElement.attributes && jsonElement.attributes.class === 'DataMap') {
-                    render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <SimpleMap jsonElement={jsonElement} cobaltData={cobaltData} />
-                        </Container>
-                    )
-
-                } else {
-                    const tableAttr = jsonElement.attributes;
-                    const className = (tableAttr ? tableAttr.class : null);
-                    const tableCellPadding = (tableAttr ? tableAttr.cellpadding : null);
-                    const tableCellSpacing = (tableAttr ? tableAttr.cellspacing : null);
-                    render = (
-                        <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
-                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
-                        </table>
-                    );
-                }
-                break;
-            case 'thead':
-                const theadAttr = jsonElement.attributes;
-                const theadAlign = (theadAttr ? theadAttr.align : null);
-                const theadValign = (theadAttr ? theadAttr.valign : null);
-                const theadColspan = (theadAttr ? theadAttr.colspan : null);
-                render = (
-                    <thead align={theadAlign} valign={theadValign} colSpan={theadColspan}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
-                    </thead>
-                );
-                break;
-            case 'tbody':
-                const tbodyAttr = jsonElement.attributes;
-                const tbodyAlign = (tbodyAttr ? tbodyAttr.align : null);
-                const tbodyValign = (tbodyAttr ? tbodyAttr.valign : null);
-                const tbodyColspan = (tbodyAttr ? tbodyAttr.colspan : null);
-                render = (
-                    <tbody align={tbodyAlign} valign={tbodyValign} colSpan={tbodyColspan}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
-                    </tbody>
-                );
-                break;
-            case 'tr':
-                const trAttr = jsonElement.attributes;
-                const trAlign = (trAttr ? trAttr.align : null);
-                const trValign = (trAttr ? trAttr.valign : null);
-                render = (
-                    <tr align={trAlign} valign={trValign}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
-                    </tr>
-                );
-                break;
-            case 'td':
-                const tdAttr = jsonElement.attributes;
-                const tdAlign = (tdAttr ? tdAttr.align : null);
-                const tdValign = (tdAttr ? tdAttr.valign : null);
-                render = (
-                    <td align={tdAlign} valign={tdValign}>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
-                    </td>
-                );
-                break;
-            case 'embed':
-                //TODO
-                const cdata = jsonElement.elements.filter((el) => el.type = 'CDATA').map((el) => el.cdata)
-                render = (
-                    <div dangerouslySetInnerHTML={{ __html: cdata }}>
-
-                    </div>
-                );
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 2 }} maxWidth="md" component="div">
-                            <Box display="flex"
-                                justifyContent="center"
-                                alignItems="center">
-                                {render}
-                            </Box>
-                        </Container>
-                    )
-                }
-                break;
-            case 'poll':
-                render = <InlinePoll jsonElement={jsonElement} cobaltData={cobaltData} />;
-                break;
-            case 'blockquote':
-                render = (
-                    <React.Fragment>
-                        {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
-                    </React.Fragment>
-                );
-                if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                    render = (
-                        <Container sx={{ my: 3 }} maxWidth="sm" component="blockquote">
-                            <Typography variant="h5" component="p">
-                                {render}
-                            </Typography>
-                        </Container>
-                    )
-                }
-                break;
-            case 'extra':
-                if (jsonElement.attributes['emk-class'] === 'card') {
-                    render = (
-                        <Container sx={{ my: 3 }} maxWidth="sm">
-                            <Card jsonElement={jsonElement} cobaltData={cobaltData} />
-                        </Container>
-                    )
-                } else {
-                    let extraHeadline = null;
-                    try {
-                        extraHeadline = jsonElement.elements.find((subel) => subel.attributes['emk-type'] === 'extra-content-headline')
-                        if(extraHeadline.elements) {
-                            extraHeadline = extraHeadline.elements.map((subel, i) => (subel.text?subel.text:"")).join()
-                        } else {
-                            extraHeadline = null
-                        }
-                    }catch(e){}
-
+                    break;
+                case "summary":
                     render = (
                         <React.Fragment>
-                            {jsonElement.elements ? jsonElement.elements.filter((subel) => subel.attributes['emk-type'] !== 'extra-content-headline').map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
+                            {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
+                        </React.Fragment>
+    
+                    )
+                    break;
+                case "content":
+                    //console.log(JSON.stringify(jsonElement, null, 2))
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />)}
+                        </React.Fragment>
+                    );
+                    break;
+                case "h1":
+                    render = (
+                        <React.Fragment>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null)}
+                        </React.Fragment>
+                    )
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="h3" component="h2">
+                                    {render}
+                                </Typography>
+                            </Container>
+                        )
+                    }
+                    break;
+                case "h2":
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
+                        </React.Fragment>
+                    )
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="h5" component="h3">
+                                    {render}
+                                </Typography>
+                            </Container>
+                        )
+                    }
+                    break;
+                case "h3":
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map((subel) => subel.text) : null}
+                        </React.Fragment>
+                    )
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="body1" component="h4">
+                                    {render}
+                                </Typography>
+                            </Container>
+                        )
+                    }
+                    break;
+                case "p":
+                    render = (
+                        <React.Fragment>
+                            {(jsonElement.elements ?
+                                jsonElement.elements
+                                    .filter((subel) => subel.type === 'text' || (subel.type === 'element' && subel.name === 'keyword'))
+                                    .map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />)
+                                : null)}
+                        </React.Fragment>
+                    )
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="body1" component="p">
+                                    {render}
+                                </Typography>
+                            </Container>
+                        )
+                    }
+                    const table = (jsonElement.elements ? jsonElement.elements.find(subel => subel.name === 'table') : null)
+                    if (table) {
+                        render = (
+                            <React.Fragment>
+                                {render}
+                                <RenderContentElement jsonElement={table} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />;
+                            </React.Fragment>
+                        )
+                    }
+                    break;
+                case "ul":
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
                         </React.Fragment>
                     );
                     if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                         render = (
-                            <Container maxWidth="sm" sx={{ my: 4, py: 2, border: 2, borderColor: 'grey.500' }}>
-                                
-                                    {extraHeadline?
-                                    <Typography variant="h5" sx={{mb:2}}>
-                                        {extraHeadline}
-                                    </Typography>
-                                    :null}
-                                    {render}
-                                
+                            <Container sx={{ my: 1 }} maxWidth="md" component="ul">
+                                {render}
                             </Container>
                         )
                     }
-                }
-                break;
-            case 'style':
-                break;
-            default:
-                render = (
-                    <div>Element not managed: {jsonElement.name}</div>
-                )
+                    break;
+                case "ol":
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
+                        </React.Fragment>
+                    );
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md" component="ol">
+                                {render}
+                            </Container>
+                        )
+                    }
+                    break;
+                case "li":
+                    render = (
+                        <React.Fragment>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => {
+                                if (subel.type === "element" && (subel.name === "ul" || subel.name === "ol")) {
+                                    return <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
+                                } else {
+                                    return <RenderFormattedText key={i} jsonElement={subel} />
+                                }
+                            }) : null)}
+                        </React.Fragment>
+                    );
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Typography sx={{ ml: 4 }} variant='body1' component='li'>
+                                {render}
+                            </Typography>
+                        )
+                    }
+                    break;
+                case "figure":
+                    if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
+                        render = <CloudinaryVideo jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
+                    } else {
+                        render = <Figure jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
+                    }
+                    break;
+                case "div":
+                    if (jsonElement.attributes['emk-type'] === 'gallery') {
+                        render = <FigureGallery jsonElement={jsonElement} excludeElements={excludeElements} cobaltData={cobaltData} />
+                    } else if (jsonElement.attributes['emk-type'] === 'extra-links') {
+                        render = <ExtraLinks jsonElement={jsonElement} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />
+                    }
+                    break;
+                case 'table':
+                    if (jsonElement.attributes && jsonElement.attributes.class === 'DataMap') {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <SimpleMap jsonElement={jsonElement} cobaltData={cobaltData} />
+                            </Container>
+                        )
+    
+                    } else {
+                        const tableAttr = jsonElement.attributes;
+                        const className = (tableAttr ? tableAttr.class : null);
+                        const tableCellPadding = (tableAttr ? tableAttr.cellpadding : null);
+                        const tableCellSpacing = (tableAttr ? tableAttr.cellspacing : null);
+                        render = (
+                            <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
+                                {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
+                            </table>
+                        );
+                    }
+                    break;
+                case 'thead':
+                    const theadAttr = jsonElement.attributes;
+                    const theadAlign = (theadAttr ? theadAttr.align : null);
+                    const theadValign = (theadAttr ? theadAttr.valign : null);
+                    const theadColspan = (theadAttr ? theadAttr.colspan : null);
+                    render = (
+                        <thead align={theadAlign} valign={theadValign} colSpan={theadColspan}>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
+                        </thead>
+                    );
+                    break;
+                case 'tbody':
+                    const tbodyAttr = jsonElement.attributes;
+                    const tbodyAlign = (tbodyAttr ? tbodyAttr.align : null);
+                    const tbodyValign = (tbodyAttr ? tbodyAttr.valign : null);
+                    const tbodyColspan = (tbodyAttr ? tbodyAttr.colspan : null);
+                    render = (
+                        <tbody align={tbodyAlign} valign={tbodyValign} colSpan={tbodyColspan}>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
+                        </tbody>
+                    );
+                    break;
+                case 'tr':
+                    const trAttr = jsonElement.attributes;
+                    const trAlign = (trAttr ? trAttr.align : null);
+                    const trValign = (trAttr ? trAttr.valign : null);
+                    render = (
+                        <tr align={trAlign} valign={trValign}>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null)}
+                        </tr>
+                    );
+                    break;
+                case 'td':
+                    const tdAttr = jsonElement.attributes;
+                    const tdAlign = (tdAttr ? tdAttr.align : null);
+                    const tdValign = (tdAttr ? tdAttr.valign : null);
+                    render = (
+                        <td align={tdAlign} valign={tdValign}>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
+                        </td>
+                    );
+                    break;
+                case 'embed':
+                    //TODO
+                    const cdata = jsonElement.elements.filter((el) => el.type = 'CDATA').map((el) => el.cdata)
+                    render = (
+                        <div dangerouslySetInnerHTML={{ __html: cdata }}>
+    
+                        </div>
+                    );
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 2 }} maxWidth="md" component="div">
+                                <Box display="flex"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    {render}
+                                </Box>
+                            </Container>
+                        )
+                    }
+                    break;
+                case 'poll':
+                    render = <InlinePoll jsonElement={jsonElement} cobaltData={cobaltData} />;
+                    break;
+                case 'blockquote':
+                    render = (
+                        <React.Fragment>
+                            {(jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} cobaltData={cobaltData} />) : null)}
+                        </React.Fragment>
+                    );
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 3 }} maxWidth="sm" component="blockquote">
+                                <Typography variant="h5" component="p">
+                                    {render}
+                                </Typography>
+                            </Container>
+                        )
+                    }
+                    break;
+                case 'extra':
+                    if (jsonElement.attributes['emk-class'] === 'card') {
+                        render = (
+                            <Container sx={{ my: 3 }} maxWidth="sm">
+                                <Card jsonElement={jsonElement} cobaltData={cobaltData} />
+                            </Container>
+                        )
+                    } else {
+                        let extraHeadline = null;
+                        try {
+                            extraHeadline = jsonElement.elements.find((subel) => subel.attributes['emk-type'] === 'extra-content-headline')
+                            if(extraHeadline.elements) {
+                                extraHeadline = extraHeadline.elements.map((subel, i) => (subel.text?subel.text:"")).join()
+                            } else {
+                                extraHeadline = null
+                            }
+                        }catch(e){}
+    
+                        render = (
+                            <React.Fragment>
+                                {jsonElement.elements ? jsonElement.elements.filter((subel) => subel.attributes['emk-type'] !== 'extra-content-headline').map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
+                            </React.Fragment>
+                        );
+                        if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                            render = (
+                                <Container maxWidth="sm" sx={{ my: 4, py: 2, border: 2, borderColor: 'grey.500' }}>
+                                    
+                                        {extraHeadline?
+                                        <Typography variant="h5" sx={{mb:2}}>
+                                            {extraHeadline}
+                                        </Typography>
+                                        :null}
+                                        {render}
+                                    
+                                </Container>
+                            )
+                        }
+                    }
+                    break;
+                case 'style':
+                    break;
+                default:
+                    render = (
+                        <div>Element not managed: {jsonElement.name}</div>
+                    )
+            }
         }
+    } catch (error) {
+        
     }
     return render
 }
