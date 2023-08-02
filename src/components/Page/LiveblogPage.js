@@ -40,6 +40,13 @@ export default function LiveblogPage({ cobaltData }) {
             console.log(e)
         }
 
+        let reporters = null;
+        try{
+            reporters = cobaltData.object.data.attributes.liveblogData.lbNeutralReporters
+        } catch (e){}
+
+        console.log(reporters)
+
         let postsRender = null;
 
         if (error) postsRender = <div>Failed to load</div>
@@ -48,11 +55,20 @@ export default function LiveblogPage({ cobaltData }) {
             postsRender = (
                 <Container sx={{ my: 2 }} maxWidth="md">
                     {data.result.map((post, i, { length }) => {
-                        let itemRender = null;
+                        // check if is reporter
+
+                        console.log(JSON.stringify(post,null,2))
+                        let reporter = null
+                        try {
+                            let creator = post.attributes.creator.split(":")
+                            creator = creator[creator.length-1]
+                            reporter = reporters.find((r => r.lbNeutralReporterId === creator))
+                        } catch (error) {} 
+                        console.log(reporter)
                         const postContent = getCobaltLiveblogPostHelper(post);
                         let contentRender = null;
                         try {
-                            contentRender = <RenderLiveblogPostElement jsonElement={findElementsInContentJson(['article'], postContent.content)[0]} renderMode='styled' cobaltData={cobaltData} />
+                            contentRender = <RenderLiveblogPostElement jsonElement={findElementsInContentJson(['article'], postContent.content)[0]} renderMode='styled' rawPost={post} cobaltData={cobaltData} />
                         } catch (e) {
                             console.log(e)
                         }

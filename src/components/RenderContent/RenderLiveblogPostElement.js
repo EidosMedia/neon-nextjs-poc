@@ -13,13 +13,13 @@ import { Link as MUILink } from '@mui/material';
 import { getCobaltDataHelper, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
 import Card from "./Card";
 
-export default function RenderLiveblogPostElement({ jsonElement, excludeElements, renderMode, cobaltData }) {
+export default function RenderLiveblogPostElement({ jsonElement, excludeElements, renderMode, rawPost, cobaltData }) {
     let render = null;
     let id = null;
     if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
         switch (jsonElement.name) {
             case "article":
-                render = jsonElement.elements.map((subel, i) => <RenderLiveblogPostElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />);
+                render = jsonElement.elements.map((subel, i) => <RenderLiveblogPostElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} rawPost={rawPost} cobaltData={cobaltData} />);
                 break;
             case "h1":
                 render = (
@@ -56,7 +56,7 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
             case "ul":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderLiveblogPostElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
+                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderLiveblogPostElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} rawPost={rawPost} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
                 if (renderMode && renderMode === 'styled') {
@@ -70,7 +70,7 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
             case "ol":
                 render = (
                     <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderLiveblogPostElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />) : null}
+                        {jsonElement.elements ? jsonElement.elements.map((subel, i) => <RenderLiveblogPostElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} rawPost={rawPost} cobaltData={cobaltData} />) : null}
                     </React.Fragment>
                 );
                 if (renderMode && renderMode === 'styled') {
@@ -104,7 +104,6 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                 }
                 break;
             case "blockquote":
-                console.log(jsonElement)
                 try {
                     if (jsonElement.attributes['emk-class'] === 'card'){
                         render = <Card jsonElement={jsonElement} cobaltData={cobaltData}/>
@@ -135,7 +134,45 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                 }
             case 'style':
                 break;
-            case 'social':
+            case 'social':    
+                try {
+                    const src = jsonElement.elements[0].elements[0].elements[0].attributes.src 
+                    render = (        
+                        <iframe src={src} style={{height:'500px'}}/>       
+                    )
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 2 }} maxWidth="md" component="div">
+                                <Box display="flex"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    {render}
+                                </Box>
+                            </Container>
+                        )
+                    }
+                } catch (error) {
+                    
+                }
+                break;
+            case 'video':
+                try {
+                    const src = jsonElement.attributes.src
+                    render = (
+                        <video src={src}/>
+                    )
+                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                        render = (
+                            <Container sx={{ my: 2 }} maxWidth="md" component="div">
+                                <Box display="flex"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    {render}
+                                </Box>
+                            </Container>
+                        )
+                    }
+                }catch(e){}
                 break;
             default:
                 render = (
