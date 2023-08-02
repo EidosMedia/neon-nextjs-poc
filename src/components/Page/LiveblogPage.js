@@ -1,4 +1,4 @@
-import { Container, Typography, styled } from "@mui/material";
+import { Avatar, Container, Typography, styled } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import HTMLComment from "react-html-comment";
@@ -41,9 +41,9 @@ export default function LiveblogPage({ cobaltData }) {
         }
 
         let reporters = null;
-        try{
+        try {
             reporters = cobaltData.object.data.attributes.liveblogData.lbNeutralReporters
-        } catch (e){}
+        } catch (e) { }
 
         console.log(reporters)
 
@@ -56,14 +56,18 @@ export default function LiveblogPage({ cobaltData }) {
                 <Container sx={{ my: 2 }} maxWidth="md">
                     {data.result.map((post, i, { length }) => {
                         // check if is reporter
-
-                        console.log(JSON.stringify(post,null,2))
                         let reporter = null
+                        let reporterAvatar = null
                         try {
-                            let creator = post.attributes.creator.split(":")
-                            creator = creator[creator.length-1]
-                            reporter = reporters.find((r => r.lbNeutralReporterId === creator))
-                        } catch (error) {} 
+                            if (!post.attributes.liveblogPostData.forceNeutral) {
+                                let creator = post.attributes.creator.split(":")
+                                creator = creator[creator.length - 1]
+                                reporter = reporters.find((r => r.lbNeutralReporterId === creator))
+                                if(reporter){
+                                    reporterAvatar = '/static/img/avatars/' + reporter.lbNeutralReporterId + '.jpg'
+                                }
+                            }
+                        } catch (error) { }
                         console.log(reporter)
                         const postContent = getCobaltLiveblogPostHelper(post);
                         let contentRender = null;
@@ -74,7 +78,27 @@ export default function LiveblogPage({ cobaltData }) {
                         }
                         if (contentRender) {
                             contentRender = (
-                                <Box sx={{ border: 1, borderColor: 'grey.500', my: 4, px: 2 }}>
+                                <Box key={post.id} sx={{ border: 1, borderColor: 'grey.500', my: 4, px: 2 }}>
+                                    {reporter ?
+                                        <Box sx={{ borderBottom: 1, borderColor: 'secondary.main', my: 1 }}
+                                            display="flex"
+                                            justifyContent="flexStart"
+                                            alignItems="flexStart">
+                                            <Box sx={{ mx: 1, my: 2 }}>
+                                                <Avatar alt={reporter.lbNeutralReporterName} src={reporterAvatar}/>
+                                            </Box>
+                                            <Box sx={{ mx: 1, my: 2, display: 'flex', alignItems: 'center' }}>
+                                                <Typography variant="h6" component="div" color="secondary.main">
+                                                    {reporter.lbNeutralReporterName}
+                                                </Typography>
+                                            </Box>
+                                            <Box sx={{ mx: 1, my: 2, display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+                                                <Typography variant="h6" component="div" color="secondary.main">
+                                                    {reporter.lbNeutralReporterRole}
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                        : null}
                                     {contentRender}
                                 </Box>
                             )

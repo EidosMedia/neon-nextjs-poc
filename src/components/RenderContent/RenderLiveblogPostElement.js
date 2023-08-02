@@ -256,10 +256,10 @@ function ContentLink({ jsonElement, excludeElements, cobaltData }) {
                 justifyContent="flexStart"
                 alignItems="flexStart"
             >
-                <Box key="extra-links-headline">
-                    <Typography variant="h6" component="h5" gutterBottom>READ</Typography>
+                <Box sx={{ mx: 2, my: 2 }} key="extra-links-headline">
+                    <Typography variant="h6" component="h5" color="error.main" gutterBottom sx={{fontWeight:'bold'}}>READ</Typography>
                 </Box>
-                <Box sx={{ mx: 2 }} flexShrink={1}>
+                <Box sx={{ mx: 2, my: 2 }} flexShrink={1}>
                     <NextLink href={linkUrl} passHref prefetch={(cobaltData.previewData?false:true)}>
                         <MUILink variant="h6" underline="hover" color="secondary">
                             {linkHeadline}
