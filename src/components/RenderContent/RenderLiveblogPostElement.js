@@ -228,16 +228,17 @@ function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
                 thumbnail: thumbImageFullUrl
             }
         })
+   
+        render = (
+            <Container sx={{ my: 4 }} maxWidth="md">
+                <Box display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    <ImageGallery items={images} />
+                </Box>
+            </Container>
+        )
     } catch (e) { }
-    render = (
-        <Container sx={{ my: 4 }} maxWidth="md">
-            <Box display="flex"
-                justifyContent="center"
-                alignItems="center">
-                <ImageGallery items={images} />
-            </Box>
-        </Container>
-    )
     return render;
 }
 

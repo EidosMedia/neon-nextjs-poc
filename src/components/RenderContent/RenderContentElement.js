@@ -408,29 +408,33 @@ function Figure({ jsonElement, excludeElements, cobaltData, renderMode }) {
 function FigureGallery({ jsonElement, excludeElements, cobaltData }) {
     let render = null;
     let images = [];
-    images = jsonElement.elements.map((el) => {
-        let origImageUrl = getImageUrl(el, "rect", cobaltData)
-        const thumbImageUrl = getImageFormatUrl(origImageUrl, 'thumb')
-        origImageUrl = getImageFormatUrl(origImageUrl, 'large')
-
-
-        const origImageFullUrl = ResourceResolver(origImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-        const thumbImageFullUrl = ResourceResolver(thumbImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-
-        return {
-            original: origImageFullUrl,
-            thumbnail: thumbImageFullUrl
-        }
-    })
-    render = (
-        <Container sx={{ my: 4 }} maxWidth="lg">
-            <Box display="flex"
-                justifyContent="center"
-                alignItems="center">
-                <ImageGallery items={images} />
-            </Box>
-        </Container>
-    )
+    try {
+        images = jsonElement.elements.map((el) => {
+            let origImageUrl = getImageUrl(el, "rect", cobaltData)
+            const thumbImageUrl = getImageFormatUrl(origImageUrl, 'thumb')
+            origImageUrl = getImageFormatUrl(origImageUrl, 'large')
+    
+    
+            const origImageFullUrl = ResourceResolver(origImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+            const thumbImageFullUrl = ResourceResolver(thumbImageUrl, (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+    
+            return {
+                original: origImageFullUrl,
+                thumbnail: thumbImageFullUrl
+            }
+        })
+        render = (
+            <Container sx={{ my: 4 }} maxWidth="lg">
+                <Box display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    <ImageGallery items={images} />
+                </Box>
+            </Container>
+        )
+    } catch (error) {
+        
+    }
     return render;
 }
 
