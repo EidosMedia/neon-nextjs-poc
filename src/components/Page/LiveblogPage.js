@@ -3,10 +3,12 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import HTMLComment from "react-html-comment";
 import useSWR from "swr";
-import { getCobaltLiveblogPostHelper, getCurrentLiveSite } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getCobaltLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
 import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
 import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderContentElement";
 import RenderLiveblogPostElement from "../RenderContent/RenderLiveblogPostElement";
+import ResourceResolver from "../../utils/ResourceResolver";
+import Image from "next/image";
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -39,13 +41,47 @@ export default function LiveblogPage({ cobaltData }) {
         } catch (e) {
             console.log(e)
         }
-
+        
         let reporters = null;
         try {
-            reporters = cobaltData.object.data.attributes.liveblogData.lbNeutralReporters
+            reporters = cobaltData.object.data.attributes.liveblogData.lbNeutralReporters.map(r => {
+                return {
+                    authorId: r.lbNeutralReporterId,
+                    authorName : r.lbNeutralReporterName,
+                    authorRole: r.lbNeutralReporterRole,
+                    authorPic: '/static/img/avatars/' + r.lbNeutralReporterId + '.jpg'
+                }
+            })
         } catch (e) { }
 
+        console.log("REPORTERS")
         console.log(reporters)
+
+        //console.log(JSON.stringify(cobaltData.object.data,null,2))
+
+        //console.log(JSON.stringify(cobaltData.object.helper.content,null,2))
+
+        let ambassadors = null;
+        try{
+            const gallery = findElementsInContentJson(['div'],cobaltData.object.helper.content)[0]
+            console.log(JSON.stringify(gallery,null,2))
+            ambassadors = gallery.elements.map((el) => {
+                const authorName = el.elements.find((el2) => el2.name === 'person').elements[0].text
+                const authorRole = el.elements.find((el2) => el2.name === 'description').elements[0].text
+                let authorPic = el.elements.find((el2) => el2.name === 'img' && el2.attributes.class === 'square').attributes.src
+                authorPic = ResourceResolver(authorPic,(cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site)
+                return {
+                    authorName,
+                    authorRole,
+                    authorPic,
+                    isAmbassador:true
+                }
+            })
+        } catch(e) {}
+
+        console.log("AMBASSADORS")
+        console.log(ambassadors)
+
 
         let postsRender = null;
 
@@ -55,20 +91,39 @@ export default function LiveblogPage({ cobaltData }) {
             postsRender = (
                 <Container sx={{ my: 2 }} maxWidth="md">
                     {data.result.map((post, i, { length }) => {
-                        // check if is reporter
-                        let reporter = null
-                        let reporterAvatar = null
-                        try {
-                            if (!post.attributes.liveblogPostData.forceNeutral) {
-                                let creator = post.attributes.creator.split(":")
-                                creator = creator[creator.length - 1]
-                                reporter = reporters.find((r => r.lbNeutralReporterId === creator))
-                                if(reporter){
-                                    reporterAvatar = '/static/img/avatars/' + reporter.lbNeutralReporterId + '.jpg'
-                                }
+                        let postAuthor = null
+                        
+                        // check if is ambassador
+                        try{
+                            if(ambassadors){
+                                postAuthor = ambassadors.find(a => a.authorName === post.attributes.liveblogPostData.postAmbassador)
                             }
-                        } catch (error) { }
-                        console.log(reporter)
+                        }catch (error) {}
+
+                        console.log("found post ambassador")
+                        console.log(postAuthor)
+
+                        if(!postAuthor){
+                            // check if is reporter
+                            try {
+                                if (!post.attributes.liveblogPostData.forceNeutral) {
+                                    let creator = post.attributes.creator.split(":")
+                                    creator = creator[creator.length - 1]
+                                    postAuthor = reporters.find((r => r.authorId === creator))
+                                }
+                            } catch (error) { }
+                            console.log(postAuthor)
+                        }
+
+                        console.log(post.attributes.liveblogPostData.isSticky)
+
+                        const boxStyle = {
+                            border: ((postAuthor && postAuthor.isAmbassador) || post.attributes.liveblogPostData.isSticky?4:1),
+                            borderColor: (postAuthor && postAuthor.isAmbassador?'error.main':(post.attributes.liveblogPostData.isSticky?'secondary.main':'grey.500')),
+                            my: 4,
+                            px: 2
+                        }
+
                         const postContent = getCobaltLiveblogPostHelper(post);
                         let contentRender = null;
                         try {
@@ -78,23 +133,23 @@ export default function LiveblogPage({ cobaltData }) {
                         }
                         if (contentRender) {
                             contentRender = (
-                                <Box key={post.id} sx={{ border: 1, borderColor: 'grey.500', my: 4, px: 2 }}>
-                                    {reporter ?
+                                <Box key={post.id} sx={boxStyle}>
+                                    {postAuthor ?
                                         <Box sx={{ borderBottom: 1, borderColor: 'secondary.main', my: 1 }}
                                             display="flex"
                                             justifyContent="flexStart"
                                             alignItems="flexStart">
                                             <Box sx={{ mx: 1, my: 2 }}>
-                                                <Avatar alt={reporter.lbNeutralReporterName} src={reporterAvatar}/>
+                                                <Avatar alt={postAuthor.authorName} src={postAuthor.authorPic}/>
                                             </Box>
                                             <Box sx={{ mx: 1, my: 2, display: 'flex', alignItems: 'center' }}>
                                                 <Typography variant="h6" component="div" color="secondary.main">
-                                                    {reporter.lbNeutralReporterName}
+                                                    {postAuthor.authorName}
                                                 </Typography>
                                             </Box>
                                             <Box sx={{ mx: 1, my: 2, display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
                                                 <Typography variant="h6" component="div" color="secondary.main">
-                                                    {reporter.lbNeutralReporterRole}
+                                                    {postAuthor.authorRole}
                                                 </Typography>
                                             </Box>
                                         </Box>
@@ -120,6 +175,7 @@ export default function LiveblogPage({ cobaltData }) {
                         </Typography>
                     </Box>
                 </Container>
+                <MainImageBlock cobaltData={cobaltData} />
                 {summary ?
                     <Container sx={{ my: 2 }} maxWidth="md">
                         <Box display="flex"
@@ -135,5 +191,57 @@ export default function LiveblogPage({ cobaltData }) {
             </Container>
         )
     }
+    return render;
+}
+
+function MainImageBlock({ cobaltData, styleVariant }) {
+    let mainPictureElement = null;
+    let mainImageUrl = null;
+    let cloudinaryVideo = null;
+    let extraElement = null;
+    try {
+        mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
+        extraElement = findElementsInContentJson(['extra'], cobaltData.object.helper.content);
+        try {
+            cloudinaryVideo = extraElement[0].elements.find((el) => {
+                let found = false;
+                try {
+                    found = (el.attributes['emk-type'] == 'cloudinaryVideo')
+                } catch (e) { }
+                return found
+            })
+        } catch (e) { }
+
+        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape", cobaltData), 'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
+    } catch (e) {
+        console.log(e)
+    }
+
+    const imageWidth = 1024;
+    const imageHeight = 576;
+
+    let mainMediaBlock = null;
+    if (cloudinaryVideo) {
+        mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />
+    } else if (mainImageUrl) {
+        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} />
+    }
+
+    let justify = "center";
+    let maxWidth = "md";
+    if (styleVariant && styleVariant === "leftAligned") {
+        justify = "left";
+        maxWidth = "lg";
+    }
+
+    const render = (
+        <Container sx={{ my: 2 }} maxWidth={maxWidth}>
+            <Box display="flex"
+                justifyContent={justify}
+                alignItems={justify}>
+                {mainMediaBlock}
+            </Box>
+        </Container>
+    )
     return render;
 }
