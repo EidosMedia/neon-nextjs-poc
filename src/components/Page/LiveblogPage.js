@@ -119,7 +119,7 @@ export default function LiveblogPage({ cobaltData }) {
 
                         const boxStyle = {
                             border: ((postAuthor && postAuthor.isAmbassador) || post.attributes.liveblogPostData.isSticky?4:1),
-                            borderColor: (postAuthor && postAuthor.isAmbassador?'error.main':(post.attributes.liveblogPostData.isSticky?'secondary.main':'grey.500')),
+                            borderColor: (postAuthor && postAuthor.isAmbassador || post.attributes.liveblogPostData.isSticky?'secondary.main':'grey.500'),
                             my: 4,
                             px: 2
                         }

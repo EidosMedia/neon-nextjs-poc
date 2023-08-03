@@ -123,7 +123,7 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                     );
                     if (renderMode && renderMode === 'styled') {
                         render = (
-                            <Container sx={{ my: 1, mx:3 }} maxWidth="md">
+                            <Container sx={{ my: 2, mx:3 }} maxWidth="md">
                                 <Typography variant="h6" component="p" sx={{mr:6,p:1, fontStyle:'italic', backgroundColor:'#F0F8FF'}}>
                                     "{render}"
                                 </Typography>
