@@ -35,15 +35,21 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     )
                     break;
                 case "summary":
-                    render = (
-                        <React.Fragment>
-                            {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
-                        </React.Fragment>
-    
-                    )
+                    if(renderMode === 'styled'){
+                        render = (
+                            <React.Fragment>
+                                {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />)}
+                            </React.Fragment>
+                        );
+                    } else {
+                        render = (
+                            <React.Fragment>
+                                {jsonElement.elements.map((subel, i) => <RenderFormattedText key={i} jsonElement={subel} renderMode={renderMode} cobaltData={cobaltData} />)}
+                            </React.Fragment>
+                        )
+                    }
                     break;
                 case "content":
-                    //console.log(JSON.stringify(jsonElement, null, 2))
                     render = (
                         <React.Fragment>
                             {jsonElement.elements.map((subel, i) => <RenderContentElement key={i} jsonElement={subel} excludeElements={excludeElements} renderMode={renderMode} cobaltData={cobaltData} />)}
@@ -169,7 +175,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     );
                     if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                         render = (
-                            <Typography sx={{ ml: 4 }} variant='body1' component='li'>
+                            <Typography sx={{ ml: 3 }} variant='body1' component='li'>
                                 {render}
                             </Typography>
                         )
@@ -315,10 +321,10 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         );
                         if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
                             render = (
-                                <Container maxWidth="sm" sx={{ my: 4, py: 2, border: 2, borderColor: 'grey.500' }}>
+                                <Container maxWidth="md" sx={{ my: 4, py: 2, border: 2, borderColor: 'grey.500', textAlign:'left' }}>
                                     
                                         {extraHeadline?
-                                        <Typography variant="h5" sx={{mb:2}}>
+                                        <Typography variant="h5" sx={{mb:2, textAlign:'center'}}>
                                             {extraHeadline}
                                         </Typography>
                                         :null}
