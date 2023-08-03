@@ -31,9 +31,8 @@ export default function LiveblogPage({ cobaltData }) {
 
         let summary = null;
         try {
-            summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} />
+            summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} renderMode='styled'/>
         } catch (e) { }
-
 
         let content = null;
         try {
@@ -54,17 +53,9 @@ export default function LiveblogPage({ cobaltData }) {
             })
         } catch (e) { }
 
-        console.log("REPORTERS")
-        console.log(reporters)
-
-        //console.log(JSON.stringify(cobaltData.object.data,null,2))
-
-        //console.log(JSON.stringify(cobaltData.object.helper.content,null,2))
-
         let ambassadors = null;
         try{
             const gallery = findElementsInContentJson(['div'],cobaltData.object.helper.content)[0]
-            console.log(JSON.stringify(gallery,null,2))
             ambassadors = gallery.elements.map((el) => {
                 const authorName = el.elements.find((el2) => el2.name === 'person').elements[0].text
                 const authorRole = el.elements.find((el2) => el2.name === 'description').elements[0].text
@@ -78,10 +69,6 @@ export default function LiveblogPage({ cobaltData }) {
                 }
             })
         } catch(e) {}
-
-        console.log("AMBASSADORS")
-        console.log(ambassadors)
-
 
         let postsRender = null;
 
@@ -100,9 +87,6 @@ export default function LiveblogPage({ cobaltData }) {
                             }
                         }catch (error) {}
 
-                        console.log("found post ambassador")
-                        console.log(postAuthor)
-
                         if(!postAuthor){
                             // check if is reporter
                             try {
@@ -112,10 +96,7 @@ export default function LiveblogPage({ cobaltData }) {
                                     postAuthor = reporters.find((r => r.authorId === creator))
                                 }
                             } catch (error) { }
-                            console.log(postAuthor)
                         }
-
-                        console.log(post.attributes.liveblogPostData.isSticky)
 
                         const boxStyle = {
                             border: ((postAuthor && postAuthor.isAmbassador) || post.attributes.liveblogPostData.isSticky?4:1),
@@ -175,7 +156,6 @@ export default function LiveblogPage({ cobaltData }) {
                         </Typography>
                     </Box>
                 </Container>
-                <MainImageBlock cobaltData={cobaltData} />
                 {summary ?
                     <Container sx={{ my: 2 }} maxWidth="md">
                         <Box display="flex"
@@ -187,6 +167,7 @@ export default function LiveblogPage({ cobaltData }) {
                         </Box>
                     </Container>
                     : null}
+                <MainImageBlock cobaltData={cobaltData} />
                 {postsRender}
             </Container>
         )
