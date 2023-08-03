@@ -131,7 +131,6 @@ export default function LiveblogPage({ cobaltData }) {
                         </Box>
                     </Container>
                     : null}
-                {content}
                 {postsRender}
             </Container>
         )
