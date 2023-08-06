@@ -26,7 +26,6 @@ export default function LiveblogPage({ cobaltData }) {
     try { uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId + '"' } catch (e) { }
 
     if (cobaltData) {
-        console.log(JSON.stringify(cobaltData.object.helper.content, null, 2))
         let data, error = null;
         ({ data, error } = useSWR('/api/' + getCurrentLiveSite(cobaltData) + '/liveblogs/' + cobaltData.object.data.id, fetcher, { refreshInterval: 5000, dedupingInterval: 0 }));
 
@@ -76,6 +75,11 @@ export default function LiveblogPage({ cobaltData }) {
             })
         } catch (e) { }
 
+        let eventStartDate = null;
+        try{
+            eventStartDate = cobaltData.object.data.attributes.liveblogData.eventStartDate
+        } catch(e){}
+
         let postsRender = null;
 
         if (error) postsRender = <div>Failed to load</div>
@@ -94,6 +98,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Goal',
                                             eventIcon: <React.Fragment><SportsSoccerSharpIcon fontSize="large" color="secondary" /><CelebrationSharpIcon fontSize="large" color="secondary" /></React.Fragment>,
+                                            eventTime: computeEventTime(post,eventStartDate)
                                         };
                                         boxStyle = {
                                             border: 6,
@@ -106,6 +111,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Red card',
                                             eventIcon: <StyleSharpIcon fontSize="large" sx={{ color: "#DC143C" }} />,
+                                            eventTime: computeEventTime(post,eventStartDate)
                                         };
                                         boxStyle = {
                                             border: 1,
@@ -118,6 +124,8 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Penalty',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
+                                            eventTime: computeEventTime(post,eventStartDate)
+
                                         };
                                         boxStyle = {
                                             border: 4,
@@ -130,6 +138,8 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Match start',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
+                                            eventTime: computeEventTime(post,eventStartDate)
+
                                         };
                                         boxStyle = {
                                             border: 1,
@@ -142,6 +152,8 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Match end',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
+                                            eventTime: computeEventTime(post,eventStartDate)
+
                                         };
                                         boxStyle = {
                                             border: 4,
@@ -223,7 +235,7 @@ export default function LiveblogPage({ cobaltData }) {
                                             </Box>
                                             <Box sx={{ mx: 1, my: 2, display: 'flex', marginLeft: 'auto' }}>
                                                 <Typography variant="h6" component="div" color="secondary.main">
-                                                    0'
+                                                    {eventData.eventTime?eventData.eventTime.minutes+'\'':'0\''}
                                                 </Typography>
                                             </Box>
                                         </Box>
@@ -338,4 +350,43 @@ function MainImageBlock({ cobaltData, styleVariant }) {
         </Container>
     )
     return render;
+}
+
+function computeEventTime(post,eventStartDate){
+    let eventTime = null
+    try{
+        const postDateString = post.title.substring(0, post.title.indexOf('.')).slice(0,-3)
+
+        const postDate = new Date(
+            parseInt(postDateString.substring(0, 4)),     // Year
+            parseInt(postDateString.substring(4, 6)) - 1, // Month (0-based)
+            parseInt(postDateString.substring(6, 8)),     // Day
+            parseInt(postDateString.substring(8, 10)),    // Hours
+            parseInt(postDateString.substring(10, 12)),   // Minutes
+            parseInt(postDateString.substring(12, 14)),   // Seconds
+        );
+
+        const eventDate = new Date(
+            parseInt(eventStartDate.substring(0, 4)),     // Year
+            parseInt(eventStartDate.substring(4, 6)) - 1, // Month (0-based)
+            parseInt(eventStartDate.substring(6, 8)),     // Day
+            parseInt(eventStartDate.substring(8, 10)),    // Hours
+            parseInt(eventStartDate.substring(10, 12)),   // Minutes
+            parseInt(eventStartDate.substring(12, 14)),   // Seconds
+        );
+    
+
+        const deltaSeconds = (postDate  - eventDate) / 1000
+        console.log(deltaSeconds)
+        if (deltaSeconds > 0){
+            const minutes = Math.floor(deltaSeconds / 60)
+            const seconds = (deltaSeconds % 60)
+            eventTime = {
+                minutes,
+                seconds
+            }
+        }
+        
+    } catch(e){}
+    return eventTime
 }
