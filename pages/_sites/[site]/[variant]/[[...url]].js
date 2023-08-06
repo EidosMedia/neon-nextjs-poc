@@ -171,7 +171,7 @@ export async function getStaticProps(context) {
                 break;
             case 'liveblog':
                 revalidate = 5;
-                const latestBlogPosts = await cobaltRequest('/api/liveblogs/' + cobaltData.object.data.id + '/posts?emk.site=' + cobaltData.siteContext.site)
+                const latestBlogPosts = await cobaltRequest('/api/liveblogs/' + cobaltData.object.data.id + '/posts?emk.site=' + cobaltData.siteContext.site + '&limit=50')
                 fallback['/api/' + cobaltData.siteContext.site + '/liveblogs/' + cobaltData.object.data.id] = latestBlogPosts
                 props['fallback'] = fallback
             default:

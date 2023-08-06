@@ -11,7 +11,7 @@ export default async (req, res) => {
     id = result.model.data.id
   }
 
-  result = await cobaltRequest('/api/liveblogs/' + id + '/posts?emk.site=' + site)
+  result = await cobaltRequest('/api/liveblogs/' + id + '/posts?emk.site=' + site + '&limit=50')
 
   res.status(200).json(result)
 }
