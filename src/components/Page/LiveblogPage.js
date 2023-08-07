@@ -138,7 +138,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Match start',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
-                                            eventTime: computeEventTime(post,eventStartDate)
+                                            eventTime: {minutes:0,seconds:0}
 
                                         };
                                         boxStyle = {

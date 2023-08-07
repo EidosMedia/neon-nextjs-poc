@@ -157,21 +157,23 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                 break;
             case 'video':
                 try {
-                    const src = jsonElement.attributes.src
-                    render = (
-                        <video src={src}/>
-                    )
-                    if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
-                        render = (
-                            <Container sx={{ my: 2 }} maxWidth="md" component="div">
-                                <Box display="flex"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    {render}
-                                </Box>
-                            </Container>
-                        )
-                    }
+                    console.log(jsonElement)
+                    if(jsonElement.attributes.type === 'youtube'){
+                        const id = jsonElement.attributes.id
+                        const url = 'https://www.youtube.com/embed/' + id
+                        render = <iframe width="450" height="250" allowfullscreen="allowfullscreen" src={url}/>
+                        if (renderMode && (['styled', 'newsletter'].includes(renderMode))) {
+                            render = (
+                                <Container sx={{ my: 2 }} maxWidth="md" component="div">
+                                    <Box display="flex"
+                                        justifyContent="center"
+                                        alignItems="center">
+                                        {render}
+                                    </Box>
+                                </Container>
+                            )
+                        }
+                    }      
                 }catch(e){}
                 break;
             default:
