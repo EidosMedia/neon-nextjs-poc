@@ -203,10 +203,21 @@ export default function LiveblogPage({ cobaltData }) {
                             } catch (error) { }
                         }
 
+                        try {
+                            if (post.attributes.liveblogPostData.isSticky) {
+                                boxStyle = {
+                                    border: 4,
+                                    borderColor: 'secondary.main',
+                                    my: 4,
+                                    px: 2
+                                }
+                            }
+                        } catch(e) {}
+                        
                         if (!boxStyle) {
                             boxStyle = {
-                                border: (post.attributes.liveblogPostData.isSticky ? 4 : 1),
-                                borderColor: (post.attributes.liveblogPostData.isSticky ? 'secondary.main' : 'grey.500'),
+                                border: 1,
+                                borderColor: 'grey.500',
                                 my: 4,
                                 px: 2
                             }
