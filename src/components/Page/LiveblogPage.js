@@ -1,4 +1,4 @@
-import { Avatar, Container, Typography, styled } from "@mui/material";
+import { Avatar, Button, ClickAwayListener, Container, IconButton, Tooltip, Typography, styled } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import HTMLComment from "react-html-comment";
@@ -13,6 +13,7 @@ import SportsIcon from '@mui/icons-material/Sports';
 import SportsSoccerSharpIcon from '@mui/icons-material/SportsSoccerSharp';
 import CelebrationSharpIcon from '@mui/icons-material/CelebrationSharp';
 import StyleSharpIcon from '@mui/icons-material/StyleSharp';
+import LinkIcon from '@mui/icons-material/Link';
 import React from 'react'
 
 const fetcher = url => axios.get(url).then(res => res.data)
@@ -76,9 +77,9 @@ export default function LiveblogPage({ cobaltData }) {
         } catch (e) { }
 
         let eventStartDate = null;
-        try{
+        try {
             eventStartDate = cobaltData.object.data.attributes.liveblogData.eventStartDate
-        } catch(e){}
+        } catch (e) { }
 
         let postsRender = null;
 
@@ -98,7 +99,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Goal',
                                             eventIcon: <React.Fragment><SportsSoccerSharpIcon fontSize="large" color="secondary" /><CelebrationSharpIcon fontSize="large" color="secondary" /></React.Fragment>,
-                                            eventTime: computeEventTime(post,eventStartDate)
+                                            eventTime: computeEventTime(post, eventStartDate)
                                         };
                                         boxStyle = {
                                             border: 6,
@@ -111,7 +112,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Red card',
                                             eventIcon: <StyleSharpIcon fontSize="large" sx={{ color: "#DC143C" }} />,
-                                            eventTime: computeEventTime(post,eventStartDate)
+                                            eventTime: computeEventTime(post, eventStartDate)
                                         };
                                         boxStyle = {
                                             border: 1,
@@ -124,7 +125,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Penalty',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
-                                            eventTime: computeEventTime(post,eventStartDate)
+                                            eventTime: computeEventTime(post, eventStartDate)
 
                                         };
                                         boxStyle = {
@@ -138,7 +139,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Match start',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
-                                            eventTime: {minutes:0,seconds:0}
+                                            eventTime: { minutes: 0, seconds: 0 }
 
                                         };
                                         boxStyle = {
@@ -152,7 +153,7 @@ export default function LiveblogPage({ cobaltData }) {
                                         eventData = {
                                             eventText: 'Match end',
                                             eventIcon: <SportsIcon fontSize="large" color="secondary" />,
-                                            eventTime: computeEventTime(post,eventStartDate)
+                                            eventTime: computeEventTime(post, eventStartDate)
 
                                         };
                                         boxStyle = {
@@ -212,8 +213,8 @@ export default function LiveblogPage({ cobaltData }) {
                                     px: 2
                                 }
                             }
-                        } catch(e) {}
-                        
+                        } catch (e) { }
+
                         if (!boxStyle) {
                             boxStyle = {
                                 border: 1,
@@ -232,7 +233,7 @@ export default function LiveblogPage({ cobaltData }) {
                         }
                         if (contentRender) {
                             contentRender = (
-                                <Box key={post.id} sx={boxStyle}>
+                                <Box id={post.id} key={post.id} sx={boxStyle}>
                                     {eventData ?
                                         <Box sx={{ my: 1 }}
                                             display="flex"
@@ -246,7 +247,7 @@ export default function LiveblogPage({ cobaltData }) {
                                             </Box>
                                             <Box sx={{ mx: 1, my: 2, display: 'flex', marginLeft: 'auto' }}>
                                                 <Typography variant="h6" component="div" color="secondary.main">
-                                                    {eventData.eventTime?eventData.eventTime.minutes+'\'':'0\''}
+                                                    {eventData.eventTime ? eventData.eventTime.minutes + '\'' : '0\''}
                                                 </Typography>
                                             </Box>
                                         </Box>
@@ -271,7 +272,8 @@ export default function LiveblogPage({ cobaltData }) {
                                             </Box>
                                         </Box>
                                         : null}
-                                    {!eventData ? contentRender : null}
+                                    {!eventData ? contentRender : null}  
+                                    <SharePostBlock post={post} sx={{ marginLeft: 'auto' }} />
                                 </Box>
                             )
                         }
@@ -363,10 +365,47 @@ function MainImageBlock({ cobaltData, styleVariant }) {
     return render;
 }
 
-function computeEventTime(post,eventStartDate){
+function SharePostBlock({ post }) {
+    const [open, setOpen] = React.useState(false);
+
+    const handleTooltipClose = () => {
+        setOpen(false);
+    };
+
+    const handleClickLink = () => {
+        navigator.clipboard.writeText(window.location.href.split('?')[0].split('#')[0] + '#' + post.id)
+        setOpen(true);
+    };
+
+    return (
+        <Box display="flex">
+            <Box sx={{ marginLeft: 'auto' }}>
+                <ClickAwayListener onClickAway={handleTooltipClose}>
+                    <div>
+                        <Tooltip
+                            PopperProps={{
+                                disablePortal: true,
+                            }}
+                            onClose={handleTooltipClose}
+                            open={open}
+                            disableFocusListener
+                            disableHoverListener
+                            disableTouchListener
+                            title="Post link copied to clipboard!"
+                        >
+                            <IconButton sx={{ marginLeft: 'auto', color: 'secondary.main' }} onClick={handleClickLink}><LinkIcon /></IconButton>
+                        </Tooltip>
+                    </div>
+                </ClickAwayListener>
+            </Box>
+        </Box>
+    );
+}
+
+function computeEventTime(post, eventStartDate) {
     let eventTime = null
-    try{
-        const postDateString = post.title.substring(0, post.title.indexOf('.')).slice(0,-3)
+    try {
+        const postDateString = post.title.substring(0, post.title.indexOf('.')).slice(0, -3)
 
         const postDate = new Date(
             parseInt(postDateString.substring(0, 4)),     // Year
@@ -385,11 +424,11 @@ function computeEventTime(post,eventStartDate){
             parseInt(eventStartDate.substring(10, 12)),   // Minutes
             parseInt(eventStartDate.substring(12, 14)),   // Seconds
         );
-    
 
-        const deltaSeconds = (postDate  - eventDate) / 1000
+
+        const deltaSeconds = (postDate - eventDate) / 1000
         console.log(deltaSeconds)
-        if (deltaSeconds > 0){
+        if (deltaSeconds > 0) {
             const minutes = Math.floor(deltaSeconds / 60)
             const seconds = (deltaSeconds % 60)
             eventTime = {
@@ -397,7 +436,7 @@ function computeEventTime(post,eventStartDate){
                 seconds
             }
         }
-        
-    } catch(e){}
+
+    } catch (e) { }
     return eventTime
 }
