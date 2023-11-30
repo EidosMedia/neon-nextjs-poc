@@ -11,6 +11,9 @@ import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderCo
 export default function ArticlePage({ cobaltData }) {
     let render = null;
 
+    // console.log(JSON.stringify(cobaltData,null,2))
+    console.log(cobaltData)
+
     //Swing quick open
     let uuid = null;
     try { uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId + '"' } catch (e) { }
@@ -170,6 +173,9 @@ function MainImageBlock({ cobaltData, styleVariant }) {
     let mainImageUrl = null;
     let cloudinaryVideo = null;
     let extraElement = null;
+
+    console.log(JSON.stringify(cobaltData.object.helper.content,null,2))
+
     try {
         mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
         extraElement = findElementsInContentJson(['extra'], cobaltData.object.helper.content);

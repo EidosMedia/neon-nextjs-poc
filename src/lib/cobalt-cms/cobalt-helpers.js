@@ -318,7 +318,7 @@ export function getObjectMainSection(obj) {
     if (Array.isArray(pubAttributes)) {
         section = pubAttributes[0].mainSection
     } else {
-        section = pubAttributes.mainSection
+        section = pubAttributes?.mainSection
     }
     return section;
 }
@@ -328,6 +328,9 @@ export function getCurrentLiveSite(cobaltData) {
     let currentSite = cobaltData.siteContext.site
     if (currentSite.includes('[PREVIEW]')) {
         currentSite = currentSite.split('[')[0]
+    }
+    if (currentSite.includes(':')){  // TEMPORARY FIX for Neon tenant
+        currentSite = currentSite.split(':')[1]
     }
     return currentSite
 }
