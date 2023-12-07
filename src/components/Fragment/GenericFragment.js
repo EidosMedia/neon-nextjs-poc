@@ -5,44 +5,60 @@ import { getSeoTitle } from "../../lib/helpers";
 import GenericWidget from "../Widgets/GenericWidget";
 import LiveblogFragment from "./LiveblogFragment";
 import StoryFragment from "./StoryFragment";
-import BarChartIcon from '@mui/icons-material/BarChart';
+import BarChartIcon from "@mui/icons-material/BarChart";
 import RealtimeSummary from "../Analytics/RealtimeSummary";
 import BarChart from "../Analytics/BarChart";
 import AnalyticsFragmentOverlay from "../Analytics/AnalyticsFragmentOverlay";
 import BreakingNewsFragment from "./BreakingNewsFragment";
 
-export default function GenericFragment({ cobaltData, analyticsReport, gridContext }) {
+export default function GenericFragment({
+  neonData,
+  analyticsReport,
+  gridContext,
+}) {
+  let render = null;
 
-    let render = null;
-
-    if (cobaltData) {
-        switch (cobaltData.object.data.sys.baseType) {
-            case 'article':
-                switch(cobaltData.object.data.sys.type){
-                    case 'breakingnews':
-                        render = <BreakingNewsFragment cobaltData={cobaltData} gridContext={gridContext} />;
-                        break;
-                    default:
-                        render = <StoryFragment cobaltData={cobaltData} gridContext={gridContext} />;
-                }
-                break;
-            case 'widget':
-                render = <GenericWidget cobaltData={cobaltData} gridContext={gridContext} />;
-                break;
-            case 'liveblog':
-                render = <LiveblogFragment cobaltData={cobaltData} gridContext={gridContext} />;
-                break;
+  if (neonData) {
+    switch (neonData.object.data.sys.baseType) {
+      case "article":
+        switch (neonData.object.data.sys.type) {
+          case "breakingnews":
+            render = (
+              <BreakingNewsFragment
+                neonData={neonData}
+                gridContext={gridContext}
+              />
+            );
+            break;
+          default:
+            render = (
+              <StoryFragment neonData={neonData} gridContext={gridContext} />
+            );
         }
-    }
-
-    if (analyticsReport) {
+        break;
+      case "widget":
         render = (
-            <AnalyticsFragmentOverlay cobaltData={cobaltData} analyticsReport={analyticsReport}>
-                {render}
-            </AnalyticsFragmentOverlay>
-        )
+          <GenericWidget neonData={neonData} gridContext={gridContext} />
+        );
+        break;
+      case "liveblog":
+        render = (
+          <LiveblogFragment neonData={neonData} gridContext={gridContext} />
+        );
+        break;
     }
+  }
 
-    return render
+  if (analyticsReport) {
+    render = (
+      <AnalyticsFragmentOverlay
+        neonData={neonData}
+        analyticsReport={analyticsReport}
+      >
+        {render}
+      </AnalyticsFragmentOverlay>
+    );
+  }
+
+  return render;
 }
-

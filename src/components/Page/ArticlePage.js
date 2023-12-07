@@ -2,234 +2,289 @@ import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Image from "next/image";
 import HTMLComment from "react-html-comment";
-import { getCurrentLiveSite, getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
-import { findElementsInContentJson, getImageUrl } from "../../utils/ContentUtil";
+import {
+  getCurrentLiveSite,
+  getImageFormatUrl,
+} from "../../lib/cobalt-cms/cobalt-helpers";
+import {
+  findElementsInContentJson,
+  getImageUrl,
+} from "../../utils/ContentUtil";
 import ResourceResolver from "../../utils/ResourceResolver";
 import BreadCrumb from "../Furnitures/BreadCrumb";
-import RenderContentElement, { CloudinaryVideo } from "../RenderContent/RenderContentElement";
+import RenderContentElement, {
+  CloudinaryVideo,
+} from "../RenderContent/RenderContentElement";
 
-export default function ArticlePage({ cobaltData }) {
-    let render = null;
+export default function ArticlePage({ neonData }) {
+  let render = null;
 
-    // console.log(JSON.stringify(cobaltData,null,2))
-    console.log(cobaltData)
+  // console.log(JSON.stringify(neonData,null,2))
+  console.log(neonData);
 
-    //Swing quick open
-    let uuid = null;
-    try { uuid = 'Methode uuid: "' + cobaltData.object.data.foreignId + '"' } catch (e) { }
+  //Swing quick open
+  let uuid = null;
+  try {
+    uuid = 'Methode uuid: "' + neonData.object.data.foreignId + '"';
+  } catch (e) {}
 
-    //Style variant for "faking" different websites styles -> it is set as a site attribute
+  //Style variant for "faking" different websites styles -> it is set as a site attribute
 
-    const currentSite = getCurrentLiveSite(cobaltData);
-    const siteStructure = cobaltData.siteContext.siteStructure;
+  const currentSite = getCurrentLiveSite(neonData);
+  const siteStructure = neonData.siteContext.siteStructure;
 
-    const site = siteStructure.find((site) => site.name === currentSite)
-    let styleVariant = null;
-    try {
-        styleVariant = site.customAttributes.style
-    } catch (e) { }
+  const site = siteStructure.find((site) => site.name === currentSite);
+  let styleVariant = null;
+  try {
+    styleVariant = site.customAttributes.style;
+  } catch (e) {}
 
-    switch (styleVariant) {
-        case "1":
-            render = (
-                <Container maxWidth="lg">
-                    {uuid ? <HTMLComment text={uuid} /> : null}
-                    <BreadcrumbBlock cobaltData={cobaltData} />
-                    <BeyondWordsBlock cobaltData={cobaltData} />
-                    <MainImageBlock cobaltData={cobaltData} />
-                    <HeadlineBlock cobaltData={cobaltData} />
-                    <SummaryBlock cobaltData={cobaltData} />
-                    <ContentBlock cobaltData={cobaltData} />
-                </Container>
-            )
-            break;
-        case "2":
-            render = (
-                <Container maxWidth="lg">
-                    {uuid ? <HTMLComment text={uuid} /> : null}
-                    <BreadcrumbBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                    <BeyondWordsBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                    <HeadlineBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                    <SummaryBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                    <MainImageBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                    <ContentBlock cobaltData={cobaltData} styleVariant="leftAligned" />
-                </Container>
-            )
-            break;
-        default:
-            render = (
-                <Container maxWidth="lg">
-                    {uuid ? <HTMLComment text={uuid} /> : null}
-                    <BreadcrumbBlock cobaltData={cobaltData} />
-                    <BeyondWordsBlock cobaltData={cobaltData} />
-                    <HeadlineBlock cobaltData={cobaltData} />
-                    <SummaryBlock cobaltData={cobaltData} />
-                    <MainImageBlock cobaltData={cobaltData} />
-                    <ContentBlock cobaltData={cobaltData} />
-                </Container>
-            )
-    }
+  switch (styleVariant) {
+    case "1":
+      render = (
+        <Container maxWidth="lg">
+          {uuid ? <HTMLComment text={uuid} /> : null}
+          <BreadcrumbBlock neonData={neonData} />
+          <BeyondWordsBlock neonData={neonData} />
+          <MainImageBlock neonData={neonData} />
+          <HeadlineBlock neonData={neonData} />
+          <SummaryBlock neonData={neonData} />
+          <ContentBlock neonData={neonData} />
+        </Container>
+      );
+      break;
+    case "2":
+      render = (
+        <Container maxWidth="lg">
+          {uuid ? <HTMLComment text={uuid} /> : null}
+          <BreadcrumbBlock neonData={neonData} styleVariant="leftAligned" />
+          <BeyondWordsBlock neonData={neonData} styleVariant="leftAligned" />
+          <HeadlineBlock neonData={neonData} styleVariant="leftAligned" />
+          <SummaryBlock neonData={neonData} styleVariant="leftAligned" />
+          <MainImageBlock neonData={neonData} styleVariant="leftAligned" />
+          <ContentBlock neonData={neonData} styleVariant="leftAligned" />
+        </Container>
+      );
+      break;
+    default:
+      render = (
+        <Container maxWidth="lg">
+          {uuid ? <HTMLComment text={uuid} /> : null}
+          <BreadcrumbBlock neonData={neonData} />
+          <BeyondWordsBlock neonData={neonData} />
+          <HeadlineBlock neonData={neonData} />
+          <SummaryBlock neonData={neonData} />
+          <MainImageBlock neonData={neonData} />
+          <ContentBlock neonData={neonData} />
+        </Container>
+      );
+  }
 
-
-
-    return render;
+  return render;
 }
 
-function BeyondWordsBlock({ cobaltData, styleVariant }) {
-    let render = null;
-    try {
-        if (cobaltData.object.data.attributes.AudioId) {
-            render = (
-                <Container sx={{ my: 1 }} maxWidth="md">
-                    <div dangerouslySetInnerHTML={{ __html: "<iframe allowfullscreen='false' data-src='https://audio.beyondwords.io/e/" + cobaltData.object.data.attributes.AudioId + "' frameborder='0' id='speechkit-io-iframe' scrolling='no' ></iframe><script src='https://proxy.beyondwords.io/npm/@beyondwords/audio-player@latest/dist/module/iframe-helper.js' type='text/javascript'></script>" }} />
-                </Container>
-            )
+function BeyondWordsBlock({ neonData, styleVariant }) {
+  let render = null;
+  try {
+    if (neonData.object.data.attributes.AudioId) {
+      render = (
+        <Container sx={{ my: 1 }} maxWidth="md">
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                "<iframe allowfullscreen='false' data-src='https://audio.beyondwords.io/e/" +
+                neonData.object.data.attributes.AudioId +
+                "' frameborder='0' id='speechkit-io-iframe' scrolling='no' ></iframe><script src='https://proxy.beyondwords.io/npm/@beyondwords/audio-player@latest/dist/module/iframe-helper.js' type='text/javascript'></script>",
+            }}
+          />
+        </Container>
+      );
+    }
+  } catch (e) {}
+  return render;
+}
+
+function BreadcrumbBlock({ neonData, styleVariant }) {
+  let justify = "center";
+  let maxWidth = "md";
+  if (styleVariant && styleVariant === "leftAligned") {
+    justify = "left";
+    maxWidth = "lg";
+  }
+
+  const render = (
+    <Container sx={{ my: 0 }} maxWidth={maxWidth}>
+      <Box display="flex" justifyContent={justify} alignItems={justify}>
+        <BreadCrumb neonData={neonData} />
+      </Box>
+    </Container>
+  );
+  return render;
+}
+
+function HeadlineBlock({ neonData, styleVariant }) {
+  let headline = null;
+  try {
+    headline = (
+      <RenderContentElement
+        jsonElement={
+          findElementsInContentJson(
+            ["headline"],
+            neonData.object.helper.content
+          )[0]
         }
-    }
-    catch (e) { }
-    return render;
+      />
+    );
+  } catch (e) {}
+
+  let justify = "center";
+  let maxWidth = "md";
+  if (styleVariant && styleVariant === "leftAligned") {
+    justify = "left";
+    maxWidth = "lg";
+  }
+
+  const render = (
+    <Container sx={{ my: 1 }} maxWidth={maxWidth}>
+      <Box display="flex" justifyContent={justify} alignItems={justify}>
+        <Typography
+          align={justify}
+          variant="h3"
+          component="h1"
+          sx={{ fontStyle: "italic", fontWeight: "medium" }}
+        >
+          {headline}
+        </Typography>
+      </Box>
+    </Container>
+  );
+
+  return render;
 }
 
-function BreadcrumbBlock({ cobaltData, styleVariant }) {
-    let justify = "center";
-    let maxWidth = "md";
-    if (styleVariant && styleVariant === "leftAligned") {
-        justify = "left";
-        maxWidth = "lg";
-    }
+function SummaryBlock({ neonData, styleVariant }) {
+  let summary = null;
+  try {
+    summary = (
+      <RenderContentElement
+        jsonElement={
+          findElementsInContentJson(
+            ["summary"],
+            neonData.object.helper.content
+          )[0]
+        }
+      />
+    );
+  } catch (e) {}
 
-    const render = (
-        <Container sx={{ my: 0 }} maxWidth={maxWidth}>
-            <Box display="flex"
-                justifyContent={justify}
-                alignItems={justify}>
-                <BreadCrumb cobaltData={cobaltData} />
-            </Box>
-        </Container>
-    )
-    return render;
+  let justify = "center";
+  let maxWidth = "md";
+  if (styleVariant && styleVariant === "leftAligned") {
+    justify = "left";
+    maxWidth = "lg";
+  }
+
+  let render = null;
+  if (summary) {
+    render = (
+      <Container sx={{ my: 2 }} maxWidth={maxWidth}>
+        <Box display="flex" justifyContent={justify} alignItems={justify}>
+          <Typography align={justify} variant="h5" component="h2">
+            {summary}
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+  return render;
 }
 
-function HeadlineBlock({ cobaltData, styleVariant }) {
-    let headline = null;
+function MainImageBlock({ neonData, styleVariant }) {
+  let mainPictureElement = null;
+  let mainImageUrl = null;
+  let cloudinaryVideo = null;
+  let extraElement = null;
+
+  console.log(JSON.stringify(neonData.object.helper.content, null, 2));
+
+  try {
+    mainPictureElement = findElementsInContentJson(
+      ["mediagroup"],
+      neonData.object.helper.content
+    )[0].elements[0];
+    extraElement = findElementsInContentJson(
+      ["extra"],
+      neonData.object.helper.content
+    );
     try {
-        headline = <RenderContentElement jsonElement={findElementsInContentJson(['headline'], cobaltData.object.helper.content)[0]} />
-    } catch (e) { }
-
-    let justify = "center";
-    let maxWidth = "md";
-    if (styleVariant && styleVariant === "leftAligned") {
-        justify = "left";
-        maxWidth = "lg";
-    }
-
-    const render = (
-        <Container sx={{ my: 1 }} maxWidth={maxWidth}>
-            <Box display="flex"
-                justifyContent={justify}
-                alignItems={justify}>
-                <Typography align={justify} variant="h3" component="h1" sx={{ fontStyle: 'italic', fontWeight: 'medium' }}>
-                    {headline}
-                </Typography>
-            </Box>
-        </Container>
-    )
-
-    return render;
-}
-
-function SummaryBlock({ cobaltData, styleVariant }) {
-    let summary = null;
-    try {
-        summary = <RenderContentElement jsonElement={findElementsInContentJson(['summary'], cobaltData.object.helper.content)[0]} />
-    } catch (e) { }
-
-    let justify = "center";
-    let maxWidth = "md";
-    if (styleVariant && styleVariant === "leftAligned") {
-        justify = "left";
-        maxWidth = "lg";
-    }
-
-    let render = null
-    if (summary) {
-        render = (
-            <Container sx={{ my: 2 }} maxWidth={maxWidth}>
-                <Box display="flex"
-                    justifyContent={justify}
-                    alignItems={justify}>
-                    <Typography align={justify} variant="h5" component="h2">
-                        {summary}
-                    </Typography>
-                </Box>
-            </Container>
-        )
-    }
-    return render;
-}
-
-function MainImageBlock({ cobaltData, styleVariant }) {
-    let mainPictureElement = null;
-    let mainImageUrl = null;
-    let cloudinaryVideo = null;
-    let extraElement = null;
-
-    console.log(JSON.stringify(cobaltData.object.helper.content,null,2))
-
-    try {
-        mainPictureElement = findElementsInContentJson(['mediagroup'], cobaltData.object.helper.content)[0].elements[0];
-        extraElement = findElementsInContentJson(['extra'], cobaltData.object.helper.content);
+      cloudinaryVideo = extraElement[0].elements.find((el) => {
+        let found = false;
         try {
-            cloudinaryVideo = extraElement[0].elements.find((el) => {
-                let found = false;
-                try {
-                    found = (el.attributes['emk-type'] == 'cloudinaryVideo')
-                } catch (e) { }
-                return found
-            })
-        } catch (e) { }
+          found = el.attributes["emk-type"] == "cloudinaryVideo";
+        } catch (e) {}
+        return found;
+      });
+    } catch (e) {}
 
-        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, "landscape", cobaltData), 'large'), (cobaltData.previewData ? cobaltData.previewData : null), cobaltData.siteContext.site);
-    } catch (e) {
-        console.log(e)
-    }
+    mainImageUrl = ResourceResolver(
+      getImageFormatUrl(
+        getImageUrl(mainPictureElement, "landscape", neonData),
+        "large"
+      ),
+      neonData.previewData ? neonData.previewData : null,
+      neonData.siteContext.site
+    );
+  } catch (e) {
+    console.log(e);
+  }
 
-    const imageWidth = 1024;
-    const imageHeight = 576;
+  const imageWidth = 1024;
+  const imageHeight = 576;
 
-    let mainMediaBlock = null;
-    if (cloudinaryVideo) {
-        mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />
-    } else if (mainImageUrl) {
-        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} />
-    }
+  let mainMediaBlock = null;
+  if (cloudinaryVideo) {
+    mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
+  } else if (mainImageUrl) {
+    mainMediaBlock = (
+      <Image src={mainImageUrl} width={imageWidth} height={imageHeight} />
+    );
+  }
 
-    let justify = "center";
-    let maxWidth = "md";
-    if (styleVariant && styleVariant === "leftAligned") {
-        justify = "left";
-        maxWidth = "lg";
-    }
+  let justify = "center";
+  let maxWidth = "md";
+  if (styleVariant && styleVariant === "leftAligned") {
+    justify = "left";
+    maxWidth = "lg";
+  }
 
-    const render = (
-        <Container sx={{ my: 2 }} maxWidth={maxWidth}>
-            <Box display="flex"
-                justifyContent={justify}
-                alignItems={justify}>
-                {mainMediaBlock}
-            </Box>
-        </Container>
-    )
-    return render;
+  const render = (
+    <Container sx={{ my: 2 }} maxWidth={maxWidth}>
+      <Box display="flex" justifyContent={justify} alignItems={justify}>
+        {mainMediaBlock}
+      </Box>
+    </Container>
+  );
+  return render;
 }
 
-function ContentBlock({ cobaltData, styleVariant }) {
-    let content = null;
-    try {
-        content = <RenderContentElement jsonElement={findElementsInContentJson(['content'], cobaltData.object.helper.content)[0]} renderMode='styled' cobaltData={cobaltData} />
-    } catch (e) {
-        console.log(e)
-    }
+function ContentBlock({ neonData, styleVariant }) {
+  let content = null;
+  try {
+    content = (
+      <RenderContentElement
+        jsonElement={
+          findElementsInContentJson(
+            ["content"],
+            neonData.object.helper.content
+          )[0]
+        }
+        renderMode="styled"
+        neonData={neonData}
+      />
+    );
+  } catch (e) {
+    console.log(e);
+  }
 
-    return content;
+  return content;
 }

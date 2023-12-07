@@ -4,21 +4,33 @@ import MarketsWidget from "./MarketsWidget";
 import SmartQueryWidget from "./SmartQueryWidget";
 import WeatherWidget from "./WeatherWidget";
 
-export default function GenericWidget({ cobaltData, semanticSearchData, gridContext }){
-    let render = null;
-    switch(cobaltData.object.data.title){
-        case 'markets':
-            render = <MarketsWidget cobaltData={cobaltData} gridContext={gridContext}/>;
-            break;
-        case 'champions-league':
-            render = <FootballUclWidget cobaltData={cobaltData} gridContext={gridContext}/>;
-            break;
-        case 'weather-widget':
-            render = <WeatherWidget cobaltData={cobaltData} gridContext={gridContext}/>;
-            break;
-        case 'smart-query':
-            render = <SmartQueryWidget cobaltData={cobaltData} semanticSearchData={semanticSearchData} gridContext={gridContext}/>;
-            break;
-    }
-    return render
+export default function GenericWidget({
+  neonData,
+  semanticSearchData,
+  gridContext,
+}) {
+  let render = null;
+  switch (neonData.object.data.title) {
+    case "markets":
+      render = <MarketsWidget neonData={neonData} gridContext={gridContext} />;
+      break;
+    case "champions-league":
+      render = (
+        <FootballUclWidget neonData={neonData} gridContext={gridContext} />
+      );
+      break;
+    case "weather-widget":
+      render = <WeatherWidget neonData={neonData} gridContext={gridContext} />;
+      break;
+    case "smart-query":
+      render = (
+        <SmartQueryWidget
+          neonData={neonData}
+          semanticSearchData={semanticSearchData}
+          gridContext={gridContext}
+        />
+      );
+      break;
+  }
+  return render;
 }
