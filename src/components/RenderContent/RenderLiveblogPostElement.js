@@ -14,7 +14,7 @@ import ImageGallery from "react-image-gallery";
 import NextLink from "next/link";
 import { Link as MUILink } from "@mui/material";
 import {
-  getneonDataHelper,
+  getNeonDataHelper,
   getImageFormatUrl,
 } from "../../lib/cobalt-cms/cobalt-helpers";
 import Card from "./Card";

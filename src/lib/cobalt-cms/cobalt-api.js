@@ -2,18 +2,18 @@ import axios from "axios";
 import cacheData from "memory-cache";
 import { COMMON_DATA_CACHE_TTL_SECONDS } from "../../../apps.settings";
 import {
-  buildneonDataFromPage,
-  getneonDataHelper,
+  buildNeonDataFromPage,
+  getNeonDataHelper,
   getSiteNameByHostName,
 } from "./cobalt-helpers";
 
 var http = require("http");
 var agent = new http.Agent({ family: 4 });
 
-export async function getCobaltPageByUrl(hostName, url, variant) {
+export async function getNeonPageByUrl(hostName, url, variant) {
   let siteStructure = null;
   try {
-    siteStructure = await getCobaltSites();
+    siteStructure = await getNeonSites();
   } catch (e) {}
 
   const siteName = getSiteNameByHostName(hostName, siteStructure);
@@ -24,9 +24,9 @@ export async function getCobaltPageByUrl(hostName, url, variant) {
 
     const requestUrl = "/api/pages/?url=" + url + "&emk.site=" + siteName;
     console.log("Getting cobalt data from " + requestUrl);
-    pageData = await cobaltRequest(requestUrl);
+    pageData = await neonRequest(requestUrl);
 
-    neonData = buildneonDataFromPage(
+    neonData = buildNeonDataFromPage(
       pageData,
       siteStructure,
       siteName,
@@ -42,10 +42,10 @@ export async function getCobaltPageByUrl(hostName, url, variant) {
   return neonData;
 }
 
-export async function getcobaltPageById(id, siteName, foreignId = false) {
+export async function getNeonPageById(id, siteName, foreignId = false) {
   let siteStructure = null;
   try {
-    siteStructure = await getCobaltSites();
+    siteStructure = await getNeonSites();
   } catch (e) {}
 
   let pageData = null;
@@ -57,9 +57,9 @@ export async function getcobaltPageById(id, siteName, foreignId = false) {
     "?emk.site=" +
     siteName;
   console.log("Getting cobalt data from " + requestUrl);
-  pageData = await cobaltRequest(requestUrl);
+  pageData = await neonRequest(requestUrl);
 
-  const neonData = buildneonDataFromPage(
+  const neonData = buildNeonDataFromPage(
     pageData,
     siteStructure,
     siteName,
@@ -71,10 +71,10 @@ export async function getcobaltPageById(id, siteName, foreignId = false) {
   return neonData;
 }
 
-export async function getCobaltPreview(previewData) {
+export async function getNeonPreview(previewData) {
   let siteStructure = null;
   try {
-    siteStructure = await getCobaltSites();
+    siteStructure = await getNeonSites();
   } catch (e) {}
 
   const jwe = previewData["emk.jwe"];
@@ -96,10 +96,10 @@ export async function getCobaltPreview(previewData) {
     const options = {
       method: "GET",
       httpAgent: agent,
-      url: process.env.COBALT_BASE_HOST + url,
+      url: process.env.NEON_BASE_HOST + url,
       mode: "no-cors",
       headers: {
-        "X-APIKey": process.env.COBALT_API_KEY,
+        "X-APIKey": process.env.NEON_API_KEY,
         "X-Cobalt-Tenant": "globe",
         Authorization: `Bearer ${jwe}`,
         Cookie: "emk.previewToken=" + previewToken + ";",
@@ -117,10 +117,10 @@ export async function getCobaltPreview(previewData) {
   const previewInfo = {
     previewToken: previewToken,
     jwe: jwe,
-    basePreviewUrl: process.env.COBALT_BASE_HOST, //TODO not needed?
+    basePreviewUrl: process.env.NEON_BASE_HOST, //TODO not needed?
   };
 
-  const neonData = buildneonDataFromPage(
+  const neonData = buildNeonDataFromPage(
     pageData,
     siteStructure,
     siteName,
@@ -132,7 +132,7 @@ export async function getCobaltPreview(previewData) {
   return neonData;
 }
 
-export async function searchCobalt(siteName, sorting, filters) {
+export async function searchNeon(siteName, sorting, filters) {
   let requestUrl = "/api/search?emk.site=" + siteName;
   if (sorting) {
     requestUrl +=
@@ -144,12 +144,12 @@ export async function searchCobalt(siteName, sorting, filters) {
     });
   }
 
-  const searchData = await cobaltRequest(requestUrl);
+  const searchData = await neonRequest(requestUrl);
 
   return searchData;
 }
 
-export async function cobaltRequest(url) {
+export async function neonRequest(url) {
   let result = null;
 
   if (process.env.COBALT_DISABLE_CACHE === "true") {
@@ -160,10 +160,10 @@ export async function cobaltRequest(url) {
     const options = {
       method: "GET",
       httpAgent: agent,
-      url: process.env.COBALT_BASE_HOST + url,
+      url: process.env.NEON_BASE_HOST + url,
       mode: "no-cors",
       headers: {
-        "X-APIKey": process.env.COBALT_API_KEY,
+        "X-APIKey": process.env.NEON_API_KEY,
         "X-Cobalt-Tenant": "globe",
       },
     };
@@ -176,22 +176,22 @@ export async function cobaltRequest(url) {
   return result;
 }
 
-export async function getCobaltAuthToken() {
+export async function getNeonAuthToken() {
   let token = null;
 
   try {
     const authData = {
-      name: process.env.COBALT_USERNAME,
-      password: process.env.COBALT_PASSWORD,
+      name: process.env.NEON_USERNAME,
+      password: process.env.NEON_PASSWORD,
     };
     const options = {
       method: "POST",
-      url: process.env.COBALT_BASE_BE_HOST + "/directory/sessions/login",
+      url: process.env.NEON_BASE_BE_HOST + "/directory/sessions/login",
       mode: "no-cors",
       data: authData,
       httpAgent: agent,
       headers: {
-        "X-APIKey": process.env.COBALT_API_KEY,
+        "X-APIKey": process.env.NEON_API_KEY,
         Accept: "application/json",
         "Content-Type": "application/json",
         "X-Cobalt-Tenant": "globe",
@@ -206,7 +206,7 @@ export async function getCobaltAuthToken() {
   return token;
 }
 
-export async function cobaltPollVote(site, nodeId, pollId, answerId) {
+export async function neonPollVote(site, nodeId, pollId, answerId) {
   let response = null;
   try {
     const pollData = {
@@ -217,12 +217,12 @@ export async function cobaltPollVote(site, nodeId, pollId, answerId) {
     };
     const options = {
       method: "POST",
-      url: process.env.COBALT_BASE_HOST + "/directory/polls/vote",
+      url: process.env.NEON_BASE_HOST + "/directory/polls/vote",
       mode: "no-cors",
       data: pollData,
       httpAgent: agent,
       headers: {
-        "X-APIKey": process.env.COBALT_API_KEY,
+        "X-APIKey": process.env.NEON_API_KEY,
         Accept: "application/json",
         "Content-Type": "application/json",
         "X-Cobalt-Tenant": "globe",
@@ -236,13 +236,13 @@ export async function cobaltPollVote(site, nodeId, pollId, answerId) {
   return response;
 }
 
-export async function getCobaltSitemap(siteName, token) {
+export async function getNeonSitemap(siteName, token) {
   let result = null;
   try {
     const options = {
       method: "GET",
       url:
-        process.env.COBALT_BASE_BE_HOST +
+        process.env.NEON_BASE_BE_HOST +
         "/core/sites/sitemap?emauth=" +
         token +
         "&siteName=" +
@@ -251,7 +251,7 @@ export async function getCobaltSitemap(siteName, token) {
       mode: "no-cors",
       httpAgent: agent,
       headers: {
-        "X-APIKey": process.env.COBALT_API_KEY,
+        "X-APIKey": process.env.NEON_API_KEY,
         "X-Cobalt-Tenant": "globe",
       },
     };
@@ -264,7 +264,7 @@ export async function getCobaltSitemap(siteName, token) {
   return result;
 }
 
-export async function getCobaltSites() {
+export async function getNeonSites() {
   const cacheKey = "sites";
   let sites = null;
   sites = cacheData.get(cacheKey);
@@ -273,16 +273,16 @@ export async function getCobaltSites() {
     return sites;
   } else {
     console.log("fetching sitemap from Cobalt");
-    let token = await getCobaltAuthToken();
+    let token = await getNeonAuthToken();
     if (token) {
       try {
         const options = {
           method: "GET",
           httpAgent: agent,
-          url: process.env.COBALT_BASE_BE_HOST + "/core/sites?emauth=" + token,
+          url: process.env.NEON_BASE_BE_HOST + "/core/sites?emauth=" + token,
           mode: "no-cors",
           headers: {
-            "X-APIKey": process.env.COBALT_API_KEY,
+            "X-APIKey": process.env.NEON_API_KEY,
             "X-Cobalt-Tenant": "globe",
           },
         };
@@ -296,7 +296,7 @@ export async function getCobaltSites() {
     if (sites) {
       sites = await Promise.all(
         sites.result.map(async (site) => {
-          const sitemap = await getCobaltSitemap(site.name, token);
+          const sitemap = await getNeonSitemap(site.name, token);
           return {
             ...site,
             sitemap,
@@ -309,10 +309,10 @@ export async function getCobaltSites() {
   }
 }
 
-export async function getCobaltSeoSitemap(hostName, url) {
+export async function getNeonSeoSitemap(hostName, url) {
   let siteStructure = null;
   try {
-    siteStructure = await getCobaltSites();
+    siteStructure = await getNeonSites();
   } catch (e) {}
 
   const siteName = getSiteNameByHostName(hostName, siteStructure);
@@ -321,7 +321,7 @@ export async function getCobaltSeoSitemap(hostName, url) {
   if (siteName) {
     const requestUrl = "/" + url + "?emk.site=" + siteName;
     console.log("Getting cobalt data from " + requestUrl);
-    sitemapData = await cobaltRequest(requestUrl);
+    sitemapData = await neonRequest(requestUrl);
   }
 
   return sitemapData;

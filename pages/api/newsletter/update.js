@@ -1,6 +1,6 @@
 import { sendgridUpdateSingleSend } from "../../../src/lib/sendgrid/sendgrid-client";
 import Cors from "cors";
-import { getcobaltPageById } from "../../../src/lib/cobalt-cms/cobalt-api";
+import { getNeonPageById } from "../../../src/lib/cobalt-cms/cobalt-api";
 
 const cors = Cors({
   methods: ["GET", "HEAD", "POST"],
@@ -23,7 +23,7 @@ function runMiddleware(req, res, fn) {
 export default async (req, res) => {
   await runMiddleware(req, res, cors);
   console.log("--- SENDGRID UPDATE ---");
-  const neonData = await getcobaltPageById(
+  const neonData = await getNeonPageById(
     req.body.contentId,
     req.body.site,
     true

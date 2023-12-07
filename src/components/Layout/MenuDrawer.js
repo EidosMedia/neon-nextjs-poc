@@ -20,7 +20,7 @@ import adviserLogo from "../../../public/static/img/globe-adviser.png";
 import investorLogo from "../../../public/static/img/globe-investor.png";
 import Link from "next/link";
 import {
-  getneonDataHelper,
+  getNeonDataHelper,
   getCurrentLiveSite,
   getCurrentSite,
   getLiveHostname,

@@ -1,8 +1,8 @@
 import { DataObjectTwoTone, SixteenMp } from "@mui/icons-material";
 import { xml2json } from "xml-js";
-import { searchCobalt } from "./cobalt-api";
+import { searchNeon } from "./cobalt-api";
 
-export function getneonDataHelper(data) {
+export function getNeonDataHelper(data) {
   let helper = null;
   switch (data.sys.baseType) {
     case "webpage":
@@ -22,7 +22,7 @@ export function getneonDataHelper(data) {
   }
 }
 
-export function buildneonDataFromPage(
+export function buildNeonDataFromPage(
   pageData,
   siteStructure,
   site,
@@ -30,7 +30,7 @@ export function buildneonDataFromPage(
   previewData,
   variant
 ) {
-  const helper = getneonDataHelper(pageData.model.data);
+  const helper = getNeonDataHelper(pageData.model.data);
 
   let linkContext = null;
   if (previewData && pageData.model.data.sys.baseType === "webpagefragment") {
@@ -83,7 +83,7 @@ export function buildneonDataForNestedObject(
   const neonData = {
     object: {
       data: object,
-      helper: getneonDataHelper(object),
+      helper: getNeonDataHelper(object),
     },
     linkContext,
     siteContext: parentneonData.siteContext,

@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
 import HTMLComment from "react-html-comment";
 import {
-  getneonDataHelper,
+  getNeonDataHelper,
   getCurrentSite,
   getDwxLinkedObjects,
 } from "../../lib/cobalt-cms/cobalt-helpers";

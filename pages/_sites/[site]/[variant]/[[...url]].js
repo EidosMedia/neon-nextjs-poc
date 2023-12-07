@@ -12,12 +12,12 @@ import SemiAutomaticSectionPage from "../../../../src/components/Page/SemiAutoma
 import SimpleHomepage from "../../../../src/components/Page/SimpleHomepage";
 import Segment from "../../../../src/components/Segment/Segment";
 import {
-  cobaltRequest,
-  getCobaltPageByUrl,
-  getCobaltPreview,
+  neonRequest,
+  getNeonPageByUrl,
+  getNeonPreview,
   getCobaltSectionPage,
-  getCobaltSites,
-  searchCobalt,
+  getNeonSites,
+  searchNeon,
 } from "../../../../src/lib/cobalt-cms/cobalt-api";
 import {
   getLiveHostname,
@@ -109,7 +109,7 @@ export async function getStaticPaths({}) {
   let paths = [];
   if (process.env.DEV_MODE !== "true") {
     try {
-      const sites = await getCobaltSites();
+      const sites = await getNeonSites();
 
       paths = sites.reduce((acc1, site, i) => {
         const hostName = getLiveHostname(site);
@@ -153,7 +153,7 @@ export async function getStaticProps(context) {
 
   if (context.previewData) {
     console.log("Preview mode: " + context.previewData);
-    neonData = await getCobaltPreview(context.previewData);
+    neonData = await getNeonPreview(context.previewData);
   } else {
     let url = "/";
     let site = "default";
@@ -178,7 +178,7 @@ export async function getStaticProps(context) {
         " - DEV MODE: " +
         process.env.DEV_MODE
     );
-    neonData = await getCobaltPageByUrl(site, url, variant);
+    neonData = await getNeonPageByUrl(site, url, variant);
   }
 
   let props = {
@@ -200,7 +200,7 @@ export async function getStaticProps(context) {
         break;
       case "liveblog":
         revalidate = 5;
-        const latestBlogPosts = await cobaltRequest(
+        const latestBlogPosts = await neonRequest(
           "/api/liveblogs/" +
             neonData.object.data.id +
             "/posts?emk.site=" +

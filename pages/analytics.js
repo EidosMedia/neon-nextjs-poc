@@ -1,4 +1,4 @@
-import { getcobaltPageById } from "../src/lib/cobalt-cms/cobalt-api";
+import { getNeonPageById } from "../src/lib/cobalt-cms/cobalt-api";
 import { getAnalyticsReport } from "../src/lib/ga/ga-reporting.api";
 import { Chart } from "react-google-charts";
 import { Leaderboard } from "@mui/icons-material";
@@ -129,9 +129,9 @@ export async function getServerSideProps(context) {
   let neonData = null;
 
   if (cobaltId && siteName) {
-    neonData = await getcobaltPageById(cobaltId, siteName);
+    neonData = await getNeonPageById(cobaltId, siteName);
   } else if (cobaltForeignId && siteName) {
-    neonData = await getcobaltPageById(cobaltForeignId, siteName, true);
+    neonData = await getNeonPageById(cobaltForeignId, siteName, true);
   }
 
   const analyticsReport = await getAnalyticsReport(neonData);

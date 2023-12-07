@@ -14,7 +14,7 @@ import ImageGallery from "react-image-gallery";
 import NextLink from "next/link";
 import { Link as MUILink } from "@mui/material";
 import {
-  getneonDataHelper,
+  getNeonDataHelper,
   getImageFormatUrl,
 } from "../../lib/cobalt-cms/cobalt-helpers";
 import InlinePoll from "./InlinePoll";
@@ -738,7 +738,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
         const linkedObject =
           neonData.pageContext.nodes[el.attributes["data-id"]];
         if (linkedObject) {
-          const linkedObjectHelper = getneonDataHelper(linkedObject);
+          const linkedObjectHelper = getNeonDataHelper(linkedObject);
 
           let linkedObjectMainPictureElement = null;
           let linkedObjectMainImageUrl = null;
