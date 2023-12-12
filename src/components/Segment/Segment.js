@@ -10,7 +10,7 @@ import {
   getObjectMainSection,
   getObjectMainSite,
   isContentOnSite,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import AbTestingPreviewController from "../AbTesting/AbTestingPreviewController";
 import { experiments } from "../../../abtesting.config";

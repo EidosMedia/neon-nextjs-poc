@@ -1,4 +1,4 @@
-import { getNeonSeoSitemap } from "../../../../src/lib/cobalt-cms/cobalt-api";
+import { getNeonSeoSitemap } from "../../../../src/lib/neon-cms/neon-api";
 
 export default async (req, res) => {
   let url = "/sitemapindex.xml";

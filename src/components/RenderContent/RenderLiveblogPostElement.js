@@ -16,7 +16,7 @@ import { Link as MUILink } from "@mui/material";
 import {
   getNeonDataHelper,
   getImageFormatUrl,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import Card from "./Card";
 
 export default function RenderLiveblogPostElement({

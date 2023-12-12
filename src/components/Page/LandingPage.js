@@ -4,7 +4,7 @@ import {
   getNeonDataHelper,
   getCurrentSite,
   getDwxLinkedObjects,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import QuerySegment from "../Segment/QuerySegment";
 import Segment from "../Segment/Segment";

@@ -1,7 +1,7 @@
 import {
   neonPollVote,
   neonRequest,
-} from "../../../../src/lib/cobalt-cms/cobalt-api";
+} from "../../../../src/lib/neon-cms/neon-api";
 
 export default async (req, res) => {
   let result = null;

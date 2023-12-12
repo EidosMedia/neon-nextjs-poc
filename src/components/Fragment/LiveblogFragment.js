@@ -14,10 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  getCobaltLiveblogPostHelper,
+  getNeonLiveblogPostHelper,
   getCurrentLiveSite,
   getImageFormatUrl,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import RenderContentElement from "../RenderContent/RenderContentElement";
 import {
   findElementsInContentJson,
@@ -157,7 +157,7 @@ export default function LiveblogFragment({ neonData, gridContext }) {
         post = data.result[postIndex];
       } catch (e) {}
       if (post) {
-        const postContent = getCobaltLiveblogPostHelper(post);
+        const postContent = getNeonLiveblogPostHelper(post);
         if (
           findElementsInContentJson(["h1"], postContent.content)[0].elements
         ) {

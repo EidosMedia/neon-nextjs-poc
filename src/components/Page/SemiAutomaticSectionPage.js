@@ -4,7 +4,7 @@ import {
   getCurrentSite,
   getDwxLinkedObjects,
   getQueryResultObjects,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import { node } from "prop-types";
 import GenericWidget from "../Widgets/GenericWidget";

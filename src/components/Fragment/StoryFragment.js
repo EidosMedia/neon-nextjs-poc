@@ -20,7 +20,7 @@ import NextLink from "next/link";
 import { Link as MUILink } from "@mui/material";
 import { CardActionArea } from "@mui/material";
 import { Box } from "@mui/system";
-import { getImageFormatUrl } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getImageFormatUrl } from "../../lib/neon-cms/neon-helpers";
 
 export default function StoryFragment({ neonData, gridContext }) {
   const dummyImage_landscape =

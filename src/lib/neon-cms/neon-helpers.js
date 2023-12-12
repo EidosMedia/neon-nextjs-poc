@@ -1,21 +1,21 @@
 import { DataObjectTwoTone, SixteenMp } from "@mui/icons-material";
 import { xml2json } from "xml-js";
-import { searchNeon } from "./cobalt-api";
+import { searchNeon } from "./neon-api";
 
 export function getNeonDataHelper(data) {
   let helper = null;
   switch (data.sys.baseType) {
     case "webpage":
-      return getCobaltWebPageHelper(data);
+      return getNeonWebPageHelper(data);
       break;
     case "webpagefragment":
-      return getCobaltWebPageHelper(data);
+      return getNeonWebPageHelper(data);
       break;
     case "article":
-      return getCobaltArticleHelper(data);
+      return getNeonArticleHelper(data);
       break;
     case "liveblog":
-      return getCobaltLiveblogHelper(data);
+      return getNeonLiveblogHelper(data);
       break;
     default:
       return null;
@@ -233,7 +233,7 @@ export function getDwxLinkedObjects(neonData, zoneName) {
   return linkedObjects;
 }
 
-function getCobaltWebPageHelper(data) {
+function getNeonWebPageHelper(data) {
   const zones = Object.keys(data.files.content.data.zones);
 
   let zonesWithObjects = null;
@@ -259,7 +259,7 @@ function getCobaltWebPageHelper(data) {
   };
 }
 
-function getCobaltArticleHelper(data) {
+function getNeonArticleHelper(data) {
   let content = null;
   try {
     content = JSON.parse(xml2json(data.files.content.data));
@@ -272,7 +272,7 @@ function getCobaltArticleHelper(data) {
   };
 }
 
-function getCobaltLiveblogHelper(data) {
+function getNeonLiveblogHelper(data) {
   let content = null;
   try {
     content = JSON.parse(xml2json(data.files.content.data));
@@ -285,7 +285,7 @@ function getCobaltLiveblogHelper(data) {
   };
 }
 
-export function getCobaltLiveblogPostHelper(data) {
+export function getNeonLiveblogPostHelper(data) {
   let content = null;
   try {
     content = JSON.parse(xml2json(data.files.content.data));
@@ -377,7 +377,7 @@ export function getCurrentLiveSite(neonData) {
     currentSite = currentSite.split("[")[0];
   }
   if (currentSite.includes(":")) {
-    // TEMPORARY FIX for Neon tenant
+    // TEMPORARY FIX for Cobalt tenant
     currentSite = currentSite.split(":")[1];
   }
   return currentSite;

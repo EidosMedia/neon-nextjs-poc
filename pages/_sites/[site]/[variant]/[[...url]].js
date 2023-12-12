@@ -15,14 +15,14 @@ import {
   neonRequest,
   getNeonPageByUrl,
   getNeonPreview,
-  getCobaltSectionPage,
+  getNeonSectionPage,
   getNeonSites,
   searchNeon,
-} from "../../../../src/lib/cobalt-cms/cobalt-api";
+} from "../../../../src/lib/neon-cms/neon-api";
 import {
   getLiveHostname,
   isNewsletterSite,
-} from "../../../../src/lib/cobalt-cms/cobalt-helpers";
+} from "../../../../src/lib/neon-cms/neon-helpers";
 import { getMetaHeader } from "../../../../src/lib/helpers";
 import { pineconeRequest } from "../../../../src/lib/pinecone/pinecone-client";
 

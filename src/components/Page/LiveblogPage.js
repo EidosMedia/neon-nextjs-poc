@@ -13,10 +13,10 @@ import axios from "axios";
 import HTMLComment from "react-html-comment";
 import useSWR from "swr";
 import {
-  getCobaltLiveblogPostHelper,
+  getNeonLiveblogPostHelper,
   getCurrentLiveSite,
   getImageFormatUrl,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import {
   findElementsInContentJson,
   getImageUrl,
@@ -319,7 +319,7 @@ export default function LiveblogPage({ neonData }) {
               };
             }
 
-            const postContent = getCobaltLiveblogPostHelper(post);
+            const postContent = getNeonLiveblogPostHelper(post);
             let contentRender = null;
             try {
               contentRender = (

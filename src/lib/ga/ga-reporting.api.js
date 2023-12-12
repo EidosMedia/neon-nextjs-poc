@@ -2,7 +2,7 @@ import {
   getCurrentLiveSite,
   getDwxLinkedObjects,
   getLiveHostname,
-} from "../cobalt-cms/cobalt-helpers";
+} from "../neon-cms/neon-helpers";
 import cacheData from "memory-cache";
 import {
   COMMON_GA_CACHE_ENABLED,

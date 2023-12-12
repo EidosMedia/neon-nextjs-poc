@@ -5,7 +5,7 @@ import {
   buildNeonDataFromPage,
   getNeonDataHelper,
   getSiteNameByHostName,
-} from "./cobalt-helpers";
+} from "./neon-helpers";
 
 var http = require("http");
 var agent = new http.Agent({ family: 4 });

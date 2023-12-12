@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import {
   getCurrentSite,
   getSectionChildrenObjects,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 
 export default function SectionPage({ neonData, pageTitle }) {

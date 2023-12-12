@@ -5,7 +5,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import {
   getCurrentLiveSite,
   getObjectMainSection,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 
 export default function BreadCrumb({ neonData }) {
   let render = null;

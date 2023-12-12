@@ -1,4 +1,4 @@
-import { getNeonPageById } from "../src/lib/cobalt-cms/cobalt-api";
+import { getNeonPageById } from "../src/lib/neon-cms/neon-api";
 import { getAnalyticsReport } from "../src/lib/ga/ga-reporting.api";
 import { Chart } from "react-google-charts";
 import { Leaderboard } from "@mui/icons-material";
@@ -116,22 +116,22 @@ export default function Analytics({ neonData, analyticsReport }) {
 }
 
 export async function getServerSideProps(context) {
-  let cobaltId = null;
-  let cobaltForeignId = null;
+  let neonId = null;
+  let neonForeignId = null;
   let siteName = null;
 
   try {
-    cobaltId = context.query.id;
-    cobaltForeignId = context.query.foreignid;
+    neonId = context.query.id;
+    neonForeignId = context.query.foreignid;
     siteName = context.query.site;
   } catch (e) {}
 
   let neonData = null;
 
-  if (cobaltId && siteName) {
-    neonData = await getNeonPageById(cobaltId, siteName);
-  } else if (cobaltForeignId && siteName) {
-    neonData = await getNeonPageById(cobaltForeignId, siteName, true);
+  if (neonId && siteName) {
+    neonData = await getNeonPageById(neonId, siteName);
+  } else if (neonForeignId && siteName) {
+    neonData = await getNeonPageById(neonForeignId, siteName, true);
   }
 
   const analyticsReport = await getAnalyticsReport(neonData);

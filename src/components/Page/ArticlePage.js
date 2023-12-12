@@ -5,7 +5,7 @@ import HTMLComment from "react-html-comment";
 import {
   getCurrentLiveSite,
   getImageFormatUrl,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import {
   findElementsInContentJson,
   getImageUrl,

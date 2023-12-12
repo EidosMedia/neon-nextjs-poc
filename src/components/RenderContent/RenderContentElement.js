@@ -16,7 +16,7 @@ import { Link as MUILink } from "@mui/material";
 import {
   getNeonDataHelper,
   getImageFormatUrl,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 import InlinePoll from "./InlinePoll";
 import SimpleMap from "./SimpleMap";
 import Card from "./Card";

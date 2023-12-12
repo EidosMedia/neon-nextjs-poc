@@ -1,6 +1,6 @@
 import { sendgridSendSingleSend } from "../../../src/lib/sendgrid/sendgrid-client";
 import Cors from "cors";
-import { getNeonPageById } from "../../../src/lib/cobalt-cms/cobalt-api";
+import { getNeonPageById } from "../../../src/lib/neon-cms/neon-api";
 
 const cors = Cors({
   methods: ["GET", "HEAD", "POST"],

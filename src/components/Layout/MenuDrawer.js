@@ -24,7 +24,7 @@ import {
   getCurrentLiveSite,
   getCurrentSite,
   getLiveHostname,
-} from "../../lib/cobalt-cms/cobalt-helpers";
+} from "../../lib/neon-cms/neon-helpers";
 
 export default function MenuDrawer({ neonData }) {
   const [open, setOpen] = React.useState(false);

@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { getQueryResultObjects } from "../../lib/cobalt-cms/cobalt-helpers";
+import { getQueryResultObjects } from "../../lib/neon-cms/neon-helpers";
 import GenericFragment from "../Fragment/GenericFragment";
 import React from "react";
 
