@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import React, { Component } from "react";
-import Poll from "react-polls";
+// import Poll from "react-polls";
 import useSWR, { mutate } from "swr";
 import axios from "axios";
 import { getCurrentLiveSite } from "../../lib/neon-cms/neon-helpers";
@@ -97,12 +97,12 @@ export default function InlinePoll({ jsonElement, neonData }) {
 
   render = (
     <Container sx={{ my: 3 }} maxWidth="sm">
-      <Poll
+      {/* <Poll
         question={pollQuestion}
         answers={pollAnswers}
         onVote={handleVote}
         noStorage={true}
-      />
+      /> */}
     </Container>
   );
 

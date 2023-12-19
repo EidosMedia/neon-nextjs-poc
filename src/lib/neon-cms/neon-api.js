@@ -26,6 +26,8 @@ export async function getNeonPageByUrl(hostName, url, variant) {
     console.log("Getting cobalt data from " + requestUrl);
     pageData = await neonRequest(requestUrl);
 
+    console.log(pageData);
+
     neonData = buildNeonDataFromPage(
       pageData,
       siteStructure,
@@ -111,8 +113,6 @@ export async function getNeonPreview(previewData) {
   } catch (e) {
     console.log(e);
   }
-
-  console.log(pageData);
 
   const previewInfo = {
     previewToken: previewToken,

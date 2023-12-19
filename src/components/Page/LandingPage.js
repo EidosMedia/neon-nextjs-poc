@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import HTMLComment from "react-html-comment";
+// import HTMLComment from "react-html-comment";
 import {
   getNeonDataHelper,
   getCurrentSite,
@@ -16,6 +16,7 @@ export default function LandingPage({
   analyticsReport,
   semanticSearchData,
 }) {
+  console.log("text 2");
   const renderTest = (
     <Container maxWidth="lg">
       <Segment templateName="featured-big" />
@@ -40,7 +41,7 @@ export default function LandingPage({
 
   const render = (
     <Container maxWidth="lg">
-      {uuid ? <HTMLComment text={uuid} /> : null}
+      {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
       {pageTitle ? (
         <Box
           sx={{

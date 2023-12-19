@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types';
-import Head from 'next/head';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider } from '@emotion/react';
-import theme from '../src/theme';
-import createEmotionCache from '../src/createEmotionCache';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import Head from "next/head";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider } from "@emotion/react";
+import theme from "../src/theme";
+import createEmotionCache from "../src/createEmotionCache";
+import { AppCacheProvider } from "@mui/material-nextjs/v14-pagesRouter";
 
 import "react-image-gallery/styles/css/image-gallery.css";
-import Script from 'next/script';
+import Script from "next/script";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -40,21 +41,19 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Script
-        strategy='lazyOnload'
+        strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
-      <Script id='ga-analytics'>
-        {
-          `
+      <Script id="ga-analytics">
+        {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
-      `
-        }
+      `}
       </Script>
-      <CacheProvider value={emotionCache}>
+      <AppCacheProvider {...props}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
@@ -63,7 +62,7 @@ export default function MyApp(props) {
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </CacheProvider>
+      </AppCacheProvider>
     </React.Fragment>
   );
 }

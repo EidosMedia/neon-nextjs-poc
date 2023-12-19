@@ -1,7 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import ResourceResolver from "../../utils/ResourceResolver";
 import RenderFormattedText from "./RenderFormattedText";
-import { Video, Transformation } from "cloudinary-react";
+import { Video, Transformation } from "@cloudinary/react";
 import React from "react";
 import { Container, Typography, Paper } from "@mui/material";
 import {

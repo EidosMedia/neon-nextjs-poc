@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import HTMLComment from "react-html-comment";
+// import HTMLComment from "react-html-comment";
 import {
   getCurrentSite,
   getDwxLinkedObjects,
@@ -15,6 +15,7 @@ export default function SemiAutomaticSectionPage({
   analyticsReport,
   semanticSearchData,
 }) {
+  console.log("text 1");
   //Swing quick open
   let uuid = null;
   try {
@@ -60,7 +61,7 @@ export default function SemiAutomaticSectionPage({
 
   const render = (
     <Container maxWidth="lg">
-      {uuid ? <HTMLComment text={uuid} /> : null}
+      {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
       {pageTitle ? (
         <Box
           sx={{

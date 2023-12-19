@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import HTMLComment from "react-html-comment";
+// import HTMLComment from "react-html-comment";
 import useSWR from "swr";
 import {
   getNeonLiveblogPostHelper,
@@ -436,7 +436,7 @@ export default function LiveblogPage({ neonData }) {
     }
     render = (
       <Container maxWidth="lg">
-        {uuid ? <HTMLComment text={uuid} /> : null}
+        {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
         <Container sx={{ my: 2 }} maxWidth="md">
           <Box display="flex" justifyContent="center" alignItems="center">
             <Typography

@@ -37,6 +37,9 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         neonData.pageContext.url.charAt(0).toUpperCase() +
         neonData.pageContext.url.slice(1);
     }
+    console.log("webpage");
+    console.log(neonData.object.data.sys.baseType);
+
     switch (neonData.object.data.sys.baseType) {
       case "webpage":
         let isSimpleHp = false;
@@ -75,7 +78,12 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         render = <SectionPage neonData={neonData} pageTitle={pageTitle} />;
         break;
       case "site":
-        render = null;
+        render = (
+          <LandingPage
+            neonData={neonData}
+            semanticSearchData={semanticSearchData}
+          />
+        );
         break;
       case "liveblog":
         render = (

@@ -1,7 +1,7 @@
 import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Image from "next/image";
-import HTMLComment from "react-html-comment";
+// import HTMLComment from "react-html-comment";
 import {
   getCurrentLiveSite,
   getImageFormatUrl,
@@ -43,7 +43,7 @@ export default function ArticlePage({ neonData }) {
     case "1":
       render = (
         <Container maxWidth="lg">
-          {uuid ? <HTMLComment text={uuid} /> : null}
+          {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
           <BreadcrumbBlock neonData={neonData} />
           <BeyondWordsBlock neonData={neonData} />
           <MainImageBlock neonData={neonData} />
@@ -56,7 +56,7 @@ export default function ArticlePage({ neonData }) {
     case "2":
       render = (
         <Container maxWidth="lg">
-          {uuid ? <HTMLComment text={uuid} /> : null}
+          {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
           <BreadcrumbBlock neonData={neonData} styleVariant="leftAligned" />
           <BeyondWordsBlock neonData={neonData} styleVariant="leftAligned" />
           <HeadlineBlock neonData={neonData} styleVariant="leftAligned" />
@@ -69,7 +69,7 @@ export default function ArticlePage({ neonData }) {
     default:
       render = (
         <Container maxWidth="lg">
-          {uuid ? <HTMLComment text={uuid} /> : null}
+          {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
           <BreadcrumbBlock neonData={neonData} />
           <BeyondWordsBlock neonData={neonData} />
           <HeadlineBlock neonData={neonData} />
