@@ -17,6 +17,8 @@ const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  console.log(props);
+
   // const router = useRouter()
 
   // useEffect(() => {
@@ -53,7 +55,7 @@ export default function MyApp(props) {
         gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
       `}
       </Script>
-      <AppCacheProvider {...props}>
+      <CacheProvider value={emotionCache}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
@@ -62,7 +64,7 @@ export default function MyApp(props) {
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </AppCacheProvider>
+      </CacheProvider>
     </React.Fragment>
   );
 }

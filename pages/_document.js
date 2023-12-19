@@ -15,7 +15,7 @@ export default function MyDocument(props) {
   return (
     <Html lang="en">
       <Head>
-        <DocumentHeadTags {...props} />
+        {/* <DocumentHeadTags {...props} /> */}
         {/* PWA primary color */}
         <meta name="theme-color" content={theme.palette.primary.main} />
         <link rel="shortcut icon" href="/static/img/favicon.ico" />
@@ -92,4 +92,4 @@ MyDocument.getInitialProps = async (ctx) => {
 MyDocument.propTypes = {
   emotionStyleTags: PropTypes.array.isRequired,
 };
-MyDocument.getInitialProps = documentGetInitialProps;
+// MyDocument.getInitialProps = documentGetInitialProps;

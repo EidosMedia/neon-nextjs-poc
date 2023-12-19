@@ -1,13 +1,32 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "demo.eidosmedia.io",
-      "express-website.em.corp",
-      "express-host.em.corp",
-      "cobalt-poc.demomedia.eidosmedia.io",
-      "cobaltdocker",
-      "i.guim.co.uk",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "express-website.em.corp",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "express-host.em.corp",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "cobalt-poc.demomedia.eidosmedia.io",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "cobaltdocker",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.guim.co.uk",
+        pathname: "**",
+      },
     ],
     minimumCacheTTL: 3600,
   },

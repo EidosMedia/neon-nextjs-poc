@@ -15,7 +15,6 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/server": "latest",
-    "@emotion/styled": "^11.11.0",
     "@google-analytics/data": "^2.8.0",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0",
