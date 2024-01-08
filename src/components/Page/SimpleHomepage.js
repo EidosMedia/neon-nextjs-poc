@@ -130,7 +130,7 @@ export default function SimpleHomepage({
     );
   }
 
-  const customColor = getCurrentSite(neonData).customAttributes.customColor;
+  const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
 
   const render = (
     <Container maxWidth="lg">

@@ -11,7 +11,7 @@ export default function SectionPage({ neonData, pageTitle }) {
 
   const searchResults = getSectionChildrenObjects(neonData);
 
-  const customColor = getCurrentSite(neonData).customAttributes.customColor;
+  const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
 
   render = (
     <Container maxWidth="lg">

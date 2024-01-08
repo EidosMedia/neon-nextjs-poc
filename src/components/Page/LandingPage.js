@@ -16,7 +16,6 @@ export default function LandingPage({
   analyticsReport,
   semanticSearchData,
 }) {
-  console.log("text 2");
   const renderTest = (
     <Container maxWidth="lg">
       <Segment templateName="featured-big" />
@@ -37,7 +36,7 @@ export default function LandingPage({
     uuid = 'Methode uuid: "' + neonData.object.data.foreignId + '"';
   } catch (e) {}
 
-  const customColor = getCurrentSite(neonData).customAttributes.customColor;
+  const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
 
   const render = (
     <Container maxWidth="lg">

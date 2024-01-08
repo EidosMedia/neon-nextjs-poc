@@ -18,10 +18,6 @@ import RenderContentElement, {
 
 export default function ArticlePage({ neonData }) {
   let render = null;
-
-  // console.log(JSON.stringify(neonData,null,2))
-  console.log(neonData);
-
   //Swing quick open
   let uuid = null;
   try {
@@ -33,7 +29,7 @@ export default function ArticlePage({ neonData }) {
   const currentSite = getCurrentLiveSite(neonData);
   const siteStructure = neonData.siteContext.siteStructure;
 
-  const site = siteStructure.find((site) => site.name === currentSite);
+  const site = siteStructure?.find((site) => site.name === currentSite);
   let styleVariant = null;
   try {
     styleVariant = site.customAttributes.style;
@@ -205,8 +201,6 @@ function MainImageBlock({ neonData, styleVariant }) {
   let cloudinaryVideo = null;
   let extraElement = null;
 
-  console.log(JSON.stringify(neonData.object.helper.content, null, 2));
-
   try {
     mainPictureElement = findElementsInContentJson(
       ["mediagroup"],
@@ -285,6 +279,8 @@ function ContentBlock({ neonData, styleVariant }) {
   } catch (e) {
     console.log(e);
   }
+
+  console.log(content);
 
   return content;
 }

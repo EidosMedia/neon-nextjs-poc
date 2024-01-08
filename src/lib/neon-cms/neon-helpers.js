@@ -4,7 +4,7 @@ import { searchNeon } from "./neon-api";
 
 export function getNeonDataHelper(data) {
   let helper = null;
-  switch (data.sys.baseType) {
+  switch (data?.sys?.baseType) {
     case "webpage":
       return getNeonWebPageHelper(data);
       break;
@@ -30,10 +30,10 @@ export function buildNeonDataFromPage(
   previewData,
   variant
 ) {
-  const helper = getNeonDataHelper(pageData.model.data);
+  const helper = getNeonDataHelper(pageData?.model?.data);
 
   let linkContext = null;
-  if (previewData && pageData.model.data.sys.baseType === "webpagefragment") {
+  if (previewData && pageData?.model.data.sys.baseType === "webpagefragment") {
     linkContext = {
       linkTemplate: helper.pageTemplate,
     };
@@ -41,18 +41,18 @@ export function buildNeonDataFromPage(
 
   const neonData = {
     object: {
-      data: pageData.model.data,
+      data: pageData?.model.data,
       helper: helper,
     },
     linkContext: linkContext,
     pageContext: {
-      url: url ? url : pageData.model.data.url,
-      nodes: pageData.model.nodes,
-      resourcesUrls: pageData.resourcesUrls ? pageData.resourcesUrls : null,
-      nodesUrls: pageData.nodesUrls ? pageData.nodesUrls : null,
-      children: pageData.model.data.children
-        ? pageData.model.data.children
-        : pageData.model.children, // Fallback children location in case of model building or not
+      url: url ? url : pageData?.model.data.url,
+      nodes: pageData?.model.nodes,
+      resourcesUrls: pageData?.resourcesUrls ? pageData?.resourcesUrls : null,
+      nodesUrls: pageData?.nodesUrls ? pageData?.nodesUrls : null,
+      children: pageData?.model.data.children
+        ? pageData?.model.data.children
+        : pageData?.model.children, // Fallback children location in case of model building or not
     },
     siteContext: {
       site: site,
@@ -384,7 +384,8 @@ export function getCurrentLiveSite(neonData) {
 }
 
 export function getCurrentSite(neonData) {
-  return neonData.siteContext.siteStructure.find(
+  // console.log(neonData);
+  return neonData?.siteContext?.siteStructure?.find(
     (site) => site.name === getCurrentLiveSite(neonData)
   );
 }

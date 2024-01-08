@@ -15,7 +15,6 @@ export default function SemiAutomaticSectionPage({
   analyticsReport,
   semanticSearchData,
 }) {
-  console.log("text 1");
   //Swing quick open
   let uuid = null;
   try {
@@ -57,7 +56,7 @@ export default function SemiAutomaticSectionPage({
     }
   }, []);
 
-  const customColor = getCurrentSite(neonData).customAttributes.customColor;
+  const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
 
   const render = (
     <Container maxWidth="lg">

@@ -316,7 +316,7 @@ async function getSegmentAnalyticsReport(neonData) {
   }
 
   const hostName = getLiveHostname(
-    neonData.siteContext.siteStructure.find(
+    neonData.siteContext.siteStructure?.find(
       (site) => site.name === getCurrentLiveSite(neonData)
     ),
     true
@@ -356,7 +356,7 @@ async function getLandingPageAnalyticsReport(neonData) {
   // }
 
   const hostName = getLiveHostname(
-    neonData.siteContext.siteStructure.find(
+    neonData.siteContext.siteStructure?.find(
       (site) => site.name === getCurrentLiveSite(neonData)
     ),
     true
@@ -378,7 +378,7 @@ async function getPageAnalyticsReport(neonData) {
   let url = null;
   try {
     url = getLiveHostname(
-      neonData.siteContext.siteStructure.find(
+      neonData.siteContext.siteStructure?.find(
         (site) => site.name === getCurrentLiveSite(neonData)
       ),
       true

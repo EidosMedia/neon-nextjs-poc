@@ -20,7 +20,7 @@ export function getSeoTitle(neonData) {
   let seoTitle = "";
   let websiteName = "The Globe";
   try {
-    websiteName = neonData.siteContext.siteStructure.find(
+    websiteName = neonData.siteContext.siteStructure?.find(
       (site) => site.name === getCurrentLiveSite(neonData)
     ).title;
   } catch (e) {}

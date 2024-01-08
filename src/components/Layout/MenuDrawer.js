@@ -36,25 +36,15 @@ export default function MenuDrawer({ neonData }) {
   const currentSite = getCurrentLiveSite(neonData);
   const siteStructure = neonData.siteContext.siteStructure;
 
-  const site = siteStructure.find((site) => site.name === currentSite);
+  console.log(neonData);
+
+  const site = siteStructure?.find((site) => site?.root?.name === currentSite);
+
   let logoOverlay = null;
   let logo = productLogo;
-  if (site.name.includes("investor") || site.name.includes("adviser")) {
-    logo = site.name.includes("investor") ? investorLogo : adviserLogo;
-  } else {
-    try {
-      logoOverlay = site.customAttributes.logoOverlay;
-    } catch (e) {}
-
-    try {
-      if (!logoOverlay && site.customAttributes.siteCategory !== "main") {
-        logoOverlay = site.name.split("-")[1];
-      }
-    } catch (e) {}
-  }
   let sectionsRender = null;
   try {
-    sectionsRender = site.sitemap.children.map((item, i) => {
+    sectionsRender = site?.root.items.map((item, i) => {
       const title = item.title.charAt(0).toUpperCase() + item.title.slice(1);
       return (
         <Link
@@ -79,7 +69,7 @@ export default function MenuDrawer({ neonData }) {
   let sitesRender = null;
   try {
     sitesRender = siteStructure
-      .filter((site) => site.name !== currentSite && site.headless)
+      .filter((site) => site?.root?.name !== currentSite && site?.headless)
       .map((site, i) => {
         return (
           <Link
@@ -91,7 +81,7 @@ export default function MenuDrawer({ neonData }) {
             <ListItem button component="a">
               <ListItemText
                 disableTypography
-                primary={<Typography variant="h6">{site.title}</Typography>}
+                primary={<Typography variant="h6">{site?.title}</Typography>}
               />
             </ListItem>
           </Link>
@@ -128,7 +118,7 @@ export default function MenuDrawer({ neonData }) {
       <List>{sitesRender}</List>
     </Box>
   );
-  const customColor = getCurrentSite(neonData).customAttributes.customColor;
+  const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
   return (
     <div>
       <React.Fragment>
@@ -157,7 +147,7 @@ export default function MenuDrawer({ neonData }) {
                   {logoOverlay}.
                 </Typography>
               ) : null}
-              <Image src={logo}></Image>
+              <Image src={logo} />
             </Box>
             <Box m={2} sx={{ display: { xs: "block", md: "none" } }}>
               {logoOverlay ? (
@@ -165,7 +155,7 @@ export default function MenuDrawer({ neonData }) {
                   {logoOverlay}.
                 </Typography>
               ) : null}
-              <Image src={logo}></Image>
+              <Image src={logo} />
             </Box>
             <Box>
               <IconButton
@@ -180,50 +170,6 @@ export default function MenuDrawer({ neonData }) {
             </Box>
           </Toolbar>
         </AppBar>
-        {currentSite === "express-website" &&
-        neonData.pageContext.url === "/" ? (
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <Stack sx={{ my: 2 }} direction="row" justifyContent="center">
-              <Box sx={{ px: 2, borderRight: 1 }}>
-                <Typography variant="h4" component="div">
-                  Coronavirus
-                </Typography>
-              </Box>
-              <Box sx={{ px: 2, borderRight: 1 }}>
-                <Typography variant="h4" component="div">
-                  Ukraine Crisis
-                </Typography>
-              </Box>
-              <Box sx={{ px: 2, borderRight: 1 }}>
-                <Typography variant="h4" component="div">
-                  Winter Olympics
-                </Typography>
-              </Box>
-              <Box sx={{ px: 2, borderRight: 1 }}>
-                <Typography variant="h4" component="div">
-                  Markets
-                </Typography>
-              </Box>
-              <Box sx={{ px: 2, borderRight: 1 }}>
-                <Typography variant="h4" component="div">
-                  Climate Crisis
-                </Typography>
-              </Box>
-              <Box sx={{ px: 2 }}>
-                <Typography variant="h4" component="div">
-                  Champions League
-                </Typography>
-              </Box>
-
-              {/* <Chip label="Markets Corection" />
-                    <Chip label="Winter Olympics" />
-                    <Chip label="Football" />
-                    <Chip label="Climate Crisis" /> */}
-            </Stack>
-          </Box>
-        ) : (
-          <Box sx={{ display: { xs: "none", md: "block" } }}>&nbsp;</Box>
-        )}
         <Drawer anchor="left" open={open} onClose={handleDrawerToggle}>
           {list}
         </Drawer>

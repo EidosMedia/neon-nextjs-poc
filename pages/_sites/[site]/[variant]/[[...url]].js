@@ -37,10 +37,8 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         neonData.pageContext.url.charAt(0).toUpperCase() +
         neonData.pageContext.url.slice(1);
     }
-    console.log("webpage");
-    console.log(neonData.object.data.sys.baseType);
 
-    switch (neonData.object.data.sys.baseType) {
+    switch (neonData?.object?.data?.sys?.baseType) {
       case "webpage":
         let isSimpleHp = false;
         try {
@@ -197,7 +195,7 @@ export async function getStaticProps(context) {
   let fallback = {}; // To be used for SWR rehydration of liveblogs
 
   if (!neonData.error) {
-    switch (neonData.object.data.sys.baseType) {
+    switch (neonData?.object?.data?.sys?.baseType) {
       case "webpage":
         revalidate = 5;
         // Quick and ugly way to manage semantic search demo

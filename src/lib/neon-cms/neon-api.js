@@ -22,11 +22,9 @@ export async function getNeonPageByUrl(hostName, url, variant) {
   if (siteName) {
     let pageData = null;
 
-    const requestUrl = "/api/pages/?url=" + url + "&emk.site=" + siteName;
+    const requestUrl = "/api/pages?url=" + url + "&emk.site=" + siteName;
     console.log("Getting cobalt data from " + requestUrl);
     pageData = await neonRequest(requestUrl);
-
-    console.log(pageData);
 
     neonData = buildNeonDataFromPage(
       pageData,
@@ -176,36 +174,6 @@ export async function neonRequest(url) {
   return result;
 }
 
-export async function getNeonAuthToken() {
-  let token = null;
-
-  try {
-    const authData = {
-      name: process.env.NEON_USERNAME,
-      password: process.env.NEON_PASSWORD,
-    };
-    const options = {
-      method: "POST",
-      url: process.env.NEON_BASE_BE_HOST + "/directory/sessions/login",
-      mode: "no-cors",
-      data: authData,
-      httpAgent: agent,
-      headers: {
-        "X-APIKey": process.env.NEON_API_KEY,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Cobalt-Tenant": "globe",
-      },
-    };
-
-    const response = await axios.request(options);
-    token = response.data.session.id;
-  } catch (e) {
-    console.log(e);
-  }
-  return token;
-}
-
 export async function neonPollVote(site, nodeId, pollId, answerId) {
   let response = null;
   try {
@@ -236,18 +204,15 @@ export async function neonPollVote(site, nodeId, pollId, answerId) {
   return response;
 }
 
-export async function getNeonSitemap(siteName, token) {
+export async function getNeonSitemap(siteName) {
   let result = null;
+
+  const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live?sitemap=true?name="${siteName}"`;
+
   try {
     const options = {
       method: "GET",
-      url:
-        process.env.NEON_BASE_BE_HOST +
-        "/core/sites/sitemap?emauth=" +
-        token +
-        "&siteName=" +
-        siteName +
-        "&viewStatus=LIVE",
+      url: apiUrl,
       mode: "no-cors",
       httpAgent: agent,
       headers: {
@@ -273,30 +238,31 @@ export async function getNeonSites() {
     return sites;
   } else {
     console.log("fetching sitemap from Cobalt");
-    let token = await getNeonAuthToken();
-    if (token) {
-      try {
-        const options = {
-          method: "GET",
-          httpAgent: agent,
-          url: process.env.NEON_BASE_BE_HOST + "/core/sites?emauth=" + token,
-          mode: "no-cors",
-          headers: {
-            "X-APIKey": process.env.NEON_API_KEY,
-            "X-Cobalt-Tenant": "globe",
-          },
-        };
 
-        const response = await axios.request(options);
-        sites = response.data;
-      } catch (e) {
-        console.log(e);
-      }
+    try {
+      const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live`;
+
+      const options = {
+        method: "GET",
+        httpAgent: agent,
+        url: apiUrl,
+        mode: "no-cors",
+        headers: {
+          "X-APIKey": process.env.NEON_API_KEY,
+          "X-Cobalt-Tenant": "globe",
+        },
+      };
+
+      const response = await axios.request(options);
+      sites = response.data;
+    } catch (e) {
+      console.log(e);
     }
+
     if (sites) {
       sites = await Promise.all(
-        sites.result.map(async (site) => {
-          const sitemap = await getNeonSitemap(site.name, token);
+        sites.map(async (site) => {
+          const sitemap = await getNeonSitemap(site.root.name);
           return {
             ...site,
             sitemap,

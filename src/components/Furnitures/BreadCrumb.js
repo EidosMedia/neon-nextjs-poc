@@ -22,7 +22,7 @@ export default function BreadCrumb({ neonData }) {
       >
         <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
         {
-          neonData.siteContext.siteStructure.find(
+          neonData.siteContext?.siteStructure?.find(
             (site) => site.name === getCurrentLiveSite(neonData)
           ).title
         }

@@ -315,7 +315,7 @@ export default function Segment({ neonData, analyticsReport }) {
       let sectionUrl = null;
       let siteInfo = null;
       if (isOtherSite) {
-        siteInfo = neonData.siteContext.siteStructure.find(
+        siteInfo = neonData.siteContext.siteStructure?.find(
           (site) => site.name === getObjectMainSite(neonData.object.data)
         );
         otherSiteBaseUrl = getLiveHostname(siteInfo, true);
@@ -327,7 +327,8 @@ export default function Segment({ neonData, analyticsReport }) {
       errorGettingOtherSite = true;
     }
     if (!errorGettingOtherSite) {
-      const customColor = getCurrentSite(neonData).customAttributes.customColor;
+      const customColor =
+        getCurrentSite(neonData)?.customAttributes?.customColor;
       render = (
         <React.Fragment>
           <Box

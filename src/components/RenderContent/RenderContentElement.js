@@ -292,6 +292,7 @@ export default function RenderContentElement({
           if (renderMode && ["styled", "newsletter"].includes(renderMode)) {
             render = (
               <Typography sx={{ ml: 3 }} variant="body1" component="li">
+                {/* hydration error */}
                 {render}
               </Typography>
             );
