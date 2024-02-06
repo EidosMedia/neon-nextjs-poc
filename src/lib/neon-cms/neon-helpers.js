@@ -302,6 +302,7 @@ export function getNeonLiveblogPostHelper(data) {
 
 export function getSiteNameByHostName(hostName, sites) {
   let site = null;
+  console.log('getSiteNameByHostName - hostName:'+hostName);
   if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
     return process.env.DEV_FORCE_SITE;
   }
@@ -311,8 +312,10 @@ export function getSiteNameByHostName(hostName, sites) {
   }
 
   if (site) {
-    return site.name;
+    console.log('getSiteNameByHostName - site found!',site.root.name);
+    return site.root.name;
   } else {
+    console.log('getSiteNameByHostName - site not found!');
     return null; // will show a not found
   }
 }
