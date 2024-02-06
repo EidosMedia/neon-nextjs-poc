@@ -7,32 +7,32 @@ import {
   Tooltip,
   Typography,
   styled,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import axios from "axios";
+} from '@mui/material';
+import { Box } from '@mui/system';
+import axios from 'axios';
 // import HTMLComment from "react-html-comment";
-import useSWR from "swr";
+import useSWR from 'swr';
 import {
   getNeonLiveblogPostHelper,
   getCurrentLiveSite,
   getImageFormatUrl,
-} from "../../lib/neon-cms/neon-helpers";
+} from '../../lib/neon-cms/neon-helpers';
 import {
   findElementsInContentJson,
   getImageUrl,
-} from "../../utils/ContentUtil";
+} from '../../utils/ContentUtil';
 import RenderContentElement, {
   CloudinaryVideo,
-} from "../RenderContent/RenderContentElement";
-import RenderLiveblogPostElement from "../RenderContent/RenderLiveblogPostElement";
-import ResourceResolver from "../../utils/ResourceResolver";
-import Image from "next/image";
-import SportsIcon from "@mui/icons-material/Sports";
-import SportsSoccerSharpIcon from "@mui/icons-material/SportsSoccerSharp";
-import CelebrationSharpIcon from "@mui/icons-material/CelebrationSharp";
-import StyleSharpIcon from "@mui/icons-material/StyleSharp";
-import LinkIcon from "@mui/icons-material/Link";
-import React from "react";
+} from '../RenderContent/RenderContentElement';
+import RenderLiveblogPostElement from '../RenderContent/RenderLiveblogPostElement';
+import ResourceResolver from '../../utils/ResourceResolver';
+import Image from 'next/image';
+import SportsIcon from '@mui/icons-material/Sports';
+import SportsSoccerSharpIcon from '@mui/icons-material/SportsSoccerSharp';
+import CelebrationSharpIcon from '@mui/icons-material/CelebrationSharp';
+import StyleSharpIcon from '@mui/icons-material/StyleSharp';
+import LinkIcon from '@mui/icons-material/Link';
+import React from 'react';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -49,9 +49,9 @@ export default function LiveblogPage({ neonData }) {
     let data,
       error = null;
     ({ data, error } = useSWR(
-      "/api/" +
+      '/api/' +
         getCurrentLiveSite(neonData) +
-        "/liveblogs/" +
+        '/liveblogs/' +
         neonData.object.data.id,
       fetcher,
       { refreshInterval: 5000, dedupingInterval: 0 }
@@ -63,7 +63,7 @@ export default function LiveblogPage({ neonData }) {
         <RenderContentElement
           jsonElement={
             findElementsInContentJson(
-              ["headline"],
+              ['headline'],
               neonData.object.helper.content
             )[0]
           }
@@ -77,7 +77,7 @@ export default function LiveblogPage({ neonData }) {
         <RenderContentElement
           jsonElement={
             findElementsInContentJson(
-              ["summary"],
+              ['summary'],
               neonData.object.helper.content
             )[0]
           }
@@ -92,7 +92,7 @@ export default function LiveblogPage({ neonData }) {
         <RenderContentElement
           jsonElement={
             findElementsInContentJson(
-              ["content"],
+              ['content'],
               neonData.object.helper.content
             )[0]
           }
@@ -114,7 +114,7 @@ export default function LiveblogPage({ neonData }) {
               authorName: r.lbNeutralReporterName,
               authorRole: r.lbNeutralReporterRole,
               authorPic:
-                "/static/img/avatars/" + r.lbNeutralReporterId + ".jpg",
+                '/static/img/avatars/' + r.lbNeutralReporterId + '.jpg',
             };
           }
         );
@@ -123,16 +123,16 @@ export default function LiveblogPage({ neonData }) {
     let ambassadors = null;
     try {
       const gallery = findElementsInContentJson(
-        ["div"],
+        ['div'],
         neonData.object.helper.content
       )[0];
       ambassadors = gallery.elements.map((el) => {
-        const authorName = el.elements.find((el2) => el2.name === "person")
+        const authorName = el.elements.find((el2) => el2.name === 'person')
           .elements[0].text;
-        const authorRole = el.elements.find((el2) => el2.name === "description")
+        const authorRole = el.elements.find((el2) => el2.name === 'description')
           .elements[0].text;
         let authorPic = el.elements.find(
-          (el2) => el2.name === "img" && el2.attributes.class === "square"
+          (el2) => el2.name === 'img' && el2.attributes.class === 'square'
         ).attributes.src;
         authorPic = ResourceResolver(
           authorPic,
@@ -168,9 +168,9 @@ export default function LiveblogPage({ neonData }) {
             try {
               if (post.attributes.liveblogPostData.eventType) {
                 switch (post.attributes.liveblogPostData.eventType) {
-                  case "3":
+                  case '3':
                     eventData = {
-                      eventText: "Goal",
+                      eventText: 'Goal',
                       eventIcon: (
                         <React.Fragment>
                           <SportsSoccerSharpIcon
@@ -187,32 +187,32 @@ export default function LiveblogPage({ neonData }) {
                     };
                     boxStyle = {
                       border: 6,
-                      borderColor: "green",
+                      borderColor: 'green',
                       my: 4,
                       px: 2,
                     };
                     break;
-                  case "2":
+                  case '2':
                     eventData = {
-                      eventText: "Red card",
+                      eventText: 'Red card',
                       eventIcon: (
                         <StyleSharpIcon
                           fontSize="large"
-                          sx={{ color: "#DC143C" }}
+                          sx={{ color: '#DC143C' }}
                         />
                       ),
                       eventTime: computeEventTime(post, eventStartDate),
                     };
                     boxStyle = {
                       border: 1,
-                      borderColor: "grey.300",
+                      borderColor: 'grey.300',
                       my: 4,
                       px: 2,
                     };
                     break;
-                  case "5":
+                  case '5':
                     eventData = {
-                      eventText: "Penalty",
+                      eventText: 'Penalty',
                       eventIcon: (
                         <SportsIcon fontSize="large" color="secondary" />
                       ),
@@ -220,14 +220,14 @@ export default function LiveblogPage({ neonData }) {
                     };
                     boxStyle = {
                       border: 4,
-                      borderColor: "secondary.main",
+                      borderColor: 'secondary.main',
                       my: 4,
                       px: 2,
                     };
                     break;
-                  case "13":
+                  case '13':
                     eventData = {
-                      eventText: "Match start",
+                      eventText: 'Match start',
                       eventIcon: (
                         <SportsIcon fontSize="large" color="secondary" />
                       ),
@@ -235,14 +235,14 @@ export default function LiveblogPage({ neonData }) {
                     };
                     boxStyle = {
                       border: 1,
-                      borderColor: "grey.300",
+                      borderColor: 'grey.300',
                       my: 4,
                       px: 2,
                     };
                     break;
-                  case "14":
+                  case '14':
                     eventData = {
-                      eventText: "Match end",
+                      eventText: 'Match end',
                       eventIcon: (
                         <SportsIcon fontSize="large" color="secondary" />
                       ),
@@ -250,7 +250,7 @@ export default function LiveblogPage({ neonData }) {
                     };
                     boxStyle = {
                       border: 4,
-                      borderColor: "grey.300",
+                      borderColor: 'grey.300',
                       my: 4,
                       px: 2,
                     };
@@ -272,7 +272,7 @@ export default function LiveblogPage({ neonData }) {
                 if (postAuthor && !boxStyle) {
                   boxStyle = {
                     border: 4,
-                    borderColor: "secondary.main",
+                    borderColor: 'secondary.main',
                     my: 4,
                     px: 2,
                   };
@@ -284,13 +284,13 @@ export default function LiveblogPage({ neonData }) {
               // check if is reporter
               try {
                 if (!post.attributes.liveblogPostData.forceNeutral) {
-                  let creator = post.attributes.creator.split(":");
+                  let creator = post.attributes.creator.split(':');
                   creator = creator[creator.length - 1];
                   postAuthor = reporters.find((r) => r.authorId === creator);
                   if (postAuthor && !boxStyle) {
                     boxStyle = {
                       border: 1,
-                      borderColor: "grey.500",
+                      borderColor: 'grey.500',
                       my: 4,
                       px: 2,
                     };
@@ -303,7 +303,7 @@ export default function LiveblogPage({ neonData }) {
               if (post.attributes.liveblogPostData.isSticky) {
                 boxStyle = {
                   border: 4,
-                  borderColor: "secondary.main",
+                  borderColor: 'secondary.main',
                   my: 4,
                   px: 2,
                 };
@@ -313,12 +313,13 @@ export default function LiveblogPage({ neonData }) {
             if (!boxStyle) {
               boxStyle = {
                 border: 1,
-                borderColor: "grey.500",
+                borderColor: 'grey.500',
                 my: 4,
                 px: 2,
               };
             }
 
+            console.log('post', post);
             const postContent = getNeonLiveblogPostHelper(post);
             let contentRender = null;
             try {
@@ -326,7 +327,7 @@ export default function LiveblogPage({ neonData }) {
                 <RenderLiveblogPostElement
                   jsonElement={
                     findElementsInContentJson(
-                      ["article"],
+                      ['article'],
                       postContent.content
                     )[0]
                   }
@@ -349,15 +350,15 @@ export default function LiveblogPage({ neonData }) {
                       alignItems="flexStart"
                     >
                       <Box sx={{ mx: 1, my: 2 }}>{eventData.eventIcon}</Box>
-                      <Box sx={{ mx: 1, my: 2, flex: 1, alignItems: "center" }}>
+                      <Box sx={{ mx: 1, my: 2, flex: 1, alignItems: 'center' }}>
                         {contentRender}
                       </Box>
                       <Box
                         sx={{
                           mx: 1,
                           my: 2,
-                          display: "flex",
-                          marginLeft: "auto",
+                          display: 'flex',
+                          marginLeft: 'auto',
                         }}
                       >
                         <Typography
@@ -376,7 +377,7 @@ export default function LiveblogPage({ neonData }) {
                     <Box
                       sx={{
                         borderBottom: 1,
-                        borderColor: "secondary.main",
+                        borderColor: 'secondary.main',
                         my: 1,
                       }}
                       display="flex"
@@ -393,8 +394,8 @@ export default function LiveblogPage({ neonData }) {
                         sx={{
                           mx: 1,
                           my: 2,
-                          display: "flex",
-                          alignItems: "center",
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                       >
                         <Typography
@@ -409,9 +410,9 @@ export default function LiveblogPage({ neonData }) {
                         sx={{
                           mx: 1,
                           my: 2,
-                          display: "flex",
-                          alignItems: "center",
-                          marginLeft: "auto",
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginLeft: 'auto',
                         }}
                       >
                         <Typography
@@ -425,7 +426,7 @@ export default function LiveblogPage({ neonData }) {
                     </Box>
                   ) : null}
                   {!eventData ? contentRender : null}
-                  <SharePostBlock post={post} sx={{ marginLeft: "auto" }} />
+                  <SharePostBlock post={post} sx={{ marginLeft: 'auto' }} />
                 </Box>
               );
             }
@@ -443,7 +444,7 @@ export default function LiveblogPage({ neonData }) {
               align="center"
               variant="h3"
               component="h1"
-              sx={{ fontStyle: "italic", fontWeight: "medium" }}
+              sx={{ fontStyle: 'italic', fontWeight: 'medium' }}
             >
               {headline}
             </Typography>
@@ -473,18 +474,18 @@ function MainImageBlock({ neonData, styleVariant }) {
   let extraElement = null;
   try {
     mainPictureElement = findElementsInContentJson(
-      ["mediagroup"],
+      ['mediagroup'],
       neonData.object.helper.content
     )[0].elements[0];
     extraElement = findElementsInContentJson(
-      ["extra"],
+      ['extra'],
       neonData.object.helper.content
     );
     try {
       cloudinaryVideo = extraElement[0].elements.find((el) => {
         let found = false;
         try {
-          found = el.attributes["emk-type"] == "cloudinaryVideo";
+          found = el.attributes['emk-type'] == 'cloudinaryVideo';
         } catch (e) {}
         return found;
       });
@@ -492,8 +493,8 @@ function MainImageBlock({ neonData, styleVariant }) {
 
     mainImageUrl = ResourceResolver(
       getImageFormatUrl(
-        getImageUrl(mainPictureElement, "landscape", neonData),
-        "large"
+        getImageUrl(mainPictureElement, 'landscape', neonData),
+        'large'
       ),
       neonData.previewData ? neonData.previewData : null,
       neonData.siteContext.site
@@ -514,11 +515,11 @@ function MainImageBlock({ neonData, styleVariant }) {
     );
   }
 
-  let justify = "center";
-  let maxWidth = "md";
-  if (styleVariant && styleVariant === "leftAligned") {
-    justify = "left";
-    maxWidth = "lg";
+  let justify = 'center';
+  let maxWidth = 'md';
+  if (styleVariant && styleVariant === 'leftAligned') {
+    justify = 'left';
+    maxWidth = 'lg';
   }
 
   const render = (
@@ -540,14 +541,14 @@ function SharePostBlock({ post }) {
 
   const handleClickLink = () => {
     navigator.clipboard.writeText(
-      window.location.href.split("?")[0].split("#")[0] + "#" + post.id
+      window.location.href.split('?')[0].split('#')[0] + '#' + post.id
     );
     setOpen(true);
   };
 
   return (
     <Box display="flex">
-      <Box sx={{ marginLeft: "auto" }}>
+      <Box sx={{ marginLeft: 'auto' }}>
         <ClickAwayListener onClickAway={handleTooltipClose}>
           <div>
             <Tooltip
@@ -562,7 +563,7 @@ function SharePostBlock({ post }) {
               title="Post link copied to clipboard!"
             >
               <IconButton
-                sx={{ marginLeft: "auto", color: "secondary.main" }}
+                sx={{ marginLeft: 'auto', color: 'secondary.main' }}
                 onClick={handleClickLink}
               >
                 <LinkIcon />
@@ -579,7 +580,7 @@ function computeEventTime(post, eventStartDate) {
   let eventTime = null;
   try {
     const postDateString = post.title
-      .substring(0, post.title.indexOf("."))
+      .substring(0, post.title.indexOf('.'))
       .slice(0, -3);
 
     const postDate = new Date(

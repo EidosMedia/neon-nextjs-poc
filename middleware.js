@@ -30,6 +30,7 @@ export default function middleware(req) {
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
   // (in the case of "test.vercel.app", "vercel.app" is the root URL)
+
   const currentHost =
     process.env.NODE_ENV == 'production' ? hostname.split(':')[0] : 'localhost';
 

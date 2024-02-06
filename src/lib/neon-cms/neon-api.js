@@ -1,13 +1,13 @@
-import axios from "axios";
-import cacheData from "memory-cache";
-import { COMMON_DATA_CACHE_TTL_SECONDS } from "../../../apps.settings";
+import axios from 'axios';
+import cacheData from 'memory-cache';
+import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
 import {
   buildNeonDataFromPage,
   getNeonDataHelper,
   getSiteNameByHostName,
-} from "./neon-helpers";
+} from './neon-helpers';
 
-var http = require("http");
+var http = require('http');
 var agent = new http.Agent({ family: 4 });
 
 export async function getNeonPageByUrl(hostName, url, variant) {
@@ -22,8 +22,8 @@ export async function getNeonPageByUrl(hostName, url, variant) {
   if (siteName) {
     let pageData = null;
 
-    const requestUrl = "/api/pages?url=" + url + "&emk.site=" + siteName;
-    console.log("Getting cobalt data from " + requestUrl);
+    const requestUrl = '/api/pages?url=' + url + '&emk.site=' + siteName;
+    console.log('Getting cobalt data from ' + requestUrl);
     pageData = await neonRequest(requestUrl);
 
     neonData = buildNeonDataFromPage(
@@ -36,7 +36,7 @@ export async function getNeonPageByUrl(hostName, url, variant) {
     );
   } else {
     neonData = {
-      error: "not-found",
+      error: 'not-found',
     };
   }
   return neonData;
@@ -51,12 +51,12 @@ export async function getNeonPageById(id, siteName, foreignId = false) {
   let pageData = null;
 
   let requestUrl =
-    "/api/pages/" +
-    (foreignId ? "foreignid/" : "") +
+    '/api/pages/' +
+    (foreignId ? 'foreignid/' : '') +
     id +
-    "?emk.site=" +
+    '?emk.site=' +
     siteName;
-  console.log("Getting cobalt data from " + requestUrl);
+  console.log('Getting cobalt data from ' + requestUrl);
   pageData = await neonRequest(requestUrl);
 
   const neonData = buildNeonDataFromPage(
@@ -77,32 +77,32 @@ export async function getNeonPreview(previewData) {
     siteStructure = await getNeonSites();
   } catch (e) {}
 
-  const jwe = previewData["emk.jwe"];
-  const previewToken = previewData["emk.previewToken"];
-  const siteName = previewData["emk.site"];
+  const jwe = previewData['emk.jwe'];
+  const previewToken = previewData['emk.previewToken'];
+  const siteName = previewData['emk.site'];
 
   let url =
-    "/api/pages/" +
-    previewData["emk.foreignId"] +
-    "@eom?emk.site=" +
+    '/api/pages/' +
+    previewData['emk.foreignId'] +
+    '@eom?emk.site=' +
     encodeURIComponent(siteName) +
-    "&emk.previewSection=" +
-    previewData["emk.previewSection"] +
-    "&emk.disableCache=true";
+    '&emk.previewSection=' +
+    previewData['emk.previewSection'] +
+    '&emk.disableCache=true';
 
   let pageData = null;
 
   try {
     const options = {
-      method: "GET",
+      method: 'GET',
       httpAgent: agent,
       url: process.env.NEON_BASE_HOST + url,
-      mode: "no-cors",
+      mode: 'no-cors',
       headers: {
-        "X-APIKey": process.env.NEON_API_KEY,
-        "X-Cobalt-Tenant": "globe",
+        'X-APIKey': process.env.NEON_API_KEY,
+        'X-Cobalt-Tenant': 'globe',
         Authorization: `Bearer ${jwe}`,
-        Cookie: "emk.previewToken=" + previewToken + ";",
+        Cookie: 'emk.previewToken=' + previewToken + ';',
       },
     };
 
@@ -122,7 +122,7 @@ export async function getNeonPreview(previewData) {
     pageData,
     siteStructure,
     siteName,
-    "/preview",
+    '/preview',
     previewInfo,
     null
   );
@@ -131,14 +131,14 @@ export async function getNeonPreview(previewData) {
 }
 
 export async function searchNeon(siteName, sorting, filters) {
-  let requestUrl = "/api/search?emk.site=" + siteName;
+  let requestUrl = '/api/search?emk.site=' + siteName;
   if (sorting) {
     requestUrl +=
-      "&sorting=" + (sorting.order === "DESC" ? "-" : "+") + sorting.param;
+      '&sorting=' + (sorting.order === 'DESC' ? '-' : '+') + sorting.param;
   }
   if (filters) {
     filters.forEach((filter) => {
-      requestUrl += "&" + filter.param + "=" + filter.value;
+      requestUrl += '&' + filter.param + '=' + filter.value;
     });
   }
 
@@ -150,26 +150,28 @@ export async function searchNeon(siteName, sorting, filters) {
 export async function neonRequest(url) {
   let result = null;
 
-  if (process.env.COBALT_DISABLE_CACHE === "true") {
-    url += "&emk.disableCache=true";
+  if (process.env.COBALT_DISABLE_CACHE === 'true') {
+    url += '&emk.disableCache=true';
   }
 
   try {
     const options = {
-      method: "GET",
+      method: 'GET',
       httpAgent: agent,
       url: process.env.NEON_BASE_HOST + url,
-      mode: "no-cors",
+      mode: 'no-cors',
       headers: {
-        "X-APIKey": process.env.NEON_API_KEY,
-        "X-Cobalt-Tenant": "globe",
+        'X-APIKey': process.env.NEON_API_KEY,
+        'X-Cobalt-Tenant': 'globe',
       },
     };
 
     const response = await axios.request(options);
+
+    console.log('response', response.data);
     result = response.data;
   } catch (e) {
-    console.log(e);
+    console.log('Error in request', e);
   }
   return result;
 }
@@ -184,16 +186,16 @@ export async function neonPollVote(site, nodeId, pollId, answerId) {
       answerId: answerId,
     };
     const options = {
-      method: "POST",
-      url: process.env.NEON_BASE_HOST + "/directory/polls/vote",
-      mode: "no-cors",
+      method: 'POST',
+      url: process.env.NEON_BASE_HOST + '/directory/polls/vote',
+      mode: 'no-cors',
       data: pollData,
       httpAgent: agent,
       headers: {
-        "X-APIKey": process.env.NEON_API_KEY,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Cobalt-Tenant": "globe",
+        'X-APIKey': process.env.NEON_API_KEY,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-Cobalt-Tenant': 'globe',
       },
     };
 
@@ -211,13 +213,13 @@ export async function getNeonSitemap(siteName) {
 
   try {
     const options = {
-      method: "GET",
+      method: 'GET',
       url: apiUrl,
-      mode: "no-cors",
+      mode: 'no-cors',
       httpAgent: agent,
       headers: {
-        "X-APIKey": process.env.NEON_API_KEY,
-        "X-Cobalt-Tenant": "globe",
+        'X-APIKey': process.env.NEON_API_KEY,
+        'X-Cobalt-Tenant': 'globe',
       },
     };
 
@@ -230,26 +232,26 @@ export async function getNeonSitemap(siteName) {
 }
 
 export async function getNeonSites() {
-  const cacheKey = "sites";
+  const cacheKey = 'sites';
   let sites = null;
   sites = cacheData.get(cacheKey);
   if (sites) {
-    console.log("getting cached sites structure");
+    console.log('getting cached sites structure');
     return sites;
   } else {
-    console.log("fetching sitemap from Cobalt");
+    console.log('fetching sitemap from Cobalt');
 
     try {
       const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live`;
 
       const options = {
-        method: "GET",
+        method: 'GET',
         httpAgent: agent,
         url: apiUrl,
-        mode: "no-cors",
+        mode: 'no-cors',
         headers: {
-          "X-APIKey": process.env.NEON_API_KEY,
-          "X-Cobalt-Tenant": "globe",
+          'X-APIKey': process.env.NEON_API_KEY,
+          'X-Cobalt-Tenant': 'globe',
         },
       };
 
@@ -285,8 +287,8 @@ export async function getNeonSeoSitemap(hostName, url) {
   let sitemapData = null;
 
   if (siteName) {
-    const requestUrl = "/" + url + "?emk.site=" + siteName;
-    console.log("Getting cobalt data from " + requestUrl);
+    const requestUrl = '/' + url + '?emk.site=' + siteName;
+    console.log('Getting cobalt data from ' + requestUrl);
     sitemapData = await neonRequest(requestUrl);
   }
 

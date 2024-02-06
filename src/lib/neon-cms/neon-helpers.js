@@ -1,20 +1,22 @@
-import { DataObjectTwoTone, SixteenMp } from "@mui/icons-material";
-import { xml2json } from "xml-js";
-import { searchNeon } from "./neon-api";
+import { DataObjectTwoTone, SixteenMp } from '@mui/icons-material';
+import { xml2json } from 'xml-js';
+import { searchNeon } from './neon-api';
 
 export function getNeonDataHelper(data) {
   let helper = null;
+  console.log('data?.sys?.baseType', data?.sys?.baseType);
+
   switch (data?.sys?.baseType) {
-    case "webpage":
+    case 'webpage':
       return getNeonWebPageHelper(data);
       break;
-    case "webpagefragment":
+    case 'webpagefragment':
       return getNeonWebPageHelper(data);
       break;
-    case "article":
+    case 'article':
       return getNeonArticleHelper(data);
       break;
-    case "liveblog":
+    case 'liveblog':
       return getNeonLiveblogHelper(data);
       break;
     default:
@@ -33,7 +35,7 @@ export function buildNeonDataFromPage(
   const helper = getNeonDataHelper(pageData?.model?.data);
 
   let linkContext = null;
-  if (previewData && pageData?.model.data.sys.baseType === "webpagefragment") {
+  if (previewData && pageData?.model.data.sys.baseType === 'webpagefragment') {
     linkContext = {
       linkTemplate: helper.pageTemplate,
     };
@@ -106,7 +108,7 @@ export function getQueryResultObjects(neonData) {
         const objNodeData = neonData.pageContext.nodes[child];
         const linkContext = {
           linkData: null,
-          linkTemplate: "list",
+          linkTemplate: 'list',
         };
         const objneonData = buildneonDataForNestedObject(
           objNodeData,
@@ -129,7 +131,7 @@ export function getSearchResultObjects(neonData) {
       const objNodeData = child.nodeData;
       const linkContext = {
         linkData: null,
-        linkTemplate: "list",
+        linkTemplate: 'list',
       };
       const objneonData = buildneonDataForNestedObject(
         objNodeData,
@@ -152,7 +154,7 @@ export function getSectionChildrenObjects(neonData) {
       const objNodeData = neonData.pageContext.nodes[child];
       const linkContext = {
         linkData: null,
-        linkTemplate: "list",
+        linkTemplate: 'list',
       };
       const objneonData = buildneonDataForNestedObject(
         objNodeData,
@@ -201,17 +203,17 @@ export function getDwxLinkedObjects(neonData, zoneName) {
         if (!linkTemplate) {
           //No default template found -> setting defaults
           switch (objNodeData.sys.type) {
-            case "featured":
-              linkTemplate = "featured_standard";
+            case 'featured':
+              linkTemplate = 'featured_standard';
               break;
-            case "segment":
-              linkTemplate = "section_teaser";
+            case 'segment':
+              linkTemplate = 'section_teaser';
               break;
-            case "article":
-              linkTemplate = "head-pic";
+            case 'article':
+              linkTemplate = 'head-pic';
               break;
-            case "liveblog":
-              linkTemplate = "head-pic";
+            case 'liveblog':
+              linkTemplate = 'head-pic';
               break;
           }
         }
@@ -264,7 +266,7 @@ function getNeonArticleHelper(data) {
   try {
     content = JSON.parse(xml2json(data.files.content.data));
   } catch (e) {
-    console.log("error parsing object xml: " + e);
+    console.log('error parsing object xml: ' + e);
   }
 
   return {
@@ -277,7 +279,7 @@ function getNeonLiveblogHelper(data) {
   try {
     content = JSON.parse(xml2json(data.files.content.data));
   } catch (e) {
-    console.log("error parsing object xml: " + e);
+    console.log('error parsing object xml: ' + e);
   }
 
   return {
@@ -290,7 +292,7 @@ export function getNeonLiveblogPostHelper(data) {
   try {
     content = JSON.parse(xml2json(data.files.content.data));
   } catch (e) {
-    console.log("error parsing object xml: " + e);
+    console.log('error parsing object xml: ' + e);
   }
 
   return {
@@ -300,40 +302,19 @@ export function getNeonLiveblogPostHelper(data) {
 
 export function getSiteNameByHostName(hostName, sites) {
   let site = null;
-  if (process.env.DEV_MODE === "true" && process.env.DEV_FORCE_SITE) {
+  if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
     return process.env.DEV_FORCE_SITE;
   }
+
   if (sites != null && sites.length) {
-    site = sites.find((site) => hostName === getLiveHostname(site));
-    if (!site && process.env.DEV_MODE === "true") {
-      site = sites.find(
-        (site) => site.customAttributes.siteCategory === "main"
-      );
-    }
+    site = sites.find((site) => hostName === site.root.hostname);
   }
+
   if (site) {
     return site.name;
   } else {
     return null; // will show a not found
   }
-}
-
-export function getLiveHostname(site, withScheme) {
-  let liveHostname = null;
-  try {
-    if (site.customAttributes.liveHostname) {
-      //TODO - workaround for badly converted headless site (cannot modify liveHostname - now fixed: https://jira.eidosmedia.com/browse/COBALT-2810)
-      liveHostname = site.customAttributes.liveHostname;
-    } else {
-      liveHostname = site.liveHostname;
-    }
-    if (!withScheme)
-      liveHostname = liveHostname
-        .replace(/^https?\:\/\//i, "")
-        .split(":")[0]
-        .replace(/\/$/, "");
-  } catch (e) {}
-  return liveHostname;
 }
 
 export function isContentOnSite(obj, site) {
@@ -373,12 +354,12 @@ export function getObjectMainSection(obj) {
 // Return the live site (without [PREVIEW] if there is)
 export function getCurrentLiveSite(neonData) {
   let currentSite = neonData.siteContext.site;
-  if (currentSite.includes("[PREVIEW]")) {
-    currentSite = currentSite.split("[")[0];
+  if (currentSite.includes('[PREVIEW]')) {
+    currentSite = currentSite.split('[')[0];
   }
-  if (currentSite.includes(":")) {
+  if (currentSite.includes(':')) {
     // TEMPORARY FIX for Cobalt tenant
-    currentSite = currentSite.split(":")[1];
+    currentSite = currentSite.split(':')[1];
   }
   return currentSite;
 }
@@ -391,8 +372,8 @@ export function getCurrentSite(neonData) {
 }
 
 export function getImageFormatUrl(url, format) {
-  const strIndex = url.lastIndexOf("/");
+  const strIndex = url.lastIndexOf('/');
   const formatImageUrl =
-    url.slice(0, strIndex) + "/format/" + format + url.slice(strIndex);
+    url.slice(0, strIndex) + '/format/' + format + url.slice(strIndex);
   return formatImageUrl;
 }
