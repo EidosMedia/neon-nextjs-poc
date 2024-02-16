@@ -7,20 +7,25 @@ import Menu from '@mui/material/Menu';
 import { experiments } from '../../../abtesting.config';
 import { AppBar, Box, Toolbar } from '@mui/material';
 
-const currentExperiment = experiments[0]
+const currentExperiment = experiments[0];
 
+/**
+ *
+ * @param root0
+ * @param root0.handleSetPreviewVariant
+ */
 export default function AbTestingPreviewController({ handleSetPreviewVariant }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const open = Boolean(anchorEl);
-    const handleClickListItem = (event) => {
+    const handleClickListItem = event => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleMenuItemClick = (event, index, variantId) => {
         setSelectedIndex(index);
         setAnchorEl(null);
-        handleSetPreviewVariant(variantId)
+        handleSetPreviewVariant(variantId);
     };
 
     const handleClose = () => {
@@ -29,13 +34,9 @@ export default function AbTestingPreviewController({ handleSetPreviewVariant }) 
 
     return (
         <AppBar position="fixed" color="transparent" sx={{ top: 'auto', bottom: 0 }}>
-            <Toolbar sx={{display:'flex', justifyContent:'flex-end'}}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <div>
-                    <List
-                        component="nav"
-                        aria-label="A/B Testing Variant"
-                        sx={{ bgcolor: 'background.paper' }}
-                    >
+                    <List component="nav" aria-label="A/B Testing Variant" sx={{ bgcolor: 'background.paper' }}>
                         <ListItem
                             button
                             id="ab-button"
@@ -59,14 +60,16 @@ export default function AbTestingPreviewController({ handleSetPreviewVariant }) 
                         onClose={handleClose}
                         MenuListProps={{
                             'aria-labelledby': 'ab-button',
-                            role: 'listbox',
+                            role: 'listbox'
                         }}
                     >
                         {currentExperiment.variants.map((variant, index) => (
                             <MenuItem
                                 key={variant.id}
                                 selected={index === selectedIndex}
-                                onClick={(event) => handleMenuItemClick(event, index, currentExperiment.id + "." + variant.id)}
+                                onClick={event =>
+                                    handleMenuItemClick(event, index, `${currentExperiment.id}.${variant.id}`)
+                                }
                             >
                                 {variant.name}
                             </MenuItem>

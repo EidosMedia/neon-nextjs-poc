@@ -1,20 +1,24 @@
-import { Box, Container } from "@mui/material";
-import Copyright from "../Furnitures/Copyright";
-import MenuDrawer from "./MenuDrawer";
+import { Box, Container } from '@mui/material';
+import Copyright from '../Furnitures/Copyright';
+import MenuDrawer from './MenuDrawer';
 
+/**
+ *
+ * @param props
+ */
 export default function Layout(props) {
-  const layout = (
-    <Container maxWidth="false">
-      <MenuDrawer {...props} />
+    const layout = (
+        <Container maxWidth="false">
+            <MenuDrawer {...props} />
 
-      {props.children}
+            {props.children}
 
-      <Container maxWidth="lg">
-        <Box sx={{ my: 4 }}>
-          <Copyright />
-        </Box>
-      </Container>
-    </Container>
-  );
-  return layout;
+            <Container maxWidth="lg">
+                <Box sx={{ my: 4 }}>
+                    <Copyright />
+                </Box>
+            </Container>
+        </Container>
+    );
+    return layout;
 }

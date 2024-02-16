@@ -1,24 +1,30 @@
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import React from "react";
-import { getSeoTitle } from "../../lib/helpers";
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import React from 'react';
+import { getSeoTitle } from '../../lib/helpers';
 
+/**
+ *
+ * @param root0
+ * @param root0.neonData
+ * @param root0.realtimeReport
+ */
 export default function RealtimeSummary({ neonData, realtimeReport }) {
-  const seoTitle = getSeoTitle(neonData);
+    const seoTitle = getSeoTitle(neonData);
 
-  const findFn = (r) => r.dimensionValues[0].value === seoTitle;
-  let views = 0;
-  try {
-    views = realtimeReport.rows.find(findFn).metricValues[0].value;
-  } catch (e) {}
+    const findFn = r => r.dimensionValues[0].value === seoTitle;
+    let views = 0;
+    try {
+        views = realtimeReport.rows.find(findFn).metricValues[0].value;
+    } catch (e) {}
 
-  const rank = realtimeReport.rows.findIndex(findFn) + 1;
+    const rank = realtimeReport.rows.findIndex(findFn) + 1;
 
-  const render = (
-    <Box>
-      <Typography variant="h6">Rank: {rank > 0 ? rank : "-"}</Typography>
-      <Typography variant="h6">Views: {views > 0 ? views : "-"}</Typography>
-    </Box>
-  );
-  return render;
+    const render = (
+        <Box>
+            <Typography variant="h6">Rank: {rank > 0 ? rank : '-'}</Typography>
+            <Typography variant="h6">Views: {views > 0 ? views : '-'}</Typography>
+        </Box>
+    );
+    return render;
 }
