@@ -1,25 +1,18 @@
 import React from 'react';
 import { SWRConfig } from 'swr';
-import Layout from '../../../../src/components/Layout/Layout';
-import BasicNewsletter from '../../../../src/components/Newsletter/BasicNewsletter';
-import ArticlePage from '../../../../src/components/Page/ArticlePage';
-import ErrorPage from '../../../../src/components/Page/ErrorPage';
-import LandingPage from '../../../../src/components/Page/LandingPage';
-import LiveblogPage from '../../../../src/components/Page/LiveblogPage';
-import SectionPage from '../../../../src/components/Page/SectionPage';
-import SemiAutomaticSectionPage from '../../../../src/components/Page/SemiAutomaticSectionPage';
-import SimpleHomepage from '../../../../src/components/Page/SimpleHomepage';
-import Segment from '../../../../src/components/Segment/Segment';
-import {
-    neonRequest,
-    getNeonPageByUrl,
-    getNeonPreview,
-    getNeonSectionPage,
-    getNeonSites,
-    searchNeon
-} from '../../../../src/lib/neon-cms/neon-api';
-import { getMetaHeader } from '../../../../src/lib/helpers';
-import { pineconeRequest } from '../../../../src/lib/pinecone/pinecone-client';
+import Layout from '@/components/Layout/Layout';
+import BasicNewsletter from '@/components/Newsletter/BasicNewsletter';
+import ArticlePage from '@/components/Page/ArticlePage';
+import ErrorPage from '@/components/Page/ErrorPage';
+import LandingPage from '@/components/Page/LandingPage';
+import LiveblogPage from '@/components/Page/LiveblogPage';
+import SectionPage from '@/components/Page/SectionPage';
+import SemiAutomaticSectionPage from '@/components/Page/SemiAutomaticSectionPage';
+import SimpleHomepage from '@/components/Page/SimpleHomepage';
+import Segment from '@/components/Segment/Segment';
+import { neonRequest, getNeonPageByUrl, getNeonPreview, getNeonSites } from '@/lib/neon-cms/neon-api';
+import { getMetaHeader } from '@/lib/helpers';
+import { pineconeRequest } from '@/lib/pinecone/pinecone-client';
 
 /**
  *
@@ -34,8 +27,6 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         return <ErrorPage errorType={neonData.error} />;
     }
 
-    console.log('neonData in page', neonData);
-
     let pageTitle = null;
     if (neonData?.pageContext?.url !== '/' && !neonData.previewData) {
         pageTitle = neonData.pageContext?.url?.charAt(0).toUpperCase() + neonData.pageContext?.url?.slice(1);
@@ -45,7 +36,6 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         case 'webpage':
             let isSimpleHp = false;
             try {
-                console.log('here2');
                 isSimpleHp = neonData.object.data.attributes.classification.genres.includes('simplehp');
             } catch (e) {}
             if (isSimpleHp) {
@@ -86,7 +76,6 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
     }
 
     if (neonData.previewData) {
-        console.log('here7');
         if (neonData.object.data.sys.type === 'newsletter') {
             render = <BasicNewsletter neonData={neonData} />;
         } else if (neonData.object.data.sys.baseType !== 'webpagefragment') {
@@ -113,7 +102,6 @@ export async function getStaticPaths({}) {
             const sites = await getNeonSites();
 
             paths = sites.reduce((acc1, site, i) => {
-                console.log('site', site);
                 const hostName = site.root.hostname;
                 if (hostName) {
                     const sections = site.sitemap.children.reduce((acc2, section, j) => {
@@ -187,8 +175,6 @@ export async function getStaticProps(context) {
     let revalidate = 5;
     const fallback = {}; // To be used for SWR rehydration of liveblogs
 
-    console.log(JSON.stringify(neonData));
-
     if (!neonData.error) {
         switch (neonData?.object?.data?.sys?.baseType) {
             case 'webpage':
@@ -201,32 +187,16 @@ export async function getStaticProps(context) {
                 break;
             case 'liveblog':
                 revalidate = 5;
-                console.log('here5');
                 const latestBlogPosts = await neonRequest(
                     `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.site}&limit=50`
                 );
-                console.log('here3');
                 fallback[`/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
                 props.fallback = fallback;
+                break;
             default:
                 revalidate = 5;
         }
     }
-
-    console.log(
-        'props',
-        JSON.stringify({
-            ...props,
-            neonData: {
-                ...(props.neonData || {}),
-                object: {
-                    data: { ...(props.neonData?.object?.data || null) }
-                },
-                data: { ...(props.neonData?.data || null) }
-            }
-        })
-    );
-    console.log('revalidate', JSON.stringify(revalidate));
 
     return {
         props,
@@ -241,7 +211,6 @@ export async function getStaticProps(context) {
 async function getSemanticSearchData(neonData) {
     let semanticSearchData = null;
     try {
-        console.log('here1');
         const semanticWidget = neonData.object.data.links.pagelink.main.find(link => {
             if (link.metadata.type === 'widget') {
                 if (neonData.pageContext.nodes[link.targetId].title === 'smart-query') {

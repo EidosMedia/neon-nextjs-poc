@@ -4,7 +4,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { findElementsInContentJson } from '../../utils/ContentUtil';
-import { CardActionArea } from '@mui/material';
 
 /**
  *

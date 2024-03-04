@@ -48,6 +48,8 @@ export function getSeoTitle(neonData) {
         case 'article':
             seoTitle = `${websiteName} - ${neonData.object.data.title}`;
             break;
+        default:
+            return null;
     }
     return seoTitle;
 }

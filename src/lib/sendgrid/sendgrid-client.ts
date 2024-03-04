@@ -1,8 +1,6 @@
 import BasicNewsletter from '../../components/Newsletter/BasicNewsletter';
 import * as ReactDOMServer from 'react-dom/server';
 import axios from 'axios';
-import RenderContentElement from '../../components/RenderContent/RenderContentElement';
-import { findElementsInContentJson } from '../../utils/ContentUtil';
 
 /**
  *

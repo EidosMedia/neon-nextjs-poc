@@ -41,11 +41,11 @@ export const widgetsConfig = {
             }
         ]
     },
-    "smart-query":{
+    'smart-query': {
         params: [
             {
                 name: 'topic',
-                displayName: "Topic"
+                displayName: 'Topic'
             },
             // {
             //     name: "relevancy",
@@ -54,11 +54,11 @@ export const widgetsConfig = {
             //     defaultValue: 'medium'
             // },
             {
-                name: "variety",
-                displayName: "Variety",
-                acceptedValues: ['high','medium','low'],
+                name: 'variety',
+                displayName: 'Variety',
+                acceptedValues: ['high', 'medium', 'low'],
                 defaultValue: 'low'
             }
         ]
     }
-}
+};

@@ -1,13 +1,77 @@
 import { xml2json } from 'xml-js';
 
+function getNeonWebPageHelper(data) {
+    const zones = Object.keys(data.files.content.data.zones);
+
+    let zonesWithObjects = null;
+    try {
+        zonesWithObjects = zones
+            .filter(zone => data.links.pagelink[zone])
+            .map(zone => {
+                return {
+                    zone: zone,
+                    objects: data.links.pagelink[zone].map(link => {
+                        return {
+                            linkData: link.metadata,
+                            objectId: link.targetId
+                        };
+                    })
+                };
+            });
+    } catch (e) {}
+
+    return {
+        pageTemplate: data.files.content.data.pageTemplate,
+        zones: zonesWithObjects
+    };
+}
+
+function getNeonArticleHelper(data) {
+    let content = null;
+
+    try {
+        content = JSON.parse(xml2json(data.files.content.data));
+    } catch (e) {
+        console.log('error parsing object xml: ' + e);
+    }
+
+    return {
+        content
+    };
+}
+
+function getNeonLiveblogHelper(data) {
+    let content = null;
+
+    try {
+        content = JSON.parse(xml2json(data.files.content.data));
+    } catch (e) {
+        console.log('error parsing object xml: ' + e);
+    }
+
+    return {
+        content
+    };
+}
+
+export function getNeonLiveblogPostHelper(data) {
+    let content = null;
+    try {
+        content = JSON.parse(xml2json(data.files.content.data));
+    } catch (e) {
+        console.log('error parsing object xml: ' + e);
+    }
+
+    return {
+        content
+    };
+}
+
 /**
  *
  * @param data
  */
 export function getNeonDataHelper(data) {
-    const helper = null;
-    console.log('data?.sys?.baseType', data?.sys?.baseType);
-
     switch (data?.sys?.baseType) {
         case 'webpage':
             return getNeonWebPageHelper(data);
@@ -310,8 +374,6 @@ export function getObjectMainSection(obj) {
  * @param neonData
  */
 export function getCurrentLiveSite(neonData) {
-    console.log('neonData.siteContext', neonData.siteContext);
-
     let currentSite = neonData.siteContext?.site;
     if (!currentSite) return null;
     if (currentSite.includes('[PREVIEW]')) {

@@ -101,6 +101,15 @@ const commonEslint = {
         },
         jest: {
             version: '25'
+        },
+        'import/resolver': {
+            alias: {
+                map: [
+                    ['@/components', './src/components'],
+                    ['@/pages', './pages'],
+                    ['@/lib', './src/lib']
+                ]
+            }
         }
     },
     env: {

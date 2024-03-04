@@ -1,13 +1,7 @@
-import { Dialog, DialogTitle, IconButton, Typography } from '@mui/material';
-import { Box } from '@mui/system';
 import React from 'react';
-import { getSeoTitle } from '../../lib/helpers';
 import GenericWidget from '../Widgets/GenericWidget';
 import LiveblogFragment from './LiveblogFragment';
 import StoryFragment from './StoryFragment';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import RealtimeSummary from '../Analytics/RealtimeSummary';
-import BarChart from '../Analytics/BarChart';
 import AnalyticsFragmentOverlay from '../Analytics/AnalyticsFragmentOverlay';
 import BreakingNewsFragment from './BreakingNewsFragment';
 

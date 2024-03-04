@@ -2,10 +2,56 @@ import axios from 'axios';
 import cacheData from 'memory-cache';
 import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
 import { buildNeonDataFromPage, getNeonDataHelper, getSiteNameByHostName } from './neon-helpers';
-
-const http = require('http');
+import http from 'http';
 
 const agent = new http.Agent({ family: 4 });
+
+/**
+ *
+ */
+export async function getNeonSites() {
+    const cacheKey = 'sites';
+    let sites = null;
+    sites = cacheData.get(cacheKey);
+    if (sites) {
+        console.log('getting cached sites structure');
+        return sites;
+    }
+
+    try {
+        const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live`;
+
+        const options = {
+            method: 'GET',
+            httpAgent: agent,
+            url: apiUrl,
+            mode: 'no-cors',
+            headers: {
+                'X-APIKey': process.env.NEON_API_KEY,
+                'X-Cobalt-Tenant': 'globe'
+            }
+        };
+
+        const response = await axios.request(options);
+        sites = response.data;
+    } catch (e) {
+        console.log(e);
+    }
+
+    if (sites) {
+        sites = await Promise.all(
+            sites.map(async site => {
+                const sitemap = await getNeonSitemap(site.root.name);
+                return {
+                    ...site,
+                    sitemap
+                };
+            })
+        );
+    }
+    cacheData.put(cacheKey, sites, COMMON_DATA_CACHE_TTL_SECONDS * 1000);
+    return sites;
+}
 
 /**
  *
@@ -53,7 +99,6 @@ export async function getNeonPageById(id, siteName, foreignId = false) {
     let pageData = null;
 
     const requestUrl = `/api/pages/${foreignId ? 'foreignid/' : ''}${id}?emk.site=${siteName}`;
-    console.log(`Getting cobalt data from ${requestUrl}`);
     pageData = await neonRequest(requestUrl);
 
     const neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, null, null, null);
@@ -139,31 +184,24 @@ export async function searchNeon(siteName, sorting, filters) {
  * @param url
  */
 export async function neonRequest(url) {
-    let result = null;
-
     if (process.env.COBALT_DISABLE_CACHE === 'true') {
         url += '&emk.disableCache=true';
     }
 
-    try {
-        const options = {
-            method: 'GET',
-            httpAgent: agent,
-            url: process.env.NEON_BASE_HOST + url,
-            mode: 'no-cors',
-            headers: {
-                'X-APIKey': process.env.NEON_API_KEY,
-                'X-Cobalt-Tenant': 'globe'
-            }
-        };
+    const options = {
+        method: 'GET',
+        httpAgent: agent,
+        url: process.env.NEON_BASE_HOST + url,
+        mode: 'no-cors',
+        headers: {
+            'X-APIKey': process.env.NEON_API_KEY
+        }
+    };
 
-        const response = await axios.request(options);
+    const response = await axios.request(options);
 
-        console.log('response', response.data);
-        result = response.data;
-    } catch (e) {
-        console.log('Error in request', e);
-    }
+    console.log('response', response.data);
+    const result = response.data;
     return result;
 }
 
@@ -231,54 +269,6 @@ export async function getNeonSitemap(siteName) {
         console.log(e);
     }
     return result;
-}
-
-/**
- *
- */
-export async function getNeonSites() {
-    const cacheKey = 'sites';
-    let sites = null;
-    sites = cacheData.get(cacheKey);
-    if (sites) {
-        console.log('getting cached sites structure');
-        return sites;
-    }
-    console.log('fetching sitemap from Cobalt');
-
-    try {
-        const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live`;
-
-        const options = {
-            method: 'GET',
-            httpAgent: agent,
-            url: apiUrl,
-            mode: 'no-cors',
-            headers: {
-                'X-APIKey': process.env.NEON_API_KEY,
-                'X-Cobalt-Tenant': 'globe'
-            }
-        };
-
-        const response = await axios.request(options);
-        sites = response.data;
-    } catch (e) {
-        console.log(e);
-    }
-
-    if (sites) {
-        sites = await Promise.all(
-            sites.map(async site => {
-                const sitemap = await getNeonSitemap(site.root.name);
-                return {
-                    ...site,
-                    sitemap
-                };
-            })
-        );
-    }
-    cacheData.put(cacheKey, sites, COMMON_DATA_CACHE_TTL_SECONDS * 1000);
-    return sites;
 }
 
 /**
