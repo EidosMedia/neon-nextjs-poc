@@ -14,6 +14,7 @@ import NextLink from 'next/link';
 import { Link as MUILink, CardActionArea } from '@mui/material';
 import { Box } from '@mui/system';
 import { getImageFormatUrl } from '../../lib/neon-cms/neon-helpers';
+import { Variant } from '@mui/material/styles/createTypography';
 
 /**
  *
@@ -251,7 +252,7 @@ export default function StoryFragment({ neonData, gridContext }) {
     if (cloudinaryVideo) {
         mediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
     } else if (image) {
-        mediaBlock = <Image src={image} width={imageWidth} height={imageHeight} />;
+        mediaBlock = <Image src={image} width={imageWidth} height={imageHeight} alt="" />;
     }
 
     return (
@@ -269,7 +270,7 @@ export default function StoryFragment({ neonData, gridContext }) {
                     <CardActionArea>
                         <CardContent sx={{ py: 0, px: 0 }}>
                             {templateName.includes('head') || templateName.includes('list') ? (
-                                <Typography gutterBottom variant={headlineVariant} component="div">
+                                <Typography gutterBottom variant={headlineVariant as Variant} component="div">
                                     {headline}
                                     {additionalLinksInlineRender}
                                 </Typography>
@@ -308,7 +309,7 @@ export default function StoryFragment({ neonData, gridContext }) {
                     <CardActionArea>
                         <CardContent sx={{ py: 0, px: 0 }}>
                             {templateName.includes('head') || templateName.includes('list') ? (
-                                <Typography gutterBottom variant={headlineVariantSm} component="div">
+                                <Typography gutterBottom variant={headlineVariantSm as Variant} component="div">
                                     {headline}
                                     {additionalLinksInlineRender}
                                 </Typography>

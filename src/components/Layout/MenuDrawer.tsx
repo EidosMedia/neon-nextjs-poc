@@ -68,7 +68,7 @@ export default function MenuDrawer({ neonData }) {
         sitesRender = siteStructure
             .filter(site => site?.root?.name !== currentSite && site?.headless)
             .map((site, i) => (
-                <Link key={i} href={getLiveHostname(site, true)} passHref prefetch={!neonData.previewData}>
+                <Link key={i} href={getLiveHostname(site)} passHref prefetch={!neonData.previewData}>
                     <ListItem button component="a">
                         <ListItemText disableTypography primary={<Typography variant="h6">{site?.title}</Typography>} />
                     </ListItem>
@@ -114,7 +114,7 @@ export default function MenuDrawer({ neonData }) {
                                     {logoOverlay}.
                                 </Typography>
                             ) : null}
-                            <Image src={logo} />
+                            <Image src={logo} alt="" />
                         </Box>
                         <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
                             {logoOverlay ? (
@@ -122,7 +122,7 @@ export default function MenuDrawer({ neonData }) {
                                     {logoOverlay}.
                                 </Typography>
                             ) : null}
-                            <Image src={logo} />
+                            <Image src={logo} alt="" />
                         </Box>
                         <Box>
                             <IconButton

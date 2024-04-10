@@ -4,6 +4,11 @@ import LiveblogFragment from './LiveblogFragment';
 import StoryFragment from './StoryFragment';
 import AnalyticsFragmentOverlay from '../Analytics/AnalyticsFragmentOverlay';
 import BreakingNewsFragment from './BreakingNewsFragment';
+import { GenericPageProps } from 'src/types/commonTypes';
+
+type GenericFragmentProps = GenericPageProps & {
+    gridContext?: any;
+};
 
 /**
  *
@@ -12,7 +17,7 @@ import BreakingNewsFragment from './BreakingNewsFragment';
  * @param root0.analyticsReport
  * @param root0.gridContext
  */
-export default function GenericFragment({ neonData, analyticsReport, gridContext }) {
+const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, analyticsReport, gridContext }) => {
     let render = null;
 
     if (neonData) {
@@ -20,7 +25,7 @@ export default function GenericFragment({ neonData, analyticsReport, gridContext
             case 'article':
                 switch (neonData.object.data.sys.type) {
                     case 'breakingnews':
-                        render = <BreakingNewsFragment neonData={neonData} gridContext={gridContext} />;
+                        render = <BreakingNewsFragment neonData={neonData} />;
                         break;
                     default:
                         render = <StoryFragment neonData={neonData} gridContext={gridContext} />;
@@ -44,4 +49,6 @@ export default function GenericFragment({ neonData, analyticsReport, gridContext
     }
 
     return render;
-}
+};
+
+export default GenericFragment;

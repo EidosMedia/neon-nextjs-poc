@@ -14,6 +14,8 @@ import SportsSoccerSharpIcon from '@mui/icons-material/SportsSoccerSharp';
 import CelebrationSharpIcon from '@mui/icons-material/CelebrationSharp';
 import StyleSharpIcon from '@mui/icons-material/StyleSharp';
 import LinkIcon from '@mui/icons-material/Link';
+import React from 'react';
+import { Variant } from '@mui/material/styles/createTypography';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -129,10 +131,10 @@ export default function LiveblogPage({ neonData }) {
                                         eventData = {
                                             eventText: 'Goal',
                                             eventIcon: (
-                                                <React.Fragment>
+                                                <>
                                                     <SportsSoccerSharpIcon fontSize="large" color="secondary" />
                                                     <CelebrationSharpIcon fontSize="large" color="secondary" />
-                                                </React.Fragment>
+                                                </>
                                             ),
                                             eventTime: computeEventTime(post, eventStartDate)
                                         };
@@ -342,7 +344,7 @@ export default function LiveblogPage({ neonData }) {
                                         </Box>
                                     ) : null}
                                     {!eventData ? contentRender : null}
-                                    <SharePostBlock post={post} sx={{ marginLeft: 'auto' }} />
+                                    <SharePostBlock post={post} />
                                 </Box>
                             );
                         }
@@ -383,10 +385,15 @@ export default function LiveblogPage({ neonData }) {
     return render;
 }
 
+type BlockProps = {
+    neonData?: any;
+    styleVariant?: string;
+};
+
 /**
  *
  */
-function MainImageBlock({ neonData, styleVariant }) {
+const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let mainPictureElement = null;
     let mainImageUrl = null;
     let cloudinaryVideo = null;
@@ -424,15 +431,11 @@ function MainImageBlock({ neonData, styleVariant }) {
     if (cloudinaryVideo) {
         mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
     } else if (mainImageUrl) {
-        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} />;
+        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
     }
 
-    let justify = 'center';
-    let maxWidth = 'md';
-    if (styleVariant && styleVariant === 'leftAligned') {
-        justify = 'left';
-        maxWidth = 'lg';
-    }
+    const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
+    const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
 
     const render = (
         <Container sx={{ my: 2 }} maxWidth={maxWidth}>
@@ -442,7 +445,7 @@ function MainImageBlock({ neonData, styleVariant }) {
         </Container>
     );
     return render;
-}
+};
 
 /**
  *
@@ -501,7 +504,7 @@ function computeEventTime(post, eventStartDate) {
             parseInt(postDateString.substring(8, 10)), // Hours
             parseInt(postDateString.substring(10, 12)), // Minutes
             parseInt(postDateString.substring(12, 14)) // Seconds
-        );
+        ).getTime();
 
         const eventDate = new Date(
             parseInt(eventStartDate.substring(0, 4)), // Year
@@ -510,7 +513,7 @@ function computeEventTime(post, eventStartDate) {
             parseInt(eventStartDate.substring(8, 10)), // Hours
             parseInt(eventStartDate.substring(10, 12)), // Minutes
             parseInt(eventStartDate.substring(12, 14)) // Seconds
-        );
+        ).getTime();
 
         const deltaSeconds = (postDate - eventDate) / 1000;
         console.log(deltaSeconds);

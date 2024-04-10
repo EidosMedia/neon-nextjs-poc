@@ -329,8 +329,7 @@ async function getSegmentAnalyticsReport(neonData) {
     }
 
     const hostName = getLiveHostname(
-        neonData.siteContext.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData)),
-        true
+        neonData.siteContext.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData))
     );
 
     const topPages = await getGaTopContentPagesReport(hostName);
@@ -371,8 +370,7 @@ async function getLandingPageAnalyticsReport(neonData) {
     // }
 
     const hostName = getLiveHostname(
-        neonData.siteContext.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData)),
-        true
+        neonData.siteContext.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData))
     );
 
     const topPages = await getGaTopContentPagesReport(hostName);
@@ -395,8 +393,7 @@ async function getPageAnalyticsReport(neonData) {
     let url = null;
     try {
         url = getLiveHostname(
-            neonData.siteContext.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData)),
-            true
+            neonData.siteContext.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData))
         );
     } catch (e) {}
 

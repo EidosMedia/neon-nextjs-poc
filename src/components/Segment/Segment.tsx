@@ -13,6 +13,7 @@ import {
 import GenericFragment from '../Fragment/GenericFragment';
 import AbTestingPreviewController from '../AbTesting/AbTestingPreviewController';
 import { experiments } from '../../../abtesting.config';
+import { GenericPageProps } from 'src/types/commonTypes';
 
 /**
  *
@@ -20,7 +21,7 @@ import { experiments } from '../../../abtesting.config';
  * @param root0.neonData
  * @param root0.analyticsReport
  */
-export default function Segment({ neonData, analyticsReport }) {
+const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
     const defaultVariantId = `${experiments[0].id}.${experiments[0].variants[0].id}`;
 
     const [previewVariant, setPreviewVariant] = React.useState(defaultVariantId);
@@ -322,7 +323,7 @@ export default function Segment({ neonData, analyticsReport }) {
                 siteInfo = neonData.siteContext.siteStructure?.find(
                     site => site.name === getObjectMainSite(neonData.object.data)
                 );
-                otherSiteBaseUrl = getLiveHostname(siteInfo, true);
+                otherSiteBaseUrl = getLiveHostname(siteInfo);
             }
             sectionUrl = getObjectMainSection(neonData.object.data);
             finalUrl = (otherSiteBaseUrl || '') + sectionUrl;
@@ -393,4 +394,6 @@ export default function Segment({ neonData, analyticsReport }) {
     }
 
     return render;
-}
+};
+
+export default Segment;

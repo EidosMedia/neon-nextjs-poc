@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material';
+import { Breakpoint, Container, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Image from 'next/image';
 // import HTMLComment from "react-html-comment";
@@ -7,6 +7,8 @@ import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil'
 import ResourceResolver from '../../utils/ResourceResolver';
 import BreadCrumb from '../Furnitures/BreadCrumb';
 import RenderContentElement, { CloudinaryVideo } from '../RenderContent/RenderContentElement';
+import React from 'react';
+import { Block } from 'typescript';
 
 /**
  *
@@ -76,13 +78,18 @@ export default function ArticlePage({ neonData }) {
     return render;
 }
 
+type BlockProps = {
+    neonData: any;
+    styleVariant?: any;
+};
+
 /**
  *
  * @param root0
  * @param root0.neonData
  * @param root0.styleVariant
  */
-function BeyondWordsBlock({ neonData, styleVariant }) {
+const BeyondWordsBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let render = null;
     try {
         if (neonData.object.data.attributes.AudioId) {
@@ -98,7 +105,7 @@ function BeyondWordsBlock({ neonData, styleVariant }) {
         }
     } catch (e) {}
     return render;
-}
+};
 
 /**
  *
@@ -106,7 +113,7 @@ function BeyondWordsBlock({ neonData, styleVariant }) {
  * @param root0.neonData
  * @param root0.styleVariant
  */
-function BreadcrumbBlock({ neonData, styleVariant }) {
+const BreadcrumbBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let justify = 'center';
     let maxWidth = 'md';
     if (styleVariant && styleVariant === 'leftAligned') {
@@ -115,14 +122,14 @@ function BreadcrumbBlock({ neonData, styleVariant }) {
     }
 
     const render = (
-        <Container sx={{ my: 0 }} maxWidth={maxWidth}>
+        <Container sx={{ my: 0 }} maxWidth={maxWidth as Breakpoint}>
             <Box display="flex" justifyContent={justify} alignItems={justify}>
                 <BreadCrumb neonData={neonData} />
             </Box>
         </Container>
     );
     return render;
-}
+};
 
 /**
  *
@@ -130,7 +137,7 @@ function BreadcrumbBlock({ neonData, styleVariant }) {
  * @param root0.neonData
  * @param root0.styleVariant
  */
-function HeadlineBlock({ neonData, styleVariant }) {
+const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let headline = null;
     try {
         headline = (
@@ -140,15 +147,11 @@ function HeadlineBlock({ neonData, styleVariant }) {
         );
     } catch (e) {}
 
-    let justify = 'center';
-    let maxWidth = 'md';
-    if (styleVariant && styleVariant === 'leftAligned') {
-        justify = 'left';
-        maxWidth = 'lg';
-    }
+    const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
+    const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
 
     const render = (
-        <Container sx={{ my: 1 }} maxWidth={maxWidth}>
+        <Container sx={{ my: 1 }} maxWidth={maxWidth as Breakpoint}>
             <Box display="flex" justifyContent={justify} alignItems={justify}>
                 <Typography
                     align={justify}
@@ -163,7 +166,7 @@ function HeadlineBlock({ neonData, styleVariant }) {
     );
 
     return render;
-}
+};
 
 /**
  *
@@ -171,7 +174,7 @@ function HeadlineBlock({ neonData, styleVariant }) {
  * @param root0.neonData
  * @param root0.styleVariant
  */
-function SummaryBlock({ neonData, styleVariant }) {
+const SummaryBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let summary = null;
     try {
         summary = (
@@ -181,12 +184,8 @@ function SummaryBlock({ neonData, styleVariant }) {
         );
     } catch (e) {}
 
-    let justify = 'center';
-    let maxWidth = 'md';
-    if (styleVariant && styleVariant === 'leftAligned') {
-        justify = 'left';
-        maxWidth = 'lg';
-    }
+    const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
+    const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
 
     let render = null;
     if (summary) {
@@ -201,7 +200,7 @@ function SummaryBlock({ neonData, styleVariant }) {
         );
     }
     return render;
-}
+};
 
 /**
  *
@@ -209,7 +208,7 @@ function SummaryBlock({ neonData, styleVariant }) {
  * @param root0.neonData
  * @param root0.styleVariant
  */
-function MainImageBlock({ neonData, styleVariant }) {
+const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let mainPictureElement = null;
     let mainImageUrl = null;
     let cloudinaryVideo = null;
@@ -244,15 +243,11 @@ function MainImageBlock({ neonData, styleVariant }) {
     if (cloudinaryVideo) {
         mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
     } else if (mainImageUrl) {
-        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} />;
+        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
     }
 
-    let justify = 'center';
-    let maxWidth = 'md';
-    if (styleVariant && styleVariant === 'leftAligned') {
-        justify = 'left';
-        maxWidth = 'lg';
-    }
+    const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
+    const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
 
     const render = (
         <Container sx={{ my: 2 }} maxWidth={maxWidth}>
@@ -262,7 +257,7 @@ function MainImageBlock({ neonData, styleVariant }) {
         </Container>
     );
     return render;
-}
+};
 
 /**
  *
@@ -270,7 +265,7 @@ function MainImageBlock({ neonData, styleVariant }) {
  * @param root0.neonData
  * @param root0.styleVariant
  */
-function ContentBlock({ neonData, styleVariant }) {
+const ContentBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let content = null;
     try {
         content = (
@@ -287,4 +282,4 @@ function ContentBlock({ neonData, styleVariant }) {
     console.log(content);
 
     return content;
-}
+};

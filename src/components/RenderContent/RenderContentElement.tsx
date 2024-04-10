@@ -1,7 +1,5 @@
-import { useRouter } from 'next/dist/client/router';
 import ResourceResolver from '../../utils/ResourceResolver';
 import RenderFormattedText from './RenderFormattedText';
-import { Video, Transformation } from '@cloudinary/react';
 import React from 'react';
 import { Container, Typography, Paper, Link as MUILink } from '@mui/material';
 import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
@@ -13,6 +11,14 @@ import { getNeonDataHelper, getImageFormatUrl } from '../../lib/neon-cms/neon-he
 import InlinePoll from './InlinePoll';
 import SimpleMap from './SimpleMap';
 import Card from './Card';
+import { GenericPageProps } from 'src/types/commonTypes';
+import { AlignPropertyParams } from '@mui/material/styles/cssUtils';
+
+type RenderContentElementProps = Partial<GenericPageProps> & {
+    jsonElement: any;
+    excludeElements?: string[];
+    renderMode?: string;
+};
 
 /**
  *
@@ -22,7 +28,12 @@ import Card from './Card';
  * @param root0.renderMode
  * @param root0.neonData
  */
-export default function RenderContentElement({ jsonElement, excludeElements, renderMode, neonData }) {
+const RenderContentElement: React.FC<RenderContentElementProps> = ({
+    jsonElement,
+    excludeElements,
+    renderMode,
+    neonData
+}) => {
     let render = null;
     const id = null;
     try {
@@ -54,12 +65,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                     render = (
                         <React.Fragment>
                             {jsonElement.elements.map((subel, i) => (
-                                <RenderFormattedText
-                                    key={i}
-                                    jsonElement={subel}
-                                    renderMode={renderMode}
-                                    neonData={neonData}
-                                />
+                                <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
                             ))}
                         </React.Fragment>
                     );
@@ -83,12 +89,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         render = (
                             <React.Fragment>
                                 {jsonElement.elements.map((subel, i) => (
-                                    <RenderFormattedText
-                                        key={i}
-                                        jsonElement={subel}
-                                        renderMode={renderMode}
-                                        neonData={neonData}
-                                    />
+                                    <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
                                 ))}
                             </React.Fragment>
                         );
@@ -348,82 +349,83 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
                         );
                     }
                     break;
-                case 'thead':
-                    const theadAttr = jsonElement.attributes;
-                    const theadAlign = theadAttr ? theadAttr.align : null;
-                    const theadValign = theadAttr ? theadAttr.valign : null;
-                    const theadColspan = theadAttr ? theadAttr.colspan : null;
-                    render = (
-                        <thead align={theadAlign} valign={theadValign} colSpan={theadColspan}>
-                            {jsonElement.elements
-                                ? jsonElement.elements.map((subel, i) => (
-                                      <RenderContentElement
-                                          key={i}
-                                          jsonElement={subel}
-                                          excludeElements={excludeElements}
-                                          renderMode={renderMode}
-                                          neonData={neonData}
-                                      />
-                                  ))
-                                : null}
-                        </thead>
-                    );
-                    break;
-                case 'tbody':
-                    const tbodyAttr = jsonElement.attributes;
-                    const tbodyAlign = tbodyAttr ? tbodyAttr.align : null;
-                    const tbodyValign = tbodyAttr ? tbodyAttr.valign : null;
-                    const tbodyColspan = tbodyAttr ? tbodyAttr.colspan : null;
-                    render = (
-                        <tbody align={tbodyAlign} valign={tbodyValign} colSpan={tbodyColspan}>
-                            {jsonElement.elements
-                                ? jsonElement.elements.map((subel, i) => (
-                                      <RenderContentElement
-                                          key={i}
-                                          jsonElement={subel}
-                                          excludeElements={excludeElements}
-                                          renderMode={renderMode}
-                                          neonData={neonData}
-                                      />
-                                  ))
-                                : null}
-                        </tbody>
-                    );
-                    break;
-                case 'tr':
-                    const trAttr = jsonElement.attributes;
-                    const trAlign = trAttr ? trAttr.align : null;
-                    const trValign = trAttr ? trAttr.valign : null;
-                    render = (
-                        <tr align={trAlign} valign={trValign}>
-                            {jsonElement.elements
-                                ? jsonElement.elements.map((subel, i) => (
-                                      <RenderContentElement
-                                          key={i}
-                                          jsonElement={subel}
-                                          excludeElements={excludeElements}
-                                          renderMode={renderMode}
-                                          neonData={neonData}
-                                      />
-                                  ))
-                                : null}
-                        </tr>
-                    );
-                    break;
-                case 'td':
-                    const tdAttr = jsonElement.attributes;
-                    const tdAlign = tdAttr ? tdAttr.align : null;
-                    const tdValign = tdAttr ? tdAttr.valign : null;
-                    render = (
-                        <td align={tdAlign} valign={tdValign}>
-                            {jsonElement.elements
-                                ? jsonElement.elements.map((subel, i) => (
-                                      <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
-                                  ))
-                                : null}
-                        </td>
-                    );
-                    break;
+                // case 'thead':
+                //     const theadAttr = jsonElement.attributes;
+                //     const theadAlign = theadAttr ? theadAttr.align : null;
+                //     const theadValign = theadAttr ? theadAttr.valign : null;
+                //     const theadColspan = theadAttr ? theadAttr.colspan : null;
+                //     render = (
+                //         // <thead align={theadAlign} vAlign={theadValign} colSpan={theadColspan}>
+                //         <thead aligh>
+                //             {jsonElement.elements
+                //                 ? jsonElement.elements.map((subel, i) => (
+                //                       <RenderContentElement
+                //                           key={i}
+                //                           jsonElement={subel}
+                //                           excludeElements={excludeElements}
+                //                           renderMode={renderMode}
+                //                           neonData={neonData}
+                //                       />
+                //                   ))
+                //                 : null}
+                //         </thead>
+                //     );
+                //     break;
+                // case 'tbody':
+                //     const tbodyAttr = jsonElement.attributes;
+                //     const tbodyAlign = tbodyAttr ? tbodyAttr.align : null;
+                //     const tbodyValign = tbodyAttr ? tbodyAttr.valign : null;
+                //     const tbodyColspan = tbodyAttr ? tbodyAttr.colspan : null;
+                //     render = (
+                //         <tbody align={tbodyAlign} valign={tbodyValign} colSpan={tbodyColspan}>
+                //             {jsonElement.elements
+                //                 ? jsonElement.elements.map((subel, i) => (
+                //                       <RenderContentElement
+                //                           key={i}
+                //                           jsonElement={subel}
+                //                           excludeElements={excludeElements}
+                //                           renderMode={renderMode}
+                //                           neonData={neonData}
+                //                       />
+                //                   ))
+                //                 : null}
+                //         </tbody>
+                //     );
+                //     break;
+                // case 'tr':
+                //     const trAttr = jsonElement.attributes;
+                //     const trAlign = trAttr ? trAttr.align : null;
+                //     const trValign = trAttr ? trAttr.valign : null;
+                //     render = (
+                //         <tr align={trAlign} valign={trValign}>
+                //             {jsonElement.elements
+                //                 ? jsonElement.elements.map((subel, i) => (
+                //                       <RenderContentElement
+                //                           key={i}
+                //                           jsonElement={subel}
+                //                           excludeElements={excludeElements}
+                //                           renderMode={renderMode}
+                //                           neonData={neonData}
+                //                       />
+                //                   ))
+                //                 : null}
+                //         </tr>
+                //     );
+                //     break;
+                // case 'td':
+                //     const tdAttr = jsonElement.attributes;
+                //     const tdAlign = tdAttr ? tdAttr.align : null;
+                //     const tdValign = tdAttr ? tdAttr.valign : null;
+                //     render = (
+                //         <td align={tdAlign} valign={tdValign}>
+                //             {jsonElement.elements
+                //                 ? jsonElement.elements.map((subel, i) => (
+                //                       <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
+                //                   ))
+                //                 : null}
+                //         </td>
+                //     );
+                //     break;
                 case 'embed':
                     // TODO
                     const cdata = jsonElement.elements.filter(el => (el.type = 'CDATA')).map(el => el.cdata);
@@ -531,7 +533,7 @@ export default function RenderContentElement({ jsonElement, excludeElements, ren
         }
     } catch (error) {}
     return render;
-}
+};
 
 // function Poll({ jsonElement, neonData }) {
 //     //TODO real react component with state and interaction
@@ -597,7 +599,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
                 {renderMode === 'newsletter' ? (
                     <img src={imageUrl} width={imageWidth} height={imageHeight} />
                 ) : (
-                    <Image src={imageUrl} width={imageWidth} height={imageHeight} />
+                    <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" />
                 )}
             </Box>
         </Container>
@@ -693,7 +695,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
                 );
                 const linkedObject = neonData.pageContext.nodes[el.attributes['data-id']];
                 if (linkedObject) {
-                    const linkedObjectHelper = getNeonDataHelper(linkedObject);
+                    const linkedObjectHelper: any = getNeonDataHelper(linkedObject);
 
                     let linkedObjectMainPictureElement = null;
                     let linkedObjectMainImageUrl = null;
@@ -726,7 +728,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
                             linkImage = <img src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />;
                         } else {
                             linkImage = (
-                                <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} />
+                                <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} alt="" />
                             );
                         }
                     }
@@ -767,6 +769,15 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
     return render;
 }
 
+export default RenderContentElement;
+
+type CloudinaryVideoProps = {
+    jsonElement: any;
+    excludeElements?: string[];
+    renderMode?: string;
+    neonData?: any;
+};
+
 /**
  *
  * @param root0
@@ -775,12 +786,17 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
  * @param root0.renderMode
  * @param root0.neonData
  */
-export function CloudinaryVideo({ jsonElement, excludeElements, renderMode, neonData }) {
+export const CloudinaryVideo: React.FC<CloudinaryVideoProps> = ({
+    jsonElement,
+    excludeElements,
+    renderMode,
+    neonData
+}) => {
     const videoSrc = jsonElement.elements[0].attributes.src;
     const videoSrcArray = videoSrc.split('/');
     const videoFileName = videoSrcArray.slice(-1)[0];
     const videoId = videoFileName.substring(0, videoFileName.lastIndexOf('.'));
-    let render = <Video cloudName="eidosmedia-test" publicId={videoId} controls="true" width="100%"></Video>;
+    let render = <></>;
 
     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
         render = (
@@ -793,4 +809,4 @@ export function CloudinaryVideo({ jsonElement, excludeElements, renderMode, neon
     }
 
     return render;
-}
+};
