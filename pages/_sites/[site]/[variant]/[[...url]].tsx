@@ -145,7 +145,6 @@ export async function getStaticProps(context) {
     let neonData = null;
 
     if (context.previewData) {
-        console.log(`Preview mode: ${context.previewData}`);
         neonData = await getNeonPreview(context.previewData);
     } else {
         let url = '/';

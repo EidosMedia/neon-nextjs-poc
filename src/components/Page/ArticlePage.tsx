@@ -284,7 +284,5 @@ function ContentBlock({ neonData, styleVariant }) {
         console.log(e);
     }
 
-    console.log(content);
-
     return content;
 }

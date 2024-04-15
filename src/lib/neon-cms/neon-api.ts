@@ -117,12 +117,12 @@ export async function getNeonPreview(previewData) {
     } catch (e) {}
 
     const jwe = previewData['emk.jwe'];
-    const previewToken = previewData['emk.previewToken'];
-    const siteName = previewData['emk.site'];
+    const previewToken = previewData['emk.previewToken'] || previewData['emauth'];
+    const siteName = previewData['emk.site'] || process.env.DEV_FORCE_SITE;
 
-    const url = `/api/pages/${previewData['emk.foreignId']}@eom?emk.site=${encodeURIComponent(
+    const url = `/api/pages/${previewData['url'][0]}?emk.site=${encodeURIComponent(
         siteName
-    )}&emk.previewSection=${previewData['emk.previewSection']}&emk.disableCache=true`;
+    )}%5BPREVIEW%5D&emk.previewSection=${previewData['emk.previewSection']}&emk.disableCache=true&emk.toNormalize=true`;
 
     let pageData = null;
 
@@ -133,11 +133,8 @@ export async function getNeonPreview(previewData) {
             url: process.env.NEON_BASE_HOST + url,
             mode: 'no-cors',
             headers: {
-                'X-APIKey': process.env.NEON_API_KEY,
-                'X-Cobalt-Tenant': 'globe',
-                Authorization: `Bearer ${jwe}`,
-                Cookie: `emk.previewToken=${previewToken};`
-            }
+                emauth: previewToken
+            },
         };
 
         const response = await axios.request(options);
@@ -147,8 +144,8 @@ export async function getNeonPreview(previewData) {
     }
 
     const previewInfo = {
-        previewToken,
-        jwe,
+        previewToken: (previewToken && previewToken) || null,
+        jwe: (jwe && jwe) || null,
         basePreviewUrl: process.env.NEON_BASE_HOST // TODO not needed?
     };
 
