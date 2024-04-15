@@ -2,8 +2,14 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 // import HTMLComment from "react-html-comment";
 import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from '../../lib/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
-import { node } from 'prop-types';
 import GenericWidget from '../Widgets/GenericWidget';
+
+type SemiAutomaticSectionPageProps = {
+    neonData: any;
+    pageTitle: string;
+    analyticsReport?: any;
+    semanticSearchData?: any;
+};
 
 /**
  *
@@ -13,7 +19,12 @@ import GenericWidget from '../Widgets/GenericWidget';
  * @param root0.analyticsReport
  * @param root0.semanticSearchData
  */
-export default function SemiAutomaticSectionPage({ neonData, pageTitle, analyticsReport, semanticSearchData }) {
+export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> = ({
+    neonData,
+    pageTitle,
+    analyticsReport,
+    semanticSearchData
+}) => {
     // Swing quick open
     let uuid = null;
     try {
@@ -129,4 +140,6 @@ export default function SemiAutomaticSectionPage({ neonData, pageTitle, analytic
     );
 
     return render;
-}
+};
+
+export default SemiAutomaticSectionPage;

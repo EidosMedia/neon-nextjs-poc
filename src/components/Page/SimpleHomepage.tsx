@@ -5,6 +5,7 @@ import BreakingNewsFragment from '../Fragment/BreakingNewsFragment';
 import GenericFragment from '../Fragment/GenericFragment';
 import Segment from '../Segment/Segment';
 import GenericWidget from '../Widgets/GenericWidget';
+import { GenericPageProps } from 'src/types/commonTypes';
 
 /**
  *
@@ -13,7 +14,7 @@ import GenericWidget from '../Widgets/GenericWidget';
  * @param root0.pageTitle
  * @param root0.analyticsReport
  */
-export default function SimpleHomepage({ neonData, pageTitle, analyticsReport }) {
+const SimpleHomepage: React.FC<GenericPageProps> = ({ neonData, pageTitle, analyticsReport }) => {
     // Swing quick open
     let uuid = null;
     try {
@@ -158,4 +159,6 @@ export default function SimpleHomepage({ neonData, pageTitle, analyticsReport })
     );
 
     return render;
-}
+};
+
+export default SimpleHomepage;

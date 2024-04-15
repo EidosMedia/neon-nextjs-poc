@@ -1,4 +1,5 @@
 import { Box, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import React from 'react';
@@ -126,11 +127,11 @@ function SmartQueryFragment({ data, includeSummary, gridContext }) {
     render = (
         <React.Fragment>
             <Card square elevation={0} sx={{ display: { xs: 'none', md: 'block' } }}>
-                <Image src={data.metadata.url} width={imageWidth} height={imageHeight} />
+                <Image src={data.metadata.url} width={imageWidth} height={imageHeight} alt="" />
                 <NextLink href={myUrl}>
                     <CardActionArea>
                         <CardContent sx={{ py: 0, px: 0 }}>
-                            <Typography gutterBottom variant={headlineVariant} component="div">
+                            <Typography gutterBottom variant={headlineVariant as Variant} component="div">
                                 {data.metadata.headline}
                             </Typography>
                             {includeSummary ? (
@@ -151,11 +152,11 @@ function SmartQueryFragment({ data, includeSummary, gridContext }) {
                     borderColor: 'grey.500'
                 }}
             >
-                <Image src={data.metadata.url} width={imageWidth} height={imageHeight} />
+                <Image src={data.metadata.url} width={imageWidth} height={imageHeight} alt="" />
                 <NextLink href={myUrl}>
                     <CardActionArea>
                         <CardContent sx={{ py: 0, px: 0 }}>
-                            <Typography gutterBottom variant={headlineVariant} component="div">
+                            <Typography gutterBottom variant={headlineVariant as Variant} component="div">
                                 {data.metadata.headline}
                             </Typography>
                             {includeSummary ? (

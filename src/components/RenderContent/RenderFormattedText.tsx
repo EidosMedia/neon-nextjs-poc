@@ -2,6 +2,12 @@ import NextLink from 'next/link';
 import { Link as MUILink } from '@mui/material';
 
 import React from 'react';
+import { GenericPageProps } from 'src/types/commonTypes';
+
+type RenderFormattedTextProps = {
+    jsonElement?: any;
+    neonData?: any;
+};
 
 /**
  *
@@ -9,7 +15,7 @@ import React from 'react';
  * @param root0.jsonElement
  * @param root0.neonData
  */
-export default function RenderFormattedText({ jsonElement, neonData }) {
+const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, neonData }) => {
     let render = null;
 
     switch (jsonElement.type) {
@@ -62,4 +68,6 @@ export default function RenderFormattedText({ jsonElement, neonData }) {
     }
 
     return render;
-}
+};
+
+export default RenderFormattedText;

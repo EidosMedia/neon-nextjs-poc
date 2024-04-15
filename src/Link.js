@@ -28,6 +28,8 @@ export const NextLinkComposed = React.forwardRef((props, ref) => {
     );
 });
 
+NextLinkComposed.displayName = 'NextLinkComposed';
+
 NextLinkComposed.propTypes = {
     href: PropTypes.any,
     linkAs: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),

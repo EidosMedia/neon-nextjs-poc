@@ -1,7 +1,6 @@
 import { useRouter } from 'next/dist/client/router';
 import ResourceResolver from '../../utils/ResourceResolver';
 import RenderFormattedText from './RenderFormattedText';
-import { Video, Transformation } from '@cloudinary/react';
 import React from 'react';
 import { Container, Typography, Paper, Link as MUILink } from '@mui/material';
 import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
@@ -11,6 +10,14 @@ import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link';
 import { getNeonDataHelper, getImageFormatUrl } from '../../lib/neon-cms/neon-helpers';
 import Card from './Card';
+import { GenericPageProps } from 'src/types/commonTypes';
+
+type RenderLiveblogPostElementProps = GenericPageProps & {
+    jsonElement?: any;
+    excludeElements?: string[];
+    renderMode?: string;
+    rawPost?: any;
+};
 
 /**
  *
@@ -21,7 +28,13 @@ import Card from './Card';
  * @param root0.rawPost
  * @param root0.neonData
  */
-export default function RenderLiveblogPostElement({ jsonElement, excludeElements, renderMode, rawPost, neonData }) {
+const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
+    jsonElement,
+    excludeElements,
+    renderMode,
+    rawPost,
+    neonData
+}) => {
     let render = null;
     const id = null;
     if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
@@ -224,7 +237,7 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
                     if (jsonElement.attributes.type === 'youtube') {
                         const { id } = jsonElement.attributes;
                         const url = `https://www.youtube.com/embed/${id}`;
-                        render = <iframe width="450" height="250" allowfullscreen="allowfullscreen" src={url} />;
+                        render = <iframe width="450" height="250" allowFullScreen={true} src={url} />;
                         if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                             render = (
                                 <Container sx={{ my: 2 }} maxWidth="md" component="div">
@@ -242,7 +255,15 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
         }
     }
     return render;
-}
+};
+
+export default RenderLiveblogPostElement;
+
+type BaseElementProps = {
+    jsonElement?: any;
+    excludeElements?: string[];
+    neonData?: any;
+};
 
 /**
  *
@@ -251,7 +272,7 @@ export default function RenderLiveblogPostElement({ jsonElement, excludeElements
  * @param root0.excludeElements
  * @param root0.neonData
  */
-function Figure({ jsonElement, excludeElements, neonData }) {
+const Figure: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neonData }) => {
     let render = null;
 
     let imageUrl = null;
@@ -270,14 +291,14 @@ function Figure({ jsonElement, excludeElements, neonData }) {
     render = (
         <Container sx={{ my: 4 }} maxWidth="md">
             <Box display="flex" justifyContent="center" alignItems="center">
-                <Image src={imageUrl} width={imageWidth} height={imageHeight} />
+                <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" />
                 {/* <img width="100%" src={imageUrl} /> */}
             </Box>
         </Container>
     );
 
     return render;
-}
+};
 
 /**
  *
@@ -286,7 +307,7 @@ function Figure({ jsonElement, excludeElements, neonData }) {
  * @param root0.excludeElements
  * @param root0.neonData
  */
-function FigureGallery({ jsonElement, excludeElements, neonData }) {
+const FigureGallery: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neonData }) => {
     let render = null;
     let images = [];
     try {
@@ -321,7 +342,7 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
         );
     } catch (e) {}
     return render;
-}
+};
 
 /**
  *
@@ -330,7 +351,7 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
  * @param root0.excludeElements
  * @param root0.neonData
  */
-function ContentLink({ jsonElement, excludeElements, neonData }) {
+const ContentLink: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neonData }) => {
     let render = null;
     let linkHeadline = null;
     let linkUrl = null;
@@ -358,4 +379,4 @@ function ContentLink({ jsonElement, excludeElements, neonData }) {
         </Container>
     );
     return render;
-}
+};

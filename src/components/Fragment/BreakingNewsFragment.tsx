@@ -9,9 +9,8 @@ import { findElementsInContentJson } from '../../utils/ContentUtil';
  *
  * @param root0
  * @param root0.neonData
- * @param root0.gridContext
  */
-export default function BreakingNewsFragment({ neonData, gridContext }) {
+export default function BreakingNewsFragment({ neonData }) {
     let templateName = '';
     if (neonData) {
         templateName = neonData.linkContext.linkTemplate;

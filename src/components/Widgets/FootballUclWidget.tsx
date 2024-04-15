@@ -73,7 +73,7 @@ export default function FootballUclWidget({ neonData, gridContext }) {
                             alignItems: 'center'
                         }}
                     >
-                        <Image width="50" height="50" src={teamALogo} />
+                        <Image width="50" height="50" src={teamALogo} alt="" />
                         <Typography sx={{ mx: 3 }} variant="h4">
                             {teamAName}
                         </Typography>
@@ -83,7 +83,7 @@ export default function FootballUclWidget({ neonData, gridContext }) {
                         <Typography sx={{ mx: 3 }} variant="h4">
                             {teamBName}
                         </Typography>
-                        <Image width="50" height="50" src={teamBLogo} />
+                        <Image width="50" height="50" src={teamBLogo} alt="" />
                     </Box>
                 </Container>
             );

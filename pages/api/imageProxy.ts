@@ -15,7 +15,7 @@ export default async (req, res) => {
                 Cookie: `emk.previewDefaultContent=false; emk.previewToken=${previewToken};`,
                 'X-APIKey': process.env.NEON_API_KEY
             },
-            responseType: 'stream'
+            responseType: 'stream' as const
         };
 
         const response = await axios.request(options);

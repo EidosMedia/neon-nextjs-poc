@@ -8,7 +8,7 @@ import MenuDrawer from './MenuDrawer';
  */
 export default function Layout(props) {
     const layout = (
-        <Container maxWidth="false">
+        <Container maxWidth="lg">
             <MenuDrawer {...props} />
 
             {props.children}

@@ -3,13 +3,14 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { findElementsInContentJson } from '../../utils/ContentUtil';
 import RenderContentElement from '../RenderContent/RenderContentElement';
+import { GenericPageProps } from 'src/types/commonTypes';
 
 /**
  *
  * @param root0
  * @param root0.neonData
  */
-export default function BasicNewsletter({ neonData }) {
+const BasicNewsletter: React.FC<GenericPageProps> = ({ neonData }) => {
     let render = null;
 
     let subject = null;
@@ -56,4 +57,6 @@ export default function BasicNewsletter({ neonData }) {
         </React.Fragment>
     );
     return render;
-}
+};
+
+export default BasicNewsletter;

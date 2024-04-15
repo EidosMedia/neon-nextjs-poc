@@ -30,7 +30,7 @@ export default function WeatherWidget({ neonData, gridContext }) {
             render = (
                 <Card square elevation={0}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Image src={weatherImage} height={100} width={100} />
+                        <Image src={weatherImage} height={100} width={100} alt="" />
                     </Box>
                     <CardContent
                         sx={{

@@ -96,7 +96,7 @@ export function getNeonDataHelper(data) {
  * @param variant
  */
 export function buildNeonDataFromPage(pageData, siteStructure, site, url, previewData, variant) {
-    const helper = getNeonDataHelper(pageData?.model?.data);
+    const helper: any = getNeonDataHelper(pageData?.model?.data);
 
     let linkContext = null;
     if (previewData && pageData?.model.data.sys.baseType === 'webpagefragment') {
@@ -131,13 +131,13 @@ export function buildNeonDataFromPage(pageData, siteStructure, site, url, previe
 }
 
 // Fallback children location in case of model building or not
-let childrens = null;
-try {
-    childrens = neonData.object.data.children; // this is where it is WITH model building
-    if (!childrens) {
-        childrens = neonData.pageContext.children; // this is where it is WITHOUT model building
-    }
-} catch (e) {}
+// let childrens = null;
+// try {
+//     childrens = neonData.object.data.children; // this is where it is WITH model building
+//     if (!childrens) {
+//         childrens = neonData.pageContext.children; // this is where it is WITHOUT model building
+//     }
+// } catch (e) {}
 
 /**
  *
@@ -239,7 +239,7 @@ export function getSectionChildrenObjects(neonData) {
  * @param neonData
  * @param zoneName
  */
-export function getDwxLinkedObjects(neonData, zoneName) {
+export function getDwxLinkedObjects(neonData, zoneName?) {
     if (!zoneName) {
         // When not specifying a zone, return all objects from all zones
         const zones = Object.keys(neonData.object.data.files.content.data.zones);
@@ -405,3 +405,5 @@ export function getImageFormatUrl(url, format) {
     const formatImageUrl = `${url.slice(0, strIndex)}/format/${format}${url.slice(strIndex)}`;
     return formatImageUrl;
 }
+
+export const getLiveHostname = (url: string): string => url;

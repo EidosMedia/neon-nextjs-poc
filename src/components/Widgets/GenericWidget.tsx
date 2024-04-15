@@ -1,8 +1,12 @@
-import { BreakfastDiningSharp } from '@mui/icons-material';
 import FootballUclWidget from './FootballUclWidget';
 import MarketsWidget from './MarketsWidget';
 import SmartQueryWidget from './SmartQueryWidget';
 import WeatherWidget from './WeatherWidget';
+import { GenericPageProps } from 'src/types/commonTypes';
+
+type GenericWidgetProps = GenericPageProps & {
+    gridContext?: any;
+};
 
 /**
  *
@@ -11,7 +15,7 @@ import WeatherWidget from './WeatherWidget';
  * @param root0.semanticSearchData
  * @param root0.gridContext
  */
-export default function GenericWidget({ neonData, semanticSearchData, gridContext }) {
+const GenericWidget: React.FC<GenericWidgetProps> = ({ neonData, semanticSearchData, gridContext }) => {
     let render = null;
     switch (neonData.object.data.title) {
         case 'markets':
@@ -34,4 +38,6 @@ export default function GenericWidget({ neonData, semanticSearchData, gridContex
             break;
     }
     return render;
-}
+};
+
+export default GenericWidget;

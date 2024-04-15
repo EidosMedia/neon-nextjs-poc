@@ -13,6 +13,7 @@ import Segment from '@/components/Segment/Segment';
 import { neonRequest, getNeonPageByUrl, getNeonPreview, getNeonSites } from '@/lib/neon-cms/neon-api';
 import { getMetaHeader } from '@/lib/helpers';
 import { pineconeRequest } from '@/lib/pinecone/pinecone-client';
+import { GenericPageProps } from 'src/types/commonTypes';
 
 /**
  *
@@ -167,7 +168,7 @@ export async function getStaticProps(context) {
         neonData = await getNeonPageByUrl(site, url, variant);
     }
 
-    const props = {
+    const props: GenericPageProps = {
         neonData
     };
 
