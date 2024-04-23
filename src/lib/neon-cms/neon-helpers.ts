@@ -95,7 +95,7 @@ export function getNeonDataHelper(data) {
  * @param previewData
  * @param variant
  */
-export function buildNeonDataFromPage(pageData, siteStructure, site, url, previewData, variant) {
+export function buildNeonDataFromPage(pageData, siteStructure, site, url, previewData) {
     const helper: any = getNeonDataHelper(pageData?.model?.data);
 
     let linkContext = null;
@@ -121,9 +121,6 @@ export function buildNeonDataFromPage(pageData, siteStructure, site, url, previe
         siteContext: {
             site,
             siteStructure
-        },
-        abTesting: {
-            variant
         },
         previewData
     };
@@ -154,7 +151,6 @@ export function buildneonDataForNestedObject(object, parentneonData, linkContext
         linkContext,
         siteContext: parentneonData.siteContext,
         pageContext: parentneonData.pageContext,
-        abTesting: parentneonData.abTesting,
         previewData: parentneonData.previewData
     };
     return neonData;
@@ -301,15 +297,16 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
  * @param hostName
  * @param sites
  */
-export function getSiteNameByHostName(hostName, sites) {
+export function getSiteNameByHostName(hostname, sites) {
     let site = null;
-    console.log('getSiteNameByHostName - hostName:' + hostName);
+    console.log('getSiteNameByHostName - name', hostname);
     if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
         return process.env.DEV_FORCE_SITE;
     }
 
     if (sites != null && sites.length) {
-        site = sites.find(site => hostName === site.root.hostname);
+        console.log('hostname');
+        site = sites.find(site => hostname === site.root.hostname);
     }
 
     if (site) {

@@ -35,7 +35,7 @@ export async function getNeonSites() {
         const response = await axios.request(options);
         sites = response.data;
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 
     if (sites) {
@@ -59,23 +59,35 @@ export async function getNeonSites() {
  * @param url
  * @param variant
  */
-export async function getNeonPageByUrl(hostName, url, variant) {
+export async function getNeonPageByUrl(url) {
+    console.log('url', url);
     let siteStructure = null;
     try {
         siteStructure = await getNeonSites();
     } catch (e) {}
 
-    const siteName = getSiteNameByHostName(hostName, siteStructure);
+    console.log('siteStructure', siteStructure);
+
+    const urlObject = new URL(url);
+
+    const hostName = urlObject.hostname;
+    const protocol = urlObject.protocol;
+
+    const hostnameWithProtocol = `${protocol}//${hostName}`;
+
+    const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
     let neonData = null;
 
     if (siteName) {
         let pageData = null;
 
-        const requestUrl = `/api/pages?url=${url}&emk.site=${siteName}`;
-        console.log(`Getting cobalt data from ${requestUrl}`);
+        const requestUrl = `/api/pages?url=${url.replace(
+            `${hostnameWithProtocol}:${urlObject.port}`,
+            ''
+        )}&emk.site=${siteName}`;
         pageData = await neonRequest(requestUrl);
 
-        neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, url, null, variant);
+        neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, url, null);
     } else {
         neonData = {
             error: 'not-found'
@@ -101,7 +113,7 @@ export async function getNeonPageById(id, siteName, foreignId = false) {
     const requestUrl = `/api/pages/${foreignId ? 'foreignid/' : ''}${id}?emk.site=${siteName}`;
     pageData = await neonRequest(requestUrl);
 
-    const neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, null, null, null);
+    const neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, null, null);
 
     return neonData;
 }
@@ -134,7 +146,7 @@ export async function getNeonPreview(previewData) {
             mode: 'no-cors',
             headers: {
                 emauth: previewToken
-            },
+            }
         };
 
         const response = await axios.request(options);
@@ -149,7 +161,7 @@ export async function getNeonPreview(previewData) {
         basePreviewUrl: process.env.NEON_BASE_HOST // TODO not needed?
     };
 
-    const neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, '/preview', previewInfo, null);
+    const neonData = buildNeonDataFromPage(pageData, siteStructure, siteName, '/preview', previewInfo);
 
     return neonData;
 }
@@ -284,7 +296,6 @@ export async function getNeonSeoSitemap(hostName, url) {
 
     if (siteName) {
         const requestUrl = `/${url}?emk.site=${siteName}`;
-        console.log(`Getting cobalt data from ${requestUrl}`);
         sitemapData = await neonRequest(requestUrl);
     }
 

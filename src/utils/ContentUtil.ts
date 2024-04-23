@@ -23,8 +23,15 @@ export function findElementsInContentJson(elementNames, json) {
 export function getImageUrl(jsonElement, imageClass, neonData) {
     let imageUrl = null;
     try {
-        imageUrl = jsonElement.elements.find(el => el.attributes.class === imageClass).attributes.src;
-    } catch (e) {}
+        imageUrl = jsonElement.elements.find(el => el.attributes.class.includes(imageClass)).attributes.src;
+    } catch (e) {
+        console.log('cannot find url with for imageClass', imageClass);
+    }
+
+    if (!imageUrl) {
+        return '/static/img/nothumb.jpeg';
+    }
+
     if (imageUrl.startsWith('cobalt:') && neonData) {
         // Manage the case in which the URL is not resolved in the XML -> we take it from the model
         let imageId = null;
@@ -36,10 +43,8 @@ export function getImageUrl(jsonElement, imageClass, neonData) {
             imageUrl = null;
         }
     }
-    if (!imageUrl) {
-        // fallback
-        imageUrl = '/static/img/nothumb.jpeg';
-    }
+
+    console.log('imageUrl', imageUrl);
     return imageUrl;
 }
 

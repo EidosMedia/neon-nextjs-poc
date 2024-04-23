@@ -1,27 +1,28 @@
 import { Breadcrumbs, Link as MUILink } from '@mui/material';
-import NextLink from 'next/link';
 import HomeIcon from '@mui/icons-material/Home';
 import { getCurrentLiveSite, getObjectMainSection } from '../../lib/neon-cms/neon-helpers';
 
-/**
- *
- * @param root0
- * @param root0.neonData
- */
-export default function BreadCrumb({ neonData }) {
+const BreadCrumb = ({ neonData }) => {
     let render = null;
 
     const section = getObjectMainSection(neonData.object.data);
 
     if (section) {
         const content = [
-            <MUILink underline="hover" sx={{ display: 'flex', alignItems: 'center' }} color="inherit" href="/">
+            <MUILink
+                underline="hover"
+                sx={{ display: 'flex', alignItems: 'center' }}
+                color="inherit"
+                href="/"
+                key="main"
+            >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
                 {neonData.siteContext?.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData)).title}
             </MUILink>
         ];
 
         let sectionUrl = '';
+
         section.split('/').forEach(token => {
             if (token) {
                 sectionUrl += `/${token}`;
@@ -31,6 +32,7 @@ export default function BreadCrumb({ neonData }) {
                         sx={{ display: 'flex', alignItems: 'center' }}
                         color="inherit"
                         href={sectionUrl}
+                        key={sectionUrl}
                     >
                         {token}
                     </MUILink>
@@ -45,4 +47,6 @@ export default function BreadCrumb({ neonData }) {
         );
     }
     return render;
-}
+};
+
+export default BreadCrumb;

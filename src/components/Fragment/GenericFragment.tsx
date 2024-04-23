@@ -2,7 +2,6 @@ import React from 'react';
 import GenericWidget from '../Widgets/GenericWidget';
 import LiveblogFragment from './LiveblogFragment';
 import StoryFragment from './StoryFragment';
-import AnalyticsFragmentOverlay from '../Analytics/AnalyticsFragmentOverlay';
 import BreakingNewsFragment from './BreakingNewsFragment';
 import { GenericPageProps } from 'src/types/commonTypes';
 
@@ -17,38 +16,23 @@ type GenericFragmentProps = GenericPageProps & {
  * @param root0.analyticsReport
  * @param root0.gridContext
  */
-const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, analyticsReport, gridContext }) => {
-    let render = null;
-
+const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext }) => {
     if (neonData) {
         switch (neonData.object.data.sys.baseType) {
             case 'article':
                 switch (neonData.object.data.sys.type) {
                     case 'breakingnews':
-                        render = <BreakingNewsFragment neonData={neonData} />;
-                        break;
+                        return <BreakingNewsFragment neonData={neonData} />;
                     default:
-                        render = <StoryFragment neonData={neonData} gridContext={gridContext} />;
+                        return <StoryFragment neonData={neonData} gridContext={gridContext} />;
                 }
-                break;
             case 'widget':
-                render = <GenericWidget neonData={neonData} gridContext={gridContext} />;
-                break;
+                return <GenericWidget neonData={neonData} gridContext={gridContext} />;
             case 'liveblog':
-                render = <LiveblogFragment neonData={neonData} gridContext={gridContext} />;
-                break;
+                return <LiveblogFragment neonData={neonData} gridContext={gridContext} />;
         }
     }
-
-    if (analyticsReport) {
-        render = (
-            <AnalyticsFragmentOverlay neonData={neonData} analyticsReport={analyticsReport}>
-                {render}
-            </AnalyticsFragmentOverlay>
-        );
-    }
-
-    return render;
+    return null;
 };
 
 export default GenericFragment;

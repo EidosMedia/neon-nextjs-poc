@@ -215,7 +215,12 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let extraElement = null;
 
     try {
-        mainPictureElement = findElementsInContentJson(['mediagroup'], neonData.object.helper.content)[0].elements[0];
+        console.log(
+            'mainPictureElement find result',
+            findElementsInContentJson(['figure'], neonData.object.helper.content)[0]
+        );
+
+        mainPictureElement = findElementsInContentJson(['figure'], neonData.object.helper.content)[0];
         extraElement = findElementsInContentJson(['extra'], neonData.object.helper.content);
         try {
             cloudinaryVideo = extraElement[0].elements.find(el => {
@@ -228,7 +233,7 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
         } catch (e) {}
 
         mainImageUrl = ResourceResolver(
-            getImageFormatUrl(getImageUrl(mainPictureElement, 'landscape', neonData), 'large'),
+            getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'large'),
             neonData.previewData ? neonData.previewData : null,
             neonData.siteContext.site
         );
@@ -243,7 +248,7 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     if (cloudinaryVideo) {
         mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
     } else if (mainImageUrl) {
-        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
+        mainMediaBlock = <Image src={`/${mainImageUrl}`} width={imageWidth} height={imageHeight} alt="" />;
     }
 
     const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);

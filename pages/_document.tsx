@@ -4,7 +4,6 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-import { DocumentHeadTags, documentGetInitialProps } from '@mui/material-nextjs/v14-pagesRouter';
 
 /**
  *
@@ -16,8 +15,6 @@ export default function MyDocument(props) {
     return (
         <Html lang="en">
             <Head>
-                {/* <DocumentHeadTags {...props} /> */}
-                {/* PWA primary color */}
                 <meta name="theme-color" content={theme.palette.primary.main} />
                 <link rel="shortcut icon" href="/static/img/favicon.ico" />
                 <meta name="emotion-insertion-point" content="" />

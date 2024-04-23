@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { findElementsInContentJson } from '../../utils/ContentUtil';
+import ContentElement from './ContentElement';
 
 /**
  *
@@ -11,38 +12,7 @@ import { findElementsInContentJson } from '../../utils/ContentUtil';
  * @param root0.neonData
  */
 export default function BreakingNewsFragment({ neonData }) {
-    let templateName = '';
-    if (neonData) {
-        templateName = neonData.linkContext.linkTemplate;
-    }
-
-    let variantId = 0;
-
-    if (neonData.abTesting && neonData.abTesting.variant) {
-        [, variantId] = neonData.abTesting.variant.split('.');
-    }
-
-    let headline = null;
-
-    if (variantId > 0) {
-        try {
-            headline = neonData.linkContext.linkData.parameters[`customHeadline_v${variantId}`];
-        } catch (e) {}
-    }
-    if (!headline) {
-        try {
-            headline = neonData.linkContext.linkData.parameters.customHeadline;
-        } catch (e) {}
-    }
-    if (!headline) {
-        try {
-            headline = (
-                <RenderContentElement
-                    jsonElement={findElementsInContentJson(['headline'], neonData.object.helper.content)[0]}
-                />
-            );
-        } catch (e) {}
-    }
+    const headline = findElementsInContentJson(['headline'], neonData.object.helper.content)[0];
 
     const headlineVariant = 'h4';
 
@@ -54,7 +24,7 @@ export default function BreakingNewsFragment({ neonData }) {
                         BREAKING /{' '}
                     </Typography>
                     <Typography display="inline" gutterBottom variant={headlineVariant} component="div" sx={{ mb: 0 }}>
-                        {headline}
+                        {headline ? <ContentElement name="headline" content={neonData.object.helper.content} /> : null}
                     </Typography>
                 </CardContent>
             </Card>

@@ -45,19 +45,8 @@ export default function StoryFragment({ neonData, gridContext }) {
         }
     } catch (e) {}
 
-    let variantId = 0;
-
-    if (neonData.abTesting && neonData.abTesting.variant) {
-        [, variantId] = neonData.abTesting.variant.split('.');
-    }
-
     let headline = null;
 
-    if (variantId > 0) {
-        try {
-            headline = neonData.linkContext.linkData.parameters[`customHeadline_v${variantId}`];
-        } catch (e) {}
-    }
     if (!headline) {
         try {
             headline = neonData.linkContext.linkData.parameters.customHeadline;
@@ -74,11 +63,6 @@ export default function StoryFragment({ neonData, gridContext }) {
     }
 
     let summary = null;
-    if (variantId > 0) {
-        try {
-            summary = neonData.linkContext.linkData.parameters[`customSummary_v${variantId}`];
-        } catch (e) {}
-    }
     if (!summary) {
         try {
             summary = neonData.linkContext.linkData.parameters.customSummary;
@@ -103,11 +87,7 @@ export default function StoryFragment({ neonData, gridContext }) {
     let additionalLinksBelowRender = null;
     if (additionalLinks) {
         additionalLinksInlineRender = additionalLinks
-            .filter(
-                l =>
-                    (l[`show_v${variantId}`] && l[`show_v${variantId}`] === 'inline') ||
-                    (!l[`show_v${variantId}`] && l.show === 'inline')
-            )
+            .filter(l => (l[`show_v`] && l[`show_v`] === 'inline') || (!l[`show_v`] && l.show === 'inline'))
             .map(l => {
                 let linkedObjectUrl = '/';
                 if (neonData.previewData) {
@@ -129,7 +109,7 @@ export default function StoryFragment({ neonData, gridContext }) {
                         <span> / </span>
                         <NextLink href={linkedObjectUrl} passHref>
                             <MUILink underline="hover" component="span" color="secondary" sx={{ fontWeight: 500 }}>
-                                {l[`headline_v${variantId}`] ? l[`headline_v${variantId}`] : l.headline}
+                                {l[`headline_v`] ? l[`headline_v`] : l.headline}
                             </MUILink>
                         </NextLink>
                     </React.Fragment>
@@ -137,11 +117,7 @@ export default function StoryFragment({ neonData, gridContext }) {
             });
 
         additionalLinksBelowRender = additionalLinks
-            .filter(
-                l =>
-                    (l[`show_v${variantId}`] && l[`show_v${variantId}`] === 'below') ||
-                    (!l[`show_v${variantId}`] && l.show === 'below')
-            )
+            .filter(l => (l[`show_v`] && l[`show_v`] === 'below') || (!l[`show_v`] && l.show === 'below'))
             .map(l => {
                 let linkedObjectUrl = '/';
                 if (neonData.previewData) {
@@ -162,7 +138,7 @@ export default function StoryFragment({ neonData, gridContext }) {
                     <Typography variant="body2" component="li">
                         <NextLink href={linkedObjectUrl} passHref>
                             <MUILink underline="hover" color="grey.500">
-                                {l[`headline_v${variantId}`] ? l[`headline_v${variantId}`] : l.headline}
+                                {l[`headline_v`] ? l[`headline_v`] : l.headline}
                             </MUILink>
                         </NextLink>
                     </Typography>
@@ -180,6 +156,7 @@ export default function StoryFragment({ neonData, gridContext }) {
     let cloudinaryVideo = null;
     let extraElement = null;
     try {
+        console.log('neonData stringified', JSON.stringify(neonData.object.helper.content));
         mainPictureElement = findElementsInContentJson(['mediagroup'], neonData.object.helper.content)[0].elements[0];
         extraElement = findElementsInContentJson(['extra'], neonData.object.helper.content);
         try {
@@ -192,8 +169,10 @@ export default function StoryFragment({ neonData, gridContext }) {
             });
         } catch (e) {}
 
+        console.log('mainPictureElement', mainPictureElement);
+
         mainPictureLandscapeUrl = ResourceResolver(
-            getImageFormatUrl(getImageUrl(mainPictureElement, 'landscape', neonData), 'medium'),
+            getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'medium'),
             neonData.previewData ? neonData.previewData : null,
             neonData.siteContext.site
         );
@@ -266,7 +245,7 @@ export default function StoryFragment({ neonData, gridContext }) {
                         sx={imgStyle}
                     /> : null} */}
                 {templateName.includes('pic') || templateName.includes('list') ? mediaBlock : null}
-                <NextLink href={myUrl} passHref prefetch={!neonData.previewData}>
+                <NextLink href={myUrl} passHref>
                     <CardActionArea>
                         <CardContent sx={{ py: 0, px: 0 }}>
                             {templateName.includes('head') || templateName.includes('list') ? (
@@ -278,8 +257,8 @@ export default function StoryFragment({ neonData, gridContext }) {
                             {templateName.includes('sum') || templateName.includes('list') ? (
                                 <Typography sx={{ mb: 2 }} variant="body1" color="text.secondary">
                                     {summary}
-                                    {/* Lizards are a widespread group of squamate reptiles, with over 6,000
-                        species, ranging across all continents except Antarctica */}
+                                    {/* Lizards are a widespread group of squamate reptiles, with over 6,000 species,
+                                    ranging across all continents except Antarctica */}
                                 </Typography>
                             ) : null}
                         </CardContent>
@@ -305,7 +284,7 @@ export default function StoryFragment({ neonData, gridContext }) {
                     /> : null}
                      */}
                 {templateName.includes('pic') || templateName.includes('list') ? mediaBlock : null}
-                <NextLink href={myUrl} passHref prefetch={!neonData.previewData}>
+                <NextLink href={myUrl} passHref>
                     <CardActionArea>
                         <CardContent sx={{ py: 0, px: 0 }}>
                             {templateName.includes('head') || templateName.includes('list') ? (

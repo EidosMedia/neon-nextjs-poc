@@ -14,8 +14,8 @@ module.exports = {
                 pathname: '**'
             },
             {
-                protocol: 'https',
-                hostname: 'cobalt-poc.demomedia.eidosmedia.io',
+                protocol: new URL(process.env.NEXT_PUBLIC_RESOURCES_PUBLIC_BASE).protocol.replace(':', ''),
+                hostname: new URL(process.env.NEXT_PUBLIC_RESOURCES_PUBLIC_BASE).hostname,
                 pathname: '**'
             },
             {

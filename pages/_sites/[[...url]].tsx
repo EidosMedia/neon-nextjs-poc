@@ -12,8 +12,8 @@ import SimpleHomepage from '@/components/Page/SimpleHomepage';
 import Segment from '@/components/Segment/Segment';
 import { neonRequest, getNeonPageByUrl, getNeonPreview, getNeonSites } from '@/lib/neon-cms/neon-api';
 import { getMetaHeader } from '@/lib/helpers';
-import { pineconeRequest } from '@/lib/pinecone/pinecone-client';
 import { GenericPageProps } from 'src/types/commonTypes';
+import { GetServerSideProps } from 'next';
 
 /**
  *
@@ -30,7 +30,7 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
 
     let pageTitle = null;
     if (neonData?.pageContext?.url !== '/' && !neonData.previewData) {
-        pageTitle = neonData.pageContext?.url?.charAt(0).toUpperCase() + neonData.pageContext?.url?.slice(1);
+        pageTitle = neonData.object.data.title;
     }
 
     switch (neonData?.object?.data?.sys?.baseType) {
@@ -56,7 +56,6 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
             }
             break;
         case 'webpagefragment':
-            // For live preview
             render = <Segment neonData={neonData} />;
             break;
         case 'section':
@@ -95,79 +94,18 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
 
 /**
  *
- */
-export async function getStaticPaths({}) {
-    let paths = [];
-    if (process.env.DEV_MODE !== 'true') {
-        try {
-            const sites = await getNeonSites();
-
-            paths = sites.reduce((acc1, site, i) => {
-                const hostName = site.root.hostname;
-                if (hostName) {
-                    const sections = site.sitemap.children.reduce((acc2, section, j) => {
-                        const sectionPath = section.path.replace(/^\/|\/$/g, '');
-                        return [
-                            ...acc2,
-                            {
-                                params: {
-                                    site: hostName,
-                                    url: [sectionPath]
-                                }
-                            }
-                        ];
-                    }, []);
-                    sections.push({
-                        params: {
-                            site: hostName,
-                            url: ['']
-                        }
-                    });
-                    return [...acc1, ...sections];
-                }
-                // ignore sites that don't have the custom attribute
-                return [...acc1];
-            }, []);
-        } catch (e) {
-            console.log(e);
-        }
-    }
-    return {
-        paths,
-        fallback: 'blocking'
-    };
-}
-
-/**
- *
  * @param context
  */
-export async function getStaticProps(context) {
+export const getServerSideProps = (async context => {
+    const req = context.req;
+
+    const protocol = req.headers['x-forwarded-proto'] || 'http';
+
+    const fullHostname = `${protocol}://${req.headers.host}`;
+
     let neonData = null;
 
-    if (context.previewData) {
-        neonData = await getNeonPreview(context.previewData);
-    } else {
-        let url = '/';
-        let site = 'default';
-        console.log('context', JSON.stringify(context));
-        if (context.params) {
-            if (context.params.url) {
-                url = context.params.url.join('/');
-            }
-
-            if (context.params.site) {
-                site = context.params.site;
-            }
-        }
-        const variant = context.params.variant ? context.params.variant : null;
-
-        console.log(
-            `RENDERING - site: ${site} - variant: ${variant} - path: ${url} - DEV MODE: ${process.env.DEV_MODE}`
-        );
-        neonData = await getNeonPageByUrl(site, url, variant);
-    }
-
+    neonData = await getNeonPageByUrl(fullHostname + req.url);
     const props: GenericPageProps = {
         neonData
     };
@@ -180,10 +118,10 @@ export async function getStaticProps(context) {
             case 'webpage':
                 revalidate = 5;
                 // Quick and ugly way to manage semantic search demo
-                const semanticSearchData = await getSemanticSearchData(neonData);
-                if (semanticSearchData) {
-                    props.semanticSearchData = semanticSearchData;
-                }
+                // const semanticSearchData = await getSemanticSearchData(neonData);
+                // if (semanticSearchData) {
+                //     props.semanticSearchData = semanticSearchData;
+                // }
                 break;
             case 'liveblog':
                 revalidate = 5;
@@ -199,30 +137,6 @@ export async function getStaticProps(context) {
     }
 
     return {
-        props,
-        revalidate
+        props
     };
-}
-
-/**
- *
- * @param neonData
- */
-async function getSemanticSearchData(neonData) {
-    let semanticSearchData = null;
-    try {
-        const semanticWidget = neonData.object.data.links.pagelink.main.find(link => {
-            if (link.metadata.type === 'widget') {
-                if (neonData.pageContext.nodes[link.targetId].title === 'smart-query') {
-                    return true;
-                }
-            }
-            return false;
-        });
-        const semanticWidgetParams = semanticWidget.metadata.parameters;
-        if (semanticWidgetParams) {
-            semanticSearchData = await pineconeRequest(semanticWidgetParams.topic);
-        }
-    } catch (e) {}
-    return semanticSearchData;
-}
+}) satisfies GetServerSideProps;

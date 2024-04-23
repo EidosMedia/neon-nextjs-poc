@@ -11,8 +11,6 @@ import {
     isContentOnSite
 } from '../../lib/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
-import AbTestingPreviewController from '../AbTesting/AbTestingPreviewController';
-import { experiments } from '../../../abtesting.config';
 import { GenericPageProps } from 'src/types/commonTypes';
 
 /**
@@ -22,15 +20,6 @@ import { GenericPageProps } from 'src/types/commonTypes';
  * @param root0.analyticsReport
  */
 const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
-    const defaultVariantId = `${experiments[0].id}.${experiments[0].variants[0].id}`;
-
-    const [previewVariant, setPreviewVariant] = React.useState(defaultVariantId);
-
-    const handleSetPreviewVariant = pv => {
-        setPreviewVariant(pv);
-        neonData.abTesting.variant = pv;
-    };
-
     let render = null;
     let templateName = null;
     if (neonData.linkContext) {
@@ -376,12 +365,7 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
 
     if (neonData.previewData || analyticsReport) {
         // Add the AB testing controller in preview|analytics mode
-        render = (
-            <React.Fragment>
-                <AbTestingPreviewController handleSetPreviewVariant={handleSetPreviewVariant} />
-                {render}
-            </React.Fragment>
-        );
+        render = <React.Fragment>{render}</React.Fragment>;
     }
 
     if (neonData.previewData) {

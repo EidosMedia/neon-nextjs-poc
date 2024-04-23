@@ -41,19 +41,19 @@ export default function MenuDrawer({ neonData }) {
     const currentSite = getCurrentLiveSite(neonData);
     const { siteStructure } = neonData.siteContext;
 
-    console.log(neonData);
-
     const site = siteStructure?.find(site => site?.root?.name === currentSite);
 
     const logoOverlay = null;
     const logo = productLogo;
+
     let sectionsRender = null;
     try {
         sectionsRender = site?.root.items.map((item, i) => {
             const title = item.title.charAt(0).toUpperCase() + item.title.slice(1);
+
             return (
                 <Link key={i} href={item.path} passHref prefetch={!neonData.previewData}>
-                    <ListItem button component="a">
+                    <ListItem component="a">
                         <ListItemText disableTypography primary={<Typography variant="h6">{title}</Typography>} />
                     </ListItem>
                 </Link>
@@ -93,6 +93,7 @@ export default function MenuDrawer({ neonData }) {
         </Box>
     );
     const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
+
     return (
         <div>
             <React.Fragment>
@@ -114,7 +115,7 @@ export default function MenuDrawer({ neonData }) {
                                     {logoOverlay}.
                                 </Typography>
                             ) : null}
-                            <Image src={logo} alt="" />
+                            <Typography variant="h1">{site.root.title}</Typography>
                         </Box>
                         <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
                             {logoOverlay ? (
