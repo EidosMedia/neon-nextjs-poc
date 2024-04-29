@@ -1,6 +1,6 @@
 import { Breadcrumbs, Link as MUILink } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import { getCurrentLiveSite, getObjectMainSection } from '../../lib/neon-cms/neon-helpers';
+import { getCurrentLiveSite, getObjectMainSection } from '../../services/neon-cms/neon-helpers';
 
 const BreadCrumb = ({ neonData }) => {
     let render = null;

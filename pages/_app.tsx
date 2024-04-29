@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
+import Layout from '@/components/Layout/Layout';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
 
@@ -19,6 +20,8 @@ const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+    console.log('pageprops', pageProps);
+
     return (
         <React.Fragment>
             <CacheProvider value={emotionCache}>
@@ -28,7 +31,9 @@ export default function MyApp(props) {
                 <ThemeProvider theme={theme}>
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline />
-                    <Component {...pageProps} />
+                    <Layout {...pageProps}>
+                        <Component {...pageProps} />
+                    </Layout>
                 </ThemeProvider>
             </CacheProvider>
         </React.Fragment>

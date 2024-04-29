@@ -1,5 +1,7 @@
 import React from 'react';
 import { SWRConfig } from 'swr';
+import Layout from '@/components/Layout/Layout';
+import BasicNewsletter from '@/components/Newsletter/BasicNewsletter';
 import ArticlePage from '@/components/Page/ArticlePage';
 import ErrorPage from '@/components/Page/ErrorPage';
 import LandingPage from '@/components/Page/LandingPage';
@@ -8,7 +10,8 @@ import SectionPage from '@/components/Page/SectionPage';
 import SemiAutomaticSectionPage from '@/components/Page/SemiAutomaticSectionPage';
 import SimpleHomepage from '@/components/Page/SimpleHomepage';
 import Segment from '@/components/Segment/Segment';
-import { neonRequest, getNeonPageByUrl } from '@/services/neon-cms/neon-api';
+import { neonRequest, getNeonPreview } from '@/services/neon-cms/neon-api';
+import { getMetaHeader } from '@/services/helpers';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { GetServerSideProps } from 'next';
 
@@ -16,10 +19,11 @@ import { GetServerSideProps } from 'next';
  *
  * @param root0
  * @param root0.neonData
- * @param root0.semanticSearchData
  * @param root0.fallback
  */
-export default function Page({ neonData, semanticSearchData, fallback }) {
+export default function Page({ neonData, fallback }) {
+    let render = null;
+
     if (neonData.error) {
         return <ErrorPage errorType={neonData.error} />;
     }
@@ -37,33 +41,49 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
             } catch (e) {}
             if (isSimpleHp) {
                 // For demo purpose
-                return <SimpleHomepage neonData={neonData} pageTitle={pageTitle} />;
+                render = <SimpleHomepage neonData={neonData} pageTitle={pageTitle} />;
             } else if (neonData.object.data.pubInfo.sectionPath !== '/') {
                 // This is a section page with a DWP ("semi-automatic" page)
-                return <SemiAutomaticSectionPage neonData={neonData} pageTitle={pageTitle} />;
+                render = <SemiAutomaticSectionPage neonData={neonData} pageTitle={pageTitle} />;
             } else {
-                return <LandingPage neonData={neonData} />;
+                render = <LandingPage neonData={neonData} />;
             }
-
+            break;
         case 'webpagefragment':
-            return <Segment neonData={neonData} />;
-
+            render = <Segment neonData={neonData} />;
+            break;
         case 'section':
-            return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
-
+            render = <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+            break;
         case 'site':
-            return <LandingPage neonData={neonData} />;
-
+            render = <LandingPage neonData={neonData} />;
+            break;
         case 'liveblog':
-            return (
+            render = (
                 <SWRConfig value={{ fallback }}>
                     <LiveblogPage neonData={neonData} />
                 </SWRConfig>
             );
-
+            break;
         default:
-            return <ArticlePage neonData={neonData} />;
+            render = <ArticlePage neonData={neonData} />;
     }
+
+    if (neonData.previewData) {
+        if (neonData.object.data.sys.type === 'newsletter') {
+            render = <BasicNewsletter neonData={neonData} />;
+        } else if (neonData.object.data.sys.baseType !== 'webpagefragment') {
+            render = <Layout neonData={neonData}>{render}</Layout>;
+        }
+    } else {
+        render = (
+            <React.Fragment>
+                {getMetaHeader(neonData)}
+                <Layout neonData={neonData}>{render}</Layout>
+            </React.Fragment>
+        );
+    }
+    return render;
 }
 
 /**
@@ -77,20 +97,27 @@ export const getServerSideProps = (async context => {
 
     const fullHostname = `${protocol}://${req.headers.host}`;
 
-    let neonData = null;
+    const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.emauth });
 
-    neonData = await getNeonPageByUrl(fullHostname + req.url);
     const props: GenericPageProps = {
         neonData
     };
 
+    let revalidate = 5;
     const fallback = {}; // To be used for SWR rehydration of liveblogs
 
     if (!neonData.error) {
         switch (neonData?.object?.data?.sys?.baseType) {
             case 'webpage':
+                revalidate = 5;
+                // Quick and ugly way to manage semantic search demo
+                // const semanticSearchData = await getSemanticSearchData(neonData);
+                // if (semanticSearchData) {
+                //     props.semanticSearchData = semanticSearchData;
+                // }
                 break;
             case 'liveblog':
+                revalidate = 5;
                 const latestBlogPosts = await neonRequest(
                     `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.site}&limit=50`
                 );
@@ -98,6 +125,7 @@ export const getServerSideProps = (async context => {
                 props.fallback = fallback;
                 break;
             default:
+                revalidate = 5;
         }
     }
 

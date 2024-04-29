@@ -1,14 +1,12 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 // import HTMLComment from "react-html-comment";
-import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from '../../lib/neon-cms/neon-helpers';
+import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
-import GenericWidget from '../Widgets/GenericWidget';
 
 type SemiAutomaticSectionPageProps = {
     neonData: any;
     pageTitle: string;
     analyticsReport?: any;
-    semanticSearchData?: any;
 };
 
 /**
@@ -22,28 +20,16 @@ type SemiAutomaticSectionPageProps = {
 export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> = ({
     neonData,
     pageTitle,
-    analyticsReport,
-    semanticSearchData
+    analyticsReport
 }) => {
-    // Swing quick open
-    let uuid = null;
-    try {
-        uuid = `Methode uuid: "${neonData.object.data.foreignId}"`;
-    } catch (e) {}
-
+    console.log('semiautomaticsectionpage');
     const mainObjects = getDwxLinkedObjects(neonData, 'main');
-
-    const widgets = mainObjects.filter(o => o.object.data.sys.baseType === 'widget');
 
     const flattenedObjects = mainObjects.reduce((acc, o) => {
         switch (o.object.data.sys.baseType) {
             case 'query':
                 const queryResults = getQueryResultObjects(o);
                 return [...acc, ...queryResults];
-                break;
-            case 'widget':
-                return [...acc];
-                break;
             default:
                 return [...acc, o];
         }
@@ -65,7 +51,6 @@ export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> =
 
     const render = (
         <Container maxWidth="lg">
-            {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
             {pageTitle ? (
                 <Box
                     sx={{
@@ -85,29 +70,14 @@ export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> =
             <Grid container spacing={2}>
                 <Grid item xs={12} md={8}>
                     {nonDupObjects.slice(0, 1).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 8 }}
-                            analyticsReport={analyticsReport}
-                        />
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 8 }} />
                     ))}
                 </Grid>
                 <Grid item xs={12} md={4}>
                     {nonDupObjects.slice(1, 3).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 4 }}
-                            analyticsReport={analyticsReport}
-                        />
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 4 }} />
                     ))}
                 </Grid>
-                {widgets
-                    ? widgets.map(w => (
-                          <GenericWidget key="widget" neonData={w} semanticSearchData={semanticSearchData} />
-                      ))
-                    : null}
             </Grid>
 
             <Box
@@ -128,11 +98,7 @@ export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> =
             <Grid container spacing={2}>
                 {nonDupObjects.slice(3).map((object, i) => (
                     <Grid key={i} item xs={12} md={3}>
-                        <GenericFragment
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 3 }}
-                            analyticsReport={analyticsReport}
-                        />
+                        <GenericFragment neonData={object} gridContext={{ xs: 12, md: 3 }} />
                     </Grid>
                 ))}
             </Grid>

@@ -1,5 +1,4 @@
 import React from 'react';
-import GenericWidget from '../Widgets/GenericWidget';
 import LiveblogFragment from './LiveblogFragment';
 import StoryFragment from './StoryFragment';
 import BreakingNewsFragment from './BreakingNewsFragment';
@@ -26,8 +25,6 @@ const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext
                     default:
                         return <StoryFragment neonData={neonData} gridContext={gridContext} />;
                 }
-            case 'widget':
-                return <GenericWidget neonData={neonData} gridContext={gridContext} />;
             case 'liveblog':
                 return <LiveblogFragment neonData={neonData} gridContext={gridContext} />;
         }

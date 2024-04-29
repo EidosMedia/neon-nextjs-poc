@@ -7,18 +7,16 @@ import React from 'react';
  *
  * @param props
  */
-const Layout: React.FC<any> = props => {
-    return (
+const Layout: React.FC<any> = props => (
+    <Container maxWidth="lg">
+        <MenuDrawer {...props} />
+        {props.children}
         <Container maxWidth="lg">
-            <MenuDrawer {...props} />
-            {props.children}
-            <Container maxWidth="lg">
-                <Box sx={{ my: 4 }}>
-                    <Copyright />
-                </Box>
-            </Container>
+            <Box sx={{ my: 4 }}>
+                <Copyright />
+            </Box>
         </Container>
-    );
-};
+    </Container>
+);
 
 export default Layout;

@@ -1,87 +1,58 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 // import HTMLComment from "react-html-comment";
-import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from '../../lib/neon-cms/neon-helpers';
+import { getCurrentSite, getDwxLinkedObjects, getQueryResultObjects } from '../../services/neon-cms/neon-helpers';
 import BreakingNewsFragment from '../Fragment/BreakingNewsFragment';
 import GenericFragment from '../Fragment/GenericFragment';
 import Segment from '../Segment/Segment';
-import GenericWidget from '../Widgets/GenericWidget';
-import { GenericPageProps } from 'src/types/commonTypes';
+import { GenericPageProps, NeonData } from 'src/types/commonTypes';
+import { uniq, uniqBy, uniqWith } from 'lodash';
+import { unique } from 'next/dist/build/utils';
 
 /**
  *
  * @param root0
  * @param root0.neonData
  * @param root0.pageTitle
- * @param root0.analyticsReport
  */
-const SimpleHomepage: React.FC<GenericPageProps> = ({ neonData, pageTitle, analyticsReport }) => {
-    // Swing quick open
-    let uuid = null;
-    try {
-        uuid = `Methode uuid: "${neonData.object.data.foreignId}"`;
-    } catch (e) {}
-
+const SimpleHomepage: React.FC<GenericPageProps> = ({ neonData, pageTitle }) => {
     const mainObjects = getDwxLinkedObjects(neonData, 'main');
 
-    const flattenedObjects = mainObjects.reduce((acc, o) => {
-        switch (o.object.data.sys.baseType) {
-            case 'query':
-                const queryResults = getQueryResultObjects(o);
-                return [...acc, ...queryResults];
-                break;
-            default:
-                return [...acc, o];
-        }
-    }, []);
+    console.log('mainObjects', mainObjects);
 
-    const nonDupObjects = flattenedObjects.reduce((acc, o) => {
-        if (
-            acc.find(
-                a => a.object.data.id === o.object.data.id || a.object.data.foreignId.includes(o.object.data.foreignId) // to manage preview of queries
-            )
-        ) {
-            // don't add, it's a duplicate
-            return acc;
-        }
-        return [...acc, o];
-    }, []);
-
-    let widget = null;
-    if (nonDupObjects && nonDupObjects[0].object.data.sys.baseType === 'widget') {
-        widget = nonDupObjects.splice(0, 1)[0];
-    }
+    const objectsWithoutDuplicates = uniqWith(
+        mainObjects.reduce((acc, o) => {
+            switch (o.object.data.sys.baseType) {
+                case 'query':
+                    const queryResults = getQueryResultObjects(o);
+                    return [...acc, ...queryResults];
+                default:
+                    return [...acc, o];
+            }
+        }, []),
+        (o: NeonData) => !!o.object.data.id
+    );
 
     let breaking = null;
-    if (nonDupObjects) {
-        const breakingIndex = nonDupObjects.findIndex(o => o.object.data.sys.type === 'breakingnews');
+    if (objectsWithoutDuplicates) {
+        const breakingIndex = objectsWithoutDuplicates.findIndex(o => o.object.data.sys.type === 'breakingnews');
         if (breakingIndex >= 0) {
-            breaking = nonDupObjects.splice(breakingIndex, 1)[0];
+            breaking = objectsWithoutDuplicates.splice(breakingIndex, 1)[0];
         }
     }
 
     let opening = null;
-    const articleCount = nonDupObjects.filter(o => o.object.data.sys.baseType === 'article').length;
+    const articleCount = objectsWithoutDuplicates.filter(o => o.object.data.sys.baseType === 'article').length;
     if (articleCount <= 3) {
         opening = (
             <Grid container spacing={2}>
                 <Grid item xs={12} md={8}>
-                    {nonDupObjects.slice(0, 1).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 6 }}
-                            analyticsReport={analyticsReport}
-                        />
+                    {objectsWithoutDuplicates.slice(0, 1).map((object, i) => (
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 6 }} />
                     ))}
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    {nonDupObjects.slice(1, 3).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 3 }}
-                            analyticsReport={analyticsReport}
-                        />
+                    {objectsWithoutDuplicates.slice(1, 3).map((object, i) => (
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                     ))}
                 </Grid>
             </Grid>
@@ -90,33 +61,18 @@ const SimpleHomepage: React.FC<GenericPageProps> = ({ neonData, pageTitle, analy
         opening = (
             <Grid container spacing={2}>
                 <Grid item xs={12} md={3} order={{ xs: 2, md: 1 }}>
-                    {nonDupObjects.slice(1, 3).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 3 }}
-                            analyticsReport={analyticsReport}
-                        />
+                    {objectsWithoutDuplicates.slice(1, 3).map((object, i) => (
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                     ))}
                 </Grid>
                 <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
-                    {nonDupObjects.slice(0, 1).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 6 }}
-                            analyticsReport={analyticsReport}
-                        />
+                    {objectsWithoutDuplicates.slice(0, 1).map((object, i) => (
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 6 }} />
                     ))}
                 </Grid>
                 <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
-                    {nonDupObjects.slice(3, 5).map((object, i) => (
-                        <GenericFragment
-                            key={i}
-                            neonData={object}
-                            gridContext={{ xs: 12, md: 3 }}
-                            analyticsReport={analyticsReport}
-                        />
+                    {objectsWithoutDuplicates.slice(3, 5).map((object, i) => (
+                        <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                     ))}
                 </Grid>
             </Grid>
@@ -144,12 +100,11 @@ const SimpleHomepage: React.FC<GenericPageProps> = ({ neonData, pageTitle, analy
                 </Box>
             ) : null}
             {breaking ? <BreakingNewsFragment neonData={breaking} /> : null}
-            {widget ? <GenericWidget neonData={widget} /> : null}
             {opening}
-            {nonDupObjects.slice(articleCount).map((object, i) => {
+            {objectsWithoutDuplicates.slice(articleCount).map((object, i) => {
                 switch (object.object.data.sys.baseType) {
                     case 'webpagefragment':
-                        return <Segment key={i} neonData={object} analyticsReport={analyticsReport} />;
+                        return <Segment key={i} neonData={object} />;
                         break;
                     default:
                         return null;

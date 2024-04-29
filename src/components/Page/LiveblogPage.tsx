@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import axios from 'axios';
 // import HTMLComment from "react-html-comment";
 import useSWR from 'swr';
-import { getNeonLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from '../../lib/neon-cms/neon-helpers';
+import { getNeonLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import RenderContentElement, { CloudinaryVideo } from '../RenderContent/RenderContentElement';
 import RenderLiveblogPostElement from '../RenderContent/RenderLiveblogPostElement';
@@ -94,11 +94,7 @@ export default function LiveblogPage({ neonData }) {
                 const authorRole = el.elements.find(el2 => el2.name === 'description').elements[0].text;
                 let authorPic = el.elements.find(el2 => el2.name === 'img' && el2.attributes.class === 'square')
                     .attributes.src;
-                authorPic = ResourceResolver(
-                    authorPic,
-                    neonData.previewData ? neonData.previewData : null,
-                    neonData.siteContext.site
-                );
+                authorPic = ResourceResolver(authorPic);
                 return {
                     authorName,
                     authorRole,
@@ -416,9 +412,7 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
         }
 
         mainImageUrl = ResourceResolver(
-            getImageFormatUrl(getImageUrl(mainPictureElement, 'landscape', neonData), 'large'),
-            neonData.previewData ? neonData.previewData : null,
-            neonData.siteContext.site
+            getImageFormatUrl(getImageUrl(mainPictureElement, 'landscape', neonData), 'large')
         );
     } catch (e) {
         console.log(e);

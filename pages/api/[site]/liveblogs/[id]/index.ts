@@ -1,4 +1,4 @@
-import { neonRequest } from '../../../../../src/lib/neon-cms/neon-api';
+import { neonRequest } from '../../../../../src/services/neon-cms/neon-api';
 
 export default async (req, res) => {
     let { id, site } = req.query;

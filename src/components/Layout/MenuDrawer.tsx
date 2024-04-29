@@ -4,35 +4,31 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Container, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Image from 'next/image';
-import SearchIcon from '@mui/icons-material/Search';
-import LanguageIcon from '@mui/icons-material/Language';
 import productLogo from '../../../public/static/img/head-logo.png';
-import adviserLogo from '../../../public/static/img/globe-adviser.png';
-import investorLogo from '../../../public/static/img/globe-investor.png';
 import Link from 'next/link';
 import {
     getNeonDataHelper,
     getCurrentLiveSite,
     getCurrentSite,
     getLiveHostname
-} from '../../lib/neon-cms/neon-helpers';
+} from '../../services/neon-cms/neon-helpers';
 
 /**
  *
  * @param root0
  * @param root0.neonData
  */
-export default function MenuDrawer({ neonData }) {
+export default function MenuDrawer({ neonData, ...props }) {
     const [open, setOpen] = React.useState(false);
+
+    console.log('neonData', neonData);
+    console.log('props', props);
+
+    if (!neonData) return null;
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -41,7 +37,12 @@ export default function MenuDrawer({ neonData }) {
     const currentSite = getCurrentLiveSite(neonData);
     const { siteStructure } = neonData.siteContext;
 
-    const site = siteStructure?.find(site => site?.root?.name === currentSite);
+    console.log('currentLIveSite', currentSite);
+    console.log('site', siteStructure);
+
+    const site = siteStructure?.find(site => site?.root?.name === currentSite?.root?.name);
+
+    console.log('site', site);
 
     const logoOverlay = null;
     const logo = productLogo;
@@ -82,7 +83,7 @@ export default function MenuDrawer({ neonData }) {
         <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle} onKeyDown={handleDrawerToggle}>
             <List>
                 <Link key="homeLink" href="/" passHref prefetch={!neonData.previewData}>
-                    <ListItem button component="a">
+                    <ListItem component="a">
                         <ListItemText disableTypography primary={<Typography variant="h6">Home</Typography>} />
                     </ListItem>
                 </Link>
@@ -97,36 +98,37 @@ export default function MenuDrawer({ neonData }) {
     return (
         <div>
             <React.Fragment>
-                <AppBar position="sticky" sx={{ backgroundColor: customColor || 'primary' }}>
-                    <Toolbar sx={{ justifyContent: 'space-between' }}>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2 }}
-                        >
-                            <MenuIcon fontSize="large" />
-                        </IconButton>
-                        <Box m={2} alignItems="flex-end" sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            {logoOverlay ? (
-                                <Typography variant="h6" sx={{ mb: 1 }} component="div">
-                                    {logoOverlay}.
-                                </Typography>
-                            ) : null}
-                            <Typography variant="h1">{site.root.title}</Typography>
-                        </Box>
-                        <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
-                            {logoOverlay ? (
-                                <Typography variant="h6" component="div">
-                                    {logoOverlay}.
-                                </Typography>
-                            ) : null}
-                            <Image src={logo} alt="" />
-                        </Box>
-                        <Box>
+                <AppBar position="static" sx={{ backgroundColor: customColor || 'primary' }}>
+                    <Container maxWidth="xl">
+                        <Toolbar sx={{ justifyContent: 'space-between' }}>
                             <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                aria-label="menu"
+                                onClick={handleDrawerToggle}
+                                sx={{ mr: 2 }}
+                            >
+                                <MenuIcon fontSize="large" />
+                            </IconButton>
+                            <Box m={2} alignItems="flex-end" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                {logoOverlay ? (
+                                    <Typography variant="h6" sx={{ mb: 1 }} component="div">
+                                        {logoOverlay}.
+                                    </Typography>
+                                ) : null}
+                                <Typography variant="h1">{site.root.title}</Typography>
+                            </Box>
+                            <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
+                                {logoOverlay ? (
+                                    <Typography variant="h6" component="div">
+                                        {logoOverlay}.
+                                    </Typography>
+                                ) : null}
+                                <Image src={logo} alt="" />
+                            </Box>
+                            <Box>
+                                {/* <IconButton
                                 size="large"
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
@@ -134,9 +136,10 @@ export default function MenuDrawer({ neonData }) {
                                 color="inherit"
                             >
                                 <SearchIcon fontSize="large" />
-                            </IconButton>
-                        </Box>
-                    </Toolbar>
+                            </IconButton> */}
+                            </Box>
+                        </Toolbar>
+                    </Container>
                 </AppBar>
                 <Drawer anchor="left" open={open} onClose={handleDrawerToggle}>
                     {list}

@@ -8,7 +8,7 @@ type ContentElementProps = {
 };
 
 const ContentElement: FC<ContentElementProps> = ({ content, name }) => {
-    console.log('content', content);
+    // console.log('content', content);
 
     return <RenderContentElement jsonElement={findElementsInContentJson([name], content)[0]} />;
 };

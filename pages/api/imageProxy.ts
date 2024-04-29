@@ -1,29 +1,36 @@
+import { getNeonSites } from '@/services/neon-cms/neon-api';
+import { getApiHostname, getSiteByHostname, getSiteNameByHostName } from '@/services/neon-cms/neon-helpers';
 import axios from 'axios';
+import { NextApiRequest } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
-export default async (req, res) => {
-    console.log('calling image proxy');
-    const url = encodeURI(decodeURIComponent(req.query.url));
+export default async (req: NextApiRequest, res: NextResponse) => {
+    const url = encodeURI(decodeURIComponent(req.query.url as string));
 
-    let result = null;
+    const baseUrl = new URL(req.headers.referer);
+    const { hostname, protocol } = baseUrl;
 
-    try {
-        const options = {
-            method: 'GET',
-            url,
-            mode: 'no-cors',
-            headers: {
-                Cookie: `emk.previewDefaultContent=false;`,
-                emauth: req.cookies.emauth,
-                'X-APIKey': process.env.NEON_API_KEY
-            },
-            responseType: 'stream' as const
-        };
+    const hostnameWithProtocol = `${protocol}//${hostname}`;
 
-        const response = await axios.request(options);
-        result = response.data;
-    } catch (e) {
-        console.log(e);
-    }
+    console.log('hostnameWithProtocol', hostnameWithProtocol);
 
-    result.pipe(res);
+    const apiHostname = await getApiHostname(baseUrl);
+    const sites = await getNeonSites();
+
+    const siteName = getSiteNameByHostName(hostnameWithProtocol, sites);
+
+    const options = {
+        method: 'GET',
+        url: `${baseUrl.protocol}//${apiHostname}/${url}`,
+        mode: 'no-cors',
+        headers: {
+            Cookie: `emk.site=${siteName};`,
+            emauth: req.cookies.emauth
+        },
+        responseType: 'stream' as const
+    };
+
+    const response = await axios.request(options);
+
+    return response.data.pipe(res);
 };

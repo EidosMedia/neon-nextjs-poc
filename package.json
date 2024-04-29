@@ -34,6 +34,7 @@
         "react-simple-maps": "^3.0.0",
         "swr": "^1.2.1",
         "typescript": "^5.3.3",
+        "winston": "^3.13.0",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {

@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { getCurrentSite, getSectionChildrenObjects } from '../../lib/neon-cms/neon-helpers';
+import { getCurrentSite, getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 
 /**

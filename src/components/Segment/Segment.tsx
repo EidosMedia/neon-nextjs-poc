@@ -9,7 +9,7 @@ import {
     getObjectMainSection,
     getObjectMainSite,
     isContentOnSite
-} from '../../lib/neon-cms/neon-helpers';
+} from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import { GenericPageProps } from 'src/types/commonTypes';
 
@@ -19,15 +19,15 @@ import { GenericPageProps } from 'src/types/commonTypes';
  * @param root0.neonData
  * @param root0.analyticsReport
  */
-const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
+const Segment: React.FC<GenericPageProps> = ({ neonData }) => {
     let render = null;
     let templateName = null;
-    if (neonData.linkContext) {
-        templateName = neonData.linkContext.linkTemplate;
-    } else {
-        // Might be a preview request directly on the Segment
-        templateName = neonData.object.helper.pageTemplate;
-    }
+    // if (neonData.linkContext) {
+    //     templateName = neonData.linkContext.linkTemplate;
+    // } else {
+    //     // Might be a preview request directly on the Segment
+    //     templateName = neonData.object.helper.pageTemplate;
+    // }
     let firstObjects = [];
     firstObjects = getDwxLinkedObjects(neonData, 'first');
     let secondObjects = [];
@@ -38,9 +38,9 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
     extraObjects = getDwxLinkedObjects(neonData, 'extra');
 
     let sectionHeadline = null;
-    try {
-        sectionHeadline = neonData.object.data.attributes.classification.genres[0];
-    } catch (e) {}
+    // try {
+    //     sectionHeadline = neonData.object.data.attributes.classification.genres[0];
+    // } catch (e) {}
 
     let needsHeader = false;
     let isOtherSite = false;
@@ -56,41 +56,22 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={3} order={{ xs: 2, md: 1 }}>
                         {secondObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 3 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                         ))}
                     </Grid>
                     <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
                         {firstObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 6 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 6 }} />
                         ))}
                     </Grid>
                     <Grid item xs={12} md={3} order={{ xs: 3, md: 3 }}>
                         {opinionObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 3 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                         ))}
                     </Grid>
                     {extraObjects.map((object, i) => (
                         <Grid item xs={12} md={2} order={{ xs: 4, md: 4 }} key={i}>
-                            <GenericFragment
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 2 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment neonData={object} gridContext={{ xs: 12, md: 2 }} />
                         </Grid>
                     ))}
                 </Grid>
@@ -101,40 +82,22 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={8}>
                         {firstObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 8 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 8 }} />
                         ))}
                     </Grid>
                     <Grid item xs={12} md={4}>
                         {secondObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 4 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 4 }} />
                         ))}
                     </Grid>
                     {opinionObjects.map((object, i) => (
                         <Grid key={i} item xs={12} md={3}>
-                            <GenericFragment
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 3 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment neonData={object} gridContext={{ xs: 12, md: 3 }} />
                         </Grid>
                     ))}
                     {extraObjects.map((object, i) => (
                         <Grid key={i} item xs={12} md={2}>
-                            <GenericFragment
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 2 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment neonData={object} gridContext={{ xs: 12, md: 2 }} />
                         </Grid>
                     ))}
                 </Grid>
@@ -185,32 +148,17 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
                         {firstObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 6 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 6 }} />
                         ))}
                     </Grid>
                     <Grid item xs={12} md={3}>
                         {secondObjects.slice(0, 3).map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 3 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                         ))}
                     </Grid>
                     <Grid item xs={12} md={3}>
                         {secondObjects.slice(3, 6).map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 3 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                         ))}
                     </Grid>
                 </Grid>
@@ -222,40 +170,22 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={9}>
                         {firstObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 9 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 9 }} />
                         ))}
                     </Grid>
                     <Grid item xs={12} md={3}>
                         {secondObjects.map((object, i) => (
-                            <GenericFragment
-                                key={i}
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 3 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                         ))}
                     </Grid>
                     {opinionObjects.slice(0, 3).map((object, i) => (
                         <Grid key={i} item xs={12} md={4}>
-                            <GenericFragment
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 4 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment neonData={object} gridContext={{ xs: 12, md: 4 }} />
                         </Grid>
                     ))}
                     {extraObjects.map((object, i) => (
                         <Grid key={i} item xs={12} md={2}>
-                            <GenericFragment
-                                neonData={object}
-                                gridContext={{ xs: 12, md: 2 }}
-                                analyticsReport={analyticsReport}
-                            />
+                            <GenericFragment neonData={object} gridContext={{ xs: 12, md: 2 }} />
                         </Grid>
                     ))}
                 </Grid>
@@ -267,32 +197,17 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
                             {firstObjects.map((object, i) => (
-                                <GenericFragment
-                                    key={i}
-                                    neonData={object}
-                                    gridContext={{ xs: 12, md: 6 }}
-                                    analyticsReport={analyticsReport}
-                                />
+                                <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 6 }} />
                             ))}
                         </Grid>
                         <Grid item xs={12} md={3}>
                             {secondObjects.slice(0, 3).map((object, i) => (
-                                <GenericFragment
-                                    key={i}
-                                    neonData={object}
-                                    gridContext={{ xs: 12, md: 3 }}
-                                    analyticsReport={analyticsReport}
-                                />
+                                <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                             ))}
                         </Grid>
                         <Grid item xs={12} md={3}>
                             {secondObjects.slice(3, 6).map((object, i) => (
-                                <GenericFragment
-                                    key={i}
-                                    neonData={object}
-                                    gridContext={{ xs: 12, md: 3 }}
-                                    analyticsReport={analyticsReport}
-                                />
+                                <GenericFragment key={i} neonData={object} gridContext={{ xs: 12, md: 3 }} />
                             ))}
                         </Grid>
                     </Grid>
@@ -310,7 +225,7 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
             let siteInfo = null;
             if (isOtherSite) {
                 siteInfo = neonData.siteContext.siteStructure?.find(
-                    site => site.name === getObjectMainSite(neonData.object.data)
+                    (site: any) => site.name === getObjectMainSite(neonData.object.data)
                 );
                 otherSiteBaseUrl = getLiveHostname(siteInfo);
             }
@@ -333,7 +248,7 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                         justifyContent="space-between"
                     >
                         <Typography sx={{ mx: 2, my: 1, color: 'primary.main' }} variant="h4" component="h4">
-                            <NextLink href={finalUrl} passHref prefetch={!neonData.previewData}>
+                            <NextLink href={finalUrl} passHref>
                                 <MUILink variant="h4" underline="hover">
                                     {sectionHeadline}
                                 </MUILink>
@@ -346,7 +261,7 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                                 component="div"
                             >
                                 <span>From </span>
-                                <NextLink href={otherSiteBaseUrl} passHref prefetch={!neonData.previewData}>
+                                <NextLink href={otherSiteBaseUrl} passHref>
                                     <MUILink variant="h6" underline="always">
                                         {otherHostname}
                                     </MUILink>
@@ -361,20 +276,6 @@ const Segment: React.FC<GenericPageProps> = ({ neonData, analyticsReport }) => {
                 </React.Fragment>
             );
         }
-    }
-
-    if (neonData.previewData || analyticsReport) {
-        // Add the AB testing controller in preview|analytics mode
-        render = <React.Fragment>{render}</React.Fragment>;
-    }
-
-    if (neonData.previewData) {
-        // In preview mode, wrap the DWC with a maxWidth container identical to homepage, and add the AB Testing controller
-        render = (
-            <Container maxWidth="lg" sx={{ pb: '64px' }}>
-                {render}
-            </Container>
-        );
     }
 
     return render;

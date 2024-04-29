@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Box } from '@mui/system';
 import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link';
-import { getNeonDataHelper, getImageFormatUrl } from '../../lib/neon-cms/neon-helpers';
+import { getNeonDataHelper, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import InlinePoll from './InlinePoll';
 import SimpleMap from './SimpleMap';
 import Card from './Card';
@@ -583,11 +583,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
 
     let imageUrl = null;
     try {
-        imageUrl = ResourceResolver(
-            getImageFormatUrl(getImageUrl(jsonElement, 'landscape', neonData), 'large'),
-            neonData.previewData ? neonData.previewData : null,
-            neonData.siteContext.site
-        );
+        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, 'landscape', neonData), 'large'));
     } catch (e) {}
 
     const imageWidth = 1024;
@@ -624,16 +620,8 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
             const thumbImageUrl = getImageFormatUrl(origImageUrl, 'thumb');
             origImageUrl = getImageFormatUrl(origImageUrl, 'large');
 
-            const origImageFullUrl = ResourceResolver(
-                origImageUrl,
-                neonData.previewData ? neonData.previewData : null,
-                neonData.siteContext.site
-            );
-            const thumbImageFullUrl = ResourceResolver(
-                thumbImageUrl,
-                neonData.previewData ? neonData.previewData : null,
-                neonData.siteContext.site
-            );
+            const origImageFullUrl = ResourceResolver(origImageUrl);
+            const thumbImageFullUrl = ResourceResolver(thumbImageUrl);
 
             return {
                 original: origImageFullUrl,
@@ -708,11 +696,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
                         if (linkedObjectMainImageUrl && linkedObjectMainImageUrl !== '#') {
                             // TODO fix this
                             linkedObjectMainImageUrl = getImageFormatUrl(linkedObjectMainImageUrl, 'thumb');
-                            linkedObjectMainImageUrl = ResourceResolver(
-                                linkedObjectMainImageUrl,
-                                neonData.previewData ? neonData.previewData : null,
-                                neonData.siteContext.site
-                            );
+                            linkedObjectMainImageUrl = ResourceResolver(linkedObjectMainImageUrl);
                         } else {
                             linkedObjectMainImageUrl = null;
                         }

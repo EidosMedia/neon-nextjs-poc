@@ -1,4 +1,9 @@
+import { NeonData, SiteNode, SiteStructure } from 'src/types/commonTypes';
+import { URL } from 'url';
 import { xml2json } from 'xml-js';
+import { getNeonSites } from './neon-api';
+import _ from 'lodash';
+import ResourceResolver from 'src/utils/ResourceResolver';
 
 function getNeonWebPageHelper(data) {
     const zones = Object.keys(data.files.content.data.zones);
@@ -29,14 +34,22 @@ function getNeonWebPageHelper(data) {
 function getNeonArticleHelper(data) {
     let content = null;
 
+    // console.log('neon article helper data', data);
+
+    console.log('data.files.content', data.files.content);
+
     try {
         content = JSON.parse(xml2json(data.files.content.data));
+        // console.log('content', content);
     } catch (e) {
         console.log('error parsing object xml: ' + e);
     }
 
+    const mainPicture = data.links.system.mainPicture;
+
     return {
-        content
+        content,
+        mainPicture
     };
 }
 
@@ -72,6 +85,8 @@ export function getNeonLiveblogPostHelper(data) {
  * @param data
  */
 export function getNeonDataHelper(data) {
+    console.log('data?.sys?.baseType', data?.sys?.baseType);
+
     switch (data?.sys?.baseType) {
         case 'webpage':
             return getNeonWebPageHelper(data);
@@ -95,15 +110,18 @@ export function getNeonDataHelper(data) {
  * @param previewData
  * @param variant
  */
-export function buildNeonDataFromPage(pageData, siteStructure, site, url, previewData) {
+export const buildNeonDataFromPage = async (
+    pageData: any,
+    siteStructure: SiteStructure,
+    siteName: string,
+    url: string
+): Promise<NeonData> => {
     const helper: any = getNeonDataHelper(pageData?.model?.data);
 
     let linkContext = null;
-    if (previewData && pageData?.model.data.sys.baseType === 'webpagefragment') {
-        linkContext = {
-            linkTemplate: helper.pageTemplate
-        };
-    }
+
+    const sites = await getNeonSites();
+    const site = sites.find(site => site.root.name === siteName);
 
     const neonData = {
         object: {
@@ -121,20 +139,10 @@ export function buildNeonDataFromPage(pageData, siteStructure, site, url, previe
         siteContext: {
             site,
             siteStructure
-        },
-        previewData
+        }
     };
     return neonData;
-}
-
-// Fallback children location in case of model building or not
-// let childrens = null;
-// try {
-//     childrens = neonData.object.data.children; // this is where it is WITH model building
-//     if (!childrens) {
-//         childrens = neonData.pageContext.children; // this is where it is WITHOUT model building
-//     }
-// } catch (e) {}
+};
 
 /**
  *
@@ -150,8 +158,7 @@ export function buildneonDataForNestedObject(object, parentneonData, linkContext
         },
         linkContext,
         siteContext: parentneonData.siteContext,
-        pageContext: parentneonData.pageContext,
-        previewData: parentneonData.previewData
+        pageContext: parentneonData.pageContext
     };
     return neonData;
 }
@@ -292,16 +299,11 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
     return linkedObjects;
 }
 
-/**
- *
- * @param hostName
- * @param sites
- */
-export function getSiteNameByHostName(hostname, sites) {
+export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode => {
     let site = null;
     console.log('getSiteNameByHostName - name', hostname);
     if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
-        return process.env.DEV_FORCE_SITE;
+        return sites.find(site => site.name === process.env.DEV_FORCE_SITE);
     }
 
     if (sites != null && sites.length) {
@@ -309,14 +311,26 @@ export function getSiteNameByHostName(hostname, sites) {
         site = sites.find(site => hostname === site.root.hostname);
     }
 
+    console.log('site', site);
+
     if (site) {
         console.log('getSiteNameByHostName - site found!', site.root.name);
-        return site.root.name;
+        return site;
     } else {
         console.log('getSiteNameByHostName - site not found!');
         return null; // will show a not found
     }
-}
+};
+
+/**
+ *
+ * @param hostName
+ * @param sites
+ */
+export const getSiteNameByHostName = (hostname: string, sites: SiteNode[]) => {
+    const siteFound = getSiteByHostname(hostname, sites);
+    return siteFound.name || siteFound.root.name;
+};
 
 /**
  *
@@ -371,15 +385,9 @@ export function getObjectMainSection(obj) {
  * @param neonData
  */
 export function getCurrentLiveSite(neonData) {
-    let currentSite = neonData.siteContext?.site;
+    const currentSite = neonData.siteContext?.site;
     if (!currentSite) return null;
-    if (currentSite.includes('[PREVIEW]')) {
-        currentSite = currentSite.split('[')[0];
-    }
-    if (currentSite.includes(':')) {
-        // TEMPORARY FIX for Cobalt tenant
-        currentSite = currentSite.split(':')[1];
-    }
+
     return currentSite;
 }
 
@@ -404,3 +412,37 @@ export function getImageFormatUrl(url, format) {
 }
 
 export const getLiveHostname = (url: string): string => url;
+
+export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
+    // const urlObject = url instanceof URL ? url : new URL(url);
+
+    console.log('sitename in getAPIHostname', siteName);
+
+    const sites = await getNeonSites();
+
+    const hostName = url.hostname;
+    const protocol = url.protocol;
+
+    const hostnameWithProtocol = `${protocol}//${hostName}`;
+
+    const site = siteName
+        ? sites.find(site => site.root.name === siteName)
+        : getSiteByHostname(hostnameWithProtocol, sites);
+
+    console.log('site in ' + site);
+
+    if (url?.pathname?.startsWith('/preview')) {
+        return site.apiHostnames.previewHostname;
+    }
+
+    return site.apiHostnames.liveHostname;
+};
+
+export const getMainImageUrl = (neonData: NeonData): string => {
+    const mainPicture = _.get(neonData, 'object.helper.mainPicture[0]');
+    if (!mainPicture.dynamicCropsResourceUrls) {
+        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture.targetId]);
+    }
+
+    return ResourceResolver(_.get(neonData, 'object.helper.mainPicture[0].dynamicCropsResourceUrls.small'));
+};

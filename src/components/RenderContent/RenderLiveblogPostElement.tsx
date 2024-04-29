@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { Box } from '@mui/system';
 import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link';
-import { getNeonDataHelper, getImageFormatUrl } from '../../lib/neon-cms/neon-helpers';
+import { getNeonDataHelper, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import Card from './Card';
 import { GenericPageProps } from 'src/types/commonTypes';
 
@@ -278,11 +278,7 @@ const Figure: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neon
     let imageUrl = null;
 
     try {
-        imageUrl = ResourceResolver(
-            getImageFormatUrl(jsonElement.elements[0].attributes.src, 'large'),
-            neonData.previewData ? neonData.previewData : null,
-            neonData.siteContext.site
-        );
+        imageUrl = ResourceResolver(getImageFormatUrl(jsonElement.elements[0].attributes.src, 'large'));
     } catch (e) {}
 
     const imageWidth = 1024;
@@ -316,16 +312,8 @@ const FigureGallery: React.FC<BaseElementProps> = ({ jsonElement, excludeElement
             const strIndex = origImageUrl.lastIndexOf('/');
             const thumbImageUrl = `${origImageUrl.slice(0, strIndex)}/format/thumb${origImageUrl.slice(strIndex)}`;
 
-            const origImageFullUrl = ResourceResolver(
-                origImageUrl,
-                neonData.previewData ? neonData.previewData : null,
-                neonData.siteContext.site
-            );
-            const thumbImageFullUrl = ResourceResolver(
-                thumbImageUrl,
-                neonData.previewData ? neonData.previewData : null,
-                neonData.siteContext.site
-            );
+            const origImageFullUrl = ResourceResolver(origImageUrl);
+            const thumbImageFullUrl = ResourceResolver(thumbImageUrl);
 
             return {
                 original: origImageFullUrl,

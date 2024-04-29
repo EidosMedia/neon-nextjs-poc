@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // import Poll from "react-polls";
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
-import { getCurrentLiveSite } from '../../lib/neon-cms/neon-helpers';
+import { getCurrentLiveSite } from '../../services/neon-cms/neon-helpers';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 

@@ -1,5 +1,4 @@
 import { Box } from '@mui/system';
-import { cardsConfig } from '../../../cards.config';
 import { Button, Container, Typography } from '@mui/material';
 
 /**
@@ -41,14 +40,14 @@ export default function Card({ jsonElement, neonData }) {
     }
 
     if (!render) {
-        try {
-            img = cardsConfig[cardId].img;
-        } catch (e) {}
-        if (!img) {
-            try {
-                img = `/static/img/cards/${cardId}.png`;
-            } catch (e) {}
-        }
+        // try {
+        //     img = cardsConfig[cardId].img;
+        // } catch (e) {}
+        // if (!img) {
+        //     try {
+        //         img = `/static/img/cards/${cardId}.png`;
+        //     } catch (e) {}
+        // }
         if (img) {
             render = (
                 <Box display="flex" justifyContent="center" alignItems="center">

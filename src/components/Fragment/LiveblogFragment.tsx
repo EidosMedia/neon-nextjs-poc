@@ -7,7 +7,7 @@ import axios from 'axios';
 // import TimelineContent from "@mui/lab/TimelineContent";
 // import TimelineDot from "@mui/lab/TimelineDot";
 import { Card, CardActionArea, CardContent, styled, Typography } from '@mui/material';
-import { getNeonLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from '../../lib/neon-cms/neon-helpers';
+import { getNeonLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import { Box } from '@mui/system';
