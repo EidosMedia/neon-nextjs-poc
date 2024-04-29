@@ -301,17 +301,13 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
 
 export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode => {
     let site = null;
-    console.log('getSiteNameByHostName - name', hostname);
     if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
         return sites.find(site => site.name === process.env.DEV_FORCE_SITE);
     }
 
     if (sites != null && sites.length) {
-        console.log('hostname');
         site = sites.find(site => hostname === site.root.hostname);
     }
-
-    console.log('site', site);
 
     if (site) {
         console.log('getSiteNameByHostName - site found!', site.root.name);

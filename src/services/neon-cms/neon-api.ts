@@ -127,7 +127,6 @@ export async function getNeonPreview(previewData) {
         siteStructure = await getNeonSites();
     } catch (e) {}
 
-    console.log('previewData', previewData);
     const previewToken = previewData['emauth'];
 
     const urlObject = new URL(previewData.url);

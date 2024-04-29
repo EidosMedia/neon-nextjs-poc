@@ -34,11 +34,13 @@ export type SiteNode = {
     type: string;
     path: string;
     staticAttributes: { status: string; categories: [] };
+    hostname: string;
     apiHostnames: {
         liveHostname: string;
         stageHostname: string;
         previewHostname: string;
     };
+    root: SiteNode;
 };
 
 export type SiteStructure = [
