@@ -73,7 +73,7 @@ export default function Page({ neonData, fallback }) {
         if (neonData.object.data.sys.type === 'newsletter') {
             render = <BasicNewsletter neonData={neonData} />;
         } else if (neonData.object.data.sys.baseType !== 'webpagefragment') {
-            render = <Layout neonData={neonData}>{render}</Layout>;
+            //render = <Layout neonData={neonData}>{render}</Layout>;
         }
     } else {
         render = (
