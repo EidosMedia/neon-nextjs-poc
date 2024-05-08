@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 /**
  *
  */
-export default function middleware(req) {
+export async function middleware(req) {
     // let ab_cookie = req.cookies[AB_COOKIE_NAME];
 
     const { pathname } = req.nextUrl;
@@ -18,8 +18,37 @@ export default function middleware(req) {
     }
 
     if (pathname.startsWith('/preview')) {
+
+         const urlObject = req.nextUrl;
+
+         const urlParams = new URLSearchParams(urlObject.search);
+         const previewToken = urlParams.get('PreviewToken');
+         const id = urlParams.get('id');
+         const siteName = urlParams.get('siteName');
+         const viewStatus = 'PREVIEW';
+
+         const hostName = urlObject.hostname;
+         const protocol = urlObject.protocol;
+
+         const apiUrl = `${process.env.NEON_BASE_HOST}/api`;
+
+         const response = await fetch(`${apiUrl}/pages/${id}/authorization/${siteName}/${viewStatus}`, { headers: { Authorization: "Bearer " + previewToken } });
+         
+         if (response.status !== 204) {
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: response.status })
+         }
+
+         const redirectResponse =  NextResponse.redirect(new URL('/_preview?id='+id, urlObject));
+         const cookie = response.headers.getSetCookie()[0];
+         redirectResponse.headers.set('Set-Cookie', cookie);
+         
+         return redirectResponse;
+    }
+
+    if (pathname.startsWith('/_preview')) {
+
         const rewriteUrl = req.nextUrl.clone();
-        rewriteUrl.pathname = `/_sites/preview/${hostname}/${pathname.replace('/preview', '').substring(1)}`;
+        rewriteUrl.pathname = `/_sites/preview/${hostname}/${pathname.replace('/_preview', '').substring(1)}`;
 
         return NextResponse.rewrite(rewriteUrl);
     }

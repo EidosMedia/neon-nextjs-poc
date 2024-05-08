@@ -137,13 +137,22 @@ export async function getNeonPreview(previewData) {
 
     const baseUrl = await getApiHostname(urlObject);
 
+    const urlParams = new URLSearchParams(urlObject.search);
+    const id = urlParams.get('id');
+
     let pageData = null;
+
+    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_preview', '')}`;
+
+    if (id !== null) {
+        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_preview', '/api/pages/')}${id}`
+    }
     
     try {
         const options = {
             method: 'GET',
             httpAgent: agent,
-            url: `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/preview', '')}`,
+            url: requestUrl,
             mode: 'no-cors',
             headers: {
                 emauth: previewToken

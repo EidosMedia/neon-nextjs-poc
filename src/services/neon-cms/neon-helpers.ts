@@ -6,7 +6,7 @@ import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
 
 function getNeonWebPageHelper(data) {
-    const zones = Object.keys(data.files.content.data.zones);
+    const zones = Object.keys(data.files?.content?.data.zones);
 
     let zonesWithObjects = null;
     try {
@@ -45,7 +45,7 @@ function getNeonArticleHelper(data) {
         console.log('error parsing object xml: ' + e);
     }
 
-    const mainPicture = data.links.system.mainPicture;
+    const mainPicture = data?.links?.system?.mainPicture;
 
     return {
         content,
@@ -302,7 +302,7 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
 export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode => {
     let site = null;
     if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
-        return sites.find(site => site.name === process.env.DEV_FORCE_SITE);
+        return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
     }
 
     if (sites != null && sites.length) {
@@ -427,7 +427,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
     console.log('site in ' + site);
 
-    if (url?.pathname?.startsWith('/preview')) {
+    if (url?.pathname?.startsWith('/_preview')) {
         return site.apiHostnames.previewHostname;
     }
 
@@ -436,8 +436,8 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
 export const getMainImageUrl = (neonData: NeonData): string => {
     const mainPicture = _.get(neonData, 'object.helper.mainPicture[0]');
-    if (!mainPicture.dynamicCropsResourceUrls) {
-        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture.targetId]);
+    if (!mainPicture?.dynamicCropsResourceUrls) {
+        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture?.targetId]);
     }
 
     return ResourceResolver(_.get(neonData, 'object.helper.mainPicture[0].dynamicCropsResourceUrls.small'));
