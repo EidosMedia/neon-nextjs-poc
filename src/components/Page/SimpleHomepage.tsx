@@ -15,7 +15,7 @@ import { unique } from 'next/dist/build/utils';
  * @param root0.pageTitle
  */
 const SimpleHomepage: React.FC<GenericPageProps> = ({ neonData, pageTitle }) => {
-    const mainObjects = getDwxLinkedObjects(neonData, 'main');
+    const mainObjects = getDwxLinkedObjects(neonData, 'banner');
 
     console.log('mainObjects', mainObjects);
 

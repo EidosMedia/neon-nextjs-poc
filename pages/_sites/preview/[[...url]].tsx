@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SWRConfig } from 'swr';
 import Layout from '@/components/Layout/Layout';
 import BasicNewsletter from '@/components/Newsletter/BasicNewsletter';
@@ -14,6 +14,7 @@ import { neonRequest, getNeonPreview } from '@/services/neon-cms/neon-api';
 import { getMetaHeader } from '@/services/helpers';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 /**
  *
@@ -42,7 +43,7 @@ export default function Page({ neonData, fallback }) {
             if (isSimpleHp) {
                 // For demo purpose
                 render = <SimpleHomepage neonData={neonData} pageTitle={pageTitle} />;
-            } else if (neonData.object.data.pubInfo.sectionPath !== '/') {
+            } else if (neonData.object.data?.pubInfo?.sectionPath !== '/') {
                 // This is a section page with a DWP ("semi-automatic" page)
                 render = <SemiAutomaticSectionPage neonData={neonData} pageTitle={pageTitle} />;
             } else {
@@ -78,6 +79,7 @@ export default function Page({ neonData, fallback }) {
     } else {
         render = (
             <React.Fragment>
+                <MyComponent />
                 {getMetaHeader(neonData)}
                 <Layout neonData={neonData}>{render}</Layout>
             </React.Fragment>
@@ -86,6 +88,29 @@ export default function Page({ neonData, fallback }) {
     return render;
 }
 
+const MyComponent = () => {
+    useEffect(() => {
+      const handleLoad = () => {
+        console.log('============================= handleLoad');
+        if(!window.location.hash) {
+            window.location = window.location + '#loaded';
+            window.location.reload();
+        }
+      };
+      if (document.readyState === "complete") {
+        console.log('============================= complete');
+        handleLoad();
+      }else{
+      window.addEventListener('load', handleLoad);
+      }
+      return () => {
+        window.removeEventListener('load', handleLoad);
+      };
+    }, []);
+    return <div>My Component</div>;
+  };
+  
+
 /**
  *
  * @param context
@@ -93,16 +118,20 @@ export default function Page({ neonData, fallback }) {
 export const getServerSideProps = (async context => {
     const req = context.req;
 
+    console.log('============================= req', req.cookies.emauth);
     const protocol = req.headers['x-forwarded-proto'] || 'http';
 
     const fullHostname = `${protocol}://${req.headers.host}`;
 
-    const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.emauth });
+    try{
+         const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.emauth });
+    
 
     const props: GenericPageProps = {
         neonData
     };
 
+    
     let revalidate = 5;
     const fallback = {}; // To be used for SWR rehydration of liveblogs
 
@@ -128,8 +157,17 @@ export const getServerSideProps = (async context => {
             revalidate = 5;
     }
     // }
+    
 
     return {
         props
     };
+}catch(e){
+    console.log('============================= error', e);
+
+    const router = useRouter();
+    router.replace(router.asPath);
+
+
+}
 }) satisfies GetServerSideProps;

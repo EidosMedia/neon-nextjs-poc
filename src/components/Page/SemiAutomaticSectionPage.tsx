@@ -23,7 +23,7 @@ export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> =
     analyticsReport
 }) => {
     console.log('semiautomaticsectionpage');
-    const mainObjects = getDwxLinkedObjects(neonData, 'main');
+    const mainObjects = getDwxLinkedObjects(neonData, 'banner');
 
     const flattenedObjects = mainObjects.reduce((acc, o) => {
         switch (o.object.data.sys.baseType) {
@@ -38,7 +38,7 @@ export const SemiAutomaticSectionPage: React.FC<SemiAutomaticSectionPageProps> =
     const nonDupObjects = flattenedObjects.reduce((acc, o) => {
         if (
             acc.find(
-                a => a.object.data.id === o.object.data.id || a.object.data.foreignId.includes(o.object.data.foreignId) // to manage preview of queries
+                a => a.object.data.id === o.object.data.id // to manage preview of queries
             )
         ) {
             // don't add, it's a duplicate

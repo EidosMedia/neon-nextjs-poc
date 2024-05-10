@@ -6,29 +6,38 @@ import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
 
 function getNeonWebPageHelper(data) {
-    const zones = Object.keys(data.files?.content?.data.zones);
 
-    let zonesWithObjects = null;
-    try {
-        zonesWithObjects = zones
-            .filter(zone => data.links.pagelink[zone])
-            .map(zone => {
-                return {
-                    zone: zone,
-                    objects: data.links.pagelink[zone].map(link => {
-                        return {
-                            linkData: link.metadata,
-                            objectId: link.targetId
-                        };
-                    })
-                };
-            });
-    } catch (e) {}
+    if(typeof data.links!= "undefined"){
+        const zones = Object.keys(data.links.pagelink);
 
-    return {
-        pageTemplate: data.files.content.data.pageTemplate,
-        zones: zonesWithObjects
-    };
+        let zonesWithObjects = null;
+        try {
+            zonesWithObjects = zones
+                .filter(zone => data.links.pagelink[zone])
+                .map(zone => {
+                    return {
+                        zone: zone,
+                        objects: data.links.pagelink[zone].map(link => {
+                            return {
+                                linkData: link.metadata || null,
+                                objectId: link.targetId
+                            };
+                        })
+                    };
+                });
+        } catch (e) {}
+
+        return {
+            //pageTemplate: data.files.content.data.pageTemplate,
+            pageTemplate: null,
+            zones: zonesWithObjects
+        };
+    } else {
+        return {
+            pageTemplate: null,
+            zones: null
+        };
+    }
 }
 
 function getNeonArticleHelper(data) {
@@ -245,7 +254,7 @@ export function getSectionChildrenObjects(neonData) {
 export function getDwxLinkedObjects(neonData, zoneName?) {
     if (!zoneName) {
         // When not specifying a zone, return all objects from all zones
-        const zones = Object.keys(neonData.object.data.files.content.data.zones);
+        const zones = Object.keys(neonData.object.data.links.pagelink);
         return zones.reduce((acc, zone) => [...acc, ...getDwxLinkedObjects(neonData, zone)], []);
     }
 
@@ -427,7 +436,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
     console.log('site in ' + site);
 
-    if (url?.pathname?.startsWith('/_preview')) {
+    if (url?.pathname?.includes('/preview')) {
         return site.apiHostnames.previewHostname;
     }
 

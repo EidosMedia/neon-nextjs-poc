@@ -132,6 +132,7 @@ export async function getNeonPreview(previewData) {
     } catch (e) {}
 
     const previewToken = previewData['emauth'];
+    console.log('============================= previewToken', previewToken);
 
     const urlObject = new URL(previewData.url);
 
@@ -139,15 +140,18 @@ export async function getNeonPreview(previewData) {
 
     const urlParams = new URLSearchParams(urlObject.search);
     const id = urlParams.get('id');
+    const baseHost = urlObject.host;
 
     let pageData = null;
 
-    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_preview', '')}`;
+    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/'+baseHost, '')}`;
 
     if (id !== null) {
-        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_preview', '/api/pages/')}${id}`
+        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/'+baseHost, '/api/pages/')}${id}`
     }
     
+    console.log('============================= requestUrl', requestUrl);
+
     try {
         const options = {
             method: 'GET',
@@ -162,6 +166,8 @@ export async function getNeonPreview(previewData) {
         const response = await axios.request(options);
         pageData = response.data;
     } catch (e) {
+        console.log('============================= error', e);
+
         console.log(e);
     }
     const sites = await getNeonSites();
