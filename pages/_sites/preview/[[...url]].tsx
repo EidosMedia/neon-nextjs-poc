@@ -79,7 +79,6 @@ export default function Page({ neonData, fallback }) {
     } else {
         render = (
             <React.Fragment>
-                <MyComponent />
                 {getMetaHeader(neonData)}
                 <Layout neonData={neonData}>{render}</Layout>
             </React.Fragment>
@@ -87,29 +86,6 @@ export default function Page({ neonData, fallback }) {
     }
     return render;
 }
-
-const MyComponent = () => {
-    useEffect(() => {
-      const handleLoad = () => {
-        console.log('============================= handleLoad');
-        if(!window.location.hash) {
-            window.location = window.location + '#loaded';
-            window.location.reload();
-        }
-      };
-      if (document.readyState === "complete") {
-        console.log('============================= complete');
-        handleLoad();
-      }else{
-      window.addEventListener('load', handleLoad);
-      }
-      return () => {
-        window.removeEventListener('load', handleLoad);
-      };
-    }, []);
-    return <div>My Component</div>;
-  };
-  
 
 /**
  *
