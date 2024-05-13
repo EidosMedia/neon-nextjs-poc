@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 /**
@@ -20,61 +20,60 @@ export async function middleware(req) {
     }
 
     if (pathname.startsWith('/preview')) {
+        const urlObject = req.nextUrl;
 
-         const urlObject = req.nextUrl;
+        const urlParams = new URLSearchParams(urlObject.search);
+        const previewToken = urlParams.get('PreviewToken');
+        const id = urlParams.get('id');
+        const siteName = urlParams.get('siteName');
+        const viewStatus = 'PREVIEW';
 
-         const urlParams = new URLSearchParams(urlObject.search);
-         const previewToken = urlParams.get('PreviewToken');
-         const id = urlParams.get('id');
-         const siteName = urlParams.get('siteName');
-         const viewStatus = 'PREVIEW';
+        const hostName = process.env.DEV_COOKIE_DOMAIN || urlObject.hostname;
+        const protocol = urlObject.protocol;
+        const port = urlObject.port;
 
-         const hostName = process.env.DEV_COOKIE_DOMAIN || urlObject.hostname;
-         const protocol = urlObject.protocol;
-         const port = urlObject.port;
+        const apiUrl = `${process.env.NEON_BASE_HOST}/api`;
 
-         const apiUrl = `${process.env.NEON_BASE_HOST}/api`;
-         
-         const response = await fetch(`${apiUrl}/pages/${id}/authorization/${siteName}/${viewStatus}`, { headers: { Authorization: "Bearer " + previewToken } });
-         
-         if (response.status !== 204) {
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: response.status })
-         }
+        const response = await fetch(`${apiUrl}/pages/${id}/authorization/${siteName}/${viewStatus}`, {
+            headers: { Authorization: 'Bearer ' + previewToken }
+        });
 
-         const redirectResponse =  NextResponse.redirect(new URL(`/_sites/preview/${hostname}?id=${id}`, urlObject));
-         let cookie = response.headers.getSetCookie()[0];
-         cookie += `;Domain=${hostName}`;
+        if (response.status !== 204) {
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: response.status });
+        }
 
-         if(process.env.NODE_ENV === "production"){
+        const redirectResponse = NextResponse.redirect(new URL(`/_sites/preview/${hostname}?id=${id}`, urlObject));
+        let cookie = response.headers.getSetCookie()[0];
+        cookie += `;Domain=${hostName}`;
+
+        if (process.env.NODE_ENV === 'production') {
             cookie += ';Secure';
-         }
+        }
 
-         const cookieObject = parseCookie(cookie);
-         //redirectResponse.headers.set('Set-Cookie', cookie);
-         //redirectResponse.headers.set('test', 'prova');
-         //const value = cookieObject.emauth;
-         //delete cookieObject.emauth;
-         //redirectResponse.cookies.set('emauth', value, cookieObject);
-        
-         const cookieValue = cookieObject.emauth;
-         const cookieOptions:ResponseCookie = {
+        const cookieObject = parseCookie(cookie);
+        //redirectResponse.headers.set('Set-Cookie', cookie);
+        //redirectResponse.headers.set('test', 'prova');
+        //const value = cookieObject.emauth;
+        //delete cookieObject.emauth;
+        //redirectResponse.cookies.set('emauth', value, cookieObject);
+
+        const cookieValue = cookieObject.emauth;
+        const cookieOptions: ResponseCookie = {
             path: '/',
             maxAge: 1200,
             httpOnly: true,
             name: 'emauth',
             value: cookieValue,
             sameSite: 'none',
-            secure: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === 'production',
             domain: hostName
         };
 
         //redirectResponse.headers.append('Set-Cookie', cookie);
 
-        redirectResponse.cookies.set('emauth', '', cookieOptions);       
+        redirectResponse.cookies.set('emauth', '', cookieOptions);
         //redirectResponse.headers.append('Access-Control-Allow-Origin', '*');
         //redirectResponse.headers.append('Access-Control-Allow-Credentials', 'true');
-
-        
 
         //redirectResponse.cookies.set('emauth', cookieValue);
 
@@ -109,7 +108,7 @@ export async function middleware(req) {
     return NextResponse.next();
 }
 
-function parseCookie(cookieString) {
+const parseCookie = (cookieString: string): Record<string, string> => {
     let cookieArray = cookieString.split(';');
     let cookieObject = {};
 
@@ -119,6 +118,6 @@ function parseCookie(cookieString) {
     });
 
     return cookieObject;
-}
+};
 
 export const config = { matcher: ['/((?!api|_next/static|_next/image|.*\\.png$|.*\\.jpg$).*)'] };
