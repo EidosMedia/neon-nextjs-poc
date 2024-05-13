@@ -63,7 +63,7 @@ export async function middleware(req) {
             httpOnly: true,
             name: 'emauth',
             value: cookieValue,
-            sameSite: 'strict',
+            sameSite: 'lax',
             secure: process.env.NODE_ENV === "production",
             domain: hostName
         };
