@@ -4,8 +4,8 @@ import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
 export default async (req: NextApiRequest, res: NextResponse) => {
-    const urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
-
+    let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
+    console.log('========================', req.cookies.emauth);
     const baseUrl = new URL(req.headers.referer);
 
     if (baseUrl.hostname === 'localhost') {
@@ -14,7 +14,10 @@ export default async (req: NextApiRequest, res: NextResponse) => {
     }
 
     const apiHostname = await getApiHostname(baseUrl);
-
+    if(urlToAppend.startsWith('/preview/')) {
+        urlToAppend = urlToAppend.replace('/preview/', '/');
+    }
+    urlToAppend = urlToAppend.substring(1);
     const options = {
         method: 'GET',
         url: `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`,

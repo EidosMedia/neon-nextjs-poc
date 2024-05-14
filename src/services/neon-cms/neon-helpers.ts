@@ -452,7 +452,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 export const getMainImageUrl = (neonData: NeonData): string => {
     const mainPicture = _.get(neonData, 'object.helper.mainPicture[0]');
     if (!mainPicture?.dynamicCropsResourceUrls) {
-        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture?.targetId]);
+        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture?.targetId], neonData.pageContext.url?.startsWith('/preview') );
     }
 
     return ResourceResolver(_.get(neonData, 'object.helper.mainPicture[0].dynamicCropsResourceUrls.small'));

@@ -51,7 +51,7 @@ export async function middleware(req) {
         let cookie = response.headers.getSetCookie()[0];
         cookie += `;Domain=${hostName}`;
 
-        if (process.env.NODE_ENV === 'production') {
+        if (process.env.DEV_MODE === 'false') {
             cookie += ';Secure';
         }
 
@@ -71,8 +71,8 @@ export async function middleware(req) {
             httpOnly: true,
             name: 'emauth',
             value: cookieValue,
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : false,
-            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.DEV_MODE === 'false' ? 'none' : false,
+            secure: process.env.DEV_MODE === 'false',
             domain: hostName
         };
 
