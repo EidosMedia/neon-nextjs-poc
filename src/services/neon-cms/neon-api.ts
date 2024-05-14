@@ -69,12 +69,13 @@ export async function getNeonPageByUrl(url) {
     const protocol = urlObject.protocol;
 
     let hostnameWithProtocol = `${protocol}//${hostName}`;
-    console.log('hostnameWithProtocol',hostnameWithProtocol);
-    const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
-    let neonData = null;
     if(urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443'){
         hostnameWithProtocol = `${hostnameWithProtocol}:${urlObject.port}`;
     }
+    console.log('hostnameWithProtocol', hostnameWithProtocol);
+    const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
+    let neonData = null;
+
     console.log('url',url);
     console.log('hostnameWithProtocol',hostnameWithProtocol);
     if (siteName) {
@@ -140,7 +141,7 @@ export async function getNeonPreview(previewData) {
 
     const urlParams = new URLSearchParams(urlObject.search);
     const id = urlParams.get('id');
-    const baseHost = urlObject.host;
+    const baseHost = urlObject.hostname;
 
     let pageData = null;
 
@@ -171,7 +172,7 @@ export async function getNeonPreview(previewData) {
         console.log(e);
     }
     const sites = await getNeonSites();
-    const sitename = getSiteByHostname(`${urlObject.protocol}//${urlObject.hostname}`, sites).root.name;
+    const sitename = getSiteByHostname(`${urlObject.protocol}//${urlObject.host}`, sites).root.name;
     const neonData = await buildNeonDataFromPage(pageData, siteStructure, sitename, '/preview');
 
     return neonData;
