@@ -316,13 +316,13 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
     }
 
     if (site) {
-        console.log('getSiteNameByHostName - site found!', site.root.name);
+        console.log('getSiteByHostname - site '+hostname+' found!', site.root.name);
         return site;
     } else {
         if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
             return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
         }
-        console.log('getSiteNameByHostName - site not found!');
+        console.log('getSiteNameByHostName - site '+hostname+' not found!');
         return null; // will show a not found
     }
 };
@@ -426,7 +426,7 @@ export const getLiveHostname = (url: string): string => url;
 export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
     // const urlObject = url instanceof URL ? url : new URL(url);
 
-    console.log('sitename in getAPIHostname', siteName);
+    console.log('getAPIHostname '+JSON.stringify(url) +' sitename:'+siteName);
 
     const sites = await getNeonSites();
 
@@ -434,7 +434,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
     const protocol = url.protocol;
     const port = url.port;
 
-    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port!='80' && port!='443' ? `:${port}` : '');
+    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port != '' && port!='80' && port!='443' ? `:${port}` : '');
 
     const site = siteName
         ? sites.find(site => site.root.name === siteName)
