@@ -8,6 +8,11 @@ export default async (req: NextApiRequest, res: NextResponse) => {
 
     const baseUrl = new URL(req.headers.referer);
 
+    if (baseUrl.hostname === 'localhost') {
+        baseUrl.host = req.headers.host;
+        baseUrl.hostname = baseUrl.host;
+    }
+
     const apiHostname = await getApiHostname(baseUrl);
 
     const options = {
