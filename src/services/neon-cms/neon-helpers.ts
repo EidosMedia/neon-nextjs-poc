@@ -434,7 +434,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
     const protocol = url.protocol;
     const port = url.port;
 
-    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port!='80' && port!='443' ? `:${port}` : '');
+    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port != '' && port!='80' && port!='443' ? `:${port}` : '');
 
     const site = siteName
         ? sites.find(site => site.root.name === siteName)
