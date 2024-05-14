@@ -310,9 +310,6 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
 
 export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode => {
     let site = null;
-    if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
-        return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
-    }
 
     if (sites != null && sites.length) {
         site = sites.find(site => hostname === site.root.hostname);
@@ -322,6 +319,9 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
         console.log('getSiteNameByHostName - site found!', site.root.name);
         return site;
     } else {
+        if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
+            return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
+        }
         console.log('getSiteNameByHostName - site not found!');
         return null; // will show a not found
     }
@@ -333,8 +333,13 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
  * @param sites
  */
 export const getSiteNameByHostName = (hostname: string, sites: SiteNode[]) => {
-    const siteFound = getSiteByHostname(hostname, sites);
-    return siteFound.name || siteFound.root.name;
+    const siteFound: SiteNode = getSiteByHostname(hostname, sites);
+    if (siteFound) {
+      return siteFound.name || siteFound.root.name;
+    } else {
+        console.log("no site found for "+hostname);
+        return null;
+    }
 };
 
 /**
@@ -427,8 +432,9 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
     const hostName = url.hostname;
     const protocol = url.protocol;
+    const port = url.port;
 
-    const hostnameWithProtocol = `${protocol}//${hostName}`;
+    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port!='80' && port!='443' ? `:${port}` : '');
 
     const site = siteName
         ? sites.find(site => site.root.name === siteName)

@@ -10,7 +10,12 @@ export async function middleware(req) {
 
     const { pathname } = req.nextUrl;
     // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
-    const hostname = req.headers.get('host');
+    const hostnameHeader = req.headers.get('host');
+    let hostname = hostnameHeader;
+    if (hostnameHeader !== null && hostnameHeader.includes(':')) {
+        const hostnameParts = hostnameHeader.split(':');
+        hostname = hostnameParts[0];
+    }
 
     const regexSitemap = /^(.*)sitemap-(\d)+\.xml$/gm;
     if (regexSitemap.exec(pathname) || pathname.endsWith('/sitemapindex.xml')) {
@@ -28,7 +33,7 @@ export async function middleware(req) {
         const siteName = urlParams.get('siteName');
         const viewStatus = 'PREVIEW';
 
-        const hostName = process.env.DEV_COOKIE_DOMAIN || urlObject.hostname;
+        const hostName = hostname != null ? hostname : process.env.DEV_COOKIE_DOMAIN || urlObject.hostname;
         const protocol = urlObject.protocol;
         const port = urlObject.port;
 
@@ -50,6 +55,8 @@ export async function middleware(req) {
             cookie += ';Secure';
         }
 
+        console.log('cookie string:'+cookie);
+
         const cookieObject = parseCookie(cookie);
         //redirectResponse.headers.set('Set-Cookie', cookie);
         //redirectResponse.headers.set('test', 'prova');
@@ -64,7 +71,7 @@ export async function middleware(req) {
             httpOnly: true,
             name: 'emauth',
             value: cookieValue,
-            sameSite: 'none',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : false,
             secure: process.env.NODE_ENV === 'production',
             domain: hostName
         };
@@ -72,6 +79,9 @@ export async function middleware(req) {
         //redirectResponse.headers.append('Set-Cookie', cookie);
 
         redirectResponse.cookies.set('emauth', '', cookieOptions);
+
+        console.log('cookie string:'+cookie);
+
         //redirectResponse.headers.append('Access-Control-Allow-Origin', '*');
         //redirectResponse.headers.append('Access-Control-Allow-Credentials', 'true');
 
