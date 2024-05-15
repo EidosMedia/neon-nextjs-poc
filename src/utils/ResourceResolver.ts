@@ -4,7 +4,10 @@
  * @param previewData
  * @param site
  */
-export default resourceUrl => {
+export default function resourceUrl (resourceUrl: string, preview?: boolean) {
+    if(preview){
+        resourceUrl = '/preview'+resourceUrl;
+    }
     console.log('resourceUrl', resourceUrl);
-    return `/api/imageProxy?url=${resourceUrl?.substring(1)}`;
+    return `/api/imageProxy?url=${resourceUrl}`;
 };
