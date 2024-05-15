@@ -6,29 +6,38 @@ import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
 
 function getNeonWebPageHelper(data) {
-    const zones = Object.keys(data.files.content.data.zones);
 
-    let zonesWithObjects = null;
-    try {
-        zonesWithObjects = zones
-            .filter(zone => data.links.pagelink[zone])
-            .map(zone => {
-                return {
-                    zone: zone,
-                    objects: data.links.pagelink[zone].map(link => {
-                        return {
-                            linkData: link.metadata,
-                            objectId: link.targetId
-                        };
-                    })
-                };
-            });
-    } catch (e) {}
+    if(typeof data.links!= "undefined"){
+        const zones = Object.keys(data.links.pagelink);
 
-    return {
-        pageTemplate: data.files.content.data.pageTemplate,
-        zones: zonesWithObjects
-    };
+        let zonesWithObjects = null;
+        try {
+            zonesWithObjects = zones
+                .filter(zone => data.links.pagelink[zone])
+                .map(zone => {
+                    return {
+                        zone: zone,
+                        objects: data.links.pagelink[zone].map(link => {
+                            return {
+                                linkData: link.metadata || null,
+                                objectId: link.targetId
+                            };
+                        })
+                    };
+                });
+        } catch (e) {}
+
+        return {
+            //pageTemplate: data.files.content.data.pageTemplate,
+            pageTemplate: null,
+            zones: zonesWithObjects
+        };
+    } else {
+        return {
+            pageTemplate: null,
+            zones: null
+        };
+    }
 }
 
 function getNeonArticleHelper(data) {
@@ -244,7 +253,7 @@ export function getSectionChildrenObjects(neonData) {
 export function getDwxLinkedObjects(neonData, zoneName?) {
     if (!zoneName) {
         // When not specifying a zone, return all objects from all zones
-        const zones = Object.keys(neonData.object.data.files.content.data.zones);
+        const zones = Object.keys(neonData.object.data.links.pagelink);
         return zones.reduce((acc, zone) => [...acc, ...getDwxLinkedObjects(neonData, zone)], []);
     }
 
@@ -300,19 +309,19 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
 
 export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode => {
     let site = null;
-    if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
-        return sites.find(site => site.name === process.env.DEV_FORCE_SITE || site.root.name === process.env.DEV_FORCE_SITE);
-    }
 
     if (sites != null && sites.length) {
         site = sites.find(site => hostname === site.root.hostname);
     }
 
     if (site) {
-        console.log('getSiteNameByHostName - site found!', site.root.name);
+        console.log('getSiteByHostname - site '+hostname+' found!', site.root.name);
         return site;
     } else {
-        console.log('getSiteNameByHostName - site not found!');
+        if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
+            return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
+        }
+        console.log('getSiteNameByHostName - site '+hostname+' not found!');
         return null; // will show a not found
     }
 };
@@ -323,8 +332,13 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
  * @param sites
  */
 export const getSiteNameByHostName = (hostname: string, sites: SiteNode[]) => {
-    const siteFound = getSiteByHostname(hostname, sites);
-    return siteFound.name || siteFound.root.name;
+    const siteFound: SiteNode = getSiteByHostname(hostname, sites);
+    if (siteFound) {
+      return siteFound.name || siteFound.root.name;
+    } else {
+        console.log("no site found for "+hostname);
+        return null;
+    }
 };
 
 /**
@@ -411,14 +425,15 @@ export const getLiveHostname = (url: string): string => url;
 export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
     // const urlObject = url instanceof URL ? url : new URL(url);
 
-    console.log('sitename in getAPIHostname', siteName);
+    console.log('getAPIHostname '+JSON.stringify(url) +' sitename:'+siteName);
 
     const sites = await getNeonSites();
 
     const hostName = url.hostname;
     const protocol = url.protocol;
+    const port = url.port;
 
-    const hostnameWithProtocol = `${protocol}//${hostName}`;
+    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port != '' && port!='80' && port!='443' ? `:${port}` : '');
 
     const site = siteName
         ? sites.find(site => site.root.name === siteName)
@@ -426,7 +441,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
     console.log('site in ' + site);
 
-    if (url?.pathname?.startsWith('/preview')) {
+    if (url?.pathname?.includes('/preview')) {
         return site.apiHostnames.previewHostname;
     }
 
@@ -435,8 +450,8 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
 export const getMainImageUrl = (neonData: NeonData): string => {
     const mainPicture = _.get(neonData, 'object.helper.mainPicture[0]');
-    if (mainPicture && !mainPicture.dynamicCropsResourceUrls) {
-        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture.targetId]);
+    if (mainPicture && !mainPicture?.dynamicCropsResourceUrls) {
+        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture?.targetId], neonData.pageContext.url?.startsWith('/preview') );
     }
 
     return ResourceResolver(_.get(neonData, 'object.helper.mainPicture[0].dynamicCropsResourceUrls.small'));

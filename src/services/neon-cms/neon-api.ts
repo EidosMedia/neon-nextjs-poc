@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cacheData from 'memory-cache';
 import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
-import { buildNeonDataFromPage, getApiHostname, getSiteNameByHostName } from './neon-helpers';
+import { buildNeonDataFromPage, getApiHostname, getSiteByHostname, getSiteNameByHostName } from './neon-helpers';
 import { HttpClient, http as httpClient } from './http-client';
 import http from 'http';
 
@@ -68,16 +68,21 @@ export async function getNeonPageByUrl(url) {
     const hostName = urlObject.hostname;
     const protocol = urlObject.protocol;
 
-    const hostnameWithProtocol = `${protocol}//${hostName}`;
-
+    let hostnameWithProtocol = `${protocol}//${hostName}`;
+    if(urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443'){
+        hostnameWithProtocol = `${hostnameWithProtocol}:${urlObject.port}`;
+    }
+    console.log('hostnameWithProtocol', hostnameWithProtocol);
     const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
     let neonData = null;
 
+    console.log('url',url);
+    console.log('hostnameWithProtocol',hostnameWithProtocol);
     if (siteName) {
         // let pageData = null;
 
         const requestUrl = `/api/pages?url=${url.replace(
-            `${hostnameWithProtocol}:${urlObject.port}`,
+            `${hostnameWithProtocol}`,
             ''
         )}&emk.site=${siteName}`;
         console.log('requestUrl', requestUrl);
@@ -128,18 +133,31 @@ export async function getNeonPreview(previewData) {
     } catch (e) {}
 
     const previewToken = previewData['emauth'];
+    console.log('============================= previewToken', previewToken);
 
     const urlObject = new URL(previewData.url);
 
     const baseUrl = await getApiHostname(urlObject);
 
+    const urlParams = new URLSearchParams(urlObject.search);
+    const id = urlParams.get('id');
+    const baseHost = urlObject.hostname;
+
     let pageData = null;
+
+    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/'+baseHost, '')}`;
+
+    if (id !== null) {
+        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/'+baseHost, '/api/pages/')}${id}`
+    }
+    
+    console.log('============================= requestUrl', requestUrl);
 
     try {
         const options = {
             method: 'GET',
             httpAgent: agent,
-            url: `${urlObject.protocol}//${baseUrl}${urlObject.pathname}`,
+            url: requestUrl,
             mode: 'no-cors',
             headers: {
                 emauth: previewToken
@@ -149,10 +167,13 @@ export async function getNeonPreview(previewData) {
         const response = await axios.request(options);
         pageData = response.data;
     } catch (e) {
+        console.log('============================= error', e);
+
         console.log(e);
     }
-
-    const neonData = await buildNeonDataFromPage(pageData, siteStructure, null, '/preview');
+    const sites = await getNeonSites();
+    const sitename = getSiteByHostname(`${urlObject.protocol}//${urlObject.host}`, sites).root.name;
+    const neonData = await buildNeonDataFromPage(pageData, siteStructure, sitename, '/preview');
 
     return neonData;
 }
@@ -187,9 +208,9 @@ export async function neonRequest(url, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
 
     const options = {
-        url: process.env.NODE_ENV === 'production' ? 'https://' : 'http://' + apiHostname + url
+        url: (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url
     };
-
+    console.log('calling: ', options.url);
     const response = await httpClient.get(options.url, options);
 
     const result = response.data;

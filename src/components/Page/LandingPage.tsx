@@ -16,7 +16,7 @@ import { GenericPageProps } from 'src/types/commonTypes';
  * @param root0.semanticSearchData
  */
 const LandingPage: React.FC<GenericPageProps> = ({ neonData, pageTitle }) => {
-    const mainObjects = getDwxLinkedObjects(neonData, 'main');
+    const mainObjects = getDwxLinkedObjects(neonData, 'banner');
 
     // Swing quick open
 

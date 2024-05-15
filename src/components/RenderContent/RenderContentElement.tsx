@@ -9,7 +9,6 @@ import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link';
 import { getNeonDataHelper, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import InlinePoll from './InlinePoll';
-import SimpleMap from './SimpleMap';
 import Card from './Card';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { AlignPropertyParams } from '@mui/material/styles/cssUtils';
@@ -326,7 +325,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     if (jsonElement.attributes && jsonElement.attributes.class === 'DataMap') {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
-                                <SimpleMap jsonElement={jsonElement} neonData={neonData} />
+                               {/* <SimpleMap jsonElement={jsonElement} neonData={neonData} /> */}
                             </Container>
                         );
                     } else {
