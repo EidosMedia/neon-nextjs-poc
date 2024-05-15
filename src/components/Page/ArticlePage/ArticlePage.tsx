@@ -21,7 +21,7 @@ export default function ArticlePage({ neonData }) {
             <BeyondWordsBlock neonData={neonData} />
             <HeadlineBlock neonData={neonData} />
             <SummaryBlock neonData={neonData} />
-            <MainImageBlock neonData={neonData} />
+            {neonData?.object?.data?.links?.system?.mainPicture && (<MainImageBlock neonData={neonData} />)}
             <ContentBlock neonData={neonData} />
         </Container>
     );

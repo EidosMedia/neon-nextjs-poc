@@ -12,11 +12,12 @@ import GenericFragment from '../Fragment/GenericFragment';
 export default function SectionPage({ neonData, pageTitle }) {
     let render = null;
 
-    console.log('pageTitle', pageTitle);
-
     const searchResults = getSectionChildrenObjects(neonData);
 
     const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
+
+    console.log('neonData:', neonData);
+    console.log('searchResults:', searchResults);
 
     render = (
         <Container maxWidth="lg">

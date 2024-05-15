@@ -9,5 +9,5 @@ export default function resourceUrl (resourceUrl: string, preview?: boolean) {
         resourceUrl = '/preview'+resourceUrl;
     }
     console.log('resourceUrl', resourceUrl);
-    return `/api/imageProxy?url=${resourceUrl}`;
+    return resourceUrl && `/api/imageProxy?url=${resourceUrl}`;
 };

@@ -27,7 +27,7 @@ const SummaryBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
         render = (
             <Container sx={{ my: 2 }} maxWidth={maxWidth}>
                 <Box display="flex" justifyContent={justify} alignItems={justify}>
-                    <Typography align={justify} variant="h5" component="h2">
+                    <Typography variant="h5" component="h2">
                         {summary}
                     </Typography>
                 </Box>

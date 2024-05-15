@@ -45,16 +45,15 @@ function getNeonArticleHelper(data) {
 
     // console.log('neon article helper data', data);
 
-    console.log('data.files.content', data.files.content);
+    // console.log('data.files.content', data.files.content);
 
     try {
         content = JSON.parse(xml2json(data.files.content.data));
-        // console.log('content', content);
     } catch (e) {
         console.log('error parsing object xml: ' + e);
     }
 
-    const mainPicture = data?.links?.system?.mainPicture;
+    const mainPicture = data?.links?.system?.mainPicture || null;
 
     return {
         content,
@@ -451,7 +450,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
 
 export const getMainImageUrl = (neonData: NeonData): string => {
     const mainPicture = _.get(neonData, 'object.helper.mainPicture[0]');
-    if (!mainPicture?.dynamicCropsResourceUrls) {
+    if (mainPicture && !mainPicture?.dynamicCropsResourceUrls) {
         return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture?.targetId], neonData.pageContext.url?.startsWith('/preview') );
     }
 

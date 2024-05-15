@@ -165,7 +165,9 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                                       .filter(
                                           subel =>
                                               subel.type === 'text' ||
-                                              (subel.type === 'element' && subel.name === 'keyword')
+                                              (subel.type === 'element' 
+                                                // && subel.name === 'keyword'
+                                              )
                                       )
                                       .map((subel, i) => (
                                           <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
@@ -427,7 +429,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                 //     break;
                 case 'embed':
                     // TODO
-                    const cdata = jsonElement.elements.filter(el => (el.type = 'CDATA')).map(el => el.cdata);
+                    const cdata = jsonElement.elements.filter(el => (el.type = 'CDATA')).map(el => el.text);
                     render = <div dangerouslySetInnerHTML={{ __html: cdata }}></div>;
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
@@ -582,7 +584,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
 
     let imageUrl = null;
     try {
-        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, 'landscape', neonData), 'large'));
+        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, 'wide', neonData), 'large'));
     } catch (e) {}
 
     const imageWidth = 1024;

@@ -25,8 +25,8 @@ import {
 export default function MenuDrawer({ neonData, ...props }) {
     const [open, setOpen] = React.useState(false);
 
-    console.log('neonData', neonData);
-    console.log('props', props);
+    // console.log('neonData', neonData);
+    // console.log('props', props);
 
     if (!neonData) return null;
 
@@ -36,13 +36,8 @@ export default function MenuDrawer({ neonData, ...props }) {
 
     const currentSite = getCurrentLiveSite(neonData);
     const { siteStructure } = neonData.siteContext;
-
-    console.log('currentLIveSite', currentSite);
-    console.log('site', siteStructure);
-
+    
     const site = siteStructure?.find(site => site?.root?.name === currentSite?.root?.name);
-
-    console.log('site', site);
 
     const logoOverlay = null;
     const logo = productLogo;
@@ -55,7 +50,7 @@ export default function MenuDrawer({ neonData, ...props }) {
             return (
                 <Link key={i} href={item.path} passHref prefetch={!neonData.previewData}>
                     <ListItem component="a">
-                        <ListItemText disableTypography primary={<Typography variant="h6">{title}</Typography>} />
+                        <ListItemText disableTypography primary={<Typography variant="h5">{title}</Typography>} />
                     </ListItem>
                 </Link>
             );
@@ -71,7 +66,7 @@ export default function MenuDrawer({ neonData, ...props }) {
             .map((site, i) => (
                 <Link key={i} href={getLiveHostname(site)} passHref prefetch={!neonData.previewData}>
                     <ListItem button component="a">
-                        <ListItemText disableTypography primary={<Typography variant="h6">{site?.title}</Typography>} />
+                        <ListItemText disableTypography primary={<Typography variant="h5">{site?.title}</Typography>} />
                     </ListItem>
                 </Link>
             ));
@@ -84,7 +79,7 @@ export default function MenuDrawer({ neonData, ...props }) {
             <List>
                 <Link key="homeLink" href="/" passHref prefetch={!neonData.previewData}>
                     <ListItem component="a">
-                        <ListItemText disableTypography primary={<Typography variant="h6">Home</Typography>} />
+                        <ListItemText disableTypography primary={<Typography variant="h5">Home</Typography>} />
                     </ListItem>
                 </Link>
                 {sectionsRender}
@@ -113,7 +108,7 @@ export default function MenuDrawer({ neonData, ...props }) {
                             </IconButton>
                             <Box m={2} alignItems="flex-end" sx={{ display: { xs: 'none', md: 'flex' } }}>
                                 {logoOverlay ? (
-                                    <Typography variant="h6" sx={{ mb: 1 }} component="div">
+                                    <Typography variant="h5" sx={{ mb: 1 }} component="div">
                                         {logoOverlay}.
                                     </Typography>
                                 ) : null}
@@ -121,7 +116,7 @@ export default function MenuDrawer({ neonData, ...props }) {
                             </Box>
                             <Box m={2} sx={{ display: { xs: 'block', md: 'none' } }}>
                                 {logoOverlay ? (
-                                    <Typography variant="h6" component="div">
+                                    <Typography variant="h5" component="div">
                                         {logoOverlay}.
                                     </Typography>
                                 ) : null}

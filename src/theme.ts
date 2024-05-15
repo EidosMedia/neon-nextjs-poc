@@ -8,71 +8,80 @@ const theme = createTheme({
             main: '#FFFFFF'
         },
         secondary: {
-            main: '#47807a'
+            main: '#47807a',
+            contrastText: '#F75880'
         },
         error: {
             main: red.A400
-        }
+        },
+        
     },
     typography: {
         h1: {
-            fontFamily: '"Merriweather", serif',
-            fontWeight: 900,
-            fontStyle: 'italic'
+            fontFamily: '"Noto Serif", serif',
+            fontWeight: 700,
+            fontSize: '2.986rem',
+            lineHeight: 1.2,
         },
         h2: {
-            fontFamily: '"Libre Franklin", sans-serif',
-            fontWeight: 300,
-            fontStyle: 'normal'
+            fontFamily: '"Noto Serif", serif',
+            fontWeight: 400,
+            fontSize: '2.488rem',
+            lineHeight: 1.2,
         },
         h3: {
-            fontFamily: '"Merriweather", serif',
-            fontWeight: 900,
-            fontStyle: 'italic'
+            fontFamily: '"Noto Sans", sans-serif',
+            fontWeight: 700,
+            fontSize: '2.074rem',
+            lineHeight: 1.2
+            
         },
         h4: {
-            fontFamily: '"Libre Franklin", sans-serif',
+            fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 500,
-            fontStyle: 'normal'
+            fontStyle: 'italic',
+            fontSize: '1.728rem',
+            lineHeight: 1.2
         },
         h5: {
-            fontFamily: '"Merriweather", serif',
-            fontWeight: 700,
-            fontStyle: 'italic'
+            fontFamily: '"Noto Sans", sans-serif',
+            fontSize: '1.44rem',
+            lineHeight: 1.2
         },
         h6: {
-            fontFamily: '"Libre Franklin", sans-serif',
-            fontWeight: 500,
-            fontStyle: 'normal',
-            lineHeight: 'normal'
+            fontFamily: '"Noto Sans", sans-serif',
+            fontWeight: 700,
+            fontSize: '1.2rem',
+            lineHeight: 1.2
         },
         subtitle1: {
-            fontFamily: '"Libre Franklin", sans-serif',
+            fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 500,
             fontStyle: 'normal'
         },
         subtitle2: {
-            fontFamily: '"Merriweather", serif',
-            fontWeight: 400,
-            fontStyle: 'nnormal'
-        },
-        body1: {
-            fontFamily: '"Merriweather", serif',
+            fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 400,
             fontStyle: 'normal'
         },
+        body1: {
+            fontFamily: '"Noto Sans", sans-serif',
+            fontWeight: 400,
+            fontStyle: 'normal',
+            lineHeight: 1.4
+        },
         body2: {
-            fontFamily: '"Libre Franklin", sans-serif',
+            fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 400,
             fontStyle: 'normal'
         },
         button: {
-            fontFamily: '"Libre Franklin", sans-serif',
+            fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 700,
             fontStyle: 'normal'
         },
         caption: {
-            fontFamily: '"Merriweather", serif',
+            fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 400,
             fontStyle: 'italic'
         }
