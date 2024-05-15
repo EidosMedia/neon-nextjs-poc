@@ -13,13 +13,13 @@ import { Box, Container } from '@mui/material';
  * @param root0.styleVariant
  */
 const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
-    console.log('neonData main picture', neonData.object.helper.mainPicture);
+    // console.log('neonData main picture', neonData.object.helper.mainPicture);
     const imageWidth = 1024;
     const imageHeight = 576;
 
     const mainImageUrl = getMainImageUrl(neonData);
 
-    console.log('mainImageUrl', mainImageUrl);
+    // console.log('mainImageUrl', mainImageUrl);
 
     // let mainMediaBlock = null;
     // if (cloudinaryVideo) {

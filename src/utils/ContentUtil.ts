@@ -4,10 +4,10 @@
  * @param json
  */
 export function findElementsInContentJson(elementNames, json) {
-    if (elementNames.includes(json.name)) {
+    if (elementNames.includes(json?.name)) {
         return [json];
     }
-    if (json.elements) {
+    if (json?.elements) {
         return json.elements.reduce((acc, elem) => [...acc, ...findElementsInContentJson(elementNames, elem)], []);
     }
     return [];
