@@ -12,7 +12,7 @@ type StoryFragmentLargeProps = {
 };
 
 const StoryFragmentLarge: React.FC<StoryFragmentLargeProps> = ({ data }) => (
-    <Card square elevation={0} sx={{ display: { xs: 'none', md: 'block' } }}>
+    <Card square elevation={0} sx={{ display: { xs: 'flex', md: 'block' } }}>
         <StoryFragmentMainMedia data={data} />
         <NextLink href={getStoryUrl(data)} passHref>
             <CardActionArea>

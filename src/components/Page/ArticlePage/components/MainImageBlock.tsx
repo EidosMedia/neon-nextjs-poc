@@ -34,7 +34,7 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     const render = (
         <Container sx={{ my: 2 }} maxWidth={maxWidth}>
             <Box display="flex" justifyContent={justify} alignItems={justify}>
-                <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />
+                <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" priority={true} />
             </Box>
         </Container>
     );

@@ -55,7 +55,7 @@ const StoryFragmentMainMedia = ({ data }) => {
     return (
         <Container sx={{ my: 2 }}>
             <Box display="flex">
-                <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />
+                <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" priority={true} />
             </Box>
         </Container>
     );
