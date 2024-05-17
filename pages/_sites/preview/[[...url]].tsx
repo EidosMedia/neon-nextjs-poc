@@ -94,13 +94,13 @@ export default function Page({ neonData, fallback }) {
 export const getServerSideProps = (async context => {
     const req = context.req;
 
-    console.log('============================= req', req.cookies.emauth);
+    console.log('============================= req', req.cookies.empreviewauth);
     const protocol = req.headers['x-forwarded-proto'] || 'http';
 
     const fullHostname = `${protocol}://${req.headers.host}`;
 
     try{
-         const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.emauth });
+         const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.empreviewauth });
     
 
     const props: GenericPageProps = {
