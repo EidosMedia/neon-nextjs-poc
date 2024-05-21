@@ -142,7 +142,8 @@ export const buildNeonDataFromPage = async (
             nodes: pageData?.model.nodes,
             resourcesUrls: pageData?.resourcesUrls ? pageData?.resourcesUrls : null,
             nodesUrls: pageData?.nodesUrls ? pageData?.nodesUrls : null,
-            children: pageData?.model.data.children ? pageData?.model.data.children : pageData?.model.children // Fallback children location in case of model building or not
+            children: pageData?.model.data.children ? pageData?.model.data.children : pageData?.model.children, // Fallback children location in case of model building or not
+            mainPicture: pageData?.model?.data?.links?.system?.mainPicture[0] ? pageData?.model?.data?.links?.system?.mainPicture[0] : null
         },
         siteContext: {
             site,
@@ -416,7 +417,8 @@ export function getCurrentSite(neonData) {
  */
 export function getImageFormatUrl(url, format) {
     const strIndex = url.lastIndexOf('/');
-    const formatImageUrl = `${url.slice(0, strIndex)}/format/${format}${url.slice(strIndex)}`;
+    //const formatImageUrl = `${url.slice(0, strIndex)}/format/${format}${url.slice(strIndex)}`;
+    const formatImageUrl = `${url.slice(0, strIndex)}`;
     return formatImageUrl;
 }
 

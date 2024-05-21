@@ -106,6 +106,7 @@ export type NeonData = {
         resourcesUrls: Record<string, string>;
         nodesUrls: Record<string, string>;
         children: string[];
+        mainPicture: any;
     };
     siteContext: {
         site: string;

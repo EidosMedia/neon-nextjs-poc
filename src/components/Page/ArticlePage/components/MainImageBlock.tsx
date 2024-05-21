@@ -14,8 +14,8 @@ import { Box, Container } from '@mui/material';
  */
 const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     // console.log('neonData main picture', neonData.object.helper.mainPicture);
-    const imageWidth = 1024;
-    const imageHeight = 576;
+    let imageWidth = 1024;
+    let imageHeight = 576;
 
     const mainImageUrl = getMainImageUrl(neonData);
 
@@ -28,6 +28,13 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     //     mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
     // }
 
+    const tmx = neonData?.pageContext?.mainPicture?.metadata.tmx;
+    if(tmx !== 'undefined') {
+        let tokens = tmx.split(' ');
+        imageWidth = tokens[tokens.length - 2];
+        imageHeight = tokens[tokens.length - 1];
+    }
+   
     const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
     const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
 
