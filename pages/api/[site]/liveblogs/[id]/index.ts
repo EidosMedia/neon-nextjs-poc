@@ -10,7 +10,7 @@ export default async (req, res) => {
         id = result.model.data.id;
     }
 
-    result = await neonRequest(`/api/liveblogs/${id}/posts?emk.site=${site}&limit=50`);
+    result = await neonRequest(`/api/liveblogs/${id}/posts?limit=50`);
 
     res.status(200).json(result);
 };

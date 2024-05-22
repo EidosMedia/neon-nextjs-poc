@@ -15,7 +15,7 @@ import CelebrationSharpIcon from '@mui/icons-material/CelebrationSharp';
 import StyleSharpIcon from '@mui/icons-material/StyleSharp';
 import LinkIcon from '@mui/icons-material/Link';
 import React from 'react';
-import { Variant } from '@mui/material/styles/createTypography';
+import theme from 'src/theme';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -40,8 +40,22 @@ export default function LiveblogPage({ neonData }) {
             { refreshInterval: 5000, dedupingInterval: 0 }
         ));
 
+        let overhead = null;
         let headline = null;
+        const overheadStyle = {
+            color: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary.contrastText,
+            width: 'fit-content',
+            textTransform: 'uppercase',
+            padding: '0.3em 0.5em',
+            marginBottom: '1.5rem'
+        }
         try {
+            overhead = (
+                <RenderContentElement
+                    jsonElement={findElementsInContentJson(['p'], neonData.object.helper.content)[0]}
+                />
+            );
             headline = (
                 <RenderContentElement
                     jsonElement={findElementsInContentJson(['headline'], neonData.object.helper.content)[0]}
@@ -56,7 +70,6 @@ export default function LiveblogPage({ neonData }) {
             summary = (
                 <RenderContentElement
                     jsonElement={findElementsInContentJson(['summary'], neonData.object.helper.content)[0]}
-                    renderMode="styled"
                 />
             );
         } catch (e) {}
@@ -248,10 +261,18 @@ export default function LiveblogPage({ neonData }) {
 
                         if (!boxStyle) {
                             boxStyle = {
-                                border: 1,
-                                borderColor: 'grey.500',
-                                my: 4,
-                                px: 2
+                                borderLeft: 2,
+                                borderColor: 'grey.700',
+                                position: 'relative',
+                                pb: 2,
+                                '::before': {
+                                    content: '"⬤"',
+                                    fontSize: '1.7rem',
+                                    color: 'secondary.contrastText',
+                                    position: 'absolute',
+                                    left: '-18px',
+                                    top: '-10px'
+                                }
                             };
                         }
 
@@ -271,8 +292,11 @@ export default function LiveblogPage({ neonData }) {
                             console.log(e);
                         }
                         if (contentRender) {
+                            const postTimestamp = new Date(post.timestamp);
+                            const parsedPostTimestamp =`${postTimestamp.getHours()}:${postTimestamp.getMinutes()}`;
+                            const lastItem = length === i + 1;
                             contentRender = (
-                                <Box id={post.id} key={post.id} sx={boxStyle}>
+                                <Box id={post.id} key={post.id} sx={[boxStyle, lastItem && {borderColor: 'transparent'}]}>
                                     {eventData ? (
                                         <Box
                                             sx={{ my: 1 }}
@@ -339,8 +363,15 @@ export default function LiveblogPage({ neonData }) {
                                             </Box>
                                         </Box>
                                     ) : null}
-                                    {!eventData ? contentRender : null}
-                                    <SharePostBlock post={post} />
+                                    {!eventData ? (
+                                        <Box sx={{display: 'flex'}}>
+                                            <Typography variant="h1" component="h2" sx={{fontSize: '1.2rem', ml: 2}}>
+                                                {parsedPostTimestamp}
+                                            </Typography>
+                                            <Box>{contentRender}</Box>
+                                        </Box>
+                                        ) : null}
+                                    {/* <SharePostBlock post={post} /> */}
                                 </Box>
                             );
                         }
@@ -351,29 +382,29 @@ export default function LiveblogPage({ neonData }) {
         }
         render = (
             <Container maxWidth="lg">
-                {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
                 <Container sx={{ my: 2 }} maxWidth="md">
-                    <Box display="flex" justifyContent="center" alignItems="center">
-                        <Typography
-                            align="center"
-                            variant="h3"
-                            component="h1"
-                            sx={{ fontStyle: 'italic', fontWeight: 'medium' }}
-                        >
-                            {headline}
-                        </Typography>
-                    </Box>
+                {overhead?.props?.jsonElement?.elements && (
+                    <Typography variant="h6" component="h6" sx={overheadStyle}>
+                        {overhead}
+                    </Typography>
+                )}
+                    <Typography variant="h1" component="h1">
+                        {headline}
+                    </Typography>
                 </Container>
-                {summary ? (
+                {summary && (
                     <Container sx={{ my: 2 }} maxWidth="md">
-                        <Box display="flex" justifyContent="center" alignItems="center">
-                            <Typography align="center" variant="h5" component="h2">
-                                {summary}
-                            </Typography>
-                        </Box>
+                        <Typography variant="h5" component="h2">
+                            {summary}
+                        </Typography>
                     </Container>
-                ) : null}
+                )}
                 <MainImageBlock neonData={neonData} />
+                {content && (
+                    <Typography variant="h5" component="h2">
+                        {content}
+                    </Typography>
+                )}
                 {postsRender}
             </Container>
         );
@@ -395,24 +426,23 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let cloudinaryVideo = null;
     let extraElement = null;
     try {
-        mainPictureElement = findElementsInContentJson(['mediagroup'], neonData.object.helper.content)[0].elements[0];
+        mainPictureElement = findElementsInContentJson(['figure'], neonData.object.helper.content)[0];
         extraElement = findElementsInContentJson(['extra'], neonData.object.helper.content);
-        try {
-            cloudinaryVideo = extraElement[0].elements.find(el => {
-                let found = false;
-                try {
-                    found = el.attributes['emk-type'] == 'cloudinaryVideo';
-                } catch (e) {
-                    console.log(e);
-                }
-                return found;
-            });
-        } catch (e) {
-            console.log(e);
-        }
-
+            try {
+                cloudinaryVideo = extraElement[0].elements.find(el => {
+                    let found = false;
+                    try {
+                        found = el.attributes['emk-type'] == 'cloudinaryVideo';
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    return found;
+                });
+            } catch (e) {
+                console.log(e);
+            }
         mainImageUrl = ResourceResolver(
-            getImageFormatUrl(getImageUrl(mainPictureElement, 'landscape', neonData), 'large')
+            getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'large')
         );
     } catch (e) {
         console.log(e);
@@ -422,9 +452,11 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     const imageHeight = 576;
 
     let mainMediaBlock = null;
+
     if (cloudinaryVideo) {
         mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
     } else if (mainImageUrl) {
+        console.log('mainImageUrl', mainImageUrl);
         mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
     }
 

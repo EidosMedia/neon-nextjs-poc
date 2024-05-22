@@ -59,8 +59,8 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
                 );
                 if (renderMode && renderMode === 'styled') {
                     render = (
-                        <Container sx={{ my: 1 }} maxWidth="md">
-                            <Typography variant="h5" component="h2">
+                        <Container sx={{ mb: 2 }} maxWidth="md">
+                            <Typography variant="h1" component="h2" sx={{fontSize: '1.2rem'}}>
                                 {render}
                             </Typography>
                         </Container>
