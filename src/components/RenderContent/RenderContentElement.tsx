@@ -585,7 +585,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
     let imageUrl = null;
     let imageWidth = 1024;
     let imageHeight = 576;
-    
+
     try {
         const classes = jsonElement.elements[0].attributes.class;
         const format = classes.substring(0, classes.indexOf(' '));
@@ -596,7 +596,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
             imageWidth = tokens[tokens.length - 2];
             imageHeight = tokens[tokens.length - 1];
         }
-        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, format, neonData), 'large'));
+        imageUrl = ResourceResolver(getImageUrl(jsonElement, format, neonData));
     } catch (e) {}
 
    
