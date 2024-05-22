@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 export default async (req: NextApiRequest, res: NextResponse) => {
     let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
-    console.log('========================', req.cookies.emauth);
+    console.log('========================', req.cookies.empreviewauth);
     const baseUrl = new URL(req.headers.referer);
 
     if (baseUrl.hostname === 'localhost') {
@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextResponse) => {
         url: `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`,
         mode: 'no-cors',
         headers: {
-            emauth: req.cookies.emauth
+            emauth: req.cookies.empreviewauth
         },
         responseType: 'stream' as const
     };

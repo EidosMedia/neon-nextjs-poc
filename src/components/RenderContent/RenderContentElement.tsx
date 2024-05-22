@@ -583,12 +583,23 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
     let render = null;
 
     let imageUrl = null;
+    let imageWidth = 1024;
+    let imageHeight = 576;
+
     try {
-        imageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(jsonElement, 'wide', neonData), 'large'));
+        const classes = jsonElement.elements[0].attributes.class;
+        const format = classes.substring(0, classes.indexOf(' '));
+
+        const tmx = jsonElement.elements[0].attributes['emk-tmx'];
+        if(tmx !== 'undefined') {
+            let tokens = tmx.split(' ');
+            imageWidth = tokens[tokens.length - 2];
+            imageHeight = tokens[tokens.length - 1];
+        }
+        imageUrl = ResourceResolver(getImageUrl(jsonElement, format, neonData));
     } catch (e) {}
 
-    const imageWidth = 1024;
-    const imageHeight = 576;
+   
 
     render = (
         <Container sx={{ my: 4 }} maxWidth="lg">

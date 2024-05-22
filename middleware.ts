@@ -60,16 +60,16 @@ export async function middleware(req) {
         const cookieObject = parseCookie(cookie);
         //redirectResponse.headers.set('Set-Cookie', cookie);
         //redirectResponse.headers.set('test', 'prova');
-        //const value = cookieObject.emauth;
-        //delete cookieObject.emauth;
-        //redirectResponse.cookies.set('emauth', value, cookieObject);
+        //const value = cookieObject.empreviewauth;
+        //delete cookieObject.empreviewauth;
+        //redirectResponse.cookies.set('empreviewauth', value, cookieObject);
 
         const cookieValue = cookieObject.emauth;
         const cookieOptions: ResponseCookie = {
             path: '/',
             maxAge: 1200,
             httpOnly: true,
-            name: 'emauth',
+            name: 'empreviewauth',
             value: cookieValue,
             sameSite: process.env.DEV_MODE === 'false' ? 'none' : false,
             secure: process.env.DEV_MODE === 'false',
@@ -78,14 +78,14 @@ export async function middleware(req) {
 
         //redirectResponse.headers.append('Set-Cookie', cookie);
 
-        redirectResponse.cookies.set('emauth', '', cookieOptions);
+        redirectResponse.cookies.set('empreviewauth', '', cookieOptions);
 
         console.log('cookie string:'+cookie);
 
         //redirectResponse.headers.append('Access-Control-Allow-Origin', '*');
         //redirectResponse.headers.append('Access-Control-Allow-Credentials', 'true');
 
-        //redirectResponse.cookies.set('emauth', cookieValue);
+        //redirectResponse.cookies.set('empreviewauth', cookieValue);
 
         return redirectResponse;
     }
