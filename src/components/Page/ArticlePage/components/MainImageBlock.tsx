@@ -19,7 +19,8 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
 
     const mainImageUrl = getMainImageUrl(neonData);
 
-    // console.log('mainImageUrl', mainImageUrl);
+    console.log('neonData main picture', neonData.object.helper.mainPicture);
+    console.log('mainImageUrl', mainImageUrl);
 
     // let mainMediaBlock = null;
     // if (cloudinaryVideo) {

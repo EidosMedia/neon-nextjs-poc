@@ -92,7 +92,7 @@ export const getServerSideProps = (async context => {
                 break;
             case 'liveblog':
                 const latestBlogPosts = await neonRequest(
-                    `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.site}&limit=50`
+                    `/api/liveblogs/${neonData.object.data.id}/posts?limit=50`
                 );
                 fallback[`/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
                 props.fallback = fallback;
