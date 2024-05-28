@@ -36,7 +36,7 @@ export default function MenuDrawer({ neonData, ...props }) {
 
     const currentSite = getCurrentLiveSite(neonData);
     const { siteStructure } = neonData.siteContext;
-    
+
     const site = siteStructure?.find(site => site?.root?.name === currentSite?.root?.name);
 
     const logoOverlay = null;

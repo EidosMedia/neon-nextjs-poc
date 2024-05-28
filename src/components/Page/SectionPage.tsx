@@ -1,7 +1,10 @@
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Divider, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { getCurrentSite, getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
+import TopSection from '../Fragment/TopSection';
+import ListSection from '../Fragment/ListSection';
+import Layout from '../Layout/Layout';
 
 /**
  *
@@ -10,43 +13,18 @@ import GenericFragment from '../Fragment/GenericFragment';
  * @param root0.pageTitle
  */
 export default function SectionPage({ neonData, pageTitle }) {
-    let render = null;
-
-    const searchResults = getSectionChildrenObjects(neonData);
-
-    const customColor = getCurrentSite(neonData)?.customAttributes?.customColor;
-
-    console.log('neonData:', neonData);
-    console.log('searchResults:', searchResults);
-
-    render = (
-        <Container maxWidth="lg">
-            {pageTitle ? (
-                <Box
-                    sx={{
-                        mb: 2,
-                        backgroundColor: customColor || 'secondary.main'
-                    }}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Typography sx={{ color: 'primary.main' }} variant="h2" component="h2">
-                        {pageTitle}
-                    </Typography>
+    return (
+        <Layout neonData={neonData}>
+            <Container>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '30px' }}>
+                    {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
                 </Box>
-            ) : null}
-            <Grid container spacing={2}>
-                {searchResults
-                    .filter(object => object.object.data.sys.baseType === 'article')
-                    .map((object, i) => (
-                        <Grid key={i} item xs={12} md={4}>
-                            <GenericFragment neonData={object} gridContext={{ xs: 12, md: 4 }} />
-                        </Grid>
-                    ))}
-            </Grid>
-        </Container>
+                <Divider />
+                <TopSection neonData={neonData} />
+                <Divider />
+                <ListSection neonData={neonData} />
+                <Divider />
+            </Container>
+        </Layout>
     );
-
-    return render;
 }

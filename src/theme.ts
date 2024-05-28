@@ -5,7 +5,7 @@ import { red } from '@mui/material/colors';
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#FFFFFF'
+            main: '#FFF'
         },
         secondary: {
             main: '#47807a',
@@ -14,27 +14,29 @@ const theme = createTheme({
         error: {
             main: red.A400
         },
-        
+        text: {
+            primary: '#1D1930',
+            secondary: '#F75880'
+        }
     },
     typography: {
         h1: {
             fontFamily: '"Noto Serif", serif',
             fontWeight: 700,
             fontSize: '2.986rem',
-            lineHeight: 1.2,
+            lineHeight: 1.2
         },
         h2: {
             fontFamily: '"Noto Serif", serif',
             fontWeight: 400,
             fontSize: '2.488rem',
-            lineHeight: 1.2,
+            lineHeight: 1.2
         },
         h3: {
             fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 700,
             fontSize: '2.074rem',
             lineHeight: 1.2
-            
         },
         h4: {
             fontFamily: '"Noto Sans", sans-serif',
@@ -84,6 +86,16 @@ const theme = createTheme({
             fontFamily: '"Noto Sans", sans-serif',
             fontWeight: 400,
             fontStyle: 'italic'
+        }
+    },
+    components: {
+        MuiDivider: {
+            styleOverrides: {
+                root: {
+                    borderBottomWidth: 2,
+                    borderColor: '#1D1930'
+                }
+            }
         }
     }
 });

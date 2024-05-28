@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent } from '@mui/material';
 import React from 'react';
 import Headline from './Headline';
 import NextLink from 'next/link';
@@ -11,9 +11,9 @@ type StoryFragmentLargeProps = {
     data: NeonData;
 };
 
-const StoryFragmentLarge: React.FC<StoryFragmentLargeProps> = ({ data }) => (
-    <Card square elevation={0} sx={{ display: { xs: 'flex', md: 'block' } }}>
-        <StoryFragmentMainMedia data={data} />
+const StoryFragmentBanner: React.FC<StoryFragmentLargeProps> = ({ data }) => (
+    <Box>
+        <StoryFragmentMainMedia data={data} size="large" />
         <NextLink href={getStoryUrl(data)} passHref>
             <CardActionArea>
                 <CardContent sx={{ py: 0, px: 0 }}>
@@ -22,7 +22,7 @@ const StoryFragmentLarge: React.FC<StoryFragmentLargeProps> = ({ data }) => (
                 </CardContent>
             </CardActionArea>
         </NextLink>
-    </Card>
+    </Box>
 );
 
-export default StoryFragmentLarge;
+export default StoryFragmentBanner;

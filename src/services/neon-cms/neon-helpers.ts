@@ -6,8 +6,7 @@ import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
 
 function getNeonWebPageHelper(data) {
-
-    if(typeof data.links!= "undefined"){
+    if (typeof data.links != 'undefined') {
         const zones = Object.keys(data.links.pagelink);
 
         let zonesWithObjects = null;
@@ -143,7 +142,9 @@ export const buildNeonDataFromPage = async (
             resourcesUrls: pageData?.resourcesUrls ? pageData?.resourcesUrls : null,
             nodesUrls: pageData?.nodesUrls ? pageData?.nodesUrls : null,
             children: pageData?.model.data.children ? pageData?.model.data.children : pageData?.model.children, // Fallback children location in case of model building or not
-            mainPicture: pageData?.model?.data?.links?.system?.mainPicture[0] ? pageData?.model?.data?.links?.system?.mainPicture[0] : null
+            mainPicture: pageData?.model?.data?.links?.system?.mainPicture[0]
+                ? pageData?.model?.data?.links?.system?.mainPicture[0]
+                : null
         },
         siteContext: {
             site,
@@ -316,13 +317,13 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
     }
 
     if (site) {
-        console.log('getSiteByHostname - site '+hostname+' found!', site.root.name);
+        console.log('getSiteByHostname - site ' + hostname + ' found!', site.root.name);
         return site;
     } else {
         if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
             return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
         }
-        console.log('getSiteNameByHostName - site '+hostname+' not found!');
+        console.log('getSiteNameByHostName - site ' + hostname + ' not found!');
         return null; // will show a not found
     }
 };
@@ -335,9 +336,9 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
 export const getSiteNameByHostName = (hostname: string, sites: SiteNode[]) => {
     const siteFound: SiteNode = getSiteByHostname(hostname, sites);
     if (siteFound) {
-      return siteFound.name || siteFound.root.name;
+        return siteFound.name || siteFound.root.name;
     } else {
-        console.log("no site found for "+hostname);
+        console.log('no site found for ' + hostname);
         return null;
     }
 };
@@ -427,7 +428,7 @@ export const getLiveHostname = (url: string): string => url;
 export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
     // const urlObject = url instanceof URL ? url : new URL(url);
 
-    console.log('getAPIHostname '+JSON.stringify(url) +' sitename:'+siteName);
+    console.log('getAPIHostname ' + JSON.stringify(url) + ' sitename:' + siteName);
 
     const sites = await getNeonSites();
 
@@ -435,7 +436,8 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
     const protocol = url.protocol;
     const port = url.port;
 
-    const hostnameWithProtocol = `${protocol}//${hostName}` + (port!=null && port != '' && port!='80' && port!='443' ? `:${port}` : '');
+    const hostnameWithProtocol =
+        `${protocol}//${hostName}` + (port != null && port != '' && port != '80' && port != '443' ? `:${port}` : '');
 
     const site = siteName
         ? sites.find(site => site.root.name === siteName)
@@ -450,11 +452,16 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
     return site.apiHostnames.liveHostname;
 };
 
-export const getMainImageUrl = (neonData: NeonData): string => {
+export const getMainImageUrl = (neonData: NeonData, format?: string): string => {
     const mainPicture = _.get(neonData, 'object.helper.mainPicture[0]');
     if (mainPicture && !mainPicture?.dynamicCropsResourceUrls) {
-        return ResourceResolver(neonData.pageContext.resourcesUrls[mainPicture?.targetId], neonData.pageContext.url?.startsWith('/preview') );
+        return ResourceResolver(
+            neonData.pageContext.resourcesUrls[mainPicture?.targetId],
+            neonData.pageContext.url?.startsWith('/preview')
+        );
     }
 
-    return ResourceResolver(_.get(neonData, 'object.helper.mainPicture[0].dynamicCropsResourceUrls.small'));
+    return ResourceResolver(
+        _.get(neonData, `object.helper.mainPicture[0].dynamicCropsResourceUrls.${format || 'small'}`)
+    );
 };

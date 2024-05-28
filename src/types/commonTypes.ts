@@ -109,7 +109,7 @@ export type NeonData = {
         mainPicture: any;
     };
     siteContext: {
-        site: string;
+        site: any;
         siteStructure: SiteStructure;
     };
 };

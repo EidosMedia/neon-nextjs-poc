@@ -7,6 +7,7 @@ import MainImageBlock from './components/MainImageBlock';
 import HeadlineBlock from './components/HeadlineBlock';
 import SummaryBlock from './components/SummaryBlock';
 import ContentBlock from './components/ContentBlock';
+import Layout from '@/components/Layout/Layout';
 
 /**
  *
@@ -16,13 +17,15 @@ import ContentBlock from './components/ContentBlock';
 export default function ArticlePage({ neonData }) {
     return (
         <Container maxWidth="lg">
-            {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
-            <BreadcrumbBlock neonData={neonData} />
-            <BeyondWordsBlock neonData={neonData} />
-            <HeadlineBlock neonData={neonData} />
-            <SummaryBlock neonData={neonData} />
-            {neonData?.object?.data?.links?.system?.mainPicture && (<MainImageBlock neonData={neonData} />)}
-            <ContentBlock neonData={neonData} />
+            <Layout neonData={neonData}>
+                {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
+                <BreadcrumbBlock neonData={neonData} />
+                <BeyondWordsBlock neonData={neonData} />
+                <HeadlineBlock neonData={neonData} />
+                <SummaryBlock neonData={neonData} />
+                {neonData?.object?.data?.links?.system?.mainPicture && <MainImageBlock neonData={neonData} />}
+                <ContentBlock neonData={neonData} />
+            </Layout>
         </Container>
     );
 }

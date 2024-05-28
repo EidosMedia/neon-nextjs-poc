@@ -5,7 +5,7 @@ import ErrorPage from '@/components/Page/ErrorPage';
 import LandingPage from '@/components/Page/LandingPage';
 import LiveblogPage from '@/components/Page/LiveblogPage';
 import SectionPage from '@/components/Page/SectionPage';
-import SemiAutomaticSectionPage from '@/components/Page/SemiAutomaticSectionPage';
+import DefaultSectionPage from '@/components/Page/DefaultSectionPage';
 import SimpleHomepage from '@/components/Page/SimpleHomepage';
 import Segment from '@/components/Segment/Segment';
 import { neonRequest, getNeonPageByUrl } from '@/services/neon-cms/neon-api';
@@ -29,27 +29,22 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         pageTitle = neonData.object.data.title;
     }
 
+    console.log('baseType in tsx', neonData?.object?.data?.sys?.baseType);
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
-            let isSimpleHp = false;
-            try {
-                isSimpleHp = neonData.object.data.attributes.classification.genres.includes('simplehp');
-            } catch (e) {}
-            if (isSimpleHp) {
-                // For demo purpose
-                return <SimpleHomepage neonData={neonData} pageTitle={pageTitle} />;
-            } else if (neonData.object.data.pubInfo.sectionPath !== '/') {
-                // This is a section page with a DWP ("semi-automatic" page)
-                return <SemiAutomaticSectionPage neonData={neonData} pageTitle={pageTitle} />;
-            } else {
+            if (neonData?.object?.data?.sys?.type === 'sectionpage') {
+                return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+            } else if (neonData?.object?.data?.sys?.type === 'home') {
                 return <LandingPage neonData={neonData} />;
+            } else {
+                return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
             }
 
         case 'webpagefragment':
             return <Segment neonData={neonData} />;
 
         case 'section':
-            return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+            return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
 
         case 'site':
             return <LandingPage neonData={neonData} />;
@@ -91,9 +86,7 @@ export const getServerSideProps = (async context => {
             case 'webpage':
                 break;
             case 'liveblog':
-                const latestBlogPosts = await neonRequest(
-                    `/api/liveblogs/${neonData.object.data.id}/posts?limit=50`
-                );
+                const latestBlogPosts = await neonRequest(`/api/liveblogs/${neonData.object.data.id}/posts?limit=50`);
                 fallback[`/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
                 props.fallback = fallback;
                 break;

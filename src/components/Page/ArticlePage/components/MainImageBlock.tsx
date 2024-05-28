@@ -1,9 +1,6 @@
-import { findElementsInContentJson, getImageUrl } from 'src/utils/ContentUtil';
 import { BlockProps } from '../ArticlePage.types';
-import { CloudinaryVideo } from '@/components/RenderContent/RenderContentElement';
 import Image from 'next/image';
-import ResourceResolver from 'src/utils/ResourceResolver';
-import { getImageFormatUrl, getMainImageUrl } from '@/services/neon-cms/neon-helpers';
+import { getMainImageUrl } from '@/services/neon-cms/neon-helpers';
 import { Box, Container } from '@mui/material';
 
 /**
@@ -19,23 +16,13 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
 
     const mainImageUrl = getMainImageUrl(neonData);
 
-    console.log('neonData main picture', neonData.object.helper.mainPicture);
-    console.log('mainImageUrl', mainImageUrl);
-
-    // let mainMediaBlock = null;
-    // if (cloudinaryVideo) {
-    //     mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
-    // } else if (mainImageUrl) {
-    //     mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
-    // }
-
     const tmx = neonData?.pageContext?.mainPicture?.metadata.tmx;
-    if(tmx !== 'undefined') {
+    if (tmx !== 'undefined') {
         let tokens = tmx.split(' ');
         imageWidth = tokens[tokens.length - 2];
         imageHeight = tokens[tokens.length - 1];
     }
-   
+
     const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
     const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
 

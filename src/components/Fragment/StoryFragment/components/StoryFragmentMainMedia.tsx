@@ -1,63 +1,31 @@
+import React from 'react';
 import { getMainImageUrl } from '@/services/neon-cms/neon-helpers';
 import { Box, Container } from '@mui/material';
 import Image from 'next/image';
+import { NeonData } from 'src/types/commonTypes';
 
-const StoryFragmentMainMedia = ({ data }) => {
-    // let mainPictureElement = null;
-    // let mainImageUrl = null;
-    // let cloudinaryVideo = null;
-    // let extraElement = null;
+const dimensions = {
+    small: { width: 200, height: 200 },
+    medium: { width: 200, height: 200 },
+    large: { width: 700, height: 400 }
+};
 
-    // console.log('Main image block - neonData', neonData);
-    // console.log('neonData.mainImage', neonData.object.helper.mainPicture);
+type StoryFragmentMainMediaProps = {
+    data: NeonData;
+    size: 'small' | 'medium' | 'large';
+};
 
-    // try {
-    //     console.log(
-    //         'mainPictureElement find result',
-    //         findElementsInContentJson(['figure'], neonData.object.helper.content)[0]
-    //     );
-
-    //     mainPictureElement = findElementsInContentJson(['figure'], neonData.object.helper.content)[0];
-    //     extraElement = findElementsInContentJson(['extra'], neonData.object.helper.content);
-    //     try {
-    //         cloudinaryVideo = extraElement[0].elements.find(el => {
-    //             let found = false;
-    //             try {
-    //                 found = el.attributes['emk-type'] == 'cloudinaryVideo';
-    //             } catch (e) {}
-    //             return found;
-    //         });
-    //     } catch (e) {}
-
-    //     mainImageUrl = ResourceResolver(
-    //         getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'large'),
-    //         neonData.previewData ? neonData.previewData : null,
-    //         neonData.siteContext.site
-    //     );
-    // } catch (e) {
-    //     console.log(e);
-    // }
-
-    const imageWidth = 1024;
-    const imageHeight = 576;
-
+const StoryFragmentMainMedia: React.FC<StoryFragmentMainMediaProps> = ({ data, size }) => {
     const mainImageUrl = getMainImageUrl(data);
 
-    console.log('mainImageUrl', mainImageUrl);
-
-    // let mainMediaBlock = null;
-    // if (cloudinaryVideo) {
-    //     mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
-    // } else if (mainImageUrl) {
-    //     mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
-    // }
-
     return (
-        <Container sx={{ my: 2 }}>
-            <Box display="flex">
-                <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" priority={true} />
-            </Box>
-        </Container>
+        <Image
+            src={mainImageUrl}
+            width={dimensions[size || 'medium'].width}
+            height={dimensions[size || 'medium'].height}
+            alt=""
+            priority={true}
+        />
     );
 };
 

@@ -35,6 +35,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
 }) => {
     let render = null;
     const id = null;
+
     try {
         if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
             switch (jsonElement.name) {
@@ -165,9 +166,8 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                                       .filter(
                                           subel =>
                                               subel.type === 'text' ||
-                                              (subel.type === 'element' 
-                                                // && subel.name === 'keyword'
-                                              )
+                                              subel.type === 'element'
+                                              // && subel.name === 'keyword'
                                       )
                                       .map((subel, i) => (
                                           <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
@@ -325,7 +325,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     if (jsonElement.attributes && jsonElement.attributes.class === 'DataMap') {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
-                               {/* <SimpleMap jsonElement={jsonElement} neonData={neonData} /> */}
+                                {/* <SimpleMap jsonElement={jsonElement} neonData={neonData} /> */}
                             </Container>
                         );
                     } else {
@@ -591,15 +591,13 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
         const format = classes.substring(0, classes.indexOf(' '));
 
         const tmx = jsonElement.elements[0].attributes['emk-tmx'];
-        if(tmx !== 'undefined') {
+        if (tmx !== 'undefined') {
             let tokens = tmx.split(' ');
             imageWidth = tokens[tokens.length - 2];
             imageHeight = tokens[tokens.length - 1];
         }
         imageUrl = ResourceResolver(getImageUrl(jsonElement, format, neonData));
     } catch (e) {}
-
-   
 
     render = (
         <Container sx={{ my: 4 }} maxWidth="lg">

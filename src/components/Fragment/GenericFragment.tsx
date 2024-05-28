@@ -6,6 +6,7 @@ import { GenericPageProps } from 'src/types/commonTypes';
 
 type GenericFragmentProps = GenericPageProps & {
     gridContext?: any;
+    size?: string;
 };
 
 /**
@@ -15,7 +16,7 @@ type GenericFragmentProps = GenericPageProps & {
  * @param root0.analyticsReport
  * @param root0.gridContext
  */
-const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext }) => {
+const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext, size }) => {
     if (neonData) {
         switch (neonData.object.data.sys.baseType) {
             case 'article':
@@ -23,10 +24,10 @@ const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext
                     case 'breakingnews':
                         return <BreakingNewsFragment neonData={neonData} />;
                     default:
-                        return <StoryFragment neonData={neonData} gridContext={gridContext} />;
+                        return <StoryFragment neonData={neonData} gridContext={gridContext} size={size} />;
                 }
             case 'liveblog':
-                return <LiveblogFragment neonData={neonData} gridContext={gridContext} />;
+                return <LiveblogFragment neonData={neonData} gridContext={gridContext} size={size} />;
         }
     }
     return null;

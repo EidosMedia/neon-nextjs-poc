@@ -1,4 +1,4 @@
-import { Box, Card } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent } from '@mui/material';
 import React from 'react';
 import Headline from './Headline';
 import NextLink from 'next/link';
@@ -6,16 +6,18 @@ import Summary from './Summary';
 import { getStoryUrl } from '../StoryFragment.utils';
 import { NeonData } from 'src/types/commonTypes';
 import StoryFragmentMainMedia from './StoryFragmentMainMedia';
+import Overhead from './Overhead';
 
-type StoryFragmentProps = {
+type StoryFragmentLargeProps = {
     data: NeonData;
 };
 
-const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data }) => (
+const StoryFragmentMedium: React.FC<StoryFragmentLargeProps> = ({ data }) => (
     <NextLink href={getStoryUrl(data)} passHref legacyBehavior>
         <Box sx={{ display: 'flex', padding: '20px', gap: '20px', cursor: 'pointer' }}>
-            <StoryFragmentMainMedia data={data} size="small" />
+            <StoryFragmentMainMedia data={data} size="medium" />
             <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                <Overhead data={data} />
                 <Headline data={data} />
                 <Summary data={data} />
             </Box>
@@ -23,4 +25,4 @@ const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data }) => (
     </NextLink>
 );
 
-export default StoryFragmentSmall;
+export default StoryFragmentMedium;
