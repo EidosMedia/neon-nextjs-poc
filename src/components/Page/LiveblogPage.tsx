@@ -16,6 +16,7 @@ import StyleSharpIcon from '@mui/icons-material/StyleSharp';
 import LinkIcon from '@mui/icons-material/Link';
 import React from 'react';
 import theme from 'src/theme';
+import Layout from '../Layout/Layout';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -26,13 +27,10 @@ export default function LiveblogPage({ neonData }) {
     let render = null;
 
     // Swing quick open
-    let uuid = null;
-    try {
-        uuid = `Methode uuid: "${neonData.object.data.foreignId}"`;
-    } catch (e) {}
 
     if (neonData) {
         let data;
+
         let error = null;
         ({ data, error } = useSWR(
             '/api/' + getCurrentLiveSite(neonData) + '/liveblogs/' + neonData.object.data.id,
@@ -49,7 +47,7 @@ export default function LiveblogPage({ neonData }) {
             textTransform: 'uppercase',
             padding: '0.3em 0.5em',
             marginBottom: '1.5rem'
-        }
+        };
         try {
             overhead = (
                 <RenderContentElement
@@ -293,10 +291,14 @@ export default function LiveblogPage({ neonData }) {
                         }
                         if (contentRender) {
                             const postTimestamp = new Date(post.timestamp);
-                            const parsedPostTimestamp =`${postTimestamp.getHours()}:${postTimestamp.getMinutes()}`;
+                            const parsedPostTimestamp = `${postTimestamp.getHours()}:${postTimestamp.getMinutes()}`;
                             const lastItem = length === i + 1;
                             contentRender = (
-                                <Box id={post.id} key={post.id} sx={[boxStyle, lastItem && {borderColor: 'transparent'}]}>
+                                <Box
+                                    id={post.id}
+                                    key={post.id}
+                                    sx={[boxStyle, lastItem && { borderColor: 'transparent' }]}
+                                >
                                     {eventData ? (
                                         <Box
                                             sx={{ my: 1 }}
@@ -364,13 +366,13 @@ export default function LiveblogPage({ neonData }) {
                                         </Box>
                                     ) : null}
                                     {!eventData ? (
-                                        <Box sx={{display: 'flex'}}>
-                                            <Typography variant="h1" component="h2" sx={{fontSize: '1.2rem', ml: 2}}>
+                                        <Box sx={{ display: 'flex' }}>
+                                            <Typography variant="h1" component="h2" sx={{ fontSize: '1.2rem', ml: 2 }}>
                                                 {parsedPostTimestamp}
                                             </Typography>
                                             <Box>{contentRender}</Box>
                                         </Box>
-                                        ) : null}
+                                    ) : null}
                                     {/* <SharePostBlock post={post} /> */}
                                 </Box>
                             );
@@ -381,32 +383,34 @@ export default function LiveblogPage({ neonData }) {
             );
         }
         render = (
-            <Container maxWidth="lg">
-                <Container sx={{ my: 2 }} maxWidth="md">
-                {overhead?.props?.jsonElement?.elements && (
-                    <Typography variant="h6" component="h6" sx={overheadStyle}>
-                        {overhead}
-                    </Typography>
-                )}
-                    <Typography variant="h1" component="h1">
-                        {headline}
-                    </Typography>
-                </Container>
-                {summary && (
+            <Layout neonData={neonData}>
+                <Container maxWidth="lg">
                     <Container sx={{ my: 2 }} maxWidth="md">
-                        <Typography variant="h5" component="h2">
-                            {summary}
+                        {overhead?.props?.jsonElement?.elements && (
+                            <Typography variant="h6" component="h6" sx={overheadStyle}>
+                                {overhead}
+                            </Typography>
+                        )}
+                        <Typography variant="h1" component="h1">
+                            {headline}
                         </Typography>
                     </Container>
-                )}
-                <MainImageBlock neonData={neonData} />
-                {content && (
-                    <Typography variant="h5" component="h2">
-                        {content}
-                    </Typography>
-                )}
-                {postsRender}
-            </Container>
+                    {summary && (
+                        <Container sx={{ my: 2 }} maxWidth="md">
+                            <Typography variant="h5" component="h2">
+                                {summary}
+                            </Typography>
+                        </Container>
+                    )}
+                    {neonData?.object?.data?.links?.system?.mainPicture && <MainImageBlock neonData={neonData} />}
+                    {content && (
+                        <Typography variant="h5" component="h2">
+                            {content}
+                        </Typography>
+                    )}
+                    {postsRender}
+                </Container>
+            </Layout>
         );
     }
     return render;
@@ -428,22 +432,20 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     try {
         mainPictureElement = findElementsInContentJson(['figure'], neonData.object.helper.content)[0];
         extraElement = findElementsInContentJson(['extra'], neonData.object.helper.content);
-            try {
-                cloudinaryVideo = extraElement[0].elements.find(el => {
-                    let found = false;
-                    try {
-                        found = el.attributes['emk-type'] == 'cloudinaryVideo';
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    return found;
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        mainImageUrl = ResourceResolver(
-            getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'large')
-        );
+        try {
+            cloudinaryVideo = extraElement[0].elements.find(el => {
+                let found = false;
+                try {
+                    found = el.attributes['emk-type'] == 'cloudinaryVideo';
+                } catch (e) {
+                    console.log(e);
+                }
+                return found;
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'large'));
     } catch (e) {
         console.log(e);
     }

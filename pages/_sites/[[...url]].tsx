@@ -29,7 +29,6 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
         pageTitle = neonData.object.data.title;
     }
 
-    console.log('baseType in tsx', neonData?.object?.data?.sys?.baseType);
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
             if (neonData?.object?.data?.sys?.type === 'sectionpage') {
