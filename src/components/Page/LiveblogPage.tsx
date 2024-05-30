@@ -126,7 +126,7 @@ export default function LiveblogPage({ neonData }) {
         if (!data) postsRender = <div>Loading...</div>;
         if (!error && data) {
             postsRender = (
-                <Container sx={{ my: 2 }} maxWidth="md">
+                <Container sx={{ my: 2 }} maxWidth="lg">
                     {data.result.map((post, i, { length }) => {
                         let eventData = null;
                         let boxStyle = null;
@@ -385,7 +385,7 @@ export default function LiveblogPage({ neonData }) {
         render = (
             <Layout neonData={neonData}>
                 <Container maxWidth="lg">
-                    <Container sx={{ my: 2 }} maxWidth="md">
+                    <Container sx={{ my: 2 }} maxWidth="lg">
                         {overhead?.props?.jsonElement?.elements && (
                             <Typography variant="h6" component="h6" sx={overheadStyle}>
                                 {overhead}
@@ -396,7 +396,7 @@ export default function LiveblogPage({ neonData }) {
                         </Typography>
                     </Container>
                     {summary && (
-                        <Container sx={{ my: 2 }} maxWidth="md">
+                        <Container sx={{ my: 2 }} maxWidth="lg">
                             <Typography variant="h5" component="h2">
                                 {summary}
                             </Typography>

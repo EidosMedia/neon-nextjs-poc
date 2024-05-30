@@ -8,6 +8,7 @@ import HeadlineBlock from './components/HeadlineBlock';
 import SummaryBlock from './components/SummaryBlock';
 import ContentBlock from './components/ContentBlock';
 import Layout from '@/components/Layout/Layout';
+import { GLOBAL_MAX_WIDTH_PX } from '@/utils/Constants';
 
 /**
  *

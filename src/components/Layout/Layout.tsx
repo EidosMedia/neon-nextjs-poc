@@ -3,6 +3,7 @@ import Copyright from '../Furnitures/Copyright';
 import MenuDrawer from './MenuDrawer';
 import React from 'react';
 import MenuHeader from './MenuHeader';
+import { GLOBAL_MAX_WIDTH_PX } from '@/utils/Constants';
 
 /**
  *
@@ -13,11 +14,11 @@ const Layout: React.FC<any> = props => {
 
     return (
         <>
-            <Container maxWidth="lg">
+            <Container sx={{ maxWidth: GLOBAL_MAX_WIDTH_PX }}>
                 <MenuHeader {...props} />
                 {/* <MenuDrawer {...props} /> */}
                 {props.children}
-                <Container maxWidth="lg">
+                <Container sx={{ maxWidth: GLOBAL_MAX_WIDTH_PX }}>
                     <Box sx={{ my: 4 }}>
                         <Copyright />
                     </Box>

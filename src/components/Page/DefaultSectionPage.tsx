@@ -23,7 +23,7 @@ export const DefaultSectionPage: React.FC<DefaultSectionPageProps> = ({ neonData
 
     return (
         <Layout neonData={neonData}>
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '30px' }}>
                     {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
                 </Box>

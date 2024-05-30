@@ -1,9 +1,10 @@
-import { AppBar, Box, Toolbar, Typography, useScrollTrigger } from '@mui/material';
+import { AppBar, Box, Container, Toolbar, Typography, useScrollTrigger } from '@mui/material';
 import { BlockProps } from '../Page/ArticlePage/ArticlePage.types';
 import React from 'react';
 import Link from './Link';
+import { GLOBAL_MAX_WIDTH_PX } from '@/utils/Constants';
 
-const getNavItems = neonData => neonData.siteContext.siteStructure[0].root.items.map(item => item.name);
+const getNavItems = neonData => neonData.siteContext.siteStructure[0].root.items.map(item => item.title || item.name);
 
 const ElevationScroll = (props: any) => {
     const { children } = props;
@@ -14,7 +15,7 @@ const ElevationScroll = (props: any) => {
     });
 
     return React.cloneElement(children, {
-        elevation: trigger ? 4 : 0
+        elevation: trigger ? 1 : 0
     });
 };
 
@@ -25,41 +26,49 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
 
     const isSite = neonData.object.data.sys.baseType === 'site';
 
+    console.log('neonData.object.data', neonData.siteContext.site.root);
+
     return (
         <>
             <ElevationScroll>
-                <AppBar position="fixed">
-                    <Toolbar
-                        sx={{
-                            flexDirection: isSite ? 'column' : 'row',
-                            justifyContent: isSite ? 'inherit' : 'space-between'
-                        }}
-                    >
-                        <Link href={`/`} disableActive>
-                            <Typography
-                                component="div"
-                                sx={{
-                                    flexGrow: 1,
-                                    display: { xs: 'none', sm: 'block' },
-                                    fontFamily: 'Noto serif',
-                                    fontSize: isSite ? '80px' : '30px',
-                                    fontWeight: 'bold'
-                                }}
-                            >
-                                {neonData.siteContext.site.root.name}
-                            </Typography>
-                        </Link>
-                        <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: isSite ? '40px' : '20px' }}>
-                            <Link href={`/`}>
-                                <Typography variant="h6">Home</Typography>
+                <AppBar position="fixed" sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Container maxWidth="lg">
+                        <Toolbar
+                            sx={{
+                                display: 'flex',
+                                width: '100%',
+                                flexDirection: isSite ? 'column' : 'row',
+                                justifyContent: isSite ? 'inherit' : 'space-between'
+                            }}
+                        >
+                            <Link href={`/`} disableActive>
+                                <Typography
+                                    component="div"
+                                    sx={{
+                                        flexGrow: 1,
+                                        display: 'block',
+                                        fontFamily: 'Noto serif',
+                                        fontSize: isSite ? '80px' : '30px',
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    {neonData.siteContext.site.root.title}
+                                </Typography>
                             </Link>
-                            {navItems.map(item => (
-                                <Link href={`/${item}`} key={item}>
-                                    <Typography variant="h6">{item}</Typography>
+                            <Box
+                                sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, gap: isSite ? '40px' : '20px' }}
+                            >
+                                <Link href={`/`}>
+                                    <Typography variant="h6">Home</Typography>
                                 </Link>
-                            ))}
-                        </Box>
-                    </Toolbar>
+                                {navItems.map(item => (
+                                    <Link href={`/${item}`} key={item}>
+                                        <Typography variant="h6">{item}</Typography>
+                                    </Link>
+                                ))}
+                            </Box>
+                        </Toolbar>
+                    </Container>
                 </AppBar>
             </ElevationScroll>
             <Toolbar />

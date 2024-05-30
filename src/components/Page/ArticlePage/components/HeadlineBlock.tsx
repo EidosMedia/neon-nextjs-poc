@@ -15,9 +15,7 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let headline = null;
     try {
         overhead = (
-            <RenderContentElement
-                jsonElement={findElementsInContentJson(['p'], neonData.object.helper.content)[0]}
-            />
+            <RenderContentElement jsonElement={findElementsInContentJson(['p'], neonData.object.helper.content)[0]} />
         );
         headline = (
             <RenderContentElement
@@ -34,20 +32,17 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
         textTransform: 'uppercase',
         padding: '0.3em 0.5em',
         marginBottom: '1.5rem'
-    }
+    };
 
     const render = (
-        <Container sx={{ my: 4 }} maxWidth={maxWidth as Breakpoint}>
+        <Container sx={{ my: 4 }} maxWidth="lg">
             <Box display="flex" flexDirection="column">
-            {overhead?.props?.jsonElement?.elements && (
-                <Typography variant="h6" component="h6" sx={overheadStyle}>
-                    {overhead}
-                </Typography>
-            )}
-                <Typography
-                    variant="h1"
-                    component="h1"
-                >
+                {overhead?.props?.jsonElement?.elements && (
+                    <Typography variant="h6" component="h6" sx={overheadStyle}>
+                        {overhead}
+                    </Typography>
+                )}
+                <Typography variant="h1" component="h1">
                     {headline}
                 </Typography>
             </Box>
