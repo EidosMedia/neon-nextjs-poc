@@ -60,20 +60,6 @@ function getNeonArticleHelper(data) {
     };
 }
 
-function getNeonLiveblogHelper(data) {
-    let content = null;
-
-    try {
-        content = JSON.parse(xml2json(data.files.content.data));
-    } catch (e) {
-        console.log('error parsing object xml: ' + e);
-    }
-
-    return {
-        content
-    };
-}
-
 export function getNeonLiveblogPostHelper(data) {
     let content = null;
     try {
@@ -100,9 +86,8 @@ export function getNeonDataHelper(data) {
         case 'webpagefragment':
             return getNeonWebPageHelper(data);
         case 'article':
-            return getNeonArticleHelper(data);
         case 'liveblog':
-            return getNeonLiveblogHelper(data);
+            return getNeonArticleHelper(data);
         default:
             return null;
     }

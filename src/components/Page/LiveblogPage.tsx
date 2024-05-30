@@ -17,6 +17,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import React from 'react';
 import theme from 'src/theme';
 import Layout from '../Layout/Layout';
+import MainImageBlock from './ArticlePage/components/MainImageBlock';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -32,11 +33,12 @@ export default function LiveblogPage({ neonData }) {
         let data;
 
         let error = null;
+        /*
         ({ data, error } = useSWR(
             '/api/' + getCurrentLiveSite(neonData) + '/liveblogs/' + neonData.object.data.id,
             fetcher,
             { refreshInterval: 5000, dedupingInterval: 0 }
-        ));
+        ));*/
 
         let overhead = null;
         let headline = null;
@@ -419,61 +421,7 @@ export default function LiveblogPage({ neonData }) {
 type BlockProps = {
     neonData?: any;
     styleVariant?: string;
-};
-
-/**
- *
- */
-const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
-    let mainPictureElement = null;
-    let mainImageUrl = null;
-    let cloudinaryVideo = null;
-    let extraElement = null;
-    try {
-        mainPictureElement = findElementsInContentJson(['figure'], neonData.object.helper.content)[0];
-        extraElement = findElementsInContentJson(['extra'], neonData.object.helper.content);
-        try {
-            cloudinaryVideo = extraElement[0].elements.find(el => {
-                let found = false;
-                try {
-                    found = el.attributes['emk-type'] == 'cloudinaryVideo';
-                } catch (e) {
-                    console.log(e);
-                }
-                return found;
-            });
-        } catch (e) {
-            console.log(e);
-        }
-        mainImageUrl = ResourceResolver(getImageFormatUrl(getImageUrl(mainPictureElement, 'wide', neonData), 'large'));
-    } catch (e) {
-        console.log(e);
-    }
-
-    const imageWidth = 1024;
-    const imageHeight = 576;
-
-    let mainMediaBlock = null;
-
-    if (cloudinaryVideo) {
-        mainMediaBlock = <CloudinaryVideo jsonElement={cloudinaryVideo} />;
-    } else if (mainImageUrl) {
-        console.log('mainImageUrl', mainImageUrl);
-        mainMediaBlock = <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" />;
-    }
-
-    const justify = styleVariant && styleVariant === 'leftAligned' ? ('left' as const) : ('center' as const);
-    const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
-
-    const render = (
-        <Container sx={{ my: 2 }} maxWidth={maxWidth}>
-            <Box display="flex" justifyContent={justify} alignItems={justify}>
-                {mainMediaBlock}
-            </Box>
-        </Container>
-    );
-    return render;
-};
+}
 
 /**
  *
