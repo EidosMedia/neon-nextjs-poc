@@ -10,14 +10,14 @@ import { BlockProps } from '../ArticlePage.types';
  */
 const BreadcrumbBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let justify = 'center';
-    let maxWidth = 'md';
-    if (styleVariant && styleVariant === 'leftAligned') {
-        justify = 'left';
-        maxWidth = 'lg';
-    }
+    // let maxWidth = 'md';
+    // if (styleVariant && styleVariant === 'leftAligned') {
+    //     justify = 'left';
+    //     maxWidth = 'lg';
+    // }
 
     const render = (
-        <Container sx={{ my: 0 }} maxWidth={maxWidth as Breakpoint}>
+        <Container sx={{ my: 0 }} maxWidth="lg">
             <Box display="flex" justifyContent={justify} alignItems={justify}>
                 <BreadCrumb neonData={neonData} />
             </Box>
