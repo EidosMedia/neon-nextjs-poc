@@ -16,7 +16,7 @@ type StoryFragmentMainMediaProps = {
 };
 
 const StoryFragmentMainMedia: React.FC<StoryFragmentMainMediaProps> = ({ data, size }) => {
-    const mainImageUrl = getMainImageUrl(data);
+    const mainImageUrl = getMainImageUrl(data, "Square_small");
 
     return (
         <Image

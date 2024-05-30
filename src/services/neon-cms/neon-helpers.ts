@@ -462,6 +462,6 @@ export const getMainImageUrl = (neonData: NeonData, format?: string): string => 
     }
 
     return ResourceResolver(
-        _.get(neonData, `object.helper.mainPicture[0].dynamicCropsResourceUrls.${format || 'small'}`)
+        _.get(neonData, `object.helper.mainPicture[0].dynamicCropsResourceUrls.${format || 'Wide_large'}`)
     );
 };
