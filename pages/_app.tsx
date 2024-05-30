@@ -9,10 +9,23 @@ import createEmotionCache from '../src/createEmotionCache';
 import Layout from '@/components/Layout/Layout';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
+import themeVariantA from 'src/themes/variant-a-theme';
+import themeVariantB from 'src/themes/variant-b-theme';
+import themeVariantC from 'src/themes/variant-c-theme';
+import themeVariantD from 'src/themes/variant-d-theme';
+import _ from 'lodash';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
+const themes = {
+    'variant-a': themeVariantA,
+    'variant-b': themeVariantB,
+    'variant-c': themeVariantC,
+    'variant-d': themeVariantD
+};
+
+const resolveTheme = pageProps => themes[_.get(pageProps, 'neonData.siteContext.site.root.attributes.theme')] || theme;
 /**
  *
  * @param props
@@ -26,7 +39,7 @@ export default function MyApp(props) {
                 <Head>
                     <meta name="viewport" content="initial-scale=1, width=device-width" />
                 </Head>
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={resolveTheme(pageProps)}>
                     <CssBaseline />
                     <Component {...pageProps} />
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

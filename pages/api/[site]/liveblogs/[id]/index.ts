@@ -7,7 +7,7 @@ export default async (req, res) => {
 
     const limit = 50;
 
-    const settings = {
+    const settings: Record<string, string> = {
         limit: limit.toString()
     };
 

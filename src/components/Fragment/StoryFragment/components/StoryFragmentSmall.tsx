@@ -1,4 +1,4 @@
-import { Box, Card } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 import Headline from './Headline';
 import NextLink from 'next/link';

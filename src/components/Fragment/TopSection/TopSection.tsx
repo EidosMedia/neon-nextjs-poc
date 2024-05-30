@@ -16,8 +16,8 @@ const TopSection: React.FC<BlockProps> = ({ neonData }) => {
 
     for (let i = 1; i < Math.min(linkedObjects.length, 5); i++) {
         gridContent.push(
-            <Grid item>
-                <GenericFragment neonData={linkedObjects[i]} key={linkedObjects[i].id} size="medium" />
+            <Grid item md={6}>
+                <GenericFragment neonData={linkedObjects[i]} key={linkedObjects[i].id} size="small" />
             </Grid>
         );
     }
@@ -27,7 +27,9 @@ const TopSection: React.FC<BlockProps> = ({ neonData }) => {
             <Box>
                 <StoryFragmentMainTop data={linkedObjects[0]} />
             </Box>
-            <Grid container>{gridContent}</Grid>
+            <Grid container spacing={2}>
+                {gridContent}
+            </Grid>
         </Box>
     );
 };

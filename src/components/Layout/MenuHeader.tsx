@@ -50,7 +50,6 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
                                     sx={{
                                         flexGrow: 1,
                                         display: 'block',
-                                        fontFamily: 'Noto serif',
                                         fontSize: isSite ? '80px' : '30px',
                                         fontWeight: 'bold'
                                     }}

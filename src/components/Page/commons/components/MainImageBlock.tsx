@@ -1,4 +1,4 @@
-import { BlockProps } from '../ArticlePage.types';
+import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 import Image from 'next/image';
 import { getMainImageUrl } from '@/services/neon-cms/neon-helpers';
 import { Box, Container } from '@mui/material';
@@ -17,10 +17,9 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     const mainImageUrl = getMainImageUrl(neonData);
 
     let tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Wide?.tmx;
-    if( tmx === undefined)
-        tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Square?.tmx
+    if (tmx === undefined) tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Square?.tmx;
 
-    if(tmx !== undefined) {
+    if (tmx !== undefined) {
         let tokens = tmx.split(' ');
         imageWidth = tokens[tokens.length - 2];
         imageHeight = tokens[tokens.length - 1];

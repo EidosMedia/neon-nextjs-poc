@@ -109,7 +109,8 @@ const commonEslint = {
                     ['@/pages', './pages'],
                     ['@/lib', './src/lib'],
                     ['@/types', './src/types'],
-                    ['@/utils', './src/utils']
+                    ['@/utils', './src/utils'],
+                    ['@/themes', './src/themes']
                 ]
             }
         }

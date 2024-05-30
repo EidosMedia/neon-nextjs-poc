@@ -1,10 +1,10 @@
-import { Box, Card, CardActionArea, CardContent } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 import Headline from './Headline';
 import NextLink from 'next/link';
 import Summary from './Summary';
 import { getStoryUrl } from '../StoryFragment.utils';
-import { NeonData } from 'src/types/commonTypes';
+import { NeonData } from '@/types/commonTypes';
 import StoryFragmentMainMedia from './StoryFragmentMainMedia';
 import Overhead from './Overhead';
 

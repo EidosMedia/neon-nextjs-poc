@@ -1,8 +1,8 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
-import { Box, Breakpoint, Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
-import { BlockProps } from '../ArticlePage.types';
 import theme from 'src/theme';
+import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 
 /**
  *
@@ -13,6 +13,7 @@ import theme from 'src/theme';
 const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let overhead = null;
     let headline = null;
+
     try {
         overhead = (
             <RenderContentElement jsonElement={findElementsInContentJson(['p'], neonData.object.helper.content)[0]} />
@@ -24,10 +25,9 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
         );
     } catch (e) {}
 
-    const maxWidth = styleVariant && styleVariant === 'leftAligned' ? ('lg' as const) : ('md' as const);
     const overheadStyle = {
-        color: theme.palette.primary.main,
-        backgroundColor: theme.palette.secondary.contrastText,
+        color: 'primary.main',
+        backgroundColor: 'text.secondary',
         width: 'fit-content',
         textTransform: 'uppercase',
         padding: '0.3em 0.5em',

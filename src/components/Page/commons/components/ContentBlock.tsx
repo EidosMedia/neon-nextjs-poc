@@ -1,6 +1,6 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
-import { BlockProps } from '../ArticlePage.types';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
+import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 
 /**
  *

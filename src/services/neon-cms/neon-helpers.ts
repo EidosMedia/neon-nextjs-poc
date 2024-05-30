@@ -42,10 +42,6 @@ function getNeonWebPageHelper(data) {
 function getNeonArticleHelper(data) {
     let content = null;
 
-    // console.log('neon article helper data', data);
-
-    // console.log('data.files.content', data.files.content);
-
     try {
         content = JSON.parse(xml2json(data.files.content.data));
     } catch (e) {
