@@ -1,14 +1,24 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
 
-const Summary = ({ data }) => {
+const Overhead = ({ data }) => {
     if (!data) return null;
 
+    const overheadContent = findElementsInContentJson(['overhead'], data.object.helper.content)[0];
+
+    if (!overheadContent) return null;
+
     return (
-        <Typography sx={{ mb: 2, backgroundColor: 'text.secondary' }} variant="body1" color="white">
-            <RenderContentElement jsonElement={findElementsInContentJson(['summary'], data.object.helper.content)[0]} />
-        </Typography>
+        <Box>
+            <Typography
+                sx={{ mb: 2, backgroundColor: 'text.secondary', padding: '2px 5px', fontWeight: 'bold' }}
+                color="white"
+                component="span"
+            >
+                <RenderContentElement jsonElement={overheadContent} />
+            </Typography>
+        </Box>
     );
 };
-export default Summary;
+export default Overhead;

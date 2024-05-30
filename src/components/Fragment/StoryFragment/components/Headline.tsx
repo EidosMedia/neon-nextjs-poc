@@ -1,6 +1,6 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
-import { NeonData } from 'src/types/commonTypes';
-import { findElementsInContentJson } from 'src/utils/ContentUtil';
+import { NeonData } from '@/types/commonTypes';
+import { findElementsInContentJson } from '@/utils/ContentUtil';
 import { FC } from 'react';
 import { SxProps, Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';

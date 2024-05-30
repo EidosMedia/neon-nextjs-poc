@@ -1,12 +1,13 @@
 import React from 'react';
 import { getMainImageUrl } from '@/services/neon-cms/neon-helpers';
-import { Box, Container } from '@mui/material';
 import Image from 'next/image';
-import { NeonData } from 'src/types/commonTypes';
+import { NeonData } from '@/types/commonTypes';
+
+const NO_THUMB_URL = '/static/img/nothumb.jpeg';
 
 const dimensions = {
-    small: { width: 200, height: 200 },
-    medium: { width: 200, height: 200 },
+    small: { width: 350, height: 200 },
+    medium: { width: 350, height: 200 },
     large: { width: 700, height: 400 }
 };
 
@@ -20,10 +21,10 @@ const StoryFragmentMainMedia: React.FC<StoryFragmentMainMediaProps> = ({ data, s
 
     return (
         <Image
-            src={mainImageUrl}
+            src={mainImageUrl || NO_THUMB_URL}
             width={dimensions[size || 'medium'].width}
             height={dimensions[size || 'medium'].height}
-            alt=""
+            alt={NO_THUMB_URL}
             priority={true}
         />
     );

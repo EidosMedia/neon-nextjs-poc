@@ -4,7 +4,7 @@ import Headline from './Headline';
 import NextLink from 'next/link';
 import Summary from './Summary';
 import { getStoryUrl } from '../StoryFragment.utils';
-import { NeonData } from 'src/types/commonTypes';
+import { NeonData } from '@/types/commonTypes';
 import StoryFragmentMainMedia from './StoryFragmentMainMedia';
 
 type StoryFragmentProps = {

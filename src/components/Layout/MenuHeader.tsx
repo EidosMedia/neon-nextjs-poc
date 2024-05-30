@@ -29,19 +29,26 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
         <>
             <ElevationScroll>
                 <AppBar position="fixed">
-                    <Toolbar sx={{ flexDirection: isSite ? 'column' : 'row' }}>
-                        <Typography
-                            component="div"
-                            sx={{
-                                flexGrow: 1,
-                                display: { xs: 'none', sm: 'block' },
-                                fontFamily: 'Noto serif',
-                                fontSize: isSite ? '80px' : '30px',
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            {neonData.siteContext.site.root.name}
-                        </Typography>
+                    <Toolbar
+                        sx={{
+                            flexDirection: isSite ? 'column' : 'row',
+                            justifyContent: isSite ? 'inherit' : 'space-between'
+                        }}
+                    >
+                        <Link href={`/`} disableActive>
+                            <Typography
+                                component="div"
+                                sx={{
+                                    flexGrow: 1,
+                                    display: { xs: 'none', sm: 'block' },
+                                    fontFamily: 'Noto serif',
+                                    fontSize: isSite ? '80px' : '30px',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {neonData.siteContext.site.root.name}
+                            </Typography>
+                        </Link>
                         <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: isSite ? '40px' : '20px' }}>
                             <Link href={`/`}>
                                 <Typography variant="h6">Home</Typography>

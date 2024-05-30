@@ -107,7 +107,9 @@ const commonEslint = {
                 map: [
                     ['@/components', './src/components'],
                     ['@/pages', './pages'],
-                    ['@/lib', './src/lib']
+                    ['@/lib', './src/lib'],
+                    ['@/types', './src/types'],
+                    ['@/utils', './src/utils']
                 ]
             }
         }

@@ -4,7 +4,9 @@
         "paths": {
             "@/pages/*": ["pages/*"],
             "@/components/*": ["src/components/*"],
-            "@/services/*": ["src/services/*"]
+            "@/services/*": ["src/services/*"],
+            "@/types/*": ["src/types/*"],
+            "@/utils/*": ["src/utils/*"]
         },
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
