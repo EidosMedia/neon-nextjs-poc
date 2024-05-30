@@ -3,12 +3,11 @@ import { Container } from '@mui/material';
 import React from 'react';
 import BeyondWordsBlock from './components/BeyondWordsBlock';
 import BreadcrumbBlock from './components/BreadcrumbBlock';
-import MainImageBlock from './components/MainImageBlock';
-import HeadlineBlock from './components/HeadlineBlock';
-import SummaryBlock from './components/SummaryBlock';
-import ContentBlock from './components/ContentBlock';
 import Layout from '@/components/Layout/Layout';
-import { GLOBAL_MAX_WIDTH_PX } from '@/utils/Constants';
+import HeadlineBlock from '../commons/components/HeadlineBlock';
+import SummaryBlock from '../commons/components/SummaryBlock';
+import MainImageBlock from '../commons/components/MainImageBlock';
+import ContentBlock from '../commons/components/ContentBlock';
 
 /**
  *

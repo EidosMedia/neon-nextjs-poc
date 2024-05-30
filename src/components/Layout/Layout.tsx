@@ -10,7 +10,7 @@ import { GLOBAL_MAX_WIDTH_PX } from '@/utils/Constants';
  * @param props
  */
 const Layout: React.FC<any> = props => {
-    console.log('props', props);
+    console.log('props layout', props);
 
     return (
         <>

@@ -1,16 +1,23 @@
 import { neonRequest } from '../../../../../src/services/neon-cms/neon-api';
 
 export default async (req, res) => {
-    let { id, site } = req.query;
-    let result = null;
+    const { id, from } = req.query;
 
-    if (id.includes('eom')) {
-        id = id.substring(0, id.indexOf('@'));
-        result = await neonRequest(`/api/pages/foreignid/${id}?emk.site=${site}`);
-        id = result.model.data.id;
+    console.log('from param', from);
+
+    const limit = 50;
+
+    const settings = {
+        limit: limit.toString()
+    };
+
+    if (from) {
+        settings.from = from;
     }
 
-    result = await neonRequest(`/api/liveblogs/${id}/posts?limit=50`);
+    console.log(`/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
+
+    const result = await neonRequest(`/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
 
     res.status(200).json(result);
 };
