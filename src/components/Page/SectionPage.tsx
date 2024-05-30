@@ -16,7 +16,7 @@ export default function SectionPage({ neonData, pageTitle }) {
     return (
         <Layout neonData={neonData}>
             <Container>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '30px' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
                     {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
                 </Box>
                 <Divider />
