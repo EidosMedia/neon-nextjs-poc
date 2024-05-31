@@ -6,11 +6,11 @@ import LandingPage from '@/components/Page/LandingPage';
 import LiveblogPage from '@/components/Page/LiveblogPage';
 import SectionPage from '@/components/Page/SectionPage';
 import DefaultSectionPage from '@/components/Page/DefaultSectionPage';
-import SimpleHomepage from '@/components/Page/SimpleHomepage';
 import Segment from '@/components/Segment/Segment';
 import { neonRequest, getNeonPageByUrl } from '@/services/neon-cms/neon-api';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { GetServerSideProps } from 'next';
+import DefaultHomePage from '@/components/Page/DefaultHomePage';
 
 /**
  *
@@ -46,7 +46,7 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
             return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
 
         case 'site':
-            return <LandingPage neonData={neonData} />;
+            return <DefaultHomePage neonData={neonData} />;
 
         case 'liveblog':
             return (
@@ -84,7 +84,7 @@ export const getServerSideProps = (async context => {
         switch (neonData?.object?.data?.sys?.baseType) {
             case 'webpage':
                 break;
-    /*        case 'liveblog':
+            /*        case 'liveblog':
                 const latestBlogPosts = await neonRequest(`${fullHostname}/api/liveblogs/${neonData.object.data.id}/posts?limit=50`);
                 fallback[`${fullHostname}/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
                 props.fallback = fallback;

@@ -14,6 +14,8 @@ export async function getNeonSites() {
     const cacheKey = 'sites';
     const sitesFromCache = cacheData.get(cacheKey);
 
+    console.log('sitesfrom cache:', sitesFromCache);
+
     if (sitesFromCache) {
         return sitesFromCache;
     }
@@ -33,10 +35,15 @@ export async function getNeonSites() {
         if (sites) {
             const sitesWithSitemap = await Promise.all(
                 sites.map(async site => {
+                    console.log('calling compulsory');
                     const sitemap = await getNeonSitemap(site.root.name);
+
+                    const logoUrl = await getNeonLogoUrl(site.root.id, site.root.name);
+                    console.log('logoUrl: ' + logoUrl);
                     return {
                         ...site,
-                        sitemap
+                        sitemap,
+                        logoUrl
                     };
                 })
             );
@@ -69,22 +76,19 @@ export async function getNeonPageByUrl(url) {
     const protocol = urlObject.protocol;
 
     let hostnameWithProtocol = `${protocol}//${hostName}`;
-    if(urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443'){
+    if (urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443') {
         hostnameWithProtocol = `${hostnameWithProtocol}:${urlObject.port}`;
     }
     console.log('hostnameWithProtocol', hostnameWithProtocol);
     const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
     let neonData = null;
 
-    console.log('url',url);
-    console.log('hostnameWithProtocol',hostnameWithProtocol);
+    console.log('url', url);
+    console.log('hostnameWithProtocol', hostnameWithProtocol);
     if (siteName) {
         // let pageData = null;
 
-        const requestUrl = `/api/pages?url=${url.replace(
-            `${hostnameWithProtocol}`,
-            ''
-        )}&emk.site=${siteName}`;
+        const requestUrl = `/api/pages?url=${url.replace(`${hostnameWithProtocol}`, '')}&emk.site=${siteName}`;
         console.log('requestUrl', requestUrl);
 
         // const pageData = await getPageFromSite(url, siteName);
@@ -145,12 +149,18 @@ export async function getNeonPreview(previewData) {
 
     let pageData = null;
 
-    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/'+baseHost, '')}`;
+    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace(
+        '/_sites/preview/' + baseHost,
+        ''
+    )}`;
 
     if (id !== null) {
-        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/'+baseHost, '/api/pages/')}${id}`
+        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace(
+            '/_sites/preview/' + baseHost,
+            '/api/pages/'
+        )}${id}`;
     }
-    
+
     console.log('============================= requestUrl', requestUrl);
 
     try {
@@ -297,4 +307,31 @@ export async function getNeonSeoSitemap(hostName, url) {
     }
 
     return sitemapData;
+}
+async function getNeonLogoUrl(id: any, siteName) {
+    const requestUrl = `${process.env.NEON_BASE_HOST}/api/nodes/${id}?emk.site=${siteName}`;
+    // const logoUrl = await neonRequest(requestUrl, siteName);
+    const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live?sitemap=true?name="${siteName}"`;
+    let result;
+
+    try {
+        const options = {
+            method: 'GET',
+            url: requestUrl,
+            mode: 'no-cors',
+            httpAgent: agent
+        };
+
+        const response = await axios.request(options);
+
+        // console.log('resource url', response.data.files.logo.resourceUrl);
+        result = response.data.files.logo.resourceUrl;
+    } catch (e) {
+        console.log('EXCEPTION');
+        console.log(e);
+    }
+
+    // console.log('result: ' + result);
+
+    return result;
 }

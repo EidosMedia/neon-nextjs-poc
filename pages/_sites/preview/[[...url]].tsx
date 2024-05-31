@@ -11,6 +11,7 @@ import { neonRequest, getNeonPreview } from '@/services/neon-cms/neon-api';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import DefaultHomePage from '@/components/Page/DefaultHomePage';
 
 /**
  *
@@ -47,7 +48,7 @@ export default function Page({ neonData, fallback }) {
             return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
             break;
         case 'site':
-            return <LandingPage neonData={neonData} />;
+            return <DefaultHomePage neonData={neonData} />;
             break;
         case 'liveblog':
             return (

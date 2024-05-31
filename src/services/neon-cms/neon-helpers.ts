@@ -1,7 +1,7 @@
 import { NeonData, SiteNode, SiteStructure } from 'src/types/commonTypes';
 import { URL } from 'url';
 import { xml2json } from 'xml-js';
-import { getNeonSites } from './neon-api';
+import { getNeonSites, neonRequest } from './neon-api';
 import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
 

@@ -2,6 +2,7 @@ import { AppBar, Box, Container, Toolbar, Typography, useScrollTrigger } from '@
 import { BlockProps } from '../Page/ArticlePage/ArticlePage.types';
 import React from 'react';
 import Link from './Link';
+import SiteLogo from './SiteLogo';
 
 const getNavItems = neonData =>
     neonData.siteContext.siteStructure[0].root.items.map(({ name, title }) => ({
@@ -29,8 +30,6 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
 
     const isSite = neonData.object.data.sys.baseType === 'site';
 
-    console.log('neonData.object.data', neonData.siteContext.site.root);
-
     return (
         <>
             <ElevationScroll>
@@ -45,17 +44,23 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
                             }}
                         >
                             <Link href={`/`} disableActive>
-                                <Typography
-                                    component="div"
-                                    sx={{
-                                        flexGrow: 1,
-                                        display: 'block',
-                                        fontSize: isSite ? '80px' : '30px',
-                                        fontWeight: 'bold'
-                                    }}
-                                >
-                                    {neonData.siteContext.site.root.title}
-                                </Typography>
+                                <Box sx={{ display: 'flex', gap: '10px' }}>
+                                    <SiteLogo
+                                        neonData={neonData}
+                                        size={neonData.object.data.url === '/' ? 'medium' : 'small'}
+                                    />
+                                    <Typography
+                                        component="div"
+                                        sx={{
+                                            flexGrow: 1,
+                                            display: 'block',
+                                            fontSize: isSite ? '80px' : '30px',
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        {neonData.siteContext.site.root.title}
+                                    </Typography>
+                                </Box>
                             </Link>
                             <Box
                                 sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, gap: isSite ? '40px' : '20px' }}
@@ -73,7 +78,7 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
                     </Container>
                 </AppBar>
             </ElevationScroll>
-            <Toolbar />
+            <Toolbar sx={neonData.object.data.url === '/' && { minHeight: { md: '210px' } }} />
         </>
     );
 };
