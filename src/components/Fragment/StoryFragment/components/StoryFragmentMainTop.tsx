@@ -19,7 +19,7 @@ const StoryFragmentLarge: React.FC<StoryFragmentLargeProps> = ({ data }) => (
                 padding: '20px',
                 gap: '20px',
                 cursor: 'pointer',
-                flexDirection: { sm: 'column', md: 'row' }
+                flexDirection: { xs: 'column', sm: 'column', md: 'row' }
             }}
         >
             <StoryFragmentMainMedia data={data} size="large" />

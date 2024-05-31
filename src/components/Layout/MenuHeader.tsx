@@ -44,7 +44,7 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
                             }}
                         >
                             <Link href={`/`} disableActive>
-                                <Box sx={{ display: 'flex', gap: '10px' }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <SiteLogo
                                         neonData={neonData}
                                         size={neonData.object.data.url === '/' ? 'medium' : 'small'}
