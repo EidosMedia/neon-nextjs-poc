@@ -1,9 +1,8 @@
+import { getApiHostname } from '@/services/neon-cms/neon-helpers';
 import { neonRequest } from '../../../../../src/services/neon-cms/neon-api';
 
 export default async (req, res) => {
     const { id, from } = req.query;
-
-    console.log('from param', from);
 
     const limit = 50;
 
@@ -15,9 +14,24 @@ export default async (req, res) => {
         settings.from = from;
     }
 
-    console.log(`/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
+    let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
+    console.log('========================', req.cookies.empreviewauth);
+    const baseUrl = new URL(req.headers.referer);
 
-    const result = await neonRequest(`/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
+    if (baseUrl.hostname === 'localhost') {
+        baseUrl.host = req.headers.host;
+        baseUrl.hostname = baseUrl.host;
+    }
+
+    const apiHostname = await getApiHostname(baseUrl);
+    if (urlToAppend.startsWith('/preview/')) {
+        urlToAppend = urlToAppend.replace('/preview/', '/');
+    }
+    urlToAppend = urlToAppend.substring(1);
+
+    const result = await neonRequest(
+        `${baseUrl.protocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`
+    );
 
     res.status(200).json(result);
 };
