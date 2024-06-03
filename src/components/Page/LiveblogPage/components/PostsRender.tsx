@@ -77,7 +77,7 @@ const PostsRender: FC<PostsRenderProps> = ({ neonData }) => {
         fetchPosts();
         const interval = setInterval(() => {
             fetchPosts();
-        }, 30000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, []);

@@ -329,6 +329,7 @@ async function getNeonLogoUrl(id: any, siteName) {
     } catch (e) {
         console.log('EXCEPTION');
         console.log(e);
+        result = null;
     }
 
     // console.log('result: ' + result);
