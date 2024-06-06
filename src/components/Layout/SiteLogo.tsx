@@ -15,7 +15,8 @@ type SiteLogoProps = {
 };
 
 const SiteLogo: React.FC<SiteLogoProps> = ({ neonData, size }) => {
-    const resolvedLogoUrl = ResourceResolver(_.get(neonData, `siteContext.site.logoUrl`));
+    const resolvedLogoUrl = ResourceResolver(_.get(neonData, `siteContext.logoUrl`));
+    console.log('resolvedLogoUrl', resolvedLogoUrl);
 
     return (
         <Image

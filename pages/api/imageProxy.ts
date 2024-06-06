@@ -14,10 +14,11 @@ export default async (req: NextApiRequest, res: NextResponse) => {
     }
 
     const apiHostname = await getApiHostname(baseUrl);
-    if(urlToAppend.startsWith('/preview/')) {
+    if (urlToAppend.startsWith('/preview/')) {
         urlToAppend = urlToAppend.replace('/preview/', '/');
     }
     urlToAppend = urlToAppend.substring(1);
+
     const options = {
         method: 'GET',
         url: `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`,

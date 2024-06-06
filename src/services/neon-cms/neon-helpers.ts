@@ -109,6 +109,7 @@ export const buildNeonDataFromPage = async (
     let linkContext = null;
 
     const sites = await getNeonSites();
+
     const site = sites.find(site => site.root.name === siteName);
 
     const neonData = {
@@ -127,10 +128,7 @@ export const buildNeonDataFromPage = async (
                 ? pageData?.model?.data?.links?.system?.mainPicture[0]
                 : null
         },
-        siteContext: {
-            site,
-            siteStructure
-        }
+        siteContext: site
     };
     return neonData;
 };

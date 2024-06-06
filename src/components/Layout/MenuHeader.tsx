@@ -5,7 +5,7 @@ import Link from './Link';
 import SiteLogo from './SiteLogo';
 
 const getNavItems = neonData =>
-    neonData.siteContext.siteStructure[0].root.items.map(({ name, title }) => ({
+    neonData.siteContext.root.items.map(({ name, title }) => ({
         name,
         title
     }));
@@ -58,7 +58,7 @@ const MenuHeader: React.FC<BlockProps> = ({ neonData }) => {
                                             fontWeight: 'bold'
                                         }}
                                     >
-                                        {neonData.siteContext.site.root.title}
+                                        {neonData.siteContext.root.title}
                                     </Typography>
                                 </Box>
                             </Link>

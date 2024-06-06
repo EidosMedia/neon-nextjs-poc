@@ -11,17 +11,8 @@ const agent = new http.Agent({ family: 4 });
  *
  */
 export async function getNeonSites() {
-    const cacheKey = 'sites';
-    const sitesFromCache = cacheData.get(cacheKey);
-
-    console.log('sitesfrom cache:', sitesFromCache);
-
-    if (sitesFromCache) {
-        return sitesFromCache;
-    }
-
     try {
-        const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live`;
+        const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live?siteMap=true`;
 
         const options = {
             method: 'GET',
@@ -35,19 +26,15 @@ export async function getNeonSites() {
         if (sites) {
             const sitesWithSitemap = await Promise.all(
                 sites.map(async site => {
-                    console.log('calling compulsory');
-                    const sitemap = await getNeonSitemap(site.root.name);
-
                     const logoUrl = await getNeonLogoUrl(site.root.id, site.root.name);
-                    console.log('logoUrl: ' + logoUrl);
+
                     return {
                         ...site,
-                        sitemap,
                         logoUrl
                     };
                 })
             );
-            cacheData.put(cacheKey, sitesWithSitemap, COMMON_DATA_CACHE_TTL_SECONDS * 1000);
+            // cacheData.put(cacheKey, sitesWithSitemap, COMMON_DATA_CACHE_TTL_SECONDS * 1000);
             return sitesWithSitemap;
         }
     } catch (e) {
@@ -311,7 +298,6 @@ export async function getNeonSeoSitemap(hostName, url) {
 async function getNeonLogoUrl(id: any, siteName) {
     const requestUrl = `${process.env.NEON_BASE_HOST}/api/nodes/${id}?emk.site=${siteName}`;
     // const logoUrl = await neonRequest(requestUrl, siteName);
-    const apiUrl = `${process.env.NEON_BASE_HOST}/api/sites/live?sitemap=true?name="${siteName}"`;
     let result;
 
     try {
@@ -324,8 +310,7 @@ async function getNeonLogoUrl(id: any, siteName) {
 
         const response = await axios.request(options);
 
-        // console.log('resource url', response.data.files.logo.resourceUrl);
-        result = response.data.files.logo.resourceUrl;
+        result = response.data.files?.logo.resourceUrl || '';
     } catch (e) {
         console.log('EXCEPTION');
         console.log(e);
