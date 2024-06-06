@@ -108,10 +108,7 @@ export type NeonData = {
         children: string[];
         mainPicture: any;
     };
-    siteContext: {
-        site: any;
-        siteStructure: SiteStructure;
-    };
+    siteContext: any;
 };
 
 export type GenericPageProps = {
