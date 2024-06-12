@@ -14,14 +14,19 @@ export default async (req: NextApiRequest, res: NextResponse) => {
     }
 
     const apiHostname = await getApiHostname(baseUrl);
+
     if (urlToAppend.startsWith('/preview/')) {
         urlToAppend = urlToAppend.replace('/preview/', '/');
     }
     urlToAppend = urlToAppend.substring(1);
 
+    const url = `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`;
+
+    console.log('Image proxy url', url);
+
     const options = {
         method: 'GET',
-        url: `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`,
+        url,
         mode: 'no-cors',
         headers: {
             emauth: req.cookies.empreviewauth
