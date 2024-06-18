@@ -28,7 +28,7 @@ export default function Page({ neonData, fallback }) {
 
     let pageTitle = null;
     if (neonData?.pageContext?.url !== '/' && !neonData.previewData) {
-        pageTitle = neonData.object.data.title;
+        pageTitle = neonData.object.data?.title;
     }
 
     switch (neonData?.object?.data?.sys?.baseType) {
