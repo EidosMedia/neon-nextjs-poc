@@ -8,7 +8,7 @@ const logger = pino({
         target: 'pino-pretty',
         options: {
             colorize: true,
-            messageFormat: '{filename} - {msg}',
+            // messageFormat: '{filename} - {msg}',
             ignore: 'pid,hostname,filename'
         }
     }

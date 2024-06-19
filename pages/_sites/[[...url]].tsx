@@ -11,6 +11,7 @@ import { neonRequest, getNeonPageByUrl } from '@/services/neon-cms/neon-api';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { GetServerSideProps } from 'next';
 import DefaultHomePage from '@/components/Page/DefaultHomePage';
+import logger from 'logger';
 
 /**
  *
@@ -28,6 +29,8 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
     if (neonData?.pageContext?.url !== '/' && !neonData.previewData) {
         pageTitle = neonData.object.data.title;
     }
+
+    logger.info('Site title: ' + neonData.siteContext.root.name + ' - Loading page: ' + neonData.object.data.url);
 
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':

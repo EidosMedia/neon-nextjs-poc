@@ -32,6 +32,10 @@ export default function Page({ neonData, fallback }) {
         pageTitle = neonData.object.data?.title;
     }
 
+    logger.info(
+        '[PREVIEW] Site title: ' + neonData.siteContext.root.name + ' - Loading page: ' + neonData.object.data.url
+    );
+
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
             if (neonData?.object?.data?.sys?.type === 'sectionpage') {
