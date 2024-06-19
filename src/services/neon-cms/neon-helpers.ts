@@ -4,6 +4,7 @@ import { xml2json } from 'xml-js';
 import { getNeonSites, neonRequest } from './neon-api';
 import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
+import logger from 'logger';
 
 function getNeonWebPageHelper(data) {
     if (typeof data.links != 'undefined') {
@@ -45,7 +46,8 @@ function getNeonArticleHelper(data) {
     try {
         content = JSON.parse(xml2json(data.files.content.data));
     } catch (e) {
-        console.log('error parsing object xml: ' + e);
+        logger.error('error parsing object xml');
+        logger.error(e);
     }
 
     const mainPicture = data?.links?.system?.mainPicture || null;
@@ -61,7 +63,8 @@ export function getNeonLiveblogPostHelper(data) {
     try {
         content = JSON.parse(xml2json(data.files.content.data));
     } catch (e) {
-        console.log('error parsing object xml: ' + e);
+        logger.error('error parsing object xml');
+        logger.error(e);
     }
 
     return {
@@ -74,8 +77,6 @@ export function getNeonLiveblogPostHelper(data) {
  * @param data
  */
 export function getNeonDataHelper(data) {
-    console.log('data?.sys?.baseType', data?.sys?.baseType);
-
     switch (data?.sys?.baseType) {
         case 'webpage':
             return getNeonWebPageHelper(data);
@@ -174,7 +175,7 @@ export function getQueryResultObjects(neonData) {
                 return objneonData;
             });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     return resultObjects;
@@ -197,7 +198,7 @@ export function getSearchResultObjects(neonData) {
             return objneonData;
         });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     return resultObjects;
@@ -220,7 +221,7 @@ export function getSectionChildrenObjects(neonData) {
             return objneonData;
         });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     return resultObjects;
@@ -296,13 +297,13 @@ export const getSiteByHostname = (hostname: string, sites: SiteNode[]): SiteNode
     }
 
     if (site) {
-        console.log('getSiteByHostname - site ' + hostname + ' found!', site.root.name);
+        logger.debug('getSiteByHostname - site ' + hostname + ' found!', site.root.name);
         return site;
     } else {
         if (process.env.DEV_MODE === 'true' && process.env.DEV_FORCE_SITE) {
             return sites.find(site => site.root.name === process.env.DEV_FORCE_SITE);
         }
-        console.log('getSiteNameByHostName - site ' + hostname + ' not found!');
+        logger.debug('getSiteNameByHostName - site ' + hostname + ' not found!');
         return null; // will show a not found
     }
 };
@@ -317,7 +318,7 @@ export const getSiteNameByHostName = (hostname: string, sites: SiteNode[]) => {
     if (siteFound) {
         return siteFound.name || siteFound.root.name;
     } else {
-        console.log('no site found for ' + hostname);
+        logger.debug('no site found for ' + hostname);
         return null;
     }
 };
@@ -386,7 +387,6 @@ export function getCurrentLiveSite(neonData) {
  * @param neonData
  */
 export function getCurrentSite(neonData) {
-    // console.log(neonData);
     return neonData?.siteContext?.siteStructure?.find(site => site.name === getCurrentLiveSite(neonData));
 }
 
@@ -407,7 +407,7 @@ export const getLiveHostname = (url: string): string => url;
 export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
     // const urlObject = url instanceof URL ? url : new URL(url);
 
-    console.log('getAPIHostname ' + JSON.stringify(url) + ' sitename:' + siteName);
+    logger.debug('getAPIHostname ' + JSON.stringify(url) + ' sitename:' + siteName);
 
     const sites = await getNeonSites();
 
@@ -422,7 +422,7 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
         ? sites.find(site => site.root.name === siteName)
         : getSiteByHostname(hostnameWithProtocol, sites);
 
-    console.log('site in ' + site);
+    logger.debug('site in ' + site);
 
     if (url?.pathname?.includes('/preview')) {
         return site.apiHostnames.previewHostname;

@@ -1,3 +1,5 @@
+import logger from 'logger';
+
 /**
  *
  * @param elementNames
@@ -25,7 +27,7 @@ export function getImageUrl(jsonElement, imageClass, neonData) {
     try {
         imageUrl = jsonElement.elements.find(el => el.attributes.class.includes(imageClass)).attributes.src;
     } catch (e) {
-        console.log('cannot find url with for imageClass', imageClass);
+        logger.error('cannot find url with for imageClass ' + imageClass);
     }
 
     if (!imageUrl) {
@@ -39,12 +41,12 @@ export function getImageUrl(jsonElement, imageClass, neonData) {
             imageId = imageUrl.split(':')[1];
             imageUrl = neonData.pageContext.nodes[imageId].resourceUrl;
         } catch (e) {
-            console.log(`problem fetching imageUrl of: ${imageId}`);
+            logger.error(`problem fetching imageUrl of: ${imageId}`);
             imageUrl = null;
         }
     }
 
-    console.log('imageUrl', imageUrl);
+    logger.debug('imageUrl ' + imageUrl);
     return imageUrl;
 }
 

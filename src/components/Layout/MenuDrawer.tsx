@@ -16,6 +16,7 @@ import {
     getCurrentSite,
     getLiveHostname
 } from '../../services/neon-cms/neon-helpers';
+import logger from 'logger';
 
 /**
  *
@@ -25,8 +26,8 @@ import {
 export default function MenuDrawer({ neonData, ...props }) {
     const [open, setOpen] = React.useState(false);
 
-    // console.log('neonData', neonData);
-    // console.log('props', props);
+    // logger.info('neonData', neonData);
+    // logger.info('props', props);
 
     if (!neonData) return null;
 
@@ -56,7 +57,7 @@ export default function MenuDrawer({ neonData, ...props }) {
             );
         });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     let sitesRender = null;
@@ -71,7 +72,7 @@ export default function MenuDrawer({ neonData, ...props }) {
                 </Link>
             ));
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     const list = (

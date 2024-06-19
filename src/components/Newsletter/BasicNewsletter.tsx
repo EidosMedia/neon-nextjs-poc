@@ -4,6 +4,7 @@ import React from 'react';
 import { findElementsInContentJson } from '../../utils/ContentUtil';
 import RenderContentElement from '../RenderContent/RenderContentElement';
 import { GenericPageProps } from 'src/types/commonTypes';
+import logger from 'logger';
 
 /**
  *
@@ -32,7 +33,7 @@ const BasicNewsletter: React.FC<GenericPageProps> = ({ neonData }) => {
             />
         );
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     render = (

@@ -12,6 +12,7 @@ import InlinePoll from './InlinePoll';
 import Card from './Card';
 import { GenericPageProps } from 'src/types/commonTypes';
 import { AlignPropertyParams } from '@mui/material/styles/cssUtils';
+import logger from 'logger';
 
 type RenderContentElementProps = Partial<GenericPageProps> & {
     jsonElement: any;
@@ -164,10 +165,8 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                             {jsonElement.elements
                                 ? jsonElement.elements
                                       .filter(
-                                          subel =>
-                                              subel.type === 'text' ||
-                                              subel.type === 'element'
-                                              // && subel.name === 'keyword'
+                                          subel => subel.type === 'text' || subel.type === 'element'
+                                          // && subel.name === 'keyword'
                                       )
                                       .map((subel, i) => (
                                           <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
@@ -566,7 +565,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
 //                 </div>
 //             </div>
 //         )
-//     } catch (e) { console.log(e) }
+//     } catch (e) { logger.info(e) }
 
 //     return render;
 // }
@@ -711,7 +710,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
                             linkedObjectMainImageUrl = null;
                         }
                     } catch (e) {
-                        console.log(e);
+                        logger.error(e);
                     }
 
                     const imageWidth = 100;
@@ -743,7 +742,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
             });
         }
     } catch (e) {
-        console.log(e);
+        logger.info(e);
     }
 
     render = (

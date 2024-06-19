@@ -7,10 +7,8 @@ type ContentElementProps = {
     name: string;
 };
 
-const ContentElement: FC<ContentElementProps> = ({ content, name }) => {
-    // console.log('content', content);
-
-    return <RenderContentElement jsonElement={findElementsInContentJson([name], content)[0]} />;
-};
+const ContentElement: FC<ContentElementProps> = ({ content, name }) => (
+    <RenderContentElement jsonElement={findElementsInContentJson([name], content)[0]} />
+);
 
 export default ContentElement;

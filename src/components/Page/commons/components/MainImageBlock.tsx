@@ -10,7 +10,7 @@ import { Box, Container } from '@mui/material';
  * @param root0.styleVariant
  */
 const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
-    // console.log('neonData main picture', neonData.object.helper.mainPicture);
+    // logger.info('neonData main picture', neonData.object.helper.mainPicture);
     let imageWidth = 1024;
     let imageHeight = 576;
 

@@ -1,6 +1,7 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
 import { BlockProps } from '../../ArticlePage/ArticlePage.types';
+import logger from 'logger';
 
 /**
  *
@@ -19,7 +20,7 @@ const ContentBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
             />
         );
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 
     return content;

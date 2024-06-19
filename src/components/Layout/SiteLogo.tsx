@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { NeonData } from '@/types/commonTypes';
 import ResourceResolver from '@/utils/ResourceResolver';
 import _ from 'lodash';
+import logger from 'logger';
 
 const dimensions = {
     small: { width: 50, height: 50, crop: 'Square_small' },
@@ -16,7 +17,7 @@ type SiteLogoProps = {
 
 const SiteLogo: React.FC<SiteLogoProps> = ({ neonData, size }) => {
     const resolvedLogoUrl = ResourceResolver(_.get(neonData, `siteContext.logoUrl`));
-    console.log('resolvedLogoUrl', resolvedLogoUrl);
+    logger.debug('resolvedLogoUrl ' + resolvedLogoUrl);
 
     return (
         <Image

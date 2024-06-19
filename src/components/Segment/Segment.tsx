@@ -12,6 +12,7 @@ import {
 } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import { GenericPageProps } from 'src/types/commonTypes';
+import logger from 'logger';
 
 /**
  *
@@ -232,7 +233,7 @@ const Segment: React.FC<GenericPageProps> = ({ neonData }) => {
             sectionUrl = getObjectMainSection(neonData.object.data);
             finalUrl = (otherSiteBaseUrl || '') + sectionUrl;
         } catch (e) {
-            console.log(e);
+            logger.error(e);
             errorGettingOtherSite = true;
         }
         if (!errorGettingOtherSite) {

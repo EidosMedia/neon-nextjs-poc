@@ -4,6 +4,7 @@ import { COMMON_DATA_CACHE_TTL_SECONDS } from '../../../apps.settings';
 import { buildNeonDataFromPage, getApiHostname, getSiteByHostname, getSiteNameByHostName } from './neon-helpers';
 import { HttpClient, http as httpClient } from './http-client';
 import http from 'http';
+import logger from 'logger';
 
 const agent = new http.Agent({ family: 4 });
 
@@ -38,8 +39,8 @@ export async function getNeonSites() {
             return sitesWithSitemap;
         }
     } catch (e) {
-        console.error('Unable to fetch the sites');
-        console.error(e);
+        logger.error('Unable to fetch the sites');
+        logger.error(e);
     }
 
     return null;
@@ -66,17 +67,16 @@ export async function getNeonPageByUrl(url) {
     if (urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443') {
         hostnameWithProtocol = `${hostnameWithProtocol}:${urlObject.port}`;
     }
-    console.log('hostnameWithProtocol', hostnameWithProtocol);
+    logger.debug('hostnameWithProtocol ' + hostnameWithProtocol);
     const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
     let neonData = null;
 
-    console.log('url', url);
-    console.log('hostnameWithProtocol', hostnameWithProtocol);
+    logger.debug('url ' + url);
     if (siteName) {
         // let pageData = null;
 
         const requestUrl = `/api/pages?url=${url.replace(`${hostnameWithProtocol}`, '')}&emk.site=${siteName}`;
-        console.log('requestUrl', requestUrl);
+        logger.debug('requestUrl ' + requestUrl);
 
         // const pageData = await getPageFromSite(url, siteName);
         const pageData = await neonRequest(requestUrl, siteName);
@@ -124,7 +124,7 @@ export async function getNeonPreview(previewData) {
     } catch (e) {}
 
     const previewToken = previewData['emauth'];
-    console.log('============================= previewToken', previewToken);
+    logger.debug('============================= previewToken', previewToken);
 
     const urlObject = new URL(previewData.url);
 
@@ -148,7 +148,7 @@ export async function getNeonPreview(previewData) {
         )}${id}`;
     }
 
-    console.log('============================= requestUrl', requestUrl);
+    logger.debug('============================= requestUrl', requestUrl);
 
     try {
         const options = {
@@ -164,9 +164,9 @@ export async function getNeonPreview(previewData) {
         const response = await axios.request(options);
         pageData = response.data;
     } catch (e) {
-        console.log('============================= error', e);
+        logger.info('============================= error', e);
 
-        console.log(e);
+        logger.info(e);
     }
     const sites = await getNeonSites();
     const sitename = getSiteByHostname(`${urlObject.protocol}//${urlObject.host}`, sites).root.name;
@@ -207,7 +207,7 @@ export async function neonRequest(url, siteName?) {
     const options = {
         url: (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url
     };
-    console.log('calling: ', options.url);
+    logger.debug('calling: ' + options.url);
     const response = await httpClient.get(options.url, options);
 
     const result = response.data;
@@ -244,7 +244,7 @@ export async function neonPollVote(site, nodeId, pollId, answerId) {
 
         response = await axios.request(options);
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
     return response;
 }
@@ -269,7 +269,7 @@ export async function getNeonSitemap(siteName) {
         const response = await axios.request(options);
         result = response.data;
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
     return result;
 }
@@ -312,12 +312,11 @@ async function getNeonLogoUrl(id: any, siteName) {
 
         result = response.data.files?.logo.resourceUrl || '';
     } catch (e) {
-        console.log('EXCEPTION');
-        console.log(e);
+        logger.error(e);
         result = null;
     }
 
-    // console.log('result: ' + result);
+    // logger.info('result: ' + result);
 
     return result;
 }

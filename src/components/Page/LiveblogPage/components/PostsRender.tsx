@@ -4,6 +4,7 @@ import { NeonData } from '@/types/commonTypes';
 import { findElementsInContentJson } from '@/utils/ContentUtil';
 import { Box, Container, Typography } from '@mui/material';
 import _ from 'lodash';
+import logger from 'logger';
 import { FC, useEffect, useState } from 'react';
 
 function computeEventTime(post, eventStartDate) {
@@ -30,7 +31,7 @@ function computeEventTime(post, eventStartDate) {
         ).getTime();
 
         const deltaSeconds = (postDate - eventDate) / 1000;
-        console.log(deltaSeconds);
+        logger.debug(deltaSeconds);
         if (deltaSeconds > 0) {
             const minutes = Math.floor(deltaSeconds / 60);
             const seconds = deltaSeconds % 60;
@@ -98,7 +99,7 @@ const PostsRender: FC<PostsRenderProps> = ({ neonData }) => {
                         />
                     );
                 } catch (e) {
-                    console.log(e);
+                    logger.error(e);
                 }
 
                 if (contentRender) {

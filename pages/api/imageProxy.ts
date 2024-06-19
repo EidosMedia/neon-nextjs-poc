@@ -1,11 +1,11 @@
 import { getApiHostname } from '@/services/neon-cms/neon-helpers';
 import axios from 'axios';
+import logger from 'logger';
 import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
 export default async (req: NextApiRequest, res: NextResponse) => {
     let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
-    console.log('========================', req.cookies.empreviewauth);
     const baseUrl = new URL(req.headers.referer);
 
     if (baseUrl.hostname === 'localhost') {
@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextResponse) => {
 
     const url = `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`;
 
-    console.log('Image proxy url', url);
+    logger.info('Image fetched from url: ' + url);
 
     const options = {
         method: 'GET',

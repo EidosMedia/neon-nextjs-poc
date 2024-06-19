@@ -12,6 +12,7 @@ import { GenericPageProps } from 'src/types/commonTypes';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import DefaultHomePage from '@/components/Page/DefaultHomePage';
+import logger from 'logger';
 
 /**
  *
@@ -60,22 +61,6 @@ export default function Page({ neonData, fallback }) {
         default:
             return <ArticlePage neonData={neonData} />;
     }
-
-    // if (neonData.previewData) {
-    //     if (neonData.object.data.sys.type === 'newsletter') {
-    //         return <BasicNewsletter neonData={neonData} />;
-    //     } else if (neonData.object.data.sys.baseType !== 'webpagefragment') {
-    //         //render = <Layout neonData={neonData}>{render}</Layout>;
-    //     }
-    // } else {
-    //     render = (
-    //         <React.Fragment>
-    //             {/* <Layout neonData={neonData}>{render}</Layout> */}
-    //             {render}
-    //         </React.Fragment>
-    //     );
-    // }
-    // return render;
 }
 
 /**
@@ -85,7 +70,7 @@ export default function Page({ neonData, fallback }) {
 export const getServerSideProps = (async context => {
     const req = context.req;
 
-    console.log('============================= req', req.cookies.empreviewauth);
+    logger.debug('============================= req', req.cookies.empreviewauth);
     const protocol = req.headers['x-forwarded-proto'] || 'http';
 
     const fullHostname = `${protocol}://${req.headers.host}`;
@@ -127,7 +112,7 @@ export const getServerSideProps = (async context => {
             props
         };
     } catch (e) {
-        console.log('============================= error', e);
+        logger.error(e);
 
         const router = useRouter();
         router.replace(router.asPath);

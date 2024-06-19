@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 /**
@@ -55,8 +54,6 @@ export async function middleware(req) {
             cookie += ';Secure';
         }
 
-        console.log('cookie string:'+cookie);
-
         const cookieObject = parseCookie(cookie);
         //redirectResponse.headers.set('Set-Cookie', cookie);
         //redirectResponse.headers.set('test', 'prova');
@@ -79,8 +76,6 @@ export async function middleware(req) {
         //redirectResponse.headers.append('Set-Cookie', cookie);
 
         redirectResponse.cookies.set('empreviewauth', '', cookieOptions);
-
-        console.log('cookie string:'+cookie);
 
         //redirectResponse.headers.append('Access-Control-Allow-Origin', '*');
         //redirectResponse.headers.append('Access-Control-Allow-Credentials', 'true');

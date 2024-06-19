@@ -1,14 +1,12 @@
-import { useRouter } from 'next/dist/client/router';
 import ResourceResolver from '../../utils/ResourceResolver';
 import RenderFormattedText from './RenderFormattedText';
 import React from 'react';
-import { Container, Typography, Paper, Link as MUILink } from '@mui/material';
-import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
+import { Container, Typography, Link as MUILink } from '@mui/material';
 import Image from 'next/image';
 import { Box } from '@mui/system';
 import ImageGallery from 'react-image-gallery';
 import NextLink from 'next/link';
-import { getNeonDataHelper, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
+import { getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import Card from './Card';
 import { GenericPageProps } from 'src/types/commonTypes';
 
@@ -60,7 +58,7 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
                 if (renderMode && renderMode === 'styled') {
                     render = (
                         <Container sx={{ mb: 2 }} maxWidth="md">
-                            <Typography variant="h1" component="h2" sx={{fontSize: '1.2rem'}}>
+                            <Typography variant="h1" component="h2" sx={{ fontSize: '1.2rem' }}>
                                 {render}
                             </Typography>
                         </Container>
@@ -233,7 +231,6 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
                 break;
             case 'video':
                 try {
-                    console.log(jsonElement);
                     if (jsonElement.attributes.type === 'youtube') {
                         const { id } = jsonElement.attributes;
                         const url = `https://www.youtube.com/embed/${id}`;

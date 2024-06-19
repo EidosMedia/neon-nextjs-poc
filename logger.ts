@@ -1,15 +1,17 @@
-import winston from 'winston';
+import pino from 'pino';
+import path from 'path';
 
-const { combine, timestamp, json } = winston.format;
+const logger = pino({
+    browser: {},
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    transport: {
+        target: 'pino-pretty',
+        options: {
+            colorize: true,
+            messageFormat: '{filename} - {msg}',
+            ignore: 'pid,hostname,filename'
+        }
+    }
+}).child({ filename: path.basename(__filename) });
 
-const logger = winston.createLogger({
-    level: 'info',
-    format: combine(timestamp(), json()),
-    transports: [
-        new winston.transports.File({
-            filename: 'app.log'
-        })
-    ]
-});
-
-export { logger };
+export default logger;

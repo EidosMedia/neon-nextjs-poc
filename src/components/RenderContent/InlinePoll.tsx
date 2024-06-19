@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { getCurrentLiveSite } from '../../services/neon-cms/neon-helpers';
+import logger from 'logger';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -93,7 +94,7 @@ export default function InlinePoll({ jsonElement, neonData }) {
             response = await axios.request(options);
             mutate();
         } catch (e) {
-            console.log(e);
+            logger.error(e);
         }
     };
 
