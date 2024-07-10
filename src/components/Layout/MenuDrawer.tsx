@@ -121,7 +121,11 @@ export default function MenuDrawer({ neonData, ...props }) {
                                         {logoOverlay}.
                                     </Typography>
                                 ) : null}
-                                <Image src={logo} alt="" />
+                                {logo ? (
+                                    <Image src={logo} alt="Logo" />
+                                ) : (
+                                    <p>No logo available</p> 
+                                )}                                
                             </Box>
                             <Box>
                                 {/* <IconButton
