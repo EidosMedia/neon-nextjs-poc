@@ -601,11 +601,15 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
     render = (
         <Container sx={{ my: 4 }} maxWidth="lg">
             <Box display="flex" justifyContent="center" alignItems="center">
-                {renderMode === 'newsletter' ? (
-                    <img src={imageUrl} width={imageWidth} height={imageHeight} />
+            {imageUrl ? (
+                renderMode === 'newsletter' ? (
+                    <img src={imageUrl} width={imageWidth} height={imageHeight} alt="Newsletter Image" />
                 ) : (
-                    <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" />
-                )}
+                    <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="Main Image" />
+                )
+            ) : (
+                <p>No image available</p> 
+            )}
             </Box>
         </Container>
     );
@@ -724,7 +728,10 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
                                 <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} alt="" />
                             );
                         }
+                    }else{
+                        linkImage = <p>No image available</p>;
                     }
+
                     blockRender = (
                         <Box key={i} display="flex" justifyContent="flexStart" alignItems="center">
                             <Box sx={{ py: 1 }}>{linkImage || null}</Box>

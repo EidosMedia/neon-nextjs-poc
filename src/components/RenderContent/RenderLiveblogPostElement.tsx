@@ -284,7 +284,11 @@ const Figure: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neon
     render = (
         <Container sx={{ my: 4 }} maxWidth="md">
             <Box display="flex" justifyContent="center" alignItems="center">
-                <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" />
+                {imageUrl ? (
+                    <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" />
+                    ) : (
+                    <p>No image available</p>
+                )}
                 {/* <img width="100%" src={imageUrl} /> */}
             </Box>
         </Container>
