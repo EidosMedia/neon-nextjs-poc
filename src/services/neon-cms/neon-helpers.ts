@@ -1,5 +1,6 @@
 import { NeonData, SiteNode, SiteStructure } from 'src/types/commonTypes';
 import { URL } from 'url';
+import { xml2json } from 'xml-js';
 import { getNeonSites, neonRequest } from './neon-api';
 import _ from 'lodash';
 import ResourceResolver from 'src/utils/ResourceResolver';
@@ -42,19 +43,29 @@ function getNeonWebPageHelper(data) {
 function getNeonArticleHelper(data) {
     let content = null;
 
-    content = data.files.content.data;
+    try {
+        content = JSON.parse(xml2json(data.files.content.data));
+    } catch (e) {
+        logger.error('error parsing object xml');
+        logger.error(e);
+    }
 
     const mainPicture = data?.links?.system?.mainPicture || null;
 
     return {
-        content: data.files.content.data,
+        content,
         mainPicture
     };
 }
 
 export function getNeonLiveblogPostHelper(data) {
     let content = null;
-    content = data.files.content.data;
+    try {
+        content = JSON.parse(xml2json(data.files.content.data));
+    } catch (e) {
+        logger.error('error parsing object xml');
+        logger.error(e);
+    }
 
     return {
         content

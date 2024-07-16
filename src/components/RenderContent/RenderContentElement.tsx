@@ -2,7 +2,7 @@ import ResourceResolver from '../../utils/ResourceResolver';
 import RenderFormattedText from './RenderFormattedText';
 import React from 'react';
 import { Container, Typography, Paper, Link as MUILink } from '@mui/material';
-import { findElementsInContentJson, findElementText, getImageUrl } from '../../utils/ContentUtil';
+import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import Image from 'next/image';
 import { Box } from '@mui/system';
 import ImageGallery from 'react-image-gallery';
@@ -35,10 +35,11 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
     neonData
 }) => {
     let render = null;
+    const id = null;
 
     try {
-        if (!excludeElements || !excludeElements.includes(jsonElement.nodeType)) {
-            switch (jsonElement.nodeType) {
+        if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
+            switch (jsonElement.name) {
                 case 'document':
                     render = jsonElement.elements.map((subel, i) => (
                         <RenderContentElement
@@ -62,15 +63,6 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     ));
                     break;
                 case 'headline':
-                    render = (
-                        <React.Fragment>
-                            {jsonElement.elements.map((subel, i) => (
-                                <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
-                            ))}
-                        </React.Fragment>
-                    );
-                    break;
-                case 'overhead':
                     render = (
                         <React.Fragment>
                             {jsonElement.elements.map((subel, i) => (
@@ -104,7 +96,6 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         );
                     }
                     break;
-                case 'text':
                 case 'content':
                     render = (
                         <React.Fragment>
@@ -121,7 +112,11 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     );
                     break;
                 case 'h1':
-                    render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map(subel => subel.text) : null}
+                        </React.Fragment>
+                    );
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
@@ -133,7 +128,11 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     }
                     break;
                 case 'h2':
-                    render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map(subel => subel.text) : null}
+                        </React.Fragment>
+                    );
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
@@ -145,7 +144,11 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     }
                     break;
                 case 'h3':
-                    render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements ? jsonElement.elements.map(subel => subel.text) : null}
+                        </React.Fragment>
+                    );
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
@@ -162,10 +165,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                             {jsonElement.elements
                                 ? jsonElement.elements
                                       .filter(
-                                          subel =>
-                                              subel.nodeType === 'text' ||
-                                              subel.nodeType === 'element' ||
-                                              subel.nodeType === 'plainText'
+                                          subel => subel.type === 'text' || subel.type === 'element'
                                           // && subel.name === 'keyword'
                                       )
                                       .map((subel, i) => (
@@ -184,7 +184,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         );
                     }
                     const table = jsonElement.elements
-                        ? jsonElement.elements.find(subel => subel.nodeType === 'table')
+                        ? jsonElement.elements.find(subel => subel.name === 'table')
                         : null;
                     if (table) {
                         render = (
@@ -254,10 +254,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         <React.Fragment>
                             {jsonElement.elements
                                 ? jsonElement.elements.map((subel, i) => {
-                                      if (
-                                          subel.nodeType === 'element' &&
-                                          (subel.nodeType === 'ul' || subel.nodeType === 'ol')
-                                      ) {
+                                      if (subel.type === 'element' && (subel.name === 'ul' || subel.name === 'ol')) {
                                           return (
                                               <RenderContentElement
                                                   key={i}
@@ -431,7 +428,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                 //     break;
                 case 'embed':
                     // TODO
-                    const cdata = jsonElement.elements.filter(el => (el.nodeType = 'CDATA')).map(el => el.text);
+                    const cdata = jsonElement.elements.filter(el => (el.type = 'CDATA')).map(el => el.text);
                     render = <div dangerouslySetInnerHTML={{ __html: cdata }}></div>;
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
@@ -531,7 +528,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                 case 'style':
                     break;
                 default:
-                    render = <div>Element not managed: {jsonElement.nodeType}</div>;
+                    render = <div>Element not managed: {jsonElement.name}</div>;
             }
         }
     } catch (error) {}
@@ -604,15 +601,15 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
     render = (
         <Container sx={{ my: 4 }} maxWidth="lg">
             <Box display="flex" justifyContent="center" alignItems="center">
-                {imageUrl ? (
-                    renderMode === 'newsletter' ? (
-                        <img src={imageUrl} width={imageWidth} height={imageHeight} alt="Newsletter Image" />
-                    ) : (
-                        <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="Main Image" />
-                    )
+            {imageUrl ? (
+                renderMode === 'newsletter' ? (
+                    <img src={imageUrl} width={imageWidth} height={imageHeight} alt="Newsletter Image" />
                 ) : (
-                    <p>No image available</p>
-                )}
+                    <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="Main Image" />
+                )
+            ) : (
+                <p>No image available</p> 
+            )}
             </Box>
         </Container>
     );
@@ -731,7 +728,7 @@ function ExtraLinks({ jsonElement, excludeElements, renderMode, neonData }) {
                                 <Image src={linkedObjectMainImageUrl} width={imageWidth} height={imageHeight} alt="" />
                             );
                         }
-                    } else {
+                    }else{
                         linkImage = <p>No image available</p>;
                     }
 

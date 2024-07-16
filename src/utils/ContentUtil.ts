@@ -1,4 +1,3 @@
-import { isArray } from 'lodash';
 import logger from 'logger';
 
 /**
@@ -7,7 +6,7 @@ import logger from 'logger';
  * @param json
  */
 export function findElementsInContentJson(elementNames, json) {
-    if ((isArray(elementNames) && elementNames.includes(json?.nodeType)) || elementNames === json?.nodeType) {
+    if (elementNames.includes(json?.name)) {
         return [json];
     }
     if (json?.elements) {
@@ -15,8 +14,6 @@ export function findElementsInContentJson(elementNames, json) {
     }
     return [];
 }
-
-export const findElementText = jsonElement => findElementsInContentJson('plainText', jsonElement)[0].value;
 
 // jsonElement expected to be a "figure"
 /**

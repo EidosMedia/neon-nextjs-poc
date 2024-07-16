@@ -5,10 +5,7 @@ import { findElementsInContentJson } from 'src/utils/ContentUtil';
 const Overhead = ({ data }) => {
     if (!data) return null;
 
-    console.log('data', data);
     const overheadContent = findElementsInContentJson(['overhead'], data.object.helper.content)[0];
-
-    console.log('overheadContent', overheadContent);
 
     if (!overheadContent) return null;
 

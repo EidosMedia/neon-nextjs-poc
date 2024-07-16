@@ -11,18 +11,16 @@ type StoryFragmentProps = {
     data: NeonData;
 };
 
-const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data }) => {
-    return (
-        <NextLink href={getStoryUrl(data)} passHref legacyBehavior>
-            <Box sx={{ display: 'flex', padding: '20px', gap: '20px', cursor: 'pointer' }}>
-                <StoryFragmentMainMedia data={data} size="small" />
-                <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                    <Headline data={data} />
-                    <Summary data={data} />
-                </Box>
+const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data }) => (
+    <NextLink href={getStoryUrl(data)} passHref legacyBehavior>
+        <Box sx={{ display: 'flex', padding: '20px', gap: '20px', cursor: 'pointer' }}>
+            <StoryFragmentMainMedia data={data} size="small" />
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                <Headline data={data} />
+                <Summary data={data} />
             </Box>
-        </NextLink>
-    );
-};
+        </Box>
+    </NextLink>
+);
 
 export default StoryFragmentSmall;

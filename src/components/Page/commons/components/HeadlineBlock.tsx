@@ -13,14 +13,9 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     let overhead = null;
     let headline = null;
 
-    console.log('content', neonData.object.helper.content);
-    console.log('overheadContent', findElementsInContentJson(['overhead'], neonData.object.helper.content)[0]);
-
     try {
         overhead = (
-            <RenderContentElement
-                jsonElement={findElementsInContentJson(['overhead'], neonData.object.helper.content)[0]}
-            />
+            <RenderContentElement jsonElement={findElementsInContentJson(['p'], neonData.object.helper.content)[0]} />
         );
         headline = (
             <RenderContentElement

@@ -14,7 +14,7 @@ const ContentBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     try {
         content = (
             <RenderContentElement
-                jsonElement={findElementsInContentJson(['text'], neonData.object.helper.content)[0]}
+                jsonElement={findElementsInContentJson(['content'], neonData.object.helper.content)[0]}
                 renderMode="styled"
                 neonData={neonData}
             />
