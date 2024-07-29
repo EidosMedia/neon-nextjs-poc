@@ -54,7 +54,7 @@ function getNeonArticleHelper(data) {
 
 export function getNeonLiveblogPostHelper(data) {
     let content = null;
-    content = data.files.content.data;
+    content = JSON.parse(data.files.content.data);
 
     return {
         content
@@ -365,7 +365,7 @@ export function getObjectMainSection(obj) {
  * @param neonData
  */
 export function getCurrentLiveSite(neonData) {
-    const currentSite = neonData.siteContext?.site;
+    const currentSite = neonData.siteContext?.site || neonData.siteContext;
     if (!currentSite) return null;
 
     return currentSite;
@@ -432,4 +432,8 @@ export const getMainImageUrl = (neonData: NeonData, format?: string): string => 
     return ResourceResolver(
         _.get(neonData, `object.helper.mainPicture[0].dynamicCropsResourceUrls.${format || 'Wide_large'}`)
     );
+};
+
+export const getImageUrl = (url: string) => {
+    return ResourceResolver(url);
 };

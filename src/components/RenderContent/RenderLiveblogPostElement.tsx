@@ -9,6 +9,7 @@ import NextLink from 'next/link';
 import { getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
 import Card from './Card';
 import { GenericPageProps } from 'src/types/commonTypes';
+import { findElementText } from '@/utils/ContentUtil';
 
 type RenderLiveblogPostElementProps = GenericPageProps & {
     jsonElement?: any;
@@ -34,9 +35,9 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
     neonData
 }) => {
     let render = null;
-    const id = null;
-    if (!excludeElements || !excludeElements.includes(jsonElement.name)) {
-        switch (jsonElement.name) {
+
+    if (!excludeElements || !excludeElements.includes(jsonElement.nodeType)) {
+        switch (jsonElement.nodeType) {
             case 'article':
                 render = jsonElement.elements.map((subel, i) => (
                     <RenderLiveblogPostElement
@@ -50,11 +51,8 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
                 ));
                 break;
             case 'h1':
-                render = (
-                    <React.Fragment>
-                        {jsonElement.elements ? jsonElement.elements.map(subel => subel.text) : null}
-                    </React.Fragment>
-                );
+                render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+
                 if (renderMode && renderMode === 'styled') {
                     render = (
                         <Container sx={{ mb: 2 }} maxWidth="md">
@@ -248,7 +246,23 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
                 } catch (e) {}
                 break;
             default:
-                render = <div>Element not managed: {jsonElement.name}</div>;
+                render = (
+                    <React.Fragment>
+                        {jsonElement.elements
+                            ? jsonElement.elements.map((subel, i) => {
+                                  return (
+                                      <RenderLiveblogPostElement
+                                          key={i}
+                                          jsonElement={subel}
+                                          excludeElements={excludeElements}
+                                          renderMode={renderMode}
+                                          neonData={neonData}
+                                      />
+                                  );
+                              })
+                            : null}
+                    </React.Fragment>
+                );
         }
     }
     return render;
@@ -286,7 +300,7 @@ const Figure: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neon
             <Box display="flex" justifyContent="center" alignItems="center">
                 {imageUrl ? (
                     <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" />
-                    ) : (
+                ) : (
                     <p>No image available</p>
                 )}
                 {/* <img width="100%" src={imageUrl} /> */}

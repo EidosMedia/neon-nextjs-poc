@@ -72,15 +72,18 @@ export async function getNeonPageByUrl(url) {
     let neonData = null;
 
     logger.debug('url ' + url);
-    if (siteName) {
-        // let pageData = null;
 
-        const requestUrl = `/api/pages?url=${url.replace(`${hostnameWithProtocol}`, '')}&emk.site=${siteName}`;
+    if (siteName) {
+        let requestUrl = '';
+        if (urlObject.searchParams.get('id')) {
+            requestUrl = `/api/pages/${urlObject.searchParams.get('id')}?emk.site=${siteName}`;
+        } else {
+            requestUrl = `/api/pages?url=${url.replace(`${hostnameWithProtocol}`, '')}&emk.site=${siteName}`;
+        }
+
         logger.debug('requestUrl ' + requestUrl);
 
-        // const pageData = await getPageFromSite(url, siteName);
         const pageData = await neonRequest(requestUrl, siteName);
-        // pageData = await neonRequest(requestUrl);
 
         neonData = await buildNeonDataFromPage(pageData, siteStructure, siteName, url);
     } else {
@@ -124,7 +127,7 @@ export async function getNeonPreview(previewData) {
     } catch (e) {}
 
     const previewToken = previewData['emauth'];
-    logger.debug('============================= previewToken', previewToken);
+    logger.debug('============================= previewToken: ' + previewToken);
 
     const urlObject = new URL(previewData.url);
 
@@ -144,11 +147,11 @@ export async function getNeonPreview(previewData) {
     if (id !== null) {
         requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace(
             '/_sites/preview/' + baseHost,
-            '/api/pages/'
+            '/api/nodes/'
         )}${id}`;
     }
 
-    logger.debug('============================= requestUrl', requestUrl);
+    logger.debug('============================= requestUrl: ' + requestUrl);
 
     try {
         const options = {
@@ -162,12 +165,14 @@ export async function getNeonPreview(previewData) {
         };
 
         const response = await axios.request(options);
+        console.log('response', response);
         pageData = response.data;
     } catch (e) {
         logger.info('============================= error', e);
 
         logger.info(e);
     }
+
     const sites = await getNeonSites();
     const sitename = getSiteByHostname(`${urlObject.protocol}//${urlObject.host}`, sites).root.name;
     const neonData = await buildNeonDataFromPage(pageData, siteStructure, sitename, '/preview');

@@ -1,7 +1,11 @@
-import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 import Image from 'next/image';
-import { getMainImageUrl } from '@/services/neon-cms/neon-helpers';
+import { getImageUrl } from '@/services/neon-cms/neon-helpers';
 import { Box, Container } from '@mui/material';
+
+type InlineImageProps = {
+    jsonElement: any;
+    styleVariant?: string;
+};
 
 /**
  *
@@ -9,15 +13,17 @@ import { Box, Container } from '@mui/material';
  * @param root0.neonData
  * @param root0.styleVariant
  */
-const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
+const InlineImageBlock: React.FC<InlineImageProps> = ({ jsonElement, styleVariant }) => {
     // logger.info('neonData main picture', neonData.object.helper.mainPicture);
     let imageWidth = 1024;
     let imageHeight = 576;
 
-    const mainImageUrl = getMainImageUrl(neonData);
+    const image = jsonElement.elements.find(item => item.attributes.softCrop === 'Square');
 
-    let tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Wide?.tmx;
-    if (tmx === undefined) tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Square?.tmx;
+    const imageUrl = getImageUrl(image?.attributes.src);
+
+    const tmx = image?.attributes.tmx;
+    // if (tmx === undefined) tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Square?.tmx;
 
     if (tmx !== undefined) {
         let tokens = tmx.split(' ');
@@ -31,8 +37,8 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     const render = (
         <Container sx={{ my: 2 }} maxWidth={maxWidth}>
             <Box display="flex" justifyContent={justify} alignItems={justify}>
-                {mainImageUrl ? (
-                    <Image src={mainImageUrl} width={imageWidth} height={imageHeight} alt="" priority={true} />
+                {imageUrl ? (
+                    <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="" priority={true} />
                 ) : (
                     <p>No image available</p>
                 )}
@@ -42,4 +48,4 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     return render;
 };
 
-export default MainImageBlock;
+export default InlineImageBlock;

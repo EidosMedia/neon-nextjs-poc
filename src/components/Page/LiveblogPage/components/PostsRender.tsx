@@ -92,7 +92,7 @@ const PostsRender: FC<PostsRenderProps> = ({ neonData }) => {
                 try {
                     contentRender = (
                         <RenderLiveblogPostElement
-                            jsonElement={findElementsInContentJson(['article'], postContent.content)[0]}
+                            jsonElement={postContent.content}
                             renderMode="styled"
                             rawPost={post}
                             neonData={neonData}

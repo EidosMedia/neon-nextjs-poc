@@ -16,7 +16,9 @@ export function findElementsInContentJson(elementNames, json) {
     return [];
 }
 
-export const findElementText = jsonElement => findElementsInContentJson('plainText', jsonElement)[0].value;
+export const findElementText = jsonElement => {
+    return findElementsInContentJson('plainText', jsonElement)[0]?.value;
+};
 
 // jsonElement expected to be a "figure"
 /**

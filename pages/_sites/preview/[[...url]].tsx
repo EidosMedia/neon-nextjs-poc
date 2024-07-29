@@ -79,46 +79,39 @@ export const getServerSideProps = (async context => {
 
     const fullHostname = `${protocol}://${req.headers.host}`;
 
-    try {
-        const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.empreviewauth });
+    const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.empreviewauth });
 
-        const props: GenericPageProps = {
-            neonData
-        };
+    const props: GenericPageProps = {
+        neonData
+    };
 
-        let revalidate = 5;
-        const fallback = {}; // To be used for SWR rehydration of liveblogs
+    let revalidate = 5;
+    const fallback = {}; // To be used for SWR rehydration of liveblogs
 
-        // if (!neonData.error) {
-        switch (neonData?.object?.data?.sys?.baseType) {
-            case 'webpage':
-                revalidate = 5;
-                // Quick and ugly way to manage semantic search demo
-                // const semanticSearchData = await getSemanticSearchData(neonData);
-                // if (semanticSearchData) {
-                //     props.semanticSearchData = semanticSearchData;
-                // }
-                break;
-            case 'liveblog':
-                revalidate = 5;
-                const latestBlogPosts = await neonRequest(
-                    `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.site}&limit=50`
-                );
-                fallback[`/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
-                props.fallback = fallback;
-                break;
-            default:
-                revalidate = 5;
-        }
-        // }
-
-        return {
-            props
-        };
-    } catch (e) {
-        logger.error(e);
-
-        const router = useRouter();
-        router.replace(router.asPath);
+    // if (!neonData.error) {
+    switch (neonData?.object?.data?.sys?.baseType) {
+        case 'webpage':
+            revalidate = 5;
+            // Quick and ugly way to manage semantic search demo
+            // const semanticSearchData = await getSemanticSearchData(neonData);
+            // if (semanticSearchData) {
+            //     props.semanticSearchData = semanticSearchData;
+            // }
+            break;
+        case 'liveblog':
+            revalidate = 5;
+            const latestBlogPosts = await neonRequest(
+                `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.site}&limit=50`
+            );
+            fallback[`/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
+            props.fallback = fallback;
+            break;
+        default:
+            revalidate = 5;
     }
+    // }
+
+    return {
+        props
+    };
 }) satisfies GetServerSideProps;
