@@ -29,7 +29,8 @@ export default async (req: NextApiRequest, res: NextResponse) => {
         url,
         mode: 'no-cors',
         headers: {
-            emauth: req.cookies.empreviewauth
+            emauth: req.cookies.empreviewauth,
+            'neon-fo-access-key': process.env.NEON_API_KEY
         },
         responseType: 'stream' as const
     };

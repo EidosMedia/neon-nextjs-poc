@@ -19,7 +19,10 @@ export async function getNeonSites() {
             method: 'GET',
             httpAgent: agent,
             url: apiUrl,
-            mode: 'no-cors'
+            mode: 'no-cors',
+            headers: {
+                'neon-fo-access-key': process.env.NEON_API_KEY
+            }
         };
 
         const response = await axios.request(options);
@@ -160,7 +163,8 @@ export async function getNeonPreview(previewData) {
             url: requestUrl,
             mode: 'no-cors',
             headers: {
-                emauth: previewToken
+                emauth: previewToken,
+                'neon-fo-access-key': process.env.NEON_API_KEY
             }
         };
 
@@ -210,8 +214,12 @@ export async function neonRequest(url, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
 
     const options = {
-        url: (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url
+        url: (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url,
+        headers: {
+            'neon-fo-access-key': process.env.NEON_API_KEY
+        }
     };
+
     logger.debug('calling: ' + options.url);
     const response = await httpClient.get(options.url, options);
 
@@ -235,6 +243,7 @@ export async function neonPollVote(site, nodeId, pollId, answerId) {
             pollId,
             answerId
         };
+
         const options = {
             method: 'POST',
             url: `${process.env.NEON_BASE_HOST}/directory/polls/vote`,
@@ -243,7 +252,8 @@ export async function neonPollVote(site, nodeId, pollId, answerId) {
             httpAgent: agent,
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'neon-fo-access-key': process.env.NEON_API_KEY
             }
         };
 
@@ -268,7 +278,10 @@ export async function getNeonSitemap(siteName) {
             method: 'GET',
             url: apiUrl,
             mode: 'no-cors',
-            httpAgent: agent
+            httpAgent: agent,
+            headers: {
+                'neon-fo-access-key': process.env.NEON_API_KEY
+            }
         };
 
         const response = await axios.request(options);
@@ -310,7 +323,10 @@ async function getNeonLogoUrl(id: any, siteName) {
             method: 'GET',
             url: requestUrl,
             mode: 'no-cors',
-            httpAgent: agent
+            httpAgent: agent,
+            headers: {
+                'neon-fo-access-key': process.env.NEON_API_KEY
+            }
         };
 
         const response = await axios.request(options);

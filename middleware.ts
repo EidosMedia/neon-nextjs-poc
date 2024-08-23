@@ -39,7 +39,10 @@ export async function middleware(req) {
         const apiUrl = `${process.env.NEON_BASE_HOST}/api`;
 
         const response = await fetch(`${apiUrl}/pages/${id}/authorization/${siteName}/${viewStatus}`, {
-            headers: { Authorization: 'Bearer ' + previewToken }
+            headers: {
+                Authorization: 'Bearer ' + previewToken,
+                'neon-fo-access-key': process.env.NEON_API_KEY
+            }
         });
 
         if (response.status !== 204) {

@@ -86,7 +86,8 @@ export default function InlinePoll({ jsonElement, neonData }) {
                 config: {
                     headers: {
                         Accept: 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'neon-fo-access-key': process.env.NEON_API_KEY
                     }
                 }
             };
