@@ -1,5 +1,8 @@
 module.exports = {
     reactStrictMode: true,
     productionBrowserSourceMaps: true,
-    output: 'standalone'
+    output: 'standalone',
+    images: {
+        dangerouslyAllowSVG: true
+    }
 };
