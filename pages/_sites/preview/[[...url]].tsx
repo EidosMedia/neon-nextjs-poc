@@ -79,7 +79,7 @@ export const getServerSideProps = (async context => {
 
     const fullHostname = `${protocol}://${req.headers.host}`;
 
-    const neonData = await getNeonPreview({ url: fullHostname + req.url, emauth: req.cookies.empreviewauth });
+    const neonData = await getNeonPreview({ url: fullHostname + req.url, empreviewauth: req.cookies.empreviewauth });
 
     const props: GenericPageProps = {
         neonData
@@ -101,9 +101,9 @@ export const getServerSideProps = (async context => {
         case 'liveblog':
             revalidate = 5;
             const latestBlogPosts = await neonRequest(
-                `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.site}&limit=50`
+                fullHostname + `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`
             );
-            fallback[`/api/${neonData.siteContext.site}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
+            fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
             props.fallback = fallback;
             break;
         default:

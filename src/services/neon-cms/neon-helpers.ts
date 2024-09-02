@@ -394,15 +394,15 @@ export function getImageFormatUrl(url, format) {
 export const getLiveHostname = (url: string): string => url;
 
 export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
-    // const urlObject = url instanceof URL ? url : new URL(url);
+    const urlObject = url instanceof URL ? url : new URL(url);
 
     logger.debug('getAPIHostname ' + JSON.stringify(url) + ' sitename:' + siteName);
 
     const sites = await getNeonSites();
 
-    const hostName = url.hostname;
-    const protocol = url.protocol;
-    const port = url.port;
+    const hostName = urlObject.hostname;
+    const protocol = urlObject.protocol;
+    const port = urlObject.port;
 
     const hostnameWithProtocol =
         `${protocol}//${hostName}` + (port != null && port != '' && port != '80' && port != '443' ? `:${port}` : '');

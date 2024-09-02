@@ -51,11 +51,11 @@ export async function middleware(req) {
 
         const redirectResponse = NextResponse.redirect(new URL(`/_sites/preview/${hostname}?id=${id}`, urlObject));
         let cookie = response.headers.getSetCookie()[0];
-        cookie += `;Domain=${hostName}`;
+        //cookie += `;Domain=${hostName}`;
 
-        if (process.env.DEV_MODE === 'false') {
-            cookie += ';Secure';
-        }
+        //if (process.env.DEV_MODE === 'false') {
+        //    cookie += ';Secure';
+        //}
 
         const cookieObject = parseCookie(cookie);
         //redirectResponse.headers.set('Set-Cookie', cookie);
@@ -64,7 +64,7 @@ export async function middleware(req) {
         //delete cookieObject.empreviewauth;
         //redirectResponse.cookies.set('empreviewauth', value, cookieObject);
 
-        const cookieValue = cookieObject.emauth;
+        const cookieValue = cookieObject.empreviewtoken;
         const cookieOptions: ResponseCookie = {
             path: '/',
             maxAge: 1200,

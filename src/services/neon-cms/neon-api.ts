@@ -129,7 +129,7 @@ export async function getNeonPreview(previewData) {
         siteStructure = await getNeonSites();
     } catch (e) {}
 
-    const previewToken = previewData['emauth'];
+    const previewToken = previewData['empreviewauth'];
     logger.debug('============================= previewToken: ' + previewToken);
 
     const urlObject = new URL(previewData.url);
@@ -150,7 +150,7 @@ export async function getNeonPreview(previewData) {
     if (id !== null) {
         requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace(
             '/_sites/preview/' + baseHost,
-            '/api/nodes/'
+            '/api/pages/'
         )}${id}`;
     }
 
@@ -163,7 +163,7 @@ export async function getNeonPreview(previewData) {
             url: requestUrl,
             mode: 'no-cors',
             headers: {
-                emauth: previewToken,
+                Authorization: 'Bearer ' + previewToken,
                 'neon-fo-access-key': process.env.NEON_API_KEY
             }
         };
@@ -212,9 +212,15 @@ export async function searchNeon(siteName, sorting, filters) {
  */
 export async function neonRequest(url, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
+    let newUrl;
+    if(url.startsWith('http')) {
+        newUrl = url;
+    }else{
+        newUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url;
+    }
 
     const options = {
-        url: (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url,
+        url: newUrl,
         headers: {
             'neon-fo-access-key': process.env.NEON_API_KEY
         }
