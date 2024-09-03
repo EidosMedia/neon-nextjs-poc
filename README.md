@@ -1,19 +1,36 @@
-# Next.js headless app with Neon example
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## How to use
+## Getting Started
 
-Download the example [or clone the repo](https://github.com/EidosMedia/neon-nextjs-poc):
+First, run the development server:
 
-Install it and run:
-
-```sh
-npm install
+```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## The idea behind the example
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The project uses [Next.js](https://github.com/vercel/next.js), and shows how it is possible to integrate it with Eidosmedia NEON headless APIs.
-It also includes `@mui/material` and its peer dependencies, in order to build a modern, responsive website - taking inspiration from the [Fortnightly](https://material.io/design/material-studies/fortnightly.html) MUI template.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-**WARNING: this code is not meant to be used in production! Many implementations are done "quick & dirty": the goal is NOT to provide Next.js or React development best practices - the goal is only to illustrate how to interact with Neon APIs.**
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
