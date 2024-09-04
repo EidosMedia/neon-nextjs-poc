@@ -8,8 +8,6 @@ import StoryFragmentMainTop from '../StoryFragment/components/StoryFragmentMainT
 const TopSection: React.FC<BlockProps> = ({ neonData }) => {
     const linkedObjects = getDwxLinkedObjects(neonData, 'top');
 
-    console.log('linkedObjects', linkedObjects);
-
     if (!linkedObjects.length) {
         return null;
     }

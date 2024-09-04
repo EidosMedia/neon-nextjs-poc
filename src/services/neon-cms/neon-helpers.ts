@@ -222,9 +222,9 @@ export function getSectionChildrenObjects(neonData) {
  * @param zoneName
  */
 export function getDwxLinkedObjects(neonData, zoneName?) {
-    const zones = Object.keys(neonData.object.data.links.pagelink);
+    const zones = Object.keys(neonData.object.data.links?.pagelink || []);
 
-    if (!zoneName) {
+    if (!zoneName || !zones.length) {
         // When not specifying a zone, return all objects from all zones
         return zones.reduce((acc, zone) => [...acc, ...getDwxLinkedObjects(neonData, zone)], []);
     }
@@ -232,7 +232,7 @@ export function getDwxLinkedObjects(neonData, zoneName?) {
     let linkedObjects = [];
 
     try {
-        linkedObjects = neonData.object.data.links.pagelink[zoneName].map(link => {
+        linkedObjects = neonData.object.data.links?.pagelink[zoneName].map(link => {
             // Here we need to build the neonData for each object
 
             const objNodeData = neonData.pageContext.nodes[link.targetId];
