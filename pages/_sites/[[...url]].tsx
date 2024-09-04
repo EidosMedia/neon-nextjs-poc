@@ -42,6 +42,12 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
                 return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
             }
 
+        case 'sectionwebpage':
+            return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+
+        case 'homewebpage':
+            return <LandingPage neonData={neonData} />;
+
         case 'webpagefragment':
             return <Segment neonData={neonData} />;
 

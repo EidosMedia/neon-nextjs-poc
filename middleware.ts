@@ -64,6 +64,8 @@ export async function middleware(req) {
         //delete cookieObject.empreviewauth;
         //redirectResponse.cookies.set('empreviewauth', value, cookieObject);
 
+        console.log('cookieObject', cookieObject);
+
         const cookieValue = cookieObject.empreviewtoken;
         const cookieOptions: ResponseCookie = {
             path: '/',

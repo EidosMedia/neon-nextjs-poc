@@ -222,58 +222,58 @@ export function getSectionChildrenObjects(neonData) {
  * @param zoneName
  */
 export function getDwxLinkedObjects(neonData, zoneName?) {
+    const zones = Object.keys(neonData.object.data.links.pagelink);
+
     if (!zoneName) {
         // When not specifying a zone, return all objects from all zones
-        const zones = Object.keys(neonData.object.data.links.pagelink);
         return zones.reduce((acc, zone) => [...acc, ...getDwxLinkedObjects(neonData, zone)], []);
     }
 
     let linkedObjects = [];
+
     try {
-        linkedObjects = neonData.object.helper.zones
-            .find(zone => zone.zone === zoneName)
-            .objects.map(link => {
-                // Here we need to build the neonData for each object
+        linkedObjects = neonData.object.data.links.pagelink[zoneName].map(link => {
+            // Here we need to build the neonData for each object
 
-                const objNodeData = neonData.pageContext.nodes[link.objectId];
+            const objNodeData = neonData.pageContext.nodes[link.targetId];
 
-                let linkTemplate = null;
-                if (link.linkData && link.linkData.template) {
-                    linkTemplate = link.linkData.template;
-                } else {
-                    try {
-                        linkTemplate =
-                            neonData.object.data.files.templates.data[neonData.linkContext.linkTemplate].zones[zoneName]
-                                .sequences[0].styleSheet;
-                    } catch (e) {}
+            let linkTemplate = null;
+            if (link.linkData && link.linkData.template) {
+                linkTemplate = link.linkData.template;
+            } else {
+                try {
+                    linkTemplate =
+                        neonData.object.data.files.templates.data[neonData.linkContext.linkTemplate].zones[zoneName]
+                            .sequences[0].styleSheet;
+                } catch (e) {}
+            }
+            if (!linkTemplate) {
+                // No default template found -> setting defaults
+                switch (objNodeData.sys.type) {
+                    case 'featured':
+                        linkTemplate = 'featured_standard';
+                        break;
+                    case 'segment':
+                        linkTemplate = 'section_teaser';
+                        break;
+                    case 'article':
+                        linkTemplate = 'head-pic';
+                        break;
+                    case 'liveblog':
+                        linkTemplate = 'head-pic';
+                        break;
                 }
-                if (!linkTemplate) {
-                    // No default template found -> setting defaults
-                    switch (objNodeData.sys.type) {
-                        case 'featured':
-                            linkTemplate = 'featured_standard';
-                            break;
-                        case 'segment':
-                            linkTemplate = 'section_teaser';
-                            break;
-                        case 'article':
-                            linkTemplate = 'head-pic';
-                            break;
-                        case 'liveblog':
-                            linkTemplate = 'head-pic';
-                            break;
-                    }
-                }
+            }
 
-                const linkContext = {
-                    linkData: link.linkData,
-                    linkTemplate
-                };
+            const linkContext = {
+                linkData: link.linkData,
+                linkTemplate
+            };
 
-                const objneonData = buildneonDataForNestedObject(objNodeData, neonData, linkContext);
+            const objneonData = buildneonDataForNestedObject(objNodeData, neonData, linkContext);
 
-                return objneonData;
-            });
+            return objneonData;
+        });
     } catch (e) {}
     return linkedObjects;
 }
@@ -394,9 +394,7 @@ export function getImageFormatUrl(url, format) {
 export const getLiveHostname = (url: string): string => url;
 
 export const getApiHostname = async (url: URL, siteName?: string): Promise<string> => {
-    const urlObject = url instanceof URL ? url : new URL(url);
-
-    logger.debug('getAPIHostname ' + JSON.stringify(url) + ' sitename:' + siteName);
+    const urlObject = url instanceof URL ? url : (url as string).startsWith('http') && new URL(url);
 
     const sites = await getNeonSites();
 

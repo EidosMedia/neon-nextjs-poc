@@ -84,7 +84,7 @@ export async function getNeonPageByUrl(url) {
             requestUrl = `/api/pages?url=${url.replace(`${hostnameWithProtocol}`, '')}&emk.site=${siteName}`;
         }
 
-        logger.debug('requestUrl ' + requestUrl);
+        logger.debug('requestUrl - 87' + requestUrl);
 
         const pageData = await neonRequest(requestUrl, siteName);
 
@@ -169,7 +169,7 @@ export async function getNeonPreview(previewData) {
         };
 
         const response = await axios.request(options);
-        console.log('response', response);
+        console.log('response from getModel', response);
         pageData = response.data;
     } catch (e) {
         logger.info('============================= error', e);
@@ -213,9 +213,9 @@ export async function searchNeon(siteName, sorting, filters) {
 export async function neonRequest(url, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
     let newUrl;
-    if(url.startsWith('http')) {
+    if (url.startsWith('http')) {
         newUrl = url;
-    }else{
+    } else {
         newUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url;
     }
 

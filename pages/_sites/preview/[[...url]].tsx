@@ -45,7 +45,10 @@ export default function Page({ neonData, fallback }) {
             } else {
                 return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
             }
-            break;
+        case 'sectionwebpage':
+            return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+        case 'homewebpage':
+            return <LandingPage neonData={neonData} />;
         case 'webpagefragment':
             return <Segment neonData={neonData} />;
             break;
@@ -88,6 +91,8 @@ export const getServerSideProps = (async context => {
     let revalidate = 5;
     const fallback = {}; // To be used for SWR rehydration of liveblogs
 
+    console.log('neonData?.object?.data?.sys?.baseType', neonData?.object?.data?.sys?.baseType);
+
     // if (!neonData.error) {
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
@@ -101,9 +106,11 @@ export const getServerSideProps = (async context => {
         case 'liveblog':
             revalidate = 5;
             const latestBlogPosts = await neonRequest(
-                fullHostname + `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`
+                fullHostname +
+                    `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`
             );
-            fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] = latestBlogPosts;
+            fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] =
+                latestBlogPosts;
             props.fallback = fallback;
             break;
         default:

@@ -13,6 +13,8 @@ import Layout from '../Layout/Layout';
  * @param root0.pageTitle
  */
 export default function SectionPage({ neonData, pageTitle }) {
+    console.log('neonData', neonData);
+
     return (
         <Layout neonData={neonData}>
             <Container>
