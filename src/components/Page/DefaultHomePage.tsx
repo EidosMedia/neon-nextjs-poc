@@ -24,7 +24,7 @@ export const DefaultHomePage: React.FC<DefaultHomePageProps> = ({ neonData }) =>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
                     {sectionChildrenObjects.map(child => (
-                        <Grid item md={6}>
+                        <Grid item md={12}>
                             <GenericFragment neonData={child} size="small" />
                         </Grid>
                     ))}

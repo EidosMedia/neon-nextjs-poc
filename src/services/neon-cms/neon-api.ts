@@ -205,7 +205,7 @@ export async function neonRequest(url, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
 
     const options = {
-        url: (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url
+        url: (process.env.DEV_MODE === 'false' ? 'http://' : 'https://') + apiHostname + url
     };
     logger.debug('calling: ' + options.url);
     const response = await httpClient.get(options.url, options);

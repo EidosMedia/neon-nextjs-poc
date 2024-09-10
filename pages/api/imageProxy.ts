@@ -5,6 +5,8 @@ import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
 export default async (req: NextApiRequest, res: NextResponse) => {
+    console.log('calling image proxy for request', req.query.url);
+
     let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
     const baseUrl = new URL(req.headers.referer);
 
@@ -20,7 +22,9 @@ export default async (req: NextApiRequest, res: NextResponse) => {
     }
     urlToAppend = urlToAppend.substring(1);
 
-    const url = `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`;
+    const { protocol } = new URL(process.env.NEON_BASE_HOST);
+
+    const url = `${protocol}//${apiHostname}/${urlToAppend}`;
 
     logger.info('Image fetched from url: ' + url);
 

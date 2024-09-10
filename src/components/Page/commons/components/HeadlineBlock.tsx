@@ -25,8 +25,8 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     } catch (e) {}
 
     const overheadStyle = {
-        color: 'primary.main',
-        backgroundColor: 'text.secondary',
+        color: 'white',
+        backgroundColor: 'primary.main',
         width: 'fit-content',
         textTransform: 'uppercase',
         padding: '0.3em 0.5em',

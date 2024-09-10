@@ -9,10 +9,12 @@ import createEmotionCache from '../src/createEmotionCache';
 import Layout from '@/components/Layout/Layout';
 
 import 'react-image-gallery/styles/css/image-gallery.css';
+import '../src/themes/stripes/stripes.css';
 import themeVariantA from 'src/themes/variant-a-theme';
 import themeVariantB from 'src/themes/variant-b-theme';
 import themeVariantC from 'src/themes/variant-c-theme';
 import themeVariantD from 'src/themes/variant-d-theme';
+import themeStripes from 'src/themes/stripes/stripes-theme';
 import _ from 'lodash';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -22,10 +24,12 @@ const themes = {
     'variant-a': themeVariantA,
     'variant-b': themeVariantB,
     'variant-c': themeVariantC,
-    'variant-d': themeVariantD
+    'variant-d': themeVariantD,
+    stripes: themeStripes
 };
 
-const resolveTheme = pageProps => themes[_.get(pageProps, 'neonData.siteContext.site.root.attributes.theme')] || theme;
+const resolveTheme = pageProps => themes[_.get(pageProps, 'neonData.siteContext.root.attributes.theme')] || theme;
+
 /**
  *
  * @param props
