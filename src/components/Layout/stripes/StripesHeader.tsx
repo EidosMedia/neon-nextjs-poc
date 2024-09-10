@@ -33,27 +33,44 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '10px',
-                                justifyContent: 'space-around',
                                 width: '100%'
                             }}
                         >
-                            <Box display="flex" gap="10px" margin="auto">
+                            <Box display="flex" gap="10px" width="25%">
                                 <IconButton disableRipple sx={{ border: '1px solid black', borderRadius: '5px' }}>
                                     <Menu />
                                 </IconButton>
                                 <Button variant="contained">Subscribe</Button>
                             </Box>
-                            <Link href={`/`} disableActive>
+                            <Link href={`/`} disableActive width="50%">
                                 <StripesLogo neonData={neonData} />
                             </Link>
-                            <Box display="flex" margin="auto">
-                                <TextField
-                                    variant="standard"
-                                    sx={{ height: '32px', borderColor: 'black', outlineColor: 'black' }}
-                                />
-                                <IconButton disableRipple sx={{ border: '1px solid black', borderRadius: '5px' }}>
-                                    <Search />
-                                </IconButton>
+                            <Box display="flex" width="25%" gap="10px">
+                                <Box display="flex">
+                                    <TextField
+                                        variant="outlined"
+                                        sx={{ borderColor: 'black', outlineColor: 'black' }}
+                                        placeholder="Search..."
+                                        InputProps={{
+                                            sx: {
+                                                height: '1em',
+                                                padding: '21px 0',
+                                                borderColor: 'black',
+                                                outlineColor: 'black',
+                                                borderRadius: '5px 0 0 5px'
+                                            }
+                                        }}
+                                    />
+                                    <IconButton
+                                        disableRipple
+                                        sx={{ border: '1px solid #c1c1c1', borderRadius: '0 5px 5px 0' }}
+                                    >
+                                        <Search />
+                                    </IconButton>
+                                </Box>
+                                <Button color="primary" variant="outlined">
+                                    Login
+                                </Button>
                             </Box>
                         </Box>
                         <Box

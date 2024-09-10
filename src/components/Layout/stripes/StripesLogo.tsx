@@ -5,14 +5,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { NeonData } from '@/types/commonTypes';
-import ResourceResolver from '@/utils/ResourceResolver';
-import _ from 'lodash';
-import logger from 'logger';
-
-const dimensions = {
-    small: { width: 50, height: 50, crop: 'Square_small' },
-    medium: { width: 100, height: 100, crop: 'Square_large' }
-};
 
 type SiteLogoProps = {
     neonData: NeonData;

@@ -5,6 +5,9 @@ import GenericFragment from '../Fragment/GenericFragment';
 import TopSection from '../Fragment/TopSection';
 import ListSection from '../Fragment/ListSection';
 import Layout from '../Layout/Layout';
+import _ from 'lodash';
+
+const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme') === 'stripes';
 
 /**
  *
@@ -16,10 +19,16 @@ export default function SectionPage({ neonData, pageTitle }) {
     return (
         <Layout neonData={neonData}>
             <Container>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
-                    {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
-                </Box>
-                <Divider />
+                {isStripes(neonData) ? (
+                    <Typography variant="h1">{pageTitle}</Typography>
+                ) : (
+                    <>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
+                            {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
+                        </Box>
+                        <Divider />
+                    </>
+                )}
                 <TopSection neonData={neonData} />
                 <Divider />
                 <ListSection neonData={neonData} />

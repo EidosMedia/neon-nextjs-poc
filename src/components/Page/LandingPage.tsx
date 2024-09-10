@@ -22,8 +22,8 @@ const LandingPage: React.FC<GenericPageProps> = ({ neonData, pageTitle }) => {
     return (
         <Layout neonData={neonData}>
             <Container maxWidth="lg">
-                {/* <Banner neonData={neonData} />
-                <Divider /> */}
+                <Banner neonData={neonData} />
+                <Divider />
                 <TopSection neonData={neonData} />
                 <Divider />
                 <ListSection neonData={neonData} />

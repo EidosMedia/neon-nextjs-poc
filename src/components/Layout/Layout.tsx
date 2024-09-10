@@ -6,6 +6,10 @@ import MenuHeader from './MenuHeader';
 import StripesHeader from './stripes/StripesHeader';
 import KTownContainer from './stripes/KTownContainer';
 import FollowUs from './FollowUs';
+import _ from 'lodash';
+import StripesCopyright from './stripes/StripesCopyright';
+
+const isStripes = props => _.get(props, 'neonData.siteContext.root.attributes.theme') === 'stripes';
 
 /**
  *
@@ -15,21 +19,24 @@ const Layout: React.FC<any> = props => {
     return (
         <>
             <Container maxWidth="lg">
-                <StripesHeader {...props} />
+                {isStripes(props) ? <StripesHeader {...props} /> : <MenuHeader {...props} />}
                 <Grid container spacing={2}>
-                    <Grid item xs={8}>
-                        <KTownContainer />
-                        {props.children}
-                    </Grid>
-                    <Grid item xs={4}>
-                        <aside>
-                            <FollowUs />
-                        </aside>
-                    </Grid>
+                    {isStripes(props) ? (
+                        <>
+                            <Grid item xs={8}>
+                                {props.children}
+                            </Grid>
+                            <Grid item xs={4}>
+                                <aside>
+                                    <FollowUs />
+                                </aside>
+                            </Grid>
+                        </>
+                    ) : (
+                        props.children
+                    )}
                 </Grid>
-                <Box sx={{ my: 4 }}>
-                    <Copyright />
-                </Box>
+                <Box sx={{ my: 4 }}>{isStripes(props) ? <StripesCopyright /> : <Copyright />}</Box>
             </Container>
         </>
     );

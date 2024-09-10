@@ -1,11 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
-// Variant A - Market Pulse
-const neonTeal = '#0472e3'; // Finance Teal
-// https://fonts.google.com/share?selection.family=IBM+Plex+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700|IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700
-const ibmPlexSansCondensed = '"IBM Plex Sans Condensed", Helvetica, Arial, sans-serif';
-const ibmPlexSans = '"IBM Plex Sans Condensed", Helvetica, Arial, sans-serif';
 const fontSerif = '"ff-meta-serif-web-pro", "Cambria", "Charter", serif';
 const fontSansSerif =
     '"ff-zwo-web-pro", "Franklin Gothic", -apple-system, BlinkMacSystemFont, ui-sans-serif, "DIN Alternate", sans-serif';
@@ -43,14 +38,14 @@ const theme = createTheme({
     },
     typography: {
         h1: {
-            fontFamily: titleFontFamily,
+            fontFamily: textFontFamily,
             fontWeight: 700,
             fontSize: '2em',
             margin: '0.67em 0',
             lineHeight: 1.2
         },
         h2: {
-            fontFamily: titleFontFamily,
+            fontFamily: textFontFamily,
             fontWeight: 800,
             fontSize: '1.875rem',
             lineHeight: 1.2,
@@ -92,13 +87,13 @@ const theme = createTheme({
             fontStyle: 'normal'
         },
         body1: {
-            fontFamily: textFontFamily,
+            fontFamily: fontSerif,
             fontWeight: 400,
             fontStyle: 'normal',
             lineHeight: 1.4
         },
         body2: {
-            fontFamily: textFontFamily,
+            fontFamily: fontSerif,
             fontWeight: 400,
             fontStyle: 'normal'
         },
@@ -119,6 +114,21 @@ const theme = createTheme({
                 root: {
                     borderBottomWidth: 2,
                     borderColor: '#1D1930'
+                }
+            }
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    borderBottomWidth: 2,
+                    borderColor: '#1D1930'
+                }
+            }
+        },
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    fontFamily: fontSansSerif
                 }
             }
         }

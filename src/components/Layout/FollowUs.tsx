@@ -1,13 +1,24 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import Link from './Link';
-import { Comment, Coronavirus, Newspaper, PhotoCamera, Storm } from '@mui/icons-material';
+import { Comment, Coronavirus, Facebook, Newspaper, PhotoCamera, Storm, Twitter } from '@mui/icons-material';
 
 const FollowUs = () => (
-    <Box>
-        <Typography variant="h2">Follow us</Typography>
+    <Box marginTop="10px">
+        <Divider sx={{ borderColor: '#c1c1c1' }} />
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h2">Follow us</Typography>
+            <Box display="flex" gap="10px">
+                <Link href="https://www.facebook.com/stripesmedia">
+                    <Facebook />
+                </Link>
+                <Link href="https://twitter.com/starsandstripes">
+                    <Twitter />
+                </Link>
+            </Box>
+        </Box>
         <Box
             sx={{
-                border: '1px solid black',
+                border: '1px solid #c1c1c1',
                 padding: '20px',
                 display: 'flex',
                 flexDirection: 'column'

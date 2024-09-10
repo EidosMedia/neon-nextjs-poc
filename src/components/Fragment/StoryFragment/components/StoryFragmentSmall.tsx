@@ -9,11 +9,20 @@ import StoryFragmentMainMedia from './StoryFragmentMainMedia';
 
 type StoryFragmentProps = {
     data: NeonData;
+    theme: string;
 };
 
-const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data }) => (
+const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data, theme }) => (
     <NextLink href={getStoryUrl(data)} passHref legacyBehavior>
-        <Box sx={{ display: 'flex', padding: '20px', gap: '20px', cursor: 'pointer' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: theme === 'stripes' ? 'row-reverse' : 'row',
+                padding: '20px',
+                gap: '20px',
+                cursor: 'pointer'
+            }}
+        >
             <StoryFragmentMainMedia data={data} size="small" />
             <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                 <Headline data={data} />

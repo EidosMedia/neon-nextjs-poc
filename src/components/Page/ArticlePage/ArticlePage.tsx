@@ -18,7 +18,6 @@ export default function ArticlePage({ neonData }) {
     return (
         <Container maxWidth="lg">
             <Layout neonData={neonData}>
-                {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
                 <BreadcrumbBlock neonData={neonData} />
                 <BeyondWordsBlock neonData={neonData} />
                 <HeadlineBlock neonData={neonData} />
