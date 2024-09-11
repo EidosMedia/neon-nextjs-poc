@@ -1,3 +1,4 @@
+import { isStripes } from '@/components/Layout/stripes/Stripes.utils';
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
 import { Box, Typography } from '@mui/material';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
@@ -16,9 +17,15 @@ const Overhead = ({ data }) => {
 
     if (!overheadContent) return null;
 
+    console.log('data', data);
+
     return (
         <Box>
-            <Typography sx={defaultStyles} color="white" component="span">
+            <Typography
+                sx={isStripes(data) ? { color: 'primary.main', padding: '2px 5px', fontWeight: 'bold' } : defaultStyles}
+                color="white"
+                component="span"
+            >
                 <RenderContentElement jsonElement={overheadContent} />
             </Typography>
         </Box>

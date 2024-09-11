@@ -1,16 +1,14 @@
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
-// import HTMLComment from "react-html-comment";
+import { Container, Grid } from '@mui/material';
 import { getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import Layout from '../Layout/Layout';
 import _ from 'lodash';
-import KTownContainer from '../Layout/stripes/KTownContainer';
+import StripesDefaultHomePage from '../Layout/stripes/pages/StripesDefaultHomePage';
+import { isStripes } from '../Layout/stripes/Stripes.utils';
 
 type DefaultHomePageProps = {
     neonData: any;
 };
-
-const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme') === 'stripes';
 
 /**
  *
@@ -21,15 +19,18 @@ const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme
  * @param root0.semanticSearchData
  */
 export const DefaultHomePage: React.FC<DefaultHomePageProps> = ({ neonData }) => {
+    if (isStripes(neonData)) {
+        return <StripesDefaultHomePage neonData={neonData} />;
+    }
+
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (
         <Layout neonData={neonData}>
             <Container maxWidth="lg">
-                {isStripes(neonData) && <KTownContainer />}
                 <Grid container spacing={2}>
                     {sectionChildrenObjects.map(child => (
-                        <Grid item md={isStripes(neonData) ? 12 : 6}>
+                        <Grid item md={6}>
                             <GenericFragment neonData={child} size="small" />
                         </Grid>
                     ))}

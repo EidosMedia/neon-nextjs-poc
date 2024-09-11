@@ -1,11 +1,11 @@
+import { getSectionChildrenObjects } from '@/services/neon-cms/neon-helpers';
 import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 // import HTMLComment from "react-html-comment";
-import { getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
-import GenericFragment from '../Fragment/GenericFragment';
-import Layout from '../Layout/Layout';
 import _ from 'lodash';
-import StripesDefaultSectionPage from '../Layout/stripes/pages/StripesDefaultSectionPage';
-import { isStripes } from '../Layout/stripes/Stripes.utils';
+import Layout from '../../Layout';
+import GenericStripesFragment from './GenericStripesFragment';
+
+const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme') === 'stripes';
 
 type DefaultSectionPageProps = {
     neonData: any;
@@ -22,23 +22,16 @@ type DefaultSectionPageProps = {
  * @param root0.semanticSearchData
  */
 export const DefaultSectionPage: React.FC<DefaultSectionPageProps> = ({ neonData, pageTitle, analyticsReport }) => {
-    if (isStripes(neonData)) {
-        return <StripesDefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
-    }
-
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (
         <Layout neonData={neonData}>
             <Container maxWidth="lg">
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
-                    {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
-                </Box>
-                <Divider />
+                <Typography variant="h1">{pageTitle}</Typography>
                 <Grid container spacing={2}>
                     {sectionChildrenObjects.map(child => (
-                        <Grid item md={6}>
-                            <GenericFragment neonData={child} size="small" />
+                        <Grid item md={12}>
+                            <GenericStripesFragment neonData={child} size="small" />
                         </Grid>
                     ))}
                 </Grid>

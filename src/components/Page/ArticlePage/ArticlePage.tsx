@@ -8,6 +8,8 @@ import HeadlineBlock from '../commons/components/HeadlineBlock';
 import SummaryBlock from '../commons/components/SummaryBlock';
 import MainImageBlock from '../commons/components/MainImageBlock';
 import ContentBlock from '../commons/components/ContentBlock';
+import { isStripes } from '@/components/Layout/stripes/Stripes.utils';
+import StripesArticlePage from '@/components/Layout/stripes/pages/StripesArticlePage';
 
 /**
  *
@@ -15,6 +17,10 @@ import ContentBlock from '../commons/components/ContentBlock';
  * @param root0.neonData
  */
 export default function ArticlePage({ neonData }) {
+    if (isStripes(neonData)) {
+        return <StripesArticlePage neonData={neonData} />;
+    }
+
     return (
         <Container maxWidth="lg">
             <Layout neonData={neonData}>

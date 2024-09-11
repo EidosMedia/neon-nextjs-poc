@@ -4,6 +4,7 @@ import React from 'react';
 import Link from '../Link';
 import StripesLogo from './StripesLogo';
 import { Menu, Search } from '@mui/icons-material';
+import { fontSansSerif } from '@/themes/stripes/stripes-theme';
 
 const getNavItems = neonData =>
     neonData.siteContext.root.items.map(({ name, title }) => ({
@@ -57,7 +58,9 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                                                 padding: '21px 0',
                                                 borderColor: 'black',
                                                 outlineColor: 'black',
-                                                borderRadius: '5px 0 0 5px'
+                                                borderRadius: '5px 0 0 5px',
+                                                fontFamily: fontSansSerif,
+                                                fontSize: '12px'
                                             }
                                         }}
                                     />
@@ -85,11 +88,15 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                             }}
                         >
                             <Link href={`/`}>
-                                <Typography variant="h6">Home</Typography>
+                                <Typography variant="h6" fontFamily={fontSansSerif}>
+                                    Home
+                                </Typography>
                             </Link>
                             {navItems.map(item => (
                                 <Link href={`/${item.name}`} key={item.name}>
-                                    <Typography variant="h6">{item.title}</Typography>
+                                    <Typography variant="h6" fontFamily={fontSansSerif}>
+                                        {item.title}
+                                    </Typography>
                                 </Link>
                             ))}
                         </Box>
