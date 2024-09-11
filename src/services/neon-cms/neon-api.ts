@@ -27,10 +27,13 @@ export async function getNeonSites() {
 
         const response = await axios.request(options);
         const sites = response.data;
+
+        console.log("Sites found:", sites);
+
         if (sites) {
             const sitesWithSitemap = await Promise.all(
                 sites.map(async site => {
-                    const logoUrl = await getNeonLogoUrl(site.root.id, site.root.name);
+                    const logoUrl = await getNeonLogoUrl(site.root.id, site.apiHostnames.liveHostname);
 
                     return {
                         ...site,
@@ -319,15 +322,19 @@ export async function getNeonSeoSitemap(hostName, url) {
 
     return sitemapData;
 }
-async function getNeonLogoUrl(id: any, siteName) {
-    const requestUrl = `${process.env.NEON_BASE_HOST}/api/nodes/${id}?emk.site=${siteName}`;
-    // const logoUrl = await neonRequest(requestUrl, siteName);
+async function getNeonLogoUrl(id: any, liveHostName) {
+    //const requestUrl = `${process.env.NEON_BASE_HOST}/api/nodes/${id}?emk.site=${siteName}`;
+    const requestUrl = `${liveHostName}/api/nodes/${id}`;
+    const logoUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + requestUrl;
+    console.log("Logo url:", logoUrl);
+    //const logoUrl = await neonRequest(requestUrl, siteName);
     let result;
 
     try {
         const options = {
             method: 'GET',
-            url: requestUrl,
+            //url: requestUrl,
+            url: logoUrl,
             mode: 'no-cors',
             httpAgent: agent,
             headers: {
