@@ -4,6 +4,7 @@ import { findElementsInContentJson } from '@/utils/ContentUtil';
 import { FC } from 'react';
 import { SxProps, Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
+import { fontSansSerif } from '@/themes/stripes/stripes-theme';
 
 type ContentItemProps = {
     data: NeonData;
@@ -15,7 +16,7 @@ const Headline: FC<ContentItemProps> = ({ data, variant, sx }) => {
     if (!data) return null;
 
     return (
-        <Typography sx={sx} variant={variant || 'h6'} color="text.primary">
+        <Typography sx={sx} variant={variant || 'h6'}>
             <RenderContentElement
                 jsonElement={findElementsInContentJson(['headline'], data?.object?.helper?.content)[0]}
             />

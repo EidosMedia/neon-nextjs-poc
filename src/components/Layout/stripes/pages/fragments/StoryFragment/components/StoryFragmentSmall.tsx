@@ -6,6 +6,7 @@ import Summary from './Summary';
 import { getStoryUrl } from '../StoryFragment.utils';
 import { NeonData } from '@/types/commonTypes';
 import StoryFragmentMainMedia from './StoryFragmentMainMedia';
+import Overhead from './Overhead';
 
 type StoryFragmentProps = {
     data: NeonData;
@@ -17,17 +18,18 @@ const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data, theme }) => (
         <Box
             sx={{
                 display: 'flex',
-                flexDirection: theme === 'stripes' ? 'row-reverse' : 'row',
                 padding: '20px',
                 gap: '20px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                margin: 1
             }}
         >
-            <StoryFragmentMainMedia data={data} size="wide_small" />
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', flexGrow: 1 }}>
+                <Overhead data={data} />
                 <Headline data={data} />
                 <Summary data={data} />
             </Box>
+            <StoryFragmentMainMedia data={data} size="wide_small" />
         </Box>
     </NextLink>
 );

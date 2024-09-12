@@ -1,7 +1,7 @@
 import { getDwxLinkedObjects } from '@/services/neon-cms/neon-helpers';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import React from 'react';
-import GenericFragment from '../../GenericStripesFragment';
+import GenericStripesFragment from '../../GenericStripesFragment';
 
 const ListSection: React.FC<any> = ({ neonData }) => {
     const linkedObjects = getDwxLinkedObjects(neonData, 'list');
@@ -15,7 +15,7 @@ const ListSection: React.FC<any> = ({ neonData }) => {
             <Grid container spacing={2}>
                 {linkedObjects.map(linkedObject => (
                     <Grid item md={12} key={linkedObject.id}>
-                        <GenericFragment neonData={linkedObject} size="small" />
+                        <GenericStripesFragment neonData={linkedObject} size="small" />
                     </Grid>
                 ))}
             </Grid>

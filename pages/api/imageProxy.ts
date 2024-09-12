@@ -5,8 +5,6 @@ import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
 export default async (req: NextApiRequest, res: NextResponse) => {
-    console.log('calling image proxy for request', req.query.url);
-
     let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
     const baseUrl = new URL(req.headers.referer);
 

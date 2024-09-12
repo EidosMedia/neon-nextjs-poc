@@ -4,8 +4,8 @@ import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import _ from 'lodash';
 import Layout from '../../Layout';
 import KTownContainer from '../KTownContainer';
-import GenericFragment from '@/components/Fragment/GenericFragment';
 import FollowUs from '../../FollowUs';
+import GenericStripesFragment from './GenericStripesFragment';
 
 type DefaultHomePageProps = {
     neonData: any;
@@ -31,7 +31,7 @@ export const DefaultStripesHomePage: React.FC<DefaultHomePageProps> = ({ neonDat
                         <Grid container spacing={2}>
                             {sectionChildrenObjects.map(child => (
                                 <Grid item md={12}>
-                                    <GenericFragment neonData={child} size="small" />
+                                    <GenericStripesFragment neonData={child} size="small" />
                                 </Grid>
                             ))}
                         </Grid>

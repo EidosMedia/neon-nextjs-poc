@@ -1,7 +1,7 @@
-import BreakingNewsFragment from '@/components/Fragment/BreakingNewsFragment';
-import LiveblogFragment from '@/components/Fragment/LiveblogFragment';
-import StoryFragment from './fragments/StoryFragment';
 import React from 'react';
+import LiveblogFragment from './LiveblogFragment';
+import StoryFragment from './StoryFragment';
+import BreakingNewsFragment from './BreakingNewsFragment';
 import { GenericPageProps } from 'src/types/commonTypes';
 
 type GenericFragmentProps = GenericPageProps & {
@@ -16,7 +16,7 @@ type GenericFragmentProps = GenericPageProps & {
  * @param root0.analyticsReport
  * @param root0.gridContext
  */
-const GenericStripesFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext, size }) => {
+const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext, size }) => {
     if (neonData) {
         switch (neonData.object.data.sys.baseType) {
             case 'article':
@@ -33,4 +33,4 @@ const GenericStripesFragment: React.FC<GenericFragmentProps> = ({ neonData, grid
     return null;
 };
 
-export default GenericStripesFragment;
+export default GenericFragment;

@@ -8,8 +8,6 @@ import StripesCopyright from './StripesCopyright';
  * @param props
  */
 const StripesLayout: React.FC<any> = props => {
-    console.log('stripesLayout rendered');
-
     return (
         <>
             <Container maxWidth="lg">

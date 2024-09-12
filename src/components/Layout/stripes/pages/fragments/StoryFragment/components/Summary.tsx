@@ -1,4 +1,5 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
+import { fontSansSerif } from '@/themes/stripes/stripes-theme';
 import { Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 import React from 'react';
@@ -16,7 +17,8 @@ const Summary: React.FC<ContentProps> = ({ data, variant }) => {
         <Typography
             sx={{ textDecorationColor: 'transparent !important' }}
             variant={variant || 'body1'}
-            color="text.primary"
+            fontFamily={fontSansSerif}
+            color="#999"
         >
             <RenderContentElement jsonElement={findElementsInContentJson(['summary'], data.object.helper.content)[0]} />
         </Typography>

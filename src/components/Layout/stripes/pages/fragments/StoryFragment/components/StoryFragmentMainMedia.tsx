@@ -8,7 +8,7 @@ const NO_THUMB_URL = '/static/img/nothumb.jpeg';
 const dimensions = {
     small: { width: 200, height: 200, crop: 'Square_small' },
     medium: { width: 350, height: 350, crop: 'Square_large' },
-    wide_small: { width: 350, height: 200, crop: 'Wide_small' },
+    wide_small: { width: 170, height: 100, crop: 'Wide_small' },
     large: { width: 550, height: 287, crop: 'Wide_small' }
 };
 
@@ -18,8 +18,6 @@ type StoryFragmentMainMediaProps = {
 };
 
 const StoryFragmentMainMedia: React.FC<StoryFragmentMainMediaProps> = ({ data, size }) => {
-    console.log('size in story fragment main media', size);
-
     const mainImageUrl = getMainImageUrl(data, dimensions[size || 'medium'].crop);
 
     return (

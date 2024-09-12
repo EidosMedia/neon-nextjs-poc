@@ -11,8 +11,6 @@ type FragmentProps = any;
  * @param root0.gridContext
  */
 const StoryFragment: React.FC<FragmentProps> = ({ neonData, gridContext, size }) => {
-    console.log('calling stripes story fragment');
-
     if (size === 'medium')
         return <StoryFragmentMedium data={neonData} theme={_.get(neonData, 'siteContext.root.attributes.theme')} />;
     if (size === 'small')
