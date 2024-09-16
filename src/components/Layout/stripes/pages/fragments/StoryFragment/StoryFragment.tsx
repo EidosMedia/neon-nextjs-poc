@@ -13,13 +13,12 @@ type FragmentProps = any;
 const StoryFragment: React.FC<FragmentProps> = ({ neonData, gridContext, size }) => {
     if (size === 'medium')
         return <StoryFragmentMedium data={neonData} theme={_.get(neonData, 'siteContext.root.attributes.theme')} />;
-    if (size === 'small')
-        return <StoryFragmentSmall data={neonData} theme={_.get(neonData, 'siteContext.root.attributes.theme')} />;
+    if (size === 'small') return <StoryFragmentSmall data={neonData} />;
 
     return (
         <React.Fragment>
             <StoryFragmentMedium data={neonData} theme={_.get(neonData, 'siteContext.root.attributes.theme')} />
-            <StoryFragmentSmall data={neonData} theme={_.get(neonData, 'siteContext.root.attributes.theme')} />
+            <StoryFragmentSmall data={neonData} />
         </React.Fragment>
     );
 };
