@@ -1,8 +1,8 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
 import { Box, Container, Typography } from '@mui/material';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
-import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 import { fontSansSerif } from '@/themes/stripes/stripes-theme';
+import { BlockProps } from '@/components/Page/ArticlePage/ArticlePage.types';
 
 /**
  *

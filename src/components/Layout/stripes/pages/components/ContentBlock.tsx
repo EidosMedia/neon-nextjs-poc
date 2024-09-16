@@ -1,7 +1,7 @@
 import RenderContentElement from '@/components/RenderContent/RenderContentElement';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
-import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 import logger from 'logger';
+import { BlockProps } from '@/components/Page/ArticlePage/ArticlePage.types';
 
 /**
  *

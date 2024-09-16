@@ -19,6 +19,7 @@ const Summary: React.FC<ContentProps> = ({ data, variant }) => {
             variant={variant || 'body1'}
             fontFamily={fontSansSerif}
             color="#999"
+            fontSize="0.8em"
         >
             <RenderContentElement jsonElement={findElementsInContentJson(['summary'], data.object.helper.content)[0]} />
         </Typography>

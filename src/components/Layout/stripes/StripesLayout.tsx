@@ -12,9 +12,7 @@ const StripesLayout: React.FC<any> = props => {
         <>
             <Container maxWidth="lg">
                 <StripesHeader {...props} />
-                <Grid container spacing={2}>
-                    {props.children}
-                </Grid>
+                <Grid container>{props.children}</Grid>
                 <Box sx={{ my: 4 }}>
                     <StripesCopyright />
                 </Box>

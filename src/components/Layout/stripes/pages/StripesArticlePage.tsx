@@ -9,10 +9,10 @@ import FollowUs from '../../FollowUs';
 // import HeadlineBlock from '@/components/Page/commons/components/HeadlineBlock';
 // import SummaryBlock from '@/components/Page/commons/components/SummaryBlock';
 // import ContentBlock from '@/components/Page/commons/components/ContentBlock';
-import MainImageBlock from '@/components/Page/commons/components/MainImageBlock';
 import HeadlineBlock from './components/HeadlineBlock';
 import SummaryBlock from './components/SummaryBlock';
 import ContentBlock from './components/ContentBlock';
+import MainImageBlock from './components/MainImageBlock';
 
 /**
  *

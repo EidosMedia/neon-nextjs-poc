@@ -5,6 +5,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { NeonData } from '@/types/commonTypes';
+import { Box } from '@mui/material';
 
 type SiteLogoProps = {
     neonData: NeonData;
@@ -13,7 +14,19 @@ type SiteLogoProps = {
 const SiteLogo: React.FC<SiteLogoProps> = ({ neonData }) => {
     const resolvedLogoUrl = '/static/img/stripes/stripes-logo-black.svg';
 
-    return <Image src={resolvedLogoUrl} width={500} height={100} alt="" priority={true} />;
+    return (
+        <Box position="relative" width="100%" height="3em">
+            <Image
+                src={resolvedLogoUrl}
+                fill
+                style={{
+                    objectFit: 'contain'
+                }}
+                alt=""
+                priority={true}
+            />
+        </Box>
+    );
 };
 
 export default SiteLogo;

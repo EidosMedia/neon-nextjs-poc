@@ -5,8 +5,6 @@ import GenericFragment from '../GenericFragment';
 import { getDwxLinkedObjects } from '@/services/neon-cms/neon-helpers';
 import StoryFragmentMainTop from '../StoryFragment/components/StoryFragmentMainTop';
 
-const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme') === 'stripes';
-
 const TopSection: React.FC<BlockProps> = ({ neonData }) => {
     const linkedObjects = getDwxLinkedObjects(neonData, 'top');
 
@@ -18,7 +16,7 @@ const TopSection: React.FC<BlockProps> = ({ neonData }) => {
 
     for (let i = 1; i < Math.min(linkedObjects.length, 5); i++) {
         gridContent.push(
-            <Grid item md={isStripes(neonData) ? 12 : 6}>
+            <Grid item md={6}>
                 <GenericFragment neonData={linkedObjects[i]} key={linkedObjects[i].id} size="small" />
             </Grid>
         );

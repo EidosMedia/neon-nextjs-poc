@@ -1,7 +1,7 @@
-import { BlockProps } from '../../ArticlePage/ArticlePage.types';
 import Image from 'next/image';
 import { getMainImageUrl } from '@/services/neon-cms/neon-helpers';
 import { Box, Container } from '@mui/material';
+import { BlockProps } from '@/components/Page/ArticlePage/ArticlePage.types';
 
 /**
  *

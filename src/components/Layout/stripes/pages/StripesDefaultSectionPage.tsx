@@ -1,9 +1,10 @@
 import { getSectionChildrenObjects } from '@/services/neon-cms/neon-helpers';
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
+import { Box, Container, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 // import HTMLComment from "react-html-comment";
 import _ from 'lodash';
 import Layout from '../../Layout';
 import GenericStripesFragment from './GenericStripesFragment';
+import FollowUs from '../../FollowUs';
 
 const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme') === 'stripes';
 
@@ -24,16 +25,22 @@ type DefaultSectionPageProps = {
 export const DefaultSectionPage: React.FC<DefaultSectionPageProps> = ({ neonData, pageTitle, analyticsReport }) => {
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
+    const theme = useTheme();
+    const onlySmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
     return (
         <Layout neonData={neonData}>
             <Container maxWidth="lg">
                 <Typography variant="h1">{pageTitle}</Typography>
                 <Grid container spacing={2}>
-                    {sectionChildrenObjects.map(child => (
-                        <Grid item md={12}>
-                            <GenericStripesFragment neonData={child} size="small" />
-                        </Grid>
-                    ))}
+                    <Grid item md={8} sm={12}>
+                        {sectionChildrenObjects.map(child => (
+                            <GenericStripesFragment key={child.id} neonData={child} size="small" />
+                        ))}
+                    </Grid>
+                    <Grid item md={4} display={onlySmallScreen ? 'none' : 'block'}>
+                        <FollowUs />
+                    </Grid>
                 </Grid>
             </Container>
         </Layout>

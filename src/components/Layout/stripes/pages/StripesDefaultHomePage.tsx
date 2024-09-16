@@ -1,5 +1,5 @@
 import { getSectionChildrenObjects } from '@/services/neon-cms/neon-helpers';
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
+import { Box, Container, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 // import HTMLComment from "react-html-comment";
 import _ from 'lodash';
 import Layout from '../../Layout';
@@ -20,13 +20,16 @@ type DefaultHomePageProps = {
  * @param root0.semanticSearchData
  */
 export const DefaultStripesHomePage: React.FC<DefaultHomePageProps> = ({ neonData }) => {
+    const theme = useTheme();
+    const onlySmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (
         <Layout neonData={neonData}>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
-                    <Grid item md={8}>
+                    <Grid item md={8} sm={12}>
                         <KTownContainer />
                         <Grid container spacing={2}>
                             {sectionChildrenObjects.map(child => (
@@ -36,7 +39,7 @@ export const DefaultStripesHomePage: React.FC<DefaultHomePageProps> = ({ neonDat
                             ))}
                         </Grid>
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item md={4} display={onlySmallScreen ? 'none' : 'block'}>
                         <FollowUs />
                     </Grid>
                 </Grid>

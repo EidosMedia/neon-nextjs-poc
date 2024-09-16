@@ -1,4 +1,15 @@
-import { AppBar, Box, Button, Container, IconButton, TextField, Toolbar, Typography } from '@mui/material';
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    IconButton,
+    TextField,
+    Toolbar,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from '@mui/material';
 import { BlockProps } from '../../Page/ArticlePage/ArticlePage.types';
 import React from 'react';
 import Link from '../Link';
@@ -13,13 +24,24 @@ const getNavItems = neonData =>
     }));
 
 const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
+    const theme = useTheme();
+    const onlySmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
     if (!neonData) return null;
 
     const navItems = getNavItems(neonData);
 
     return (
         <>
-            <AppBar sx={{ display: 'flex', alignItems: 'center', background: 'white', boxShadow: 'none' }}>
+            <AppBar
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: 'white',
+                    boxShadow: 'none',
+                    position: 'relative'
+                }}
+            >
                 <Container maxWidth="lg">
                     <Toolbar
                         sx={{
@@ -37,20 +59,32 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                                 width: '100%'
                             }}
                         >
-                            <Box display="flex" gap="10px" width="25%">
-                                <IconButton disableRipple sx={{ border: '1px solid black', borderRadius: '5px' }}>
+                            <Box display="flex" gap="10px" flexGrow={1}>
+                                <IconButton
+                                    disableRipple
+                                    sx={{
+                                        border: { md: '1px solid black', sm: 'none', xs: 'none' },
+                                        borderRadius: '5px'
+                                    }}
+                                >
                                     <Menu />
                                 </IconButton>
-                                <Button variant="contained">Subscribe</Button>
+                                <Button variant="contained" sx={{ display: onlySmallScreen ? 'none' : 'block' }}>
+                                    Subscribe
+                                </Button>
                             </Box>
-                            <Link href={`/`} disableActive width="50%">
+                            <Link href={`/`} padding="15px 0" disableActive width="100%" flexGrow={2}>
                                 <StripesLogo neonData={neonData} />
                             </Link>
-                            <Box display="flex" width="25%" gap="10px">
-                                <Box display="flex">
+                            <Box display="flex" gap="10px" flexGrow={1}>
+                                <Box display={onlySmallScreen ? 'none' : 'flex'}>
                                     <TextField
                                         variant="outlined"
-                                        sx={{ borderColor: 'black', outlineColor: 'black' }}
+                                        sx={{
+                                            borderColor: 'black',
+                                            outlineColor: 'black',
+                                            display: 'flex'
+                                        }}
                                         placeholder="Search..."
                                         InputProps={{
                                             sx: {
@@ -60,7 +94,8 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                                                 outlineColor: 'black',
                                                 borderRadius: '5px 0 0 5px',
                                                 fontFamily: fontSansSerif,
-                                                fontSize: '12px'
+                                                fontSize: '0.8em',
+                                                minWidth: '10em'
                                             }
                                         }}
                                     />
@@ -78,7 +113,7 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                         </Box>
                         <Box
                             sx={{
-                                display: { xs: 'none', sm: 'none', md: 'flex' },
+                                display: onlySmallScreen ? 'none' : 'flex',
                                 gap: '40px',
                                 borderTop: '1px solid #c1c1c1',
                                 borderBottom: '1px solid #c1c1c1',
@@ -103,7 +138,6 @@ const StripesHeader: React.FC<BlockProps> = ({ neonData }) => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Toolbar sx={{ minHeight: { md: '210px' } }} />
         </>
     );
 };

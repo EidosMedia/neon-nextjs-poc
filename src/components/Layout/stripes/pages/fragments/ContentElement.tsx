@@ -1,5 +1,5 @@
-import RenderContentElement from '../RenderContent/RenderContentElement';
-import { findElementsInContentJson } from '../../utils/ContentUtil';
+import RenderContentElement from '@/components/RenderContent/RenderContentElement';
+import { findElementsInContentJson } from '@/utils/ContentUtil';
 import { FC } from 'react';
 
 type ContentElementProps = {
