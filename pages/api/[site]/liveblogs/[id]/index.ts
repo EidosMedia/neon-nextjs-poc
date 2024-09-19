@@ -15,6 +15,7 @@ export default async (req, res) => {
     }
 
     let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
+
     const baseUrl = new URL(req.headers.referer);
 
     if (baseUrl.hostname === 'localhost') {
@@ -28,8 +29,10 @@ export default async (req, res) => {
     }
     urlToAppend = urlToAppend.substring(1);
 
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
     const result = await axios
-        .get(`${baseUrl.protocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`)
+        .get(`${envProtocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`)
         .then(res => res.data);
 
     res.status(200).json(result);

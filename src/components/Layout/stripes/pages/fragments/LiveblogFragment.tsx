@@ -1,21 +1,11 @@
-// import useSWR from 'swr';
-// import axios from 'axios';
-// import { Card, CardActionArea, CardContent, styled, Typography } from '@mui/material';
-// import { getNeonLiveblogPostHelper, getCurrentLiveSite, getImageFormatUrl } from '../../services/neon-cms/neon-helpers';
-// import RenderContentElement from '../RenderContent/RenderContentElement';
-// import { findElementsInContentJson, getImageUrl } from '../../utils/ContentUtil';
 import { Box } from '@mui/system';
 import NextLink from 'next/link';
-// import { Link as MUILink } from '@mui/material';
 import React from 'react';
-// import Image from 'next/image';
-// import ResourceResolver from '../../utils/ResourceResolver';
 import StoryFragmentMainMedia from './StoryFragment/components/StoryFragmentMainMedia';
 import Summary from './StoryFragment/components/Summary';
 import Headline from './StoryFragment/components/Headline';
 import { getStoryUrl } from './StoryFragment/StoryFragment.utils';
-
-// const fetcher = url => axios.get(url).then(res => res.data);
+import LiveblogBannerFragment from './LiveblogBannerFragment';
 
 /**
  *
@@ -25,6 +15,9 @@ import { getStoryUrl } from './StoryFragment/StoryFragment.utils';
  */
 export default function LiveblogFragment({ neonData, gridContext, size }) {
     if (neonData) {
+        // return <LiveblogBannerFragment neonData={neonData} />;
+
+        // To Be Restored
         return (
             <NextLink
                 href={getStoryUrl(neonData)}
@@ -33,11 +26,11 @@ export default function LiveblogFragment({ neonData, gridContext, size }) {
                 prefetch={neonData.previewData ? false : true}
             >
                 <Box sx={{ display: 'flex', padding: '20px', gap: '20px', cursor: 'pointer' }}>
-                    <StoryFragmentMainMedia data={neonData} size={size} />
-                    <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', flexGrow: 1 }}>
                         <Headline data={neonData} />
                         <Summary data={neonData} />
                     </Box>
+                    <StoryFragmentMainMedia data={neonData} size={size} />
                 </Box>
             </NextLink>
         );

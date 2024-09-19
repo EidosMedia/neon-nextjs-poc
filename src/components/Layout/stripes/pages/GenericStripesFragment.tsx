@@ -1,5 +1,5 @@
 import BreakingNewsFragment from '@/components/Fragment/BreakingNewsFragment';
-import LiveblogFragment from '@/components/Fragment/LiveblogFragment';
+import LiveblogFragment from './fragments/LiveblogFragment';
 import StoryFragment from './fragments/StoryFragment';
 import React from 'react';
 import { GenericPageProps } from 'src/types/commonTypes';

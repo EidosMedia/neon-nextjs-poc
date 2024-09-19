@@ -1,11 +1,13 @@
-import { Box, Card, CardActionArea, CardContent } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import Headline from './Headline';
 import NextLink from 'next/link';
 import Summary from './Summary';
 import { getStoryUrl } from '../StoryFragment.utils';
-import { NeonData } from 'src/types/commonTypes';
 import StoryFragmentMainMedia from './StoryFragmentMainMedia';
+import { NeonData } from '@/types/commonTypes';
+import { Circle } from '@mui/icons-material';
+import { fontSansSerif } from '@/themes/stripes/stripes-theme';
 
 type StoryFragmentLargeProps = {
     data: NeonData;
@@ -13,14 +15,22 @@ type StoryFragmentLargeProps = {
 
 const StoryFragmentBanner: React.FC<StoryFragmentLargeProps> = ({ data }) => (
     <Box>
-        <StoryFragmentMainMedia data={data} size="large" />
         <NextLink href={getStoryUrl(data)} passHref>
-            <CardActionArea>
-                <CardContent sx={{ py: 0, px: 0 }}>
-                    <Headline data={data} />
-                    <Summary data={data} />
-                </CardContent>
-            </CardActionArea>
+            <Box display="flex" gap="10px">
+                <Box
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap="10px"
+                    sx={{ backgroundColor: 'error.main', color: 'white' }}
+                    padding="10px"
+                >
+                    <Circle fontSize="small" />
+                    <Typography fontFamily={fontSansSerif}>LIVE</Typography>
+                </Box>
+                <Headline data={data} />
+            </Box>
         </NextLink>
     </Box>
 );

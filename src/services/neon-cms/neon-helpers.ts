@@ -376,7 +376,7 @@ export function getObjectMainSection(obj) {
  * @param neonData
  */
 export function getCurrentLiveSite(neonData) {
-    const currentSite = neonData.siteContext?.site;
+    const currentSite = neonData.siteContext;
     if (!currentSite) return null;
 
     return currentSite;

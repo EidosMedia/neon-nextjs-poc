@@ -10,7 +10,6 @@ import { Box, Container } from '@mui/material';
  * @param root0.styleVariant
  */
 const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
-    // logger.info('neonData main picture', neonData.object.helper.mainPicture);
     let imageWidth = 1024;
     let imageHeight = 576;
 
@@ -31,7 +30,7 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     const render = (
         <Container sx={{ my: 2 }} maxWidth={maxWidth}>
             <Box display="flex" justifyContent={justify} alignItems={justify} position="relative" height={400}>
-                {mainImageUrl ? <Image src={mainImageUrl} fill alt="" priority={true} /> : <p>No image available</p>}
+                {mainImageUrl ? <Image fill src={mainImageUrl} alt="" priority={true} /> : <p>No image available</p>}
             </Box>
         </Container>
     );
