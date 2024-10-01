@@ -3,11 +3,13 @@ import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import { getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import Layout from '../Layout/Layout';
+import { NeonData } from '@/types/commonTypes';
 
 type DefaultSectionPageProps = {
-    neonData: any;
+    neonData: NeonData;
     pageTitle: string;
     analyticsReport?: any;
+    isPreview?: boolean;
 };
 
 /**
@@ -18,11 +20,16 @@ type DefaultSectionPageProps = {
  * @param root0.analyticsReport
  * @param root0.semanticSearchData
  */
-export const DefaultSectionPage: React.FC<DefaultSectionPageProps> = ({ neonData, pageTitle, analyticsReport }) => {
+export const DefaultSectionPage: React.FC<DefaultSectionPageProps> = ({
+    neonData,
+    pageTitle,
+    analyticsReport,
+    isPreview
+}) => {
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (
-        <Layout neonData={neonData}>
+        <Layout neonData={neonData} isPreview={isPreview}>
             <Container maxWidth="lg">
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
                     {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}

@@ -8,16 +8,17 @@ import HeadlineBlock from '../commons/components/HeadlineBlock';
 import SummaryBlock from '../commons/components/SummaryBlock';
 import MainImageBlock from '../commons/components/MainImageBlock';
 import ContentBlock from '../commons/components/ContentBlock';
+import { GenericPageProps } from '@/types/commonTypes';
 
 /**
  *
  * @param root0
  * @param root0.neonData
  */
-export default function ArticlePage({ neonData }) {
+const ArticlePage: React.FC<GenericPageProps> = ({ neonData, isPreview }) => {
     return (
         <Container maxWidth="lg">
-            <Layout neonData={neonData}>
+            <Layout neonData={neonData} isPreview={isPreview}>
                 {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
                 <BreadcrumbBlock neonData={neonData} />
                 <BeyondWordsBlock neonData={neonData} />
@@ -28,4 +29,6 @@ export default function ArticlePage({ neonData }) {
             </Layout>
         </Container>
     );
-}
+};
+
+export default ArticlePage;

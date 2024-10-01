@@ -4,6 +4,7 @@ import React from 'react';
 import Link from './Link';
 import SiteLogo from './SiteLogo';
 import { Info, RemoveRedEye, VisibilityOff } from '@mui/icons-material';
+import { NeonData } from '@/types/commonTypes';
 
 const getNavItems = neonData =>
     neonData.siteContext.root.items.map(({ name, title }) => ({
@@ -24,7 +25,12 @@ const ElevationScroll = (props: any) => {
     });
 };
 
-const MenuHeader: React.FC<BlockProps> = ({ neonData, isPreview }) => {
+type MenuHeaderProps = {
+    neonData: NeonData;
+    isPreview?: boolean;
+};
+
+const MenuHeader: React.FC<MenuHeaderProps> = ({ neonData, isPreview }) => {
     if (!neonData) return null;
 
     const navItems = getNavItems(neonData);

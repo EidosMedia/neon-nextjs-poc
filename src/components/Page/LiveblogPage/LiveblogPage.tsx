@@ -7,15 +7,21 @@ import PostsRender from './components/PostsRender';
 import HeadlineBlock from '../commons/components/HeadlineBlock';
 import SummaryBlock from '../commons/components/SummaryBlock';
 import ContentBlock from '../commons/components/ContentBlock';
+import { NeonData } from '@/types/commonTypes';
+
+type LiveblogPageProps = {
+    neonData: NeonData;
+    isPreview?: boolean;
+};
 
 /**
  *
  */
-const LiveblogPage = ({ neonData }) => {
+const LiveblogPage: React.FC<LiveblogPageProps> = ({ neonData, isPreview }) => {
     if (!neonData) return null;
 
     return (
-        <Layout neonData={neonData}>
+        <Layout neonData={neonData} isPreview={isPreview}>
             <Container maxWidth="lg">
                 <HeadlineBlock neonData={neonData} />
                 <SummaryBlock neonData={neonData} />

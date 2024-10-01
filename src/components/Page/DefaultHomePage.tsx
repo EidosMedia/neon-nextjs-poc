@@ -3,9 +3,11 @@ import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import { getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import Layout from '../Layout/Layout';
+import { NeonData } from '@/types/commonTypes';
 
 type DefaultHomePageProps = {
-    neonData: any;
+    neonData: NeonData;
+    isPreview?: boolean;
 };
 
 /**
@@ -16,11 +18,11 @@ type DefaultHomePageProps = {
  * @param root0.analyticsReport
  * @param root0.semanticSearchData
  */
-export const DefaultHomePage: React.FC<DefaultHomePageProps> = ({ neonData }) => {
+export const DefaultHomePage: React.FC<DefaultHomePageProps> = ({ neonData, isPreview }) => {
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (
-        <Layout neonData={neonData}>
+        <Layout neonData={neonData} isPreview={isPreview}>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
                     {sectionChildrenObjects.map(child => (

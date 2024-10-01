@@ -5,6 +5,8 @@ import GenericFragment from '../Fragment/GenericFragment';
 import TopSection from '../Fragment/TopSection';
 import ListSection from '../Fragment/ListSection';
 import Layout from '../Layout/Layout';
+import React from 'react';
+import { GenericPageProps } from '@/types/commonTypes';
 
 /**
  *
@@ -12,7 +14,7 @@ import Layout from '../Layout/Layout';
  * @param root0.neonData
  * @param root0.pageTitle
  */
-export default function SectionPage({ neonData, pageTitle, isPreview }) {
+const SectionPage: React.FC<GenericPageProps> = ({ neonData, pageTitle, isPreview }) => {
     return (
         <Layout neonData={neonData} isPreview={isPreview}>
             <Container>
@@ -27,4 +29,6 @@ export default function SectionPage({ neonData, pageTitle, isPreview }) {
             </Container>
         </Layout>
     );
-}
+};
+
+export default SectionPage;

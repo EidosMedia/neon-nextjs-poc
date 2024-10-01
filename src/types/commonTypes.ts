@@ -14,6 +14,7 @@ export type NeonDataObject = {
         children: string[];
         url: string;
         dataType: string;
+        links: any;
     };
     helper: {
         content?: any[];
