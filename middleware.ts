@@ -22,19 +22,16 @@ export async function middleware(req) {
         rewriteUrl.pathname = `/api/${hostname}/sitemap${pathname}`;
         return NextResponse.rewrite(rewriteUrl);
     }
+    const urlObject = req.nextUrl;
+    const urlParams = new URLSearchParams(urlObject.search);
 
-    if (pathname.startsWith('/preview')) {
-        const urlObject = req.nextUrl;
-
-        const urlParams = new URLSearchParams(urlObject.search);
+    if (pathname.startsWith('/preview') || urlParams.get('PreviewToken')) {
         const previewToken = urlParams.get('PreviewToken');
         const id = urlParams.get('id');
         const siteName = urlParams.get('siteName');
-        const viewStatus = 'PREVIEW';
+        const viewStatus = pathname.startsWith('/preview') ? 'PREVIEW' : 'LIVE';
 
         const hostName = hostname != null ? hostname : process.env.DEV_COOKIE_DOMAIN || urlObject.hostname;
-        const protocol = urlObject.protocol;
-        const port = urlObject.port;
 
         const apiUrl = `${process.env.NEON_BASE_HOST}/api`;
 
@@ -49,22 +46,12 @@ export async function middleware(req) {
             return NextResponse.json({ error: 'Internal Server Error' }, { status: response.status });
         }
 
-        const redirectResponse = NextResponse.redirect(new URL(`/_sites/preview/${hostname}?id=${id}`, urlObject));
+        const redirectResponse = NextResponse.redirect(
+            new URL(`/_sites/${pathname.startsWith('/preview') ? 'preview/' : ''}${hostname}?id=${id}`, urlObject)
+        );
         let cookie = response.headers.getSetCookie()[0];
-        //cookie += `;Domain=${hostName}`;
-
-        //if (process.env.DEV_MODE === 'false') {
-        //    cookie += ';Secure';
-        //}
 
         const cookieObject = parseCookie(cookie);
-        //redirectResponse.headers.set('Set-Cookie', cookie);
-        //redirectResponse.headers.set('test', 'prova');
-        //const value = cookieObject.empreviewauth;
-        //delete cookieObject.empreviewauth;
-        //redirectResponse.cookies.set('empreviewauth', value, cookieObject);
-
-        console.log('cookieObject', cookieObject);
 
         const cookieValue = cookieObject.empreviewtoken;
         const cookieOptions: ResponseCookie = {
@@ -78,27 +65,11 @@ export async function middleware(req) {
             domain: hostName
         };
 
-        //redirectResponse.headers.append('Set-Cookie', cookie);
-
         redirectResponse.cookies.set('empreviewauth', '', cookieOptions);
-
-        //redirectResponse.headers.append('Access-Control-Allow-Origin', '*');
-        //redirectResponse.headers.append('Access-Control-Allow-Credentials', 'true');
-
-        //redirectResponse.cookies.set('empreviewauth', cookieValue);
 
         return redirectResponse;
     }
 
-    /*
-    if (pathname.startsWith('/_preview')) {
-
-        const rewriteUrl = req.nextUrl.clone();
-        rewriteUrl.pathname = `/_sites/preview/${hostname}/${pathname.replace('/preview', '').substring(1)}`;
-
-        return NextResponse.rewrite(rewriteUrl);
-    }
-*/
     if (
         !pathname.startsWith('/_next') &&
         !pathname.startsWith('/static') &&

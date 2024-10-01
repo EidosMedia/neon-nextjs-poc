@@ -28,8 +28,6 @@ export async function getNeonSites() {
         const response = await axios.request(options);
         const sites = response.data;
 
-        console.log("Sites found:", sites);
-
         if (sites) {
             const sitesWithSitemap = await Promise.all(
                 sites.map(async site => {
@@ -58,7 +56,8 @@ export async function getNeonSites() {
  * @param url
  * @param variant
  */
-export async function getNeonPageByUrl(url) {
+export async function getNeonPageByUrl(url, options) {
+    console.log('coooooookies', options.cookies);
     let siteStructure = null;
     try {
         siteStructure = await getNeonSites();
@@ -89,7 +88,7 @@ export async function getNeonPageByUrl(url) {
 
         logger.debug('requestUrl - 87' + requestUrl);
 
-        const pageData = await neonRequest(requestUrl, siteName);
+        const pageData = await neonRequest(requestUrl, options, siteName);
 
         neonData = await buildNeonDataFromPage(pageData, siteStructure, siteName, url);
     } else {
@@ -115,7 +114,7 @@ export async function getNeonPageById(id, siteName) {
     let pageData = null;
 
     const requestUrl = `/api/pages/${id}?emk.site=${siteName}`;
-    pageData = await neonRequest(requestUrl, siteName);
+    pageData = await neonRequest(requestUrl, {}, siteName);
 
     const neonData = await buildNeonDataFromPage(pageData, siteStructure, siteName, null);
 
@@ -204,7 +203,7 @@ export async function searchNeon(siteName, sorting, filters) {
         });
     }
 
-    const searchData = await neonRequest(requestUrl, siteName);
+    const searchData = await neonRequest(requestUrl, {}, siteName);
 
     return searchData;
 }
@@ -213,7 +212,7 @@ export async function searchNeon(siteName, sorting, filters) {
  *
  * @param url
  */
-export async function neonRequest(url, siteName?) {
+export async function neonRequest(url, extOptions, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
     let newUrl;
     if (url.startsWith('http')) {
@@ -225,7 +224,8 @@ export async function neonRequest(url, siteName?) {
     const options = {
         url: newUrl,
         headers: {
-            'neon-fo-access-key': process.env.NEON_API_KEY
+            'neon-fo-access-key': process.env.NEON_API_KEY,
+            Authorization: 'Bearer ' + extOptions.cookies.empreviewauth
         }
     };
 
@@ -317,17 +317,14 @@ export async function getNeonSeoSitemap(hostName, url) {
 
     if (siteName) {
         const requestUrl = `/${url}?emk.site=${siteName}`;
-        sitemapData = await neonRequest(requestUrl);
+        sitemapData = await neonRequest(requestUrl, {});
     }
 
     return sitemapData;
 }
 async function getNeonLogoUrl(id: any, liveHostName) {
-    //const requestUrl = `${process.env.NEON_BASE_HOST}/api/nodes/${id}?emk.site=${siteName}`;
     const requestUrl = `${liveHostName}/api/nodes/${id}`;
     const logoUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + requestUrl;
-    console.log("Logo url:", logoUrl);
-    //const logoUrl = await neonRequest(requestUrl, siteName);
     let result;
 
     try {
