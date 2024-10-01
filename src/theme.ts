@@ -23,6 +23,10 @@ const theme = createTheme({
         error: {
             main: red.A400
         },
+        warning: {
+            main: '#FFC73A',
+            light: '#FFFDCC'
+        },
         text: {
             primary: '#1D1930',
             secondary: '#F75880'

@@ -39,34 +39,30 @@ export default function Page({ neonData, fallback }) {
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
             if (neonData?.object?.data?.sys?.type === 'sectionpage') {
-                return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+                return <SectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
             } else if (neonData?.object?.data?.sys?.type === 'home') {
-                return <LandingPage neonData={neonData} />;
+                return <LandingPage neonData={neonData} isPreview />;
             } else {
-                return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
+                return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
             }
         case 'sectionwebpage':
-            return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
+            return <SectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
         case 'homewebpage':
-            return <LandingPage neonData={neonData} />;
+            return <LandingPage neonData={neonData} isPreview />;
         case 'webpagefragment':
-            return <Segment neonData={neonData} />;
-            break;
+            return <Segment neonData={neonData} isPreview />;
         case 'section':
-            return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
-            break;
+            return <SectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
         case 'site':
-            return <DefaultHomePage neonData={neonData} />;
-            break;
+            return <DefaultHomePage neonData={neonData} isPreview />;
         case 'liveblog':
             return (
                 <SWRConfig value={{ fallback }}>
-                    <LiveblogPage neonData={neonData} />
+                    <LiveblogPage neonData={neonData} isPreview />
                 </SWRConfig>
             );
-            break;
         default:
-            return <ArticlePage neonData={neonData} />;
+            return <ArticlePage neonData={neonData} isPreview />;
     }
 }
 
@@ -97,12 +93,11 @@ export const getServerSideProps = (async context => {
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
             revalidate = 5;
-            // Quick and ugly way to manage semantic search demo
-            // const semanticSearchData = await getSemanticSearchData(neonData);
-            // if (semanticSearchData) {
-            //     props.semanticSearchData = semanticSearchData;
-            // }
-            break;
+        // Quick and ugly way to manage semantic search demo
+        // const semanticSearchData = await getSemanticSearchData(neonData);
+        // if (semanticSearchData) {
+        //     props.semanticSearchData = semanticSearchData;
+        // }
         case 'liveblog':
             revalidate = 5;
             const latestBlogPosts = await neonRequest(
@@ -112,7 +107,6 @@ export const getServerSideProps = (async context => {
             fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] =
                 latestBlogPosts;
             props.fallback = fallback;
-            break;
         default:
             revalidate = 5;
     }

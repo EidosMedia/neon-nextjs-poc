@@ -115,4 +115,5 @@ export type GenericPageProps = {
     neonData: NeonData;
     pageTitle?: string;
     fallback?: any;
+    isPreview?: boolean;
 };

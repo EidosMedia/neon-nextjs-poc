@@ -12,11 +12,9 @@ import Layout from '../Layout/Layout';
  * @param root0.neonData
  * @param root0.pageTitle
  */
-export default function SectionPage({ neonData, pageTitle }) {
-    console.log('neonData', neonData);
-
+export default function SectionPage({ neonData, pageTitle, isPreview }) {
     return (
-        <Layout neonData={neonData}>
+        <Layout neonData={neonData} isPreview={isPreview}>
             <Container>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
                     {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}

@@ -14,13 +14,13 @@ import Banner from '../Fragment/Banner';
  * @param root0.analyticsReport
  * @param root0.semanticSearchData
  */
-const LandingPage: React.FC<GenericPageProps> = ({ neonData, pageTitle }) => {
+const LandingPage: React.FC<GenericPageProps> = ({ neonData, isPreview }) => {
     if (!neonData) {
         return null;
     }
 
     return (
-        <Layout neonData={neonData}>
+        <Layout neonData={neonData} isPreview={isPreview}>
             <Container maxWidth="lg">
                 {/* <Banner neonData={neonData} />
                 <Divider /> */}
