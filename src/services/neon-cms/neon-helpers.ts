@@ -54,24 +54,21 @@ function getNeonArticleHelper(data) {
 
 export function getNeonLiveblogPostHelper(data) {
     let content = null;
- 
+
     if (data && data.files && data.files.content && data.files.content.data) {
-        if(typeof data.files.content.data === 'object'){
+        if (typeof data.files.content.data === 'object') {
             content = data.files.content.data;
-        }else if(typeof data.files.content.data == "string"){
+        } else if (typeof data.files.content.data == 'string') {
             try {
-                content = JSON.parse(data.files.content.data);    
+                content = JSON.parse(data.files.content.data);
             } catch (error) {
-                console.error("error during parse "+data.files.content.data);
-            }                
-        }else{
-            console.error("error unexpected value for data.files.content.data");
+                console.error('error during parse ' + data.files.content.data);
+            }
+        } else {
+            console.error('error unexpected value for data.files.content.data');
         }
     }
-    
-    return {
-        content
-    };
+    return { content };
 }
 
 /**
