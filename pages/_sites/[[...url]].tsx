@@ -82,7 +82,7 @@ export const getServerSideProps = (async context => {
 
     let neonData = null;
 
-    neonData = await getNeonPageByUrl(fullHostname + req.url);
+    neonData = await getNeonPageByUrl(fullHostname + req.url, { cookies: req.cookies });
     const props: GenericPageProps = {
         neonData
     };

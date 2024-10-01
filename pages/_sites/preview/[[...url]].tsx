@@ -107,7 +107,8 @@ export const getServerSideProps = (async context => {
             revalidate = 5;
             const latestBlogPosts = await neonRequest(
                 fullHostname +
-                    `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`
+                    `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`,
+                {}
             );
             fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] =
                 latestBlogPosts;
