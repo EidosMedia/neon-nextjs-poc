@@ -3,6 +3,7 @@ import React from 'react';
 import Headline from './Headline';
 import NextLink from 'next/link';
 import Summary from './Summary';
+import Overhead from './Overhead';
 import { getStoryUrl } from '../StoryFragment.utils';
 import { NeonData } from '@/types/commonTypes';
 import StoryFragmentMainMedia from './StoryFragmentMainMedia';
@@ -25,6 +26,7 @@ const StoryFragmentSmall: React.FC<StoryFragmentProps> = ({ data, theme }) => (
         >
             <StoryFragmentMainMedia data={data} size="small" />
             <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                <Overhead data={data} size="small" />
                 <Headline data={data} />
                 <Summary data={data} />
             </Box>

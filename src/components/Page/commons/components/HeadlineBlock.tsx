@@ -2,6 +2,7 @@ import RenderContentElement from '@/components/RenderContent/RenderContentElemen
 import { Box, Container, Typography } from '@mui/material';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
 import { BlockProps } from '../../ArticlePage/ArticlePage.types';
+import logger from 'logger';
 
 /**
  *
@@ -15,18 +16,20 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
 
     try {
         overhead = (
-            <RenderContentElement jsonElement={findElementsInContentJson(['p'], neonData.object.helper.content)[0]} />
+            <RenderContentElement jsonElement={findElementsInContentJson(['overhead'], neonData.object.helper.content)[0]} />
         );
         headline = (
             <RenderContentElement
                 jsonElement={findElementsInContentJson(['headline'], neonData.object.helper.content)[0]}
             />
         );
-    } catch (e) {}
+    } catch (e) {
+        logger.error(e);
+    }
 
     const overheadStyle = {
         color: 'white',
-        backgroundColor: 'primary.main',
+        backgroundColor: 'secondary.contrastText',
         width: 'fit-content',
         textTransform: 'uppercase',
         padding: '0.3em 0.5em',
@@ -34,7 +37,7 @@ const HeadlineBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     };
 
     const render = (
-        <Container sx={{ my: 4 }} maxWidth="lg">
+        <Container sx={{ my: 4 }} maxWidth="md">
             <Box display="flex" flexDirection="column">
                 {overhead?.props?.jsonElement?.elements && (
                     <Typography variant="h6" component="h6" sx={overheadStyle}>

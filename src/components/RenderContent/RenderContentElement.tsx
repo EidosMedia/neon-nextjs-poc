@@ -62,6 +62,15 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         />
                     ));
                     break;
+                case 'overhead':
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements.map((subel, i) => (
+                                <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
+                            ))}
+                        </React.Fragment>
+                    );
+                    break;
                 case 'headline':
                     render = (
                         <React.Fragment>
@@ -164,13 +173,13 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         <React.Fragment>
                             {jsonElement.elements
                                 ? jsonElement.elements
-                                      .filter(
-                                          subel => subel.type === 'text' || subel.type === 'element'
-                                          // && subel.name === 'keyword'
-                                      )
-                                      .map((subel, i) => (
-                                          <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
-                                      ))
+                                    .filter(
+                                        subel => subel.type === 'text' || subel.type === 'element'
+                                         // && subel.name === 'keyword'
+                                    )
+                                    .map((subel, i) => (
+                                        <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
+                                    ))
                                 : null}
                         </React.Fragment>
                     );
@@ -206,14 +215,14 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         <React.Fragment>
                             {jsonElement.elements
                                 ? jsonElement.elements.map((subel, i) => (
-                                      <RenderContentElement
-                                          key={i}
-                                          jsonElement={subel}
-                                          excludeElements={excludeElements}
-                                          renderMode={renderMode}
-                                          neonData={neonData}
-                                      />
-                                  ))
+                                    <RenderContentElement
+                                        key={i}
+                                        jsonElement={subel}
+                                        excludeElements={excludeElements}
+                                        renderMode={renderMode}
+                                        neonData={neonData}
+                                    />
+                                ))
                                 : null}
                         </React.Fragment>
                     );
@@ -230,14 +239,14 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         <React.Fragment>
                             {jsonElement.elements
                                 ? jsonElement.elements.map((subel, i) => (
-                                      <RenderContentElement
-                                          key={i}
-                                          jsonElement={subel}
-                                          excludeElements={excludeElements}
-                                          renderMode={renderMode}
-                                          neonData={neonData}
-                                      />
-                                  ))
+                                    <RenderContentElement
+                                        key={i}
+                                        jsonElement={subel}
+                                        excludeElements={excludeElements}
+                                        renderMode={renderMode}
+                                        neonData={neonData}
+                                    />
+                                ))
                                 : null}
                         </React.Fragment>
                     );
@@ -254,19 +263,19 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         <React.Fragment>
                             {jsonElement.elements
                                 ? jsonElement.elements.map((subel, i) => {
-                                      if (subel.type === 'element' && (subel.name === 'ul' || subel.name === 'ol')) {
-                                          return (
-                                              <RenderContentElement
-                                                  key={i}
-                                                  jsonElement={subel}
-                                                  excludeElements={excludeElements}
-                                                  renderMode={renderMode}
-                                                  neonData={neonData}
-                                              />
-                                          );
-                                      }
-                                      return <RenderFormattedText key={i} jsonElement={subel} />;
-                                  })
+                                    if (subel.type === 'element' && (subel.name === 'ul' || subel.name === 'ol')) {
+                                        return (
+                                            <RenderContentElement
+                                                key={i}
+                                                jsonElement={subel}
+                                                excludeElements={excludeElements}
+                                                renderMode={renderMode}
+                                                neonData={neonData}
+                                            />
+                                        );
+                                    }
+                                    return <RenderFormattedText key={i} jsonElement={subel} />;
+                                })
                                 : null}
                         </React.Fragment>
                     );
@@ -336,14 +345,14 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                             <table className={className} cellPadding={tableCellPadding} cellSpacing={tableCellSpacing}>
                                 {jsonElement.elements
                                     ? jsonElement.elements.map((subel, i) => (
-                                          <RenderContentElement
-                                              key={i}
-                                              jsonElement={subel}
-                                              excludeElements={excludeElements}
-                                              renderMode={renderMode}
-                                              neonData={neonData}
-                                          />
-                                      ))
+                                        <RenderContentElement
+                                            key={i}
+                                            jsonElement={subel}
+                                            excludeElements={excludeElements}
+                                            renderMode={renderMode}
+                                            neonData={neonData}
+                                        />
+                                    ))
                                     : null}
                             </table>
                         );
@@ -448,8 +457,8 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         <React.Fragment>
                             {jsonElement.elements
                                 ? jsonElement.elements.map((subel, i) => (
-                                      <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
-                                  ))
+                                    <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
+                                ))
                                 : null}
                         </React.Fragment>
                     );
@@ -489,16 +498,16 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                             <React.Fragment>
                                 {jsonElement.elements
                                     ? jsonElement.elements
-                                          .filter(subel => subel.attributes['emk-type'] !== 'extra-content-headline')
-                                          .map((subel, i) => (
-                                              <RenderContentElement
-                                                  key={i}
-                                                  jsonElement={subel}
-                                                  excludeElements={excludeElements}
-                                                  renderMode={renderMode}
-                                                  neonData={neonData}
-                                              />
-                                          ))
+                                        .filter(subel => subel.attributes['emk-type'] !== 'extra-content-headline')
+                                        .map((subel, i) => (
+                                            <RenderContentElement
+                                                key={i}
+                                                jsonElement={subel}
+                                                excludeElements={excludeElements}
+                                                renderMode={renderMode}
+                                                neonData={neonData}
+                                            />
+                                        ))
                                     : null}
                             </React.Fragment>
                         );

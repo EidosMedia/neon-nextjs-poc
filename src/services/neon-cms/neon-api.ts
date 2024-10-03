@@ -204,8 +204,10 @@ export async function searchNeon(siteName, sorting, filters) {
 export async function neonRequest(url, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
 
+    const envProtocol = new URL (process.env.NEON_BASE_HOST).protocol;
+
     const options = {
-        url: (process.env.DEV_MODE === 'false' ? 'http://' : 'https://') + apiHostname + url
+        url: envProtocol + '//' + apiHostname + url
     };
     logger.debug('calling: ' + options.url);
     const response = await httpClient.get(options.url, options);

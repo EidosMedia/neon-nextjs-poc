@@ -11,11 +11,11 @@ const Banner: React.FC<BlockProps> = ({ neonData }) => {
 
     return (
         <Box>
-            {linkedObjects[0].object.data.sys.baseType === 'liveblog' ? (
+            {linkedObjects.length > 0 && (linkedObjects?.[0]?.object?.data?.sys?.baseType === 'liveblog' ? (
                 <LiveblogBannerFragment neonData={linkedObjects[0]} />
             ) : (
                 <StoryFragmentBanner data={linkedObjects[0]} />
-            )}
+            ))}
             <KTownContainer />
         </Box>
     );

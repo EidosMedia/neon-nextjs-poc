@@ -1,13 +1,10 @@
 import { Container, Divider } from '@mui/material';
 import React from 'react';
 import { GenericPageProps } from 'src/types/commonTypes';
-import Layout from '../Layout/Layout';
-import TopSection from '../Fragment/TopSection';
-import ListSection from '../Fragment/ListSection';
-import Banner from '../Fragment/Banner';
-import StripesDefaultLandingPage from '../Layout/stripes/pages/StripesLandingPage'
-import { isStripes } from '../Layout/stripes/Stripes.utils';
-import logger from 'logger';
+import Layout from '../../Layout';
+import TopSection from './fragments/TopSection';
+import ListSection from './fragments/ListSection';
+import Banner from './fragments/Banner';
 
 /**
  *
@@ -22,13 +19,6 @@ const LandingPage: React.FC<GenericPageProps> = ({ neonData, pageTitle }) => {
         return null;
     }
 
-    const isStripesVariant = isStripes(neonData);
-
-    logger.debug(`Is Stripes Variant? - ${isStripesVariant}`);
-    
-    if (isStripesVariant) {
-        return <StripesDefaultLandingPage neonData={neonData} />;
-    }
 
     return (
         <Layout neonData={neonData}>

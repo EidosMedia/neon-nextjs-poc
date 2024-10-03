@@ -9,16 +9,22 @@ const defaultStyles = {
     fontWeight: 'bold'
 };
 
-const Overhead = ({ data }) => {
+const Overhead = ({ data, size }) => {
     if (!data) return null;
 
     const overheadContent = findElementsInContentJson(['overhead'], data.object.helper.content)[0];
 
     if (!overheadContent) return null;
 
+    const overheadStyles = size === 'small' ? {
+        mb: 2,
+        color: 'text.secondary',
+        fontWeight: 'bold'
+    } : defaultStyles;
+
     return (
         <Box>
-            <Typography sx={defaultStyles} color="white" component="span">
+            <Typography sx={overheadStyles} color="white" component="span">
                 <RenderContentElement jsonElement={overheadContent} />
             </Typography>
         </Box>

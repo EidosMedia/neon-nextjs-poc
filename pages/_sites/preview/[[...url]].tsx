@@ -42,6 +42,8 @@ export default function Page({ neonData, fallback }) {
                 return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
             } else if (neonData?.object?.data?.sys?.type === 'home') {
                 return <LandingPage neonData={neonData} />;
+            } else if (neonData?.object?.data?.sys?.type === 'special') {
+                return <LandingPage neonData={neonData} />;
             } else {
                 return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
             }

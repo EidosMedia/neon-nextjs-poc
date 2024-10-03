@@ -26,7 +26,7 @@ const StoryFragmentMedium: React.FC<StoryFragmentLargeProps> = ({ data, theme })
         >
             <StoryFragmentMainMedia data={data} size="medium" />
             <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                <Overhead data={data} />
+                <Overhead data={data} size="medium" />
                 <Headline data={data} />
                 <Summary data={data} />
             </Box>

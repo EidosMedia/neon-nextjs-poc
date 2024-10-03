@@ -40,11 +40,9 @@ const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, 
                         break;
                     case 'a':
                         render = (
-                            <NextLink href={jsonElement.attributes.href} passHref>
-                                <MUILink underline="hover" color="secondary">
-                                    {subRender}
-                                </MUILink>
-                            </NextLink>
+                            <MUILink href={jsonElement.attributes.href} underline="hover" color="secondary">
+                                {subRender}
+                            </MUILink>
                         );
                         break;
                     case 'p':
