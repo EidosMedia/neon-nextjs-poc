@@ -221,6 +221,8 @@ export async function neonRequest(url, extOptions, siteName?) {
         newUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url;
     }
 
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
     const options = {
         url: newUrl,
         headers: {

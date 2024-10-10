@@ -3,6 +3,9 @@ import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import { getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import Layout from '../Layout/Layout';
+import _ from 'lodash';
+import StripesDefaultSectionPage from '../Layout/stripes/pages/StripesDefaultSectionPage';
+import { isStripes } from '../Layout/stripes/Stripes.utils';
 
 type DefaultSectionPageProps = {
     neonData: any;
@@ -19,6 +22,10 @@ type DefaultSectionPageProps = {
  * @param root0.semanticSearchData
  */
 export const DefaultSectionPage: React.FC<DefaultSectionPageProps> = ({ neonData, pageTitle, analyticsReport }) => {
+    if (isStripes(neonData)) {
+        return <StripesDefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
+    }
+
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (

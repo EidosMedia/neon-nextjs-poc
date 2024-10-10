@@ -1,8 +1,10 @@
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
-// import HTMLComment from "react-html-comment";
+import { Container, Grid } from '@mui/material';
 import { getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
 import GenericFragment from '../Fragment/GenericFragment';
 import Layout from '../Layout/Layout';
+import _ from 'lodash';
+import StripesDefaultHomePage from '../Layout/stripes/pages/StripesDefaultHomePage';
+import { isStripes } from '../Layout/stripes/Stripes.utils';
 
 type DefaultHomePageProps = {
     neonData: any;
@@ -17,6 +19,10 @@ type DefaultHomePageProps = {
  * @param root0.semanticSearchData
  */
 export const DefaultHomePage: React.FC<DefaultHomePageProps> = ({ neonData }) => {
+    if (isStripes(neonData)) {
+        return <StripesDefaultHomePage neonData={neonData} />;
+    }
+
     const sectionChildrenObjects = getSectionChildrenObjects(neonData);
 
     return (

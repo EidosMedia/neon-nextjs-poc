@@ -1,0 +1,117 @@
+@font-face {
+    font-family: "ff-meta-serif-web-pro";
+    src: url("https://use.typekit.net/af/2ccb86/0000000000000000773599b7/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i6&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/2ccb86/0000000000000000773599b7/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i6&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/2ccb86/0000000000000000773599b7/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i6&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: italic;
+    font-weight: 600;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-meta-serif-web-pro";
+    src: url("https://use.typekit.net/af/ccb3f3/000000000000000077359996/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i5&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/ccb3f3/000000000000000077359996/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i5&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/ccb3f3/000000000000000077359996/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i5&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: italic;
+    font-weight: 500;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-meta-serif-web-pro";
+    src: url("https://use.typekit.net/af/a4e2c3/0000000000000000773599b5/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i7&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/a4e2c3/0000000000000000773599b5/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i7&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/a4e2c3/0000000000000000773599b5/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i7&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: italic;
+    font-weight: 700;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-meta-serif-web-pro";
+    src: url("https://use.typekit.net/af/7ed1f6/0000000000000000773599aa/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/7ed1f6/0000000000000000773599aa/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/7ed1f6/0000000000000000773599aa/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-meta-serif-web-pro";
+    src: url("https://use.typekit.net/af/3058a4/0000000000000000773599a9/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n5&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/3058a4/0000000000000000773599a9/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n5&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/3058a4/0000000000000000773599a9/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n5&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 500;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-meta-serif-web-pro";
+    src: url("https://use.typekit.net/af/c00e0b/0000000000000000773599ad/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n6&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/c00e0b/0000000000000000773599ad/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n6&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/c00e0b/0000000000000000773599ad/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n6&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-zwo-web-pro";
+    src: url("https://use.typekit.net/af/cfd773/00000000000000007735ab07/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/cfd773/00000000000000007735ab07/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/cfd773/00000000000000007735ab07/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-zwo-web-pro";
+    src: url("https://use.typekit.net/af/a1f0a7/00000000000000007735ab08/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n8&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/a1f0a7/00000000000000007735ab08/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n8&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/a1f0a7/00000000000000007735ab08/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n8&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 800;
+    font-stretch: normal;
+  }
+  @font-face {
+    font-family: "ff-zwo-web-pro";
+    src: url("https://use.typekit.net/af/eae76c/00000000000000007735ab13/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3")
+        format("woff2"),
+      url("https://use.typekit.net/af/eae76c/00000000000000007735ab13/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3")
+        format("woff"),
+      url("https://use.typekit.net/af/eae76c/00000000000000007735ab13/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3")
+        format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+  }

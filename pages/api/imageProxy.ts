@@ -20,7 +20,9 @@ export default async (req: NextApiRequest, res: NextResponse) => {
     }
     urlToAppend = urlToAppend.substring(1);
 
-    const url = `${baseUrl.protocol}//${apiHostname}/${urlToAppend}`;
+    const { protocol } = new URL(process.env.NEON_BASE_HOST);
+
+    const url = `${protocol}//${apiHostname}/${urlToAppend}`;
 
     logger.info('Image fetched from url: ' + url);
 

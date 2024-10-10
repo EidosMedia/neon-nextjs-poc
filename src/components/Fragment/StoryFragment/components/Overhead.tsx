@@ -2,7 +2,14 @@ import RenderContentElement from '@/components/RenderContent/RenderContentElemen
 import { Box, Typography } from '@mui/material';
 import { findElementsInContentJson } from 'src/utils/ContentUtil';
 
-const Overhead = ({ data }) => {
+const defaultStyles = {
+    mb: 2,
+    backgroundColor: 'text.secondary',
+    padding: '2px 5px',
+    fontWeight: 'bold'
+};
+
+const Overhead = ({ data, size }) => {
     if (!data) return null;
 
     console.log('data', data);
@@ -12,13 +19,15 @@ const Overhead = ({ data }) => {
 
     if (!overheadContent) return null;
 
+    const overheadStyles = size === 'small' ? {
+        mb: 2,
+        color: 'text.secondary',
+        fontWeight: 'bold'
+    } : defaultStyles;
+
     return (
         <Box>
-            <Typography
-                sx={{ mb: 2, backgroundColor: 'text.secondary', padding: '2px 5px', fontWeight: 'bold' }}
-                color="white"
-                component="span"
-            >
+            <Typography sx={overheadStyles} color="white" component="span">
                 <RenderContentElement jsonElement={overheadContent} />
             </Typography>
         </Box>

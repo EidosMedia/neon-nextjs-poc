@@ -12,7 +12,8 @@ const Anchor = styled('a')(({ theme }: { theme: Theme }) => ({
     textDecoration: 'none',
     padding: '0.7em 0',
     '&:hover': {
-        textDecorationColor: 'transparent !important'
+        textDecorationColor: 'transparent !important',
+        color: `${theme.palette.primary} !important`
     },
     '&.active': {
         color: `${theme.palette.text.secondary} !important`,
@@ -85,7 +86,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
 
     const className = clsx(classNameProps, {
         // [activeClassName]: router.asPath.split('/').slice(-1) === pathname.split('/').slice(-1) && activeClassName
-        [activeClassName]: !disableActive && router.asPath === pathname && activeClassName
+        // [activeClassName]: !disableActive && router.asPath === pathname && activeClassName
     });
 
     const linkAs = linkAsProp || as;
@@ -104,7 +105,20 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
         return <NextLinkComposed className={className} ref={ref} {...nextjsProps} {...other} />;
     }
 
-    return <MuiLink component={NextLinkComposed} className={className} ref={ref} {...nextjsProps} {...other} />;
+    return (
+        <MuiLink
+            component={NextLinkComposed}
+            sx={{
+                textDecoration: 'none',
+                '&:hover': {
+                    color: 'primary.main'
+                }
+            }}
+            ref={ref}
+            {...nextjsProps}
+            {...other}
+        />
+    );
 });
 
 Link.displayName = 'Link';

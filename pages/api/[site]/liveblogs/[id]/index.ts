@@ -1,5 +1,6 @@
 import { getApiHostname } from '@/services/neon-cms/neon-helpers';
 import axios from 'axios';
+import logger from 'logger';
 
 export default async (req, res) => {
     const { id, from } = req.query;
@@ -15,6 +16,7 @@ export default async (req, res) => {
     }
 
     let urlToAppend = encodeURI(decodeURIComponent(req.query.url as string));
+
     const baseUrl = new URL(req.headers.referer);
 
     if (baseUrl.hostname === 'localhost') {
@@ -28,8 +30,17 @@ export default async (req, res) => {
     }
     urlToAppend = urlToAppend.substring(1);
 
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
+    logger.debug(`${envProtocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
+    logger.debug(req.cookies.empreviewauth);
+
     const result = await axios
-        .get(`${baseUrl.protocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`)
+        .get(`${envProtocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`, {
+            headers: {
+                emauth: req.cookies.empreviewauth
+            }
+        })
         .then(res => res.data);
 
     res.status(200).json(result);

@@ -61,6 +61,15 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         />
                     ));
                     break;
+                case 'overhead':
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements.map((subel, i) => (
+                                <RenderFormattedText key={i} jsonElement={subel} neonData={neonData} />
+                            ))}
+                        </React.Fragment>
+                    );
+                    break;
                 case 'headline':
                     render = (
                         <React.Fragment>
