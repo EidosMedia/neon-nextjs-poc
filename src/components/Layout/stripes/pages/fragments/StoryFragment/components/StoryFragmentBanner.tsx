@@ -12,7 +12,7 @@ type StoryFragmentLargeProps = {
 };
 
 const StoryFragmentBanner: React.FC<StoryFragmentLargeProps> = ({ data }) => (
-    <Box>
+    <Box sx={{ 'padding': '25px 25px' }}>
         <StoryFragmentMainMedia data={data} size="large" />
         <NextLink href={getStoryUrl(data)} passHref>
             <CardActionArea>

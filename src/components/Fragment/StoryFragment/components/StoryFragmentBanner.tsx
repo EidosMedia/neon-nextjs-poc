@@ -14,8 +14,8 @@ type StoryFragmentLargeProps = {
 };
 
 const StoryFragmentBanner: React.FC<StoryFragmentLargeProps> = ({ data }) => (
-    <Box>
-        <NextLink href={getStoryUrl(data)} passHref>
+    <Box sx={{ 'padding': '20px 20px' }}>
+        <NextLink href={getStoryUrl(data)} passHref style={{textDecoration: 'none'}}>
             <Box display="flex" gap="10px">
                 <Box
                     height="100%"
@@ -23,13 +23,13 @@ const StoryFragmentBanner: React.FC<StoryFragmentLargeProps> = ({ data }) => (
                     alignItems="center"
                     justifyContent="center"
                     gap="10px"
-                    sx={{ backgroundColor: 'error.main', color: 'white' }}
+                    sx={{ backgroundColor: 'error.main', color: 'white', textDecoration: 'none' }}
                     padding="10px"
                 >
                     <Circle fontSize="small" />
-                    <Typography fontFamily={fontSansSerif}>LIVE</Typography>
+                    <Typography fontFamily={fontSansSerif} sx={{ textDecoration: 'none !important' }}>BREAKING NEWS</Typography>
                 </Box>
-                <Headline data={data} />
+                <Headline data={data} sx={{ marginTop: '0.55rem' }} />
             </Box>
         </NextLink>
     </Box>

@@ -30,19 +30,27 @@ const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, 
             if (subRender) {
                 switch (jsonElement.name) {
                     case 'i':
+                    case 'em':
                         render = <em>{subRender}</em>;
                         break;
                     case 'b':
+                    case 'strong':
                         render = <strong>{subRender}</strong>;
                         break;
                     case 'u':
                         render = <u>{subRender}</u>;
                         break;
+                    case 'sub':
+                        render = <sub>{subRender}</sub>;
+                        break;
+                    case 'sup':
+                        render = <sup>{subRender}</sup>;
+                        break;
                     case 'a':
                         render = (
-                            <MUILink href={jsonElement.attributes.href} underline="hover" color="secondary">
+                            <NextLink href={jsonElement.attributes.href} color="secondary">
                                 {subRender}
-                            </MUILink>
+                            </NextLink>
                         );
                         break;
                     case 'p':

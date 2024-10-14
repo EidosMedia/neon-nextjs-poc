@@ -453,6 +453,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     render = <InlinePoll jsonElement={jsonElement} neonData={neonData} />;
                     break;
                 case 'blockquote':
+                    // logger.debug(neonData.object.helper.content);
                     render = (
                         <React.Fragment>
                             {jsonElement.elements

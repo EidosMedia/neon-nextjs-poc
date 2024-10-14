@@ -50,7 +50,7 @@ export default function LiveblogBannerFragment({ neonData }) {
                 legacyBehavior
                 prefetch={neonData.previewData ? false : true}
             >
-                <Box display="flex">
+                <Box display="flex" sx={{ 'padding': '25px 25px 0' }}>
                     <Box
                         height="100%"
                         display="flex"
