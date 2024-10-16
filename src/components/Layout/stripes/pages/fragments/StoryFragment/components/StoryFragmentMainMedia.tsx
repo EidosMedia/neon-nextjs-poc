@@ -22,7 +22,7 @@ const StoryFragmentMainMedia: React.FC<StoryFragmentMainMediaProps> = ({ data, s
     const mainImageUrl = getMainImageUrl(data, dimensions[size || 'medium'].crop);
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" position="relative" width={229} height={140}>
+        <Box display="flex" justifyContent="center" alignItems="center" position="relative" minWidth={229} width={229} height={140}>
             <Image src={mainImageUrl || NO_THUMB_URL} fill alt={NO_THUMB_URL} priority={true} />
         </Box>
     );

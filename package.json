@@ -1,6 +1,6 @@
 {
     "name": "nextjs",
-    "version": "5.2.7-stripes-2",
+    "version": "5.2.7-stripes-3",
     "private": true,
     "scripts": {
         "dev": "next dev",
