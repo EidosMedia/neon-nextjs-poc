@@ -16,12 +16,18 @@ export async function middleware(req) {
         hostname = hostnameParts[0];
     }
 
-    const regexSitemap = /^(.*)sitemap-(\d)+\.xml$/gm;
-    if (regexSitemap.exec(pathname) || pathname.endsWith('/sitemapindex.xml')) {
+    if (pathname.endsWith('/sitemapindex.xml') || pathname.endsWith('/sitemap.xml')) {
         const rewriteUrl = req.nextUrl.clone();
         rewriteUrl.pathname = `/api/${hostname}/sitemap${pathname}`;
         return NextResponse.rewrite(rewriteUrl);
     }
+
+    if (pathname.endsWith('/robots.txt')) {
+        const rewriteUrl = req.nextUrl.clone();
+        rewriteUrl.pathname = `/api/${hostname}/robots${pathname}`;
+        return NextResponse.rewrite(rewriteUrl);
+    }
+
     const urlObject = req.nextUrl;
     const urlParams = new URLSearchParams(urlObject.search);
 

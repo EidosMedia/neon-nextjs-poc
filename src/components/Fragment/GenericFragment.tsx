@@ -20,14 +20,13 @@ const GenericFragment: React.FC<GenericFragmentProps> = ({ neonData, gridContext
     if (neonData) {
         switch (neonData.object.data.sys.baseType) {
             case 'article':
+            case 'liveblog':
                 switch (neonData.object.data.sys.type) {
                     case 'breakingnews':
                         return <BreakingNewsFragment neonData={neonData} />;
                     default:
                         return <StoryFragment neonData={neonData} gridContext={gridContext} size={size} />;
                 }
-            case 'liveblog':
-                return <LiveblogFragment neonData={neonData} gridContext={gridContext} size={size} />;
         }
     }
     return null;

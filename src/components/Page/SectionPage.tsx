@@ -1,12 +1,13 @@
 import { Container, Divider, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { getCurrentSite, getSectionChildrenObjects } from '../../services/neon-cms/neon-helpers';
-import GenericFragment from '../Fragment/GenericFragment';
 import TopSection from '../Fragment/TopSection';
 import ListSection from '../Fragment/ListSection';
 import Layout from '../Layout/Layout';
 import React from 'react';
 import { GenericPageProps } from '@/types/commonTypes';
+import _ from 'lodash';
+
+const isStripes = neonData => _.get(neonData, 'siteContext.root.attributes.theme') === 'stripes';
 
 /**
  *
@@ -18,10 +19,16 @@ const SectionPage: React.FC<GenericPageProps> = ({ neonData, pageTitle, isPrevie
     return (
         <Layout neonData={neonData} isPreview={isPreview}>
             <Container>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
-                    {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
-                </Box>
-                <Divider />
+                {isStripes(neonData) ? (
+                    <Typography variant="h1">{pageTitle}</Typography>
+                ) : (
+                    <>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
+                            {pageTitle ? <Typography variant="h1">{pageTitle}</Typography> : null}
+                        </Box>
+                        <Divider />
+                    </>
+                )}
                 <TopSection neonData={neonData} />
                 <Divider />
                 <ListSection neonData={neonData} />

@@ -6,7 +6,7 @@ import { NeonData } from '@/types/commonTypes';
 const NO_THUMB_URL = '/static/img/nothumb.jpeg';
 
 const dimensions = {
-    small: { width: 200, height: 200, crop: 'Square_small'},
+    small: { width: 200, height: 200, crop: 'Square_small' },
     medium: { width: 350, height: 350, crop: 'Square_large' },
     large: { width: 550, height: 287, crop: 'Wide_small' }
 };

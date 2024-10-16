@@ -1,6 +1,6 @@
 {
     "name": "nextjs",
-    "version": "5.3.6",
+    "version": "5.3.8",
     "private": true,
     "scripts": {
         "dev": "next dev",
@@ -15,9 +15,11 @@
         "@emotion/cache": "^11.11.0",
         "@emotion/react": "^11.11.1",
         "@emotion/server": "latest",
+        "@emotion/styled": "^11.13.0",
         "@google-analytics/data": "^4.4.0",
         "@mui/icons-material": "^5.15.0",
-        "@mui/material": "^5.15.0",
+        "@mui/lab": "^5.0.0-alpha.173",
+        "@mui/material": "^5.16.7",
         "@mui/material-nextjs": "^5.15.0",
         "axios": "^1.6.7",
         "clsx": "^2.1.1",

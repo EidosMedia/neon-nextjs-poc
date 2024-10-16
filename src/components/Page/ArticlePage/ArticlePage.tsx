@@ -9,6 +9,8 @@ import SummaryBlock from '../commons/components/SummaryBlock';
 import MainImageBlock from '../commons/components/MainImageBlock';
 import ContentBlock from '../commons/components/ContentBlock';
 import { GenericPageProps } from '@/types/commonTypes';
+import { isStripes } from '@/components/Layout/stripes/Stripes.utils';
+import StripesArticlePage from '@/components/Layout/stripes/pages/StripesArticlePage';
 
 /**
  *
@@ -16,10 +18,13 @@ import { GenericPageProps } from '@/types/commonTypes';
  * @param root0.neonData
  */
 const ArticlePage: React.FC<GenericPageProps> = ({ neonData, isPreview }) => {
+    if (isStripes(neonData)) {
+        return <StripesArticlePage neonData={neonData} />;
+    }
+
     return (
         <Container maxWidth="lg">
             <Layout neonData={neonData} isPreview={isPreview}>
-                {/* {uuid ? <HTMLComment text={uuid} /> : null} */}
                 <BreadcrumbBlock neonData={neonData} />
                 <BeyondWordsBlock neonData={neonData} />
                 <HeadlineBlock neonData={neonData} />

@@ -1,5 +1,5 @@
 import { getDwxLinkedObjects } from '@/services/neon-cms/neon-helpers';
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 import React from 'react';
 import GenericFragment from '../GenericFragment';
 

@@ -57,7 +57,6 @@ export async function getNeonSites() {
  * @param variant
  */
 export async function getNeonPageByUrl(url, options) {
-    console.log('coooooookies', options.cookies);
     let siteStructure = null;
     try {
         siteStructure = await getNeonSites();
@@ -66,17 +65,14 @@ export async function getNeonPageByUrl(url, options) {
     const urlObject = new URL(url);
 
     const hostName = urlObject.hostname;
-    const protocol = urlObject.protocol;
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
 
-    let hostnameWithProtocol = `${protocol}//${hostName}`;
+    let hostnameWithProtocol = `${envProtocol}//${hostName}`;
     if (urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443') {
         hostnameWithProtocol = `${hostnameWithProtocol}:${urlObject.port}`;
     }
-    logger.debug('hostnameWithProtocol ' + hostnameWithProtocol);
     const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
     let neonData = null;
-
-    logger.debug('url ' + url);
 
     if (siteName) {
         let requestUrl = '';
@@ -85,8 +81,6 @@ export async function getNeonPageByUrl(url, options) {
         } else {
             requestUrl = `/api/pages?url=${url.replace(`${hostnameWithProtocol}`, '')}&emk.site=${siteName}`;
         }
-
-        logger.debug('requestUrl - 87' + requestUrl);
 
         const pageData = await neonRequest(requestUrl, options, siteName);
 
@@ -142,15 +136,14 @@ export async function getNeonPreview(previewData) {
     const id = urlParams.get('id');
     const baseHost = urlObject.hostname;
 
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
     let pageData = null;
 
-    let requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace(
-        '/_sites/preview/' + baseHost,
-        ''
-    )}`;
+    let requestUrl = `${envProtocol}//${baseUrl}${urlObject.pathname.replace('/_sites/preview/' + baseHost, '')}`;
 
     if (id !== null) {
-        requestUrl = `${urlObject.protocol}//${baseUrl}${urlObject.pathname.replace(
+        requestUrl = `${envProtocol}//${baseUrl}${urlObject.pathname.replace(
             '/_sites/preview/' + baseHost,
             '/api/pages/'
         )}${id}`;
@@ -180,7 +173,7 @@ export async function getNeonPreview(previewData) {
     }
 
     const sites = await getNeonSites();
-    const sitename = getSiteByHostname(`${urlObject.protocol}//${urlObject.host}`, sites).root.name;
+    const sitename = getSiteByHostname(`${envProtocol}//${urlObject.host}`, sites).root.name;
     const neonData = await buildNeonDataFromPage(pageData, siteStructure, sitename, '/preview');
 
     return neonData;
@@ -215,17 +208,20 @@ export async function searchNeon(siteName, sorting, filters) {
 export async function neonRequest(url, extOptions, siteName?) {
     const apiHostname = await getApiHostname(url, siteName);
     let newUrl;
+
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
     if (url.startsWith('http')) {
         newUrl = url;
     } else {
-        newUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + apiHostname + url;
+        newUrl = `${envProtocol}//${apiHostname}${url}`;
     }
 
     const options = {
         url: newUrl,
         headers: {
             'neon-fo-access-key': process.env.NEON_API_KEY,
-            Authorization: 'Bearer ' + extOptions.cookies.empreviewauth
+            Authorization: 'Bearer ' + extOptions.cookies?.empreviewauth
         }
     };
 
@@ -295,6 +291,8 @@ export async function getNeonSitemap(siteName) {
 
         const response = await axios.request(options);
         result = response.data;
+
+        console.log('result', result);
     } catch (e) {
         logger.error(e);
     }
@@ -306,25 +304,35 @@ export async function getNeonSitemap(siteName) {
  * @param hostName
  * @param url
  */
-export async function getNeonSeoSitemap(hostName, url) {
+export async function getNeonSeoSitemap(baseUrl) {
     let siteStructure = null;
     try {
         siteStructure = await getNeonSites();
     } catch (e) {}
 
-    const siteName = getSiteNameByHostName(hostName, siteStructure);
     let sitemapData = null;
 
-    if (siteName) {
-        const requestUrl = `/${url}?emk.site=${siteName}`;
-        sitemapData = await neonRequest(requestUrl, {});
+    let newUrl;
+
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
+    const urlObject = new URL(baseUrl);
+
+    let hostnameWithProtocol = `${envProtocol}//${urlObject.hostname}`;
+    if (urlObject.port && urlObject.port != '' && urlObject.port != '80' && urlObject.port != '443') {
+        hostnameWithProtocol = `${hostnameWithProtocol}:${urlObject.port}`;
     }
+    const siteName = getSiteNameByHostName(hostnameWithProtocol, siteStructure);
+
+    sitemapData = await neonRequest(urlObject.pathname, {}, siteName);
 
     return sitemapData;
 }
 async function getNeonLogoUrl(id: any, liveHostName) {
     const requestUrl = `${liveHostName}/api/nodes/${id}`;
-    const logoUrl = (process.env.DEV_MODE === 'true' ? 'http://' : 'https://') + requestUrl;
+    const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
+
+    const logoUrl = `${envProtocol}://${requestUrl}`;
     let result;
 
     try {
@@ -343,8 +351,8 @@ async function getNeonLogoUrl(id: any, liveHostName) {
 
         result = response.data.files?.logo.resourceUrl || '';
     } catch (e) {
-        logger.error(e);
-        result = null;
+        logger.error('Unable to get logo for this liveHostname', liveHostName);
+        result = '';
     }
 
     // logger.info('result: ' + result);

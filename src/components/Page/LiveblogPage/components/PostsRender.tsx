@@ -55,7 +55,7 @@ const boxStyle = {
         color: 'secondary.contrastText',
         position: 'absolute',
         left: '-18px',
-        top: '-10px'
+        top: '5px'
     }
 };
 

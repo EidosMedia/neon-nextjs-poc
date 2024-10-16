@@ -5,6 +5,9 @@ import Layout from '../Layout/Layout';
 import TopSection from '../Fragment/TopSection';
 import ListSection from '../Fragment/ListSection';
 import Banner from '../Fragment/Banner';
+import StripesDefaultLandingPage from '../Layout/stripes/pages/StripesLandingPage'
+import { isStripes } from '../Layout/stripes/Stripes.utils';
+import logger from 'logger';
 
 /**
  *
@@ -19,11 +22,19 @@ const LandingPage: React.FC<GenericPageProps> = ({ neonData, isPreview }) => {
         return null;
     }
 
+    const isStripesVariant = isStripes(neonData);
+
+    logger.debug(`Is Stripes Variant? - ${isStripesVariant}`);
+    
+    if (isStripesVariant) {
+        return <StripesDefaultLandingPage neonData={neonData} />;
+    }
+
     return (
         <Layout neonData={neonData} isPreview={isPreview}>
             <Container maxWidth="lg">
-                {/* <Banner neonData={neonData} />
-                <Divider /> */}
+                <Banner neonData={neonData} />
+                <Divider />
                 <TopSection neonData={neonData} />
                 <Divider />
                 <ListSection neonData={neonData} />
