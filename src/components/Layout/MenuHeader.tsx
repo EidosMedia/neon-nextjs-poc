@@ -1,9 +1,20 @@
-import { AppBar, Box, Container, Toolbar, Tooltip, Typography, useScrollTrigger } from '@mui/material';
+import {
+    AppBar,
+    Box,
+    Container,
+    Toolbar,
+    Tooltip,
+    Typography,
+    useScrollTrigger,
+    Snackbar,
+    IconButton,
+    Alert
+} from '@mui/material';
 import { BlockProps } from '../Page/ArticlePage/ArticlePage.types';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from './Link';
 import SiteLogo from './SiteLogo';
-import { Info, RemoveRedEye, VisibilityOff } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import { NeonData } from '@/types/commonTypes';
 
 const getNavItems = neonData =>
@@ -31,6 +42,10 @@ type MenuHeaderProps = {
 };
 
 const MenuHeader: React.FC<MenuHeaderProps> = ({ neonData, isPreview }) => {
+    const [previewSnackbarOpen, setPreviewSnackbarOpen] = useState(isPreview);
+
+    const handleClosePreviewSnackbar = () => setPreviewSnackbarOpen(false);
+
     if (!neonData) return null;
 
     const navItems = getNavItems(neonData);
@@ -43,25 +58,20 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({ neonData, isPreview }) => {
                 <AppBar position="fixed" sx={{ display: 'flex', alignItems: 'center' }}>
                     <Container maxWidth="lg">
                         {isPreview && (
-                            <Box
-                                sx={{
-                                    backgroundColor: 'warning.light',
-                                    color: 'warning.main',
-                                    height: '50px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '10px',
-                                    border: '3px solid',
-                                    borderColor: 'warning.main'
-                                }}
+                            <Snackbar
+                                open={previewSnackbarOpen}
+                                onClose={handleClosePreviewSnackbar}
+                                message="Preview mode"
                             >
-                                <VisibilityOff />
-                                <Typography fontWeight="bold">Preview mode</Typography>
-                                <Tooltip title="The content you are viewing is not currently live on your site. You need to publish it first.">
-                                    <Info sx={{ color: 'black' }} fontSize="small" />
-                                </Tooltip>
-                            </Box>
+                                <Alert
+                                    onClose={handleClosePreviewSnackbar}
+                                    severity="warning"
+                                    variant="filled"
+                                    sx={{ width: '100%' }}
+                                >
+                                    Preview mode
+                                </Alert>
+                            </Snackbar>
                         )}
                         <Toolbar
                             sx={{
