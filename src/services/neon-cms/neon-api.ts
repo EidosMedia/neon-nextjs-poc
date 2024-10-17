@@ -332,7 +332,8 @@ async function getNeonLogoUrl(id: any, liveHostName) {
     const requestUrl = `${liveHostName}/api/nodes/${id}`;
     const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
 
-    const logoUrl = `${envProtocol}://${requestUrl}`;
+    const logoUrl = `${envProtocol}//${requestUrl}`;
+
     let result;
 
     try {
@@ -351,7 +352,7 @@ async function getNeonLogoUrl(id: any, liveHostName) {
 
         result = response.data.files?.logo.resourceUrl || '';
     } catch (e) {
-        logger.error('Unable to get logo for this liveHostname', liveHostName);
+        logger.error('Unable to get logo for this url: ' + logoUrl);
         result = '';
     }
 
