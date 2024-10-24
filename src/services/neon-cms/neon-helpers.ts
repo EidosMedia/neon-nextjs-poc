@@ -425,8 +425,6 @@ export const getApiHostname = async (url: URL, siteName?: string): Promise<strin
         return site.apiHostnames.previewHostname;
     }
 
-    console.log('site', site);
-
     return site.apiHostnames.liveHostname;
 };
 
