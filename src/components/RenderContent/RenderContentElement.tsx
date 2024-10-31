@@ -12,7 +12,6 @@ import InlinePoll from './InlinePoll';
 import Card from './Card';
 import { GenericPageProps } from 'src/types/commonTypes';
 import logger from 'logger';
-import InlineImageBlock from '../Page/commons/components/InlineImageBlock';
 
 type RenderContentElementProps = Partial<GenericPageProps> & {
     jsonElement: any;
@@ -432,9 +431,10 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         </td>
                     );
                     break;
-                case 'embed':
+                case 'oembedblock':
                     // TODO
-                    const cdata = jsonElement.elements.filter(el => (el.nodeType = 'CDATA')).map(el => el.text);
+
+                    const cdata = jsonElement.elements.filter(el => (el.nodeType = 'plainText')).map(el => el.value);
                     render = <div dangerouslySetInnerHTML={{ __html: cdata }}></div>;
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
@@ -531,8 +531,6 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         }
                     }
                     break;
-                case 'inline-media-group':
-                    render = <InlineImageBlock jsonElement={jsonElement} />;
                 case 'style':
                     break;
                 default:
@@ -610,17 +608,19 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
     let imageHeight = 576;
 
     try {
-        const classes = jsonElement.elements[0].attributes.class;
-        const format = classes.substring(0, classes.indexOf(' '));
+        const classes = jsonElement.attributes.class;
 
-        const tmx = jsonElement.elements[0].attributes['emk-tmx'];
+        const tmx = jsonElement.attributes.tmx;
         if (tmx !== 'undefined') {
             let tokens = tmx.split(' ');
             imageWidth = tokens[tokens.length - 2];
             imageHeight = tokens[tokens.length - 1];
         }
-        imageUrl = ResourceResolver(getImageUrl(jsonElement, format, neonData));
-    } catch (e) {}
+
+        imageUrl = ResourceResolver(jsonElement.attributes.src);
+    } catch (e) {
+        console.log('error', e);
+    }
 
     render = (
         <Container sx={{ my: 4 }} maxWidth="lg">
