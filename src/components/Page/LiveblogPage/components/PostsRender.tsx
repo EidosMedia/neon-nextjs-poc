@@ -5,6 +5,7 @@ import { findElementsInContentJson } from '@/utils/ContentUtil';
 import { Box, Container, Typography } from '@mui/material';
 import _ from 'lodash';
 import logger from 'logger';
+import { isStripes } from '@/components/Layout/stripes/Stripes.utils';
 import { FC, useEffect, useState } from 'react';
 
 function computeEventTime(post, eventStartDate) {
@@ -44,7 +45,7 @@ function computeEventTime(post, eventStartDate) {
     return eventTime;
 }
 
-const boxStyle = {
+const defaultBoxStyle = {
     borderLeft: 2,
     borderColor: 'grey.700',
     position: 'relative',
@@ -54,8 +55,23 @@ const boxStyle = {
         fontSize: '1.7rem',
         color: 'secondary.contrastText',
         position: 'absolute',
-        left: '-18px',
-        top: '5px'
+        left: '-13px',
+        top: '-7px'
+    }
+};
+
+const stripesBoxStyle = {
+    borderLeft: 2,
+    borderColor: 'grey.700',
+    position: 'relative',
+    pb: 2,
+    '::before': {
+        content: '"⬤"',
+        fontSize: '1.7rem',
+        color: 'secondary.contrastText',
+        position: 'absolute',
+        left: '-13px',
+        top: '7px'
     }
 };
 
@@ -64,6 +80,8 @@ type PostsRenderProps = {
 };
 
 const PostsRender: FC<PostsRenderProps> = ({ neonData }) => {
+    const boxStyle = isStripes(neonData) ? stripesBoxStyle : defaultBoxStyle;
+
     const [posts, setPosts] = useState([]);
 
     const fetchPosts = async () => {
