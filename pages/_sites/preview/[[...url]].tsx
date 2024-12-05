@@ -84,27 +84,27 @@ export const getServerSideProps = (async context => {
     console.log('neonData?.object?.data?.sys?.baseType', neonData?.object?.data?.sys?.baseType);
 
     // if (!neonData.error) {
-    switch (neonData?.object?.data?.sys?.baseType) {
-        case 'webpage':
-            revalidate = 5;
-        // Quick and ugly way to manage semantic search demo
-        // const semanticSearchData = await getSemanticSearchData(neonData);
-        // if (semanticSearchData) {
-        //     props.semanticSearchData = semanticSearchData;
-        // }
-        case 'liveblog':
-            revalidate = 5;
-            const latestBlogPosts = await neonRequest(
-                fullHostname +
-                    `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`,
-                {}
-            );
-            fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] =
-                latestBlogPosts;
-            props.fallback = fallback;
-        default:
-            revalidate = 5;
-    }
+    // switch (neonData?.object?.data?.sys?.baseType) {
+    //     case 'webpage':
+    //     // revalidate = 5;
+    //     // Quick and ugly way to manage semantic search demo
+    //     // const semanticSearchData = await getSemanticSearchData(neonData);
+    //     // if (semanticSearchData) {
+    //     //     props.semanticSearchData = semanticSearchData;
+    //     // }
+    //     case 'liveblog':
+    //         // revalidate = 5;
+    //         const latestBlogPosts = await neonRequest(
+    //             fullHostname +
+    //                 `/api/liveblogs/${neonData.object.data.id}/posts?emk.site=${neonData.siteContext.root.name}&limit=50`,
+    //             {}
+    //         );
+    //         fallback[fullHostname + `/api/${neonData.siteContext.root.name}/liveblogs/${neonData.object.data.id}`] =
+    //             latestBlogPosts;
+    //         props.fallback = fallback;
+    //     default:
+    //         revalidate = 5;
+    // }
     // }
 
     return {
