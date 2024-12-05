@@ -34,15 +34,7 @@ export default function Page({ neonData, semanticSearchData, fallback }) {
 
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
-            if (neonData?.object?.data?.sys?.type === 'sectionpage') {
-                return <SectionPage neonData={neonData} pageTitle={pageTitle} />;
-            } else if (neonData?.object?.data?.sys?.type === 'home') {
-                return <LandingPage neonData={neonData} />;
-            } else if (neonData?.object?.data?.sys?.type === 'special') {
-                return <LandingPage neonData={neonData} />;
-            } else {
-                return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} />;
-            }
+            return <LandingPage neonData={neonData} pageTitle={pageTitle} />;
 
         case 'sectionwebpage':
             return <SectionPage neonData={neonData} pageTitle={pageTitle} />;

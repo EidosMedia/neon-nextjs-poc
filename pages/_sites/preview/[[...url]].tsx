@@ -38,15 +38,7 @@ export default function Page({ neonData, fallback }) {
 
     switch (neonData?.object?.data?.sys?.baseType) {
         case 'webpage':
-            if (neonData?.object?.data?.sys?.type === 'sectionpage') {
-                return <SectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
-            } else if (neonData?.object?.data?.sys?.type === 'home') {
-                return <LandingPage neonData={neonData} isPreview />;
-            } else if (neonData?.object?.data?.sys?.type === 'special') {
-                return <LandingPage neonData={neonData} isPreview />;
-            } else {
-                return <DefaultSectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
-            }
+            return <LandingPage neonData={neonData} pageTitle={pageTitle} isPreview />;
         case 'sectionwebpage':
             return <SectionPage neonData={neonData} pageTitle={pageTitle} isPreview />;
         case 'homewebpage':
