@@ -89,7 +89,7 @@ const PostsRender: FC<PostsRenderProps> = ({ neonData }) => {
 
         const newPostsResponse = await resp.json();
 
-        setPosts(oldResults => _.uniqBy([...newPostsResponse.result, ...oldResults], 'id'));
+        setPosts(oldResults => _.uniqBy([...newPostsResponse.posts, ...oldResults], 'id'));
     };
 
     useEffect(() => {
@@ -120,10 +120,11 @@ const PostsRender: FC<PostsRenderProps> = ({ neonData }) => {
                     logger.error(e);
                 }
 
-                if (contentRender) {
-                    const postTimestamp = new Date(post.timestamp);
+                if (contentRender && post) {
+                    const postTimestamp = new Date(post.sys.updateTime);
                     const parsedPostTimestamp = `${postTimestamp.getHours()}:${postTimestamp.getMinutes()}`;
                     const lastItem = length === i + 1;
+
                     contentRender = (
                         <Box id={post.id} key={post.id} sx={[boxStyle, lastItem && { borderColor: 'transparent' }]}>
                             <Box sx={{ display: 'flex' }}>

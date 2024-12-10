@@ -36,6 +36,10 @@ const RenderLiveblogPostElement: React.FC<RenderLiveblogPostElementProps> = ({
 }) => {
     let render = null;
 
+    if (jsonElement === null) {
+        return null;
+    }
+
     if (!excludeElements || !excludeElements.includes(jsonElement.nodeType)) {
         switch (jsonElement.nodeType) {
             case 'article':

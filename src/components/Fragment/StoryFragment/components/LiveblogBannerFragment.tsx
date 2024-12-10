@@ -30,7 +30,7 @@ export default function LiveblogBannerFragment({ neonData }) {
 
         const newPostsResponse = await resp.json();
 
-        setPosts(oldResults => _.uniqBy([...newPostsResponse.result, ...oldResults], 'id'));
+        setPosts(oldResults => _.uniqBy([...newPostsResponse.posts, ...oldResults], 'id'));
     };
 
     useEffect(() => {
@@ -50,7 +50,7 @@ export default function LiveblogBannerFragment({ neonData }) {
                 legacyBehavior
                 prefetch={neonData.previewData ? false : true}
             >
-                <Box display="flex" sx={{ 'padding': '25px 25px 0' }}>
+                <Box display="flex" sx={{ padding: '25px 25px 0' }}>
                     <Box
                         height="100%"
                         display="flex"

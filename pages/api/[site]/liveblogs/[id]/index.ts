@@ -32,11 +32,11 @@ export default async (req, res) => {
 
     const envProtocol = new URL(process.env.NEON_BASE_HOST).protocol;
 
-    logger.debug(`${envProtocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
+    logger.debug(`${envProtocol}//${apiHostname}/api/v2/liveblogs/${id}/posts?${new URLSearchParams(settings)}`);
     logger.debug(req.cookies.empreviewauth);
 
     const result = await axios
-        .get(`${envProtocol}//${apiHostname}/api/liveblogs/${id}/posts?${new URLSearchParams(settings)}`, {
+        .get(`${envProtocol}//${apiHostname}/api/v2/liveblogs/${id}/posts?${new URLSearchParams(settings)}`, {
             headers: {
                 emauth: req.cookies.empreviewauth
             }
