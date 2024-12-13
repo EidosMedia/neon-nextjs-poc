@@ -113,6 +113,19 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     }
                     break;
                 case 'text':
+                    render = (
+                        <React.Fragment>
+                            {jsonElement.elements.map((subel, i) => (
+                                <RenderContentElement
+                                    key={i}
+                                    jsonElement={subel}
+                                    excludeElements={excludeElements}
+                                    renderMode={renderMode}
+                                    neonData={neonData}
+                                />
+                            ))}
+                        </React.Fragment>
+                    );
                 case 'content':
                     render = (
                         <React.Fragment>
@@ -164,6 +177,24 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         );
                     }
                     break;
+                case 'i':
+                    render = <em>{findElementText(jsonElement)}</em>;
+                    break;
+                case 'b':
+                    render = <strong>{findElementText(jsonElement)}</strong>;
+                    break;
+                case 'u':
+                    render = <u>{findElementText(jsonElement)}</u>;
+                    break;
+                case 'a':
+                    render = (
+                        <NextLink href={jsonElement.attributes.href} passHref>
+                            <MUILink underline="hover" color="secondary">
+                                {findElementText(jsonElement)}
+                            </MUILink>
+                        </NextLink>
+                    );
+                    break;
                 case 'p':
                     render = (
                         <React.Fragment>
@@ -173,7 +204,14 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                                           subel =>
                                               subel.nodeType === 'text' ||
                                               subel.nodeType === 'element' ||
-                                              subel.nodeType === 'plainText'
+                                              subel.nodeType === 'plainText' ||
+                                              subel.nodeType === 'u' ||
+                                              subel.nodeType === 'b' ||
+                                              subel.nodeType === 'i' ||
+                                              subel.nodeType === 'sub' ||
+                                              subel.nodeType === 'sup' ||
+                                              subel.nodeType === 'a' ||
+                                              subel.nodeType === 'anchor'
                                           // && subel.name === 'keyword'
                                       )
                                       .map((subel, i) => (
@@ -290,6 +328,16 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                         );
                     }
                     break;
+                case 'mediagallery':
+                    render = (
+                        <FigureGallery
+                            jsonElement={jsonElement}
+                            excludeElements={excludeElements}
+                            neonData={neonData}
+                        />
+                    );
+                    break;
+
                 case 'image':
                 case 'figure':
                     if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
@@ -654,9 +702,8 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
     let images = [];
     try {
         images = jsonElement.elements.map(el => {
-            let origImageUrl = getImageUrl(el, 'rect', neonData);
-            const thumbImageUrl = getImageFormatUrl(origImageUrl, 'thumb');
-            origImageUrl = getImageFormatUrl(origImageUrl, 'large');
+            const origImageUrl = getImageUrl(el, 'wide', neonData);
+            const thumbImageUrl = getImageUrl(el, 'square', neonData);
 
             const origImageFullUrl = ResourceResolver(origImageUrl);
             const thumbImageFullUrl = ResourceResolver(thumbImageUrl);

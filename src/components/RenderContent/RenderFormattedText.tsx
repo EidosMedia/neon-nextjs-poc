@@ -18,6 +18,8 @@ type RenderFormattedTextProps = {
 const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, neonData }) => {
     let render = null;
 
+    console.log('rendering formatted text...');
+
     switch (jsonElement.nodeType) {
         case 'plainText':
         case 'text':
@@ -32,16 +34,17 @@ const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, 
             render = <u>{findElementText(jsonElement)}</u>;
             break;
         case 'a':
-            render = (
-                <NextLink href={jsonElement.attributes.href} passHref>
-                    <MUILink underline="hover" color="secondary">
-                        {findElementText(jsonElement)}
-                    </MUILink>
-                </NextLink>
-            );
+        case 'anchor':
+            render = <NextLink href={jsonElement.attributes.href}>{findElementText(jsonElement)}</NextLink>;
             break;
         case 'p':
             render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+            break;
+        case 'sub':
+            render = <sub>{findElementText(jsonElement)}</sub>;
+            break;
+        case 'sup':
+            render = <sup>{findElementText(jsonElement)}</sup>;
             break;
         case 'question':
             render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
