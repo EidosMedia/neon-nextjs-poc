@@ -146,9 +146,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
-                                <Typography variant="h3" component="h2">
-                                    {render}
-                                </Typography>
+                                <Typography variant="h1">{render}</Typography>
                             </Container>
                         );
                     }
@@ -158,9 +156,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
-                                <Typography variant="h5" component="h3">
-                                    {render}
-                                </Typography>
+                                <Typography variant="h2">{render}</Typography>
                             </Container>
                         );
                     }
@@ -170,9 +166,37 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
                     if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
                         render = (
                             <Container sx={{ my: 1 }} maxWidth="md">
-                                <Typography variant="body1" component="h4">
-                                    {render}
-                                </Typography>
+                                <Typography variant="h3">{render}</Typography>
+                            </Container>
+                        );
+                    }
+                    break;
+                case 'h4':
+                    render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+                    if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="h4">{render}</Typography>
+                            </Container>
+                        );
+                    }
+                    break;
+                case 'h5':
+                    render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+                    if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="h5">{render}</Typography>
+                            </Container>
+                        );
+                    }
+                    break;
+                case 'h6':
+                    render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
+                    if (renderMode && ['styled', 'newsletter'].includes(renderMode)) {
+                        render = (
+                            <Container sx={{ my: 1 }} maxWidth="md">
+                                <Typography variant="h6">{render}</Typography>
                             </Container>
                         );
                     }
