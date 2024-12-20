@@ -15,8 +15,8 @@ type InlineImageProps = {
  */
 const InlineImageBlock: React.FC<InlineImageProps> = ({ jsonElement, styleVariant }) => {
     // logger.info('neonData main picture', neonData.object.helper.mainPicture);
-    let imageWidth = 1024;
-    let imageHeight = 576;
+    let imageWidth = 1200;
+    let imageHeight = 675;
 
     const image = jsonElement.elements.find(item => item.attributes.softCrop === 'Square');
 
