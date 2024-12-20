@@ -293,8 +293,10 @@ const Figure: React.FC<BaseElementProps> = ({ jsonElement, excludeElements, neon
     let imageUrl = null;
 
     try {
-        imageUrl = ResourceResolver(getImageFormatUrl(jsonElement.elements[0].attributes.src, 'large'));
-    } catch (e) {}
+        imageUrl = ResourceResolver(jsonElement.elements[0].attributes.src);
+    } catch (e) {
+        console.log(e);
+    }
 
     const imageWidth = 1024;
     const imageHeight = 576;
