@@ -1,5 +1,4 @@
-import NextLink from 'next/link';
-import { Link as MUILink } from '@mui/material';
+import Link from 'next/link';
 
 import React from 'react';
 import { findElementsInContentJson, findElementText } from '@/utils/ContentUtil';
@@ -18,8 +17,6 @@ type RenderFormattedTextProps = {
 const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, neonData }) => {
     let render = null;
 
-    console.log('rendering formatted text...');
-
     switch (jsonElement.nodeType) {
         case 'plainText':
         case 'text':
@@ -35,7 +32,14 @@ const RenderFormattedText: React.FC<RenderFormattedTextProps> = ({ jsonElement, 
             break;
         case 'a':
         case 'anchor':
-            render = <NextLink href={jsonElement.attributes.href}>{findElementText(jsonElement)}</NextLink>;
+            const isExternal = jsonElement.attributes.class === 'ext';
+            const sanitizedHref = isExternal 
+                ? jsonElement.attributes.href.replace(/https%3A%2F%2F/g, 'https://').replace(/http%3A%2F%2F/g, 'https://') 
+                : jsonElement.attributes.href.replace(/https%3A%2F%2F/g, '').replace(/http%3A%2F%2F/g, '');
+
+            render = isExternal 
+                ? <a href={sanitizedHref} target={jsonElement.attributes.target}>{findElementText(jsonElement)}</a> 
+                : <Link href={sanitizedHref} target={jsonElement.attributes.target}>{findElementText(jsonElement)}</Link>
             break;
         case 'p':
             render = <React.Fragment>{findElementText(jsonElement)}</React.Fragment>;
