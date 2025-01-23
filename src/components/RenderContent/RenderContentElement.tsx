@@ -726,8 +726,8 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
     let images = [];
     try {
         images = jsonElement.elements.map(el => {
-            const origImageUrl = getImageUrl(el, 'wide', neonData);
-            const thumbImageUrl = getImageUrl(el, 'square', neonData);
+            const origImageUrl = getImageUrl(el, 'Wide', neonData);
+            const thumbImageUrl = getImageUrl(el, 'Square', neonData);
 
             const origImageFullUrl = ResourceResolver(origImageUrl);
             const thumbImageFullUrl = ResourceResolver(thumbImageUrl);
@@ -737,6 +737,9 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
                 thumbnail: thumbImageFullUrl
             };
         });
+
+        console.log('images', images);
+
         render = (
             <Container sx={{ my: 4 }} maxWidth="lg">
                 <Box display="flex" justifyContent="center" alignItems="center">

@@ -30,7 +30,7 @@ export const findElementText = jsonElement => {
 export function getImageUrl(jsonElement, imageClass, neonData) {
     let imageUrl = null;
     try {
-        imageUrl = jsonElement.elements.find(el => el.attributes.class.includes(imageClass)).attributes.src;
+        imageUrl = jsonElement.elements.find(el => el.attributes.softCrop === imageClass).attributes.src;
     } catch (e) {
         logger.error('cannot find url with for imageClass ' + imageClass);
     }
