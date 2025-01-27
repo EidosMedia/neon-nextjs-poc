@@ -38,7 +38,8 @@ export default async (req, res) => {
     const result = await axios
         .get(`${envProtocol}//${apiHostname}/api/v2/liveblogs/${id}/posts?${new URLSearchParams(settings)}`, {
             headers: {
-                emauth: req.cookies.empreviewauth
+                emauth: req.cookies.empreviewauth,
+                'neon-fo-access-key': process.env.NEON_API_KEY
             }
         })
         .then(res => res.data);
