@@ -16,9 +16,11 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
     const mainImageUrl = getMainImageUrl(neonData);
 
     let tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Wide?.tmx;
-    if (tmx === undefined) tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Square?.tmx;
+    if (!tmx) {
+        tmx = neonData?.pageContext?.mainPicture?.metadata.softCrops?.Square?.tmx;
+    }
 
-    if (tmx !== undefined) {
+    if (tmx) {
         let tokens = tmx.split(' ');
         imageWidth = tokens[tokens.length - 2];
         imageHeight = tokens[tokens.length - 1];

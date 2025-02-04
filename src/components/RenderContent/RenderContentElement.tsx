@@ -687,7 +687,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
         const classes = wideCrop.attributes.class;
 
         const tmx = wideCrop.attributes.tmx;
-        if (tmx !== 'undefined') {
+        if (tmx) {
             let tokens = tmx.split(' ');
             imageWidth = tokens[tokens.length - 2];
             imageHeight = tokens[tokens.length - 1];
