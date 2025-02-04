@@ -364,6 +364,7 @@ const RenderContentElement: React.FC<RenderContentElementProps> = ({
 
                 case 'image':
                 case 'figure':
+                case 'inline-media-group':
                     if (jsonElement.attributes['emk-type'] === 'cloudinaryVideo') {
                         render = (
                             <CloudinaryVideo
@@ -680,17 +681,19 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
     let imageWidth = 1024;
     let imageHeight = 576;
 
-    try {
-        const classes = jsonElement.attributes.class;
+    const wideCrop = jsonElement.elements.find(elem => elem.attributes.softCrop === 'Wide');
 
-        const tmx = jsonElement.attributes.tmx;
+    try {
+        const classes = wideCrop.attributes.class;
+
+        const tmx = wideCrop.attributes.tmx;
         if (tmx !== 'undefined') {
             let tokens = tmx.split(' ');
             imageWidth = tokens[tokens.length - 2];
             imageHeight = tokens[tokens.length - 1];
         }
 
-        imageUrl = ResourceResolver(jsonElement.attributes.src);
+        imageUrl = ResourceResolver(wideCrop.attributes.src);
     } catch (e) {
         console.log('error', e);
     }
@@ -702,7 +705,7 @@ function Figure({ jsonElement, excludeElements, neonData, renderMode }) {
                     renderMode === 'newsletter' ? (
                         <img src={imageUrl} width={imageWidth} height={imageHeight} alt="Newsletter Image" />
                     ) : (
-                        <Image src={imageUrl} width={imageWidth} height={imageHeight} alt="Main Image" />
+                        <img src={imageUrl} width={imageWidth} height={imageHeight} alt="Main Image" />
                     )
                 ) : (
                     <p>No image available</p>
@@ -737,8 +740,6 @@ function FigureGallery({ jsonElement, excludeElements, neonData }) {
                 thumbnail: thumbImageFullUrl
             };
         });
-
-        console.log('images', images);
 
         render = (
             <Container sx={{ my: 4 }} maxWidth="lg">

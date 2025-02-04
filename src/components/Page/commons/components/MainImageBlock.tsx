@@ -34,10 +34,10 @@ const MainImageBlock: React.FC<BlockProps> = ({ neonData, styleVariant }) => {
                 justifyContent={justify}
                 alignItems={justify}
                 position="relative"
-                height={675}
-                width={1200}
+                height="100%"
+                width="100%"
             >
-                {mainImageUrl ? <Image fill src={mainImageUrl} alt="" priority={true} /> : <p>No image available</p>}
+                {mainImageUrl ? <img src={mainImageUrl} alt="" /> : <p>No image available</p>}
             </Box>
         </Container>
     );
